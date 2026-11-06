@@ -1,0 +1,16 @@
+---
+- name: Explicit worker2 obsolete kernel and completed archive cleanup
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    worker2_cleanup_apply: false
+  tasks:
+    - name: Run finite controller using protected become-password environment
+      ansible.builtin.command:
+        argv: "{{ ['python3', '-B', playbook_dir + '/../roles/worker2_obsolete_kernel_cleanup/files/controller.py'] + (['--apply'] if worker2_cleanup_apply | bool else []) }}"
+      environment:
+        ANSIBLE_BECOME_PASSWORD: "{{ ansible_become_password }}"
+        PYTHONDONTWRITEBYTECODE: "1"
+      no_log: true
+      changed_when: worker2_cleanup_apply | bool

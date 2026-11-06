@@ -36,7 +36,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('mode', choices=['inventory', 'windows', 'apply'])
     parser.add_argument('--stage', action='append', required=True)
+    parser.add_argument('--current-hardening', action='store_true', help='Use the current hardening leaf and owner; all original safety checks remain')
     a = parser.parse_args()
+    global HREL
+    if a.current_hardening:
+        HREL = 'platform-upstream-review-20261027/autonomous-hardening-20261028'
     assert 1 <= len(a.stage) <= 8 and all(re.fullmatch('[0-9a-f]{32}:[0-9a-f]{40}', s) for s in a.stage)
     selected = dict(s.split(':') for s in a.stage)
     assert len(selected) == len(a.stage)
@@ -86,7 +90,7 @@ def main():
         assert not r.exists()
         r.mkdir(mode=0o700)
         os.chown(r, 1000, 1000)
-        save(r / 'ownership.json', {'owner': '01a12045-bf7e-73b3-8557-752d17c72ffd', 'root': BASE,
+        save(r / 'ownership.json', {'owner': '01a18518-24e7-7ce3-b620-f9ca775bfd1c' if a.current_hardening else '01a12045-bf7e-73b3-8557-752d17c72ffd', 'root': BASE,
             'physicalFilesystemUUID': fs['uuid'], 'generatedPaths': [str(r)], 'completePeakBytes': 4 * 1024**2,
             'regeneration': 'Exact reachable Git commits/blobs and retained original pinned publisher tools; never replay completed publication',
             'protected': 'All original repositories/source/locks, minimal validation/publication reports and all failed/unselected stages'})

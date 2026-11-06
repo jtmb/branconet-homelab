@@ -1,0 +1,145 @@
+---
+- name: Reject any prior per-file qualification or uncertain submission
+  ansible.builtin.stat:
+    path: '{{ closed_file_offload_run }}/file-{{ closed_file_index }}-{{ item }}.json'
+  loop: [qualification, intent, result]
+  delegate_to: localhost
+  become: false
+  register: closed_file_attempts
+- name: Protect prior attempted file
+  ansible.builtin.assert:
+    that: [not item.stat.exists]
+  loop: '{{ closed_file_attempts.results }}'
+- name: Reset current qualification before any live NAS challenge
+  ansible.builtin.set_fact:
+    closed_file_qualification: {failed: true, reason: live_nas_challenge_not_completed}
+- name: Qualify current single-file references and full restoration
+  block:
+    - name: Verify current native NAS lock immediately before this file qualification
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -B
+          - -c
+          - |
+            import hashlib,json,re,runpy,sys
+            from pathlib import Path
+            proof_path=Path(sys.argv[1]);run=proof_path.parent
+            assert run.resolve()==run and run.parent==Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/autonomous-hardening-20261028/closed-file-offload')
+            assert run.name in ('masternode','workernode2') and proof_path.resolve()==proof_path
+            proof=json.loads(proof_path.read_text());token=proof['token']
+            assert re.fullmatch('[0-9a-f]{32}',token) and proof_path.name=='nas-retirement-proof-'+token+'.json'
+            owner_path=run/('retirement-'+token+'-ownership.json');assert owner_path.resolve()==owner_path
+            owner=json.loads(owner_path.read_text());runner=run/'runner-frozen.py'
+            assert runner.resolve()==runner and runner.is_file()
+            assert owner['root']==str(run) and owner['node']==run.name==proof['node'] and owner['nativeLock']['nativePID']==proof['nativePID']
+            assert hashlib.sha256(runner.read_bytes()).hexdigest()==owner['sourceSHA256']
+            result=runpy.run_path(str(runner))['check_lock'](proof)
+            print(json.dumps({'scope':'closed-file-live-nas-challenge','passed':True,'proofSHA256':hashlib.sha256(proof_path.read_bytes()).hexdigest(),'result':result}))
+          - '{{ closed_file_offload_proof_file }}'
+      delegate_to: localhost
+      become: false
+      register: closed_file_qualification
+      changed_when: false
+      no_log: true
+    - name: Read-only single-file retirement admission
+      ansible.builtin.raw: >-
+        /usr/bin/python3 -B -c {{ lookup('file', role_path + '/files/offload.py', rstrip=false) | quote }}
+        --node {{ closed_file_offload_node | quote }}
+        --safety-source {{ lookup('file', role_path + '/../retired_master_build_tools/files/retire.py', rstrip=false) | b64encode | quote }}
+        --safety-sha256 {{ lookup('file', role_path + '/../retired_master_build_tools/files/retire.py', rstrip=false) | hash('sha256') | quote }}
+        --mode retire --retire-index {{ closed_file_index }}
+        --profile-base64 {{ lookup('file', closed_file_offload_profile_file, rstrip=false) | b64encode | quote }}
+        --backup-proof {{ lookup('file', closed_file_offload_proof_file, rstrip=false) | b64encode | quote }}
+      register: closed_file_qualification
+      changed_when: false
+      no_log: true
+  always:
+    - name: Preserve qualification including refusal
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, -B, '{{ role_path }}/files/record.py', --path, '{{ receipt_path }}']
+        stdin: '{{ receipt_value | to_json }}'
+      delegate_to: localhost
+      become: false
+      no_log: true
+      vars:
+        receipt_path: '{{ closed_file_offload_run }}/file-{{ closed_file_index }}-qualification.json'
+        receipt_value: '{{ closed_file_qualification }}'
+- name: Require complete read-only admission
+  ansible.builtin.assert:
+    that:
+      - closed_file_qualification.rc == 0
+      - not (closed_file_qualification.stdout | from_json).applied
+- name: Reset current single-file result before any submission
+  ansible.builtin.set_fact:
+    closed_file_applied: {failed: true, reason: submission_incomplete}
+- name: Submit exactly one duplicate retirement
+  when: closed_file_offload_apply | bool
+  block:
+    - name: Durably create immutable per-file intent
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, -B, '{{ role_path }}/files/record.py', --path, '{{ receipt_path }}']
+        stdin: '{{ receipt_value | to_json }}'
+      delegate_to: localhost
+      become: false
+      no_log: true
+      vars:
+        receipt_path: '{{ closed_file_offload_run }}/file-{{ closed_file_index }}-intent.json'
+        receipt_value:
+          scope: closed-file-offload
+          node: '{{ closed_file_offload_node }}'
+          index: '{{ closed_file_index }}'
+          profileSHA256: "{{ lookup('file', closed_file_offload_profile_file, rstrip=false) | hash('sha256') }}"
+          proofSHA256: "{{ lookup('file', closed_file_offload_proof_file, rstrip=false) | hash('sha256') }}"
+          sourceSHA256: "{{ lookup('file', role_path + '/files/offload.py', rstrip=false) | hash('sha256') }}"
+          qualification: '{{ closed_file_qualification.stdout | from_json }}'
+    - name: Verify current native NAS lock after intent immediately before this file apply
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -B
+          - -c
+          - |
+            import hashlib,json,re,runpy,sys
+            from pathlib import Path
+            proof_path=Path(sys.argv[1]);run=proof_path.parent
+            assert run.resolve()==run and run.parent==Path('/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/autonomous-hardening-20261028/closed-file-offload')
+            assert run.name in ('masternode','workernode2') and proof_path.resolve()==proof_path
+            proof=json.loads(proof_path.read_text());token=proof['token']
+            assert re.fullmatch('[0-9a-f]{32}',token) and proof_path.name=='nas-retirement-proof-'+token+'.json'
+            owner_path=run/('retirement-'+token+'-ownership.json');assert owner_path.resolve()==owner_path
+            owner=json.loads(owner_path.read_text());runner=run/'runner-frozen.py'
+            assert runner.resolve()==runner and runner.is_file()
+            assert owner['root']==str(run) and owner['node']==run.name==proof['node'] and owner['nativeLock']['nativePID']==proof['nativePID']
+            assert hashlib.sha256(runner.read_bytes()).hexdigest()==owner['sourceSHA256']
+            result=runpy.run_path(str(runner))['check_lock'](proof)
+            print(json.dumps({'scope':'closed-file-live-nas-challenge','passed':True,'proofSHA256':hashlib.sha256(proof_path.read_bytes()).hexdigest(),'result':result}))
+          - '{{ closed_file_offload_proof_file }}'
+      delegate_to: localhost
+      become: false
+      register: closed_file_applied
+      changed_when: false
+      no_log: true
+    - name: Apply only the freshly requalified single-file unlink
+      ansible.builtin.raw: >-
+        /usr/bin/python3 -B -c {{ lookup('file', role_path + '/files/offload.py', rstrip=false) | quote }}
+        --node {{ closed_file_offload_node | quote }}
+        --safety-source {{ lookup('file', role_path + '/../retired_master_build_tools/files/retire.py', rstrip=false) | b64encode | quote }}
+        --safety-sha256 {{ lookup('file', role_path + '/../retired_master_build_tools/files/retire.py', rstrip=false) | hash('sha256') | quote }}
+        --mode retire --retire-index {{ closed_file_index }} --apply
+        --profile-base64 {{ lookup('file', closed_file_offload_profile_file, rstrip=false) | b64encode | quote }}
+        --backup-proof {{ lookup('file', closed_file_offload_proof_file, rstrip=false) | b64encode | quote }}
+      register: closed_file_applied
+      changed_when: closed_file_applied.rc == 0
+      no_log: true
+  always:
+    - name: Preserve single-file result including uncertainty
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, -B, '{{ role_path }}/files/record.py', --path, '{{ receipt_path }}']
+        stdin: '{{ receipt_value | to_json }}'
+      delegate_to: localhost
+      become: false
+      no_log: true
+      vars:
+        receipt_path: '{{ closed_file_offload_run }}/file-{{ closed_file_index }}-result.json'
+        receipt_value: '{{ closed_file_applied | default({"failed":true,"reason":"submission_incomplete"}) }}'

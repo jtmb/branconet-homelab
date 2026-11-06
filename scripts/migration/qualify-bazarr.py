@@ -126,9 +126,10 @@ def identity(mode):
             'cluster_ip': str(ip)}
 
 
-def observe_pod(state, mode, raw_key):
-    reader = Path(__file__).with_name('bazarr-sqlite-observer.py')
-    source = reader.read_bytes()
+def observe_pod(state, mode, raw_key, reader_source: bytes = None):
+    reader = Path(__file__).with_name('bazarr-sqlite-observer.py') if reader_source is None else None
+    source = reader.read_bytes() if reader is not None else reader_source
+    need(type(source) is bytes, 'observer_source_immutable_bytes')
     need(len(source) <= 65536, 'observer_source_limit')
     digest = hashlib.sha256(source).hexdigest()
     child = subprocess.run(['kubectl', '--request-timeout=150s', '-n', NS, 'exec', '-i',
@@ -145,7 +146,7 @@ def observe_pod(state, mode, raw_key):
         need(False, 'observer_refused_' + reason if re.fullmatch(r'[a-z0-9_]{1,96}', reason) else 'observer_failed_raw_details_suppressed')
     result = json.loads(child.stdout)
     need(result.get('schema_version') == 1 and result.get('mode') == mode and result.get('quick_check_passed') is True, 'observer_result_shape')
-    need(hashlib.sha256(reader.read_bytes()).hexdigest() == digest, 'observer_source_changed')
+    need(hashlib.sha256(reader.read_bytes() if reader is not None else reader_source).hexdigest() == digest, 'observer_source_changed')
     result['observer_sha256'] = digest
     return result
 
@@ -265,8 +266,10 @@ def main():
     parser.add_argument('--receipt', required=True, type=Path)
     parser.add_argument('--security-patch', action='store_true', help='Same1.6.2 app; exact reviewed local dependency/OS overlay, no vendor normalization')
     parser.add_argument('--upstream-adoption', action='store_true', help='Finite current-local to vendor same-app profile; requires --security-patch preservation rules')
+    parser.add_argument('--vendor-security-refresh-20261028', action='store_true', help='Exact maintained Bazarr1.6.2 digest refresh; requires --security-patch and forbids normalization')
     args = parser.parse_args()
     need(not args.upstream_adoption or args.security_patch, 'modern_same_app_profile_required')
+    need(not args.vendor_security_refresh_20261028 or (args.security_patch and not args.upstream_adoption), 'vendor_refresh_same_app_scope')
     SECURITY_PATCH = args.security_patch
     if args.security_patch:
         OLD = NEW
@@ -277,6 +280,11 @@ def main():
         NEW = 'ghcr.io/hotio/bazarr:latest@sha256:32204ef90d4dcb54ad5fb019810f4ef805ced9c54853ae552cf09a41c056b14b'
         SECURITY_BASELINE_RUNTIME = OLD.rsplit('@', 1)[1]
         NEW_RUNTIME = 'sha256:8696d2b429f88dcb8049357be3d24c12e6c79a3aaa9c063ac7107d59914434e5'
+    if args.vendor_security_refresh_20261028:
+        OLD = 'ghcr.io/hotio/bazarr:latest@sha256:32204ef90d4dcb54ad5fb019810f4ef805ced9c54853ae552cf09a41c056b14b'
+        NEW = 'ghcr.io/hotio/bazarr:latest@sha256:86b76c5c66a839ca6f6dd15ddb16b43f074dc71d41907b720e176bdede4b6562'
+        SECURITY_BASELINE_RUNTIME = 'sha256:8696d2b429f88dcb8049357be3d24c12e6c79a3aaa9c063ac7107d59914434e5'
+        NEW_RUNTIME = 'sha256:ff7b10937c15036b011b33b1d524b92ead2415564bf1ab5415268b915d4b71f9'
     os.umask(0o077)
     # Exactly one existing operator HMAC key; never create or persist key material here.
     raw = sys.stdin.buffer.read(66)
@@ -299,6 +307,7 @@ def main():
         baseline_sha = hashlib.sha256(args.baseline.read_bytes()).hexdigest()
         need(prior.get('security_patch', False) == args.security_patch, 'same_qualification_scope')
         need(prior.get('upstream_adoption', False) == args.upstream_adoption, 'upstream_profile_scope')
+        need(prior.get('vendor_security_refresh_20261028', False) == args.vendor_security_refresh_20261028, 'vendor_refresh_profile_scope')
         if args.security_patch:
             need(prior['identity']['image'] == OLD and prior['identity']['runtime_digest'] in [SECURITY_BASELINE_RUNTIME, OLD.rsplit('@', 1)[1]], 'security_baseline_image')
             need(prior['observation']['application']['version'] == '1.6.2', 'security_baseline_version')
@@ -312,6 +321,7 @@ def main():
         need(prior.get('mode') == 'after' and prior.get('schema_version') == 1 and prior.get('baseline_sha256') == baseline_sha, 'prior_receipt_shape')
         need(prior.get('security_patch', False) == args.security_patch, 'same_restart_scope')
         need(prior.get('upstream_adoption', False) == args.upstream_adoption, 'upstream_profile_scope')
+        need(prior.get('vendor_security_refresh_20261028', False) == args.vendor_security_refresh_20261028, 'vendor_refresh_profile_scope')
         if not args.security_patch:
             need(prior.get('vendor_normalization', {}).get('proof_sha256') == NORMALIZATION_PROOF_SHA256, 'prior_normalization_proof_binding')
         need(prior['identity']['claims'] == start['claims'] and prior['identity']['image'] == start['image'], 'restart_identity')
@@ -327,6 +337,8 @@ def main():
                'sql_quick_check_verified': True, 'auth_config_preservation_passed': args.mode != 'baseline', 'user_password_table_verified': False,
                'integration_connection_tests_run': False, 'external_routes_verified': False,
                'full_acceptance_complete': False}
+    if args.vendor_security_refresh_20261028:
+        receipt['vendor_security_refresh_20261028'] = True
     write_new(args.receipt, receipt)
     print(json.dumps({'status': 'observed', 'mode': args.mode, 'version': observation['application']['version'],
                       'counts': observation['counts'], 'subtitle_count': observation['subtitle_count'], 'data_preservation_passed': args.mode != 'baseline',

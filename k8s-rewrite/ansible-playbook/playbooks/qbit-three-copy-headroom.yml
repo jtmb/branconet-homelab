@@ -1,0 +1,25 @@
+---
+- name: Explicit phased native qBittorrent replica rebalance
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Require a bound native authority and explicit finite phase
+      ansible.builtin.assert:
+        that:
+          - qbit_headroom_phase | default('qualify') in ['qualify', 'add-third', 'observe-third', 'reduce', 'observe-two', 'restore']
+          - qbit_headroom_authority_sha256 is match('^[a-f0-9]{64}$')
+    - name: Run exactly one guarded phase with no polling or forced cleanup
+      ansible.builtin.command:
+        argv:
+          - /home/brajam/.local/share/branconet-migration/venv/bin/python
+          - -B
+          - "{{ playbook_dir }}/../../../scripts/migration/qbit-three-copy-headroom.py"
+          - "{{ qbit_headroom_phase | default('qualify') }}"
+          - --authority
+          - "{{ qbit_headroom_authority }}"
+          - --authority-sha256
+          - "{{ qbit_headroom_authority_sha256 }}"
+      changed_when: qbit_headroom_phase | default('qualify') in ['add-third', 'reduce', 'restore']
+      when: not ansible_check_mode

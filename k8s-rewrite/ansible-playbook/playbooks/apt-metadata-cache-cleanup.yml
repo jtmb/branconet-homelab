@@ -1,0 +1,8 @@
+---
+- name: Finite qualified APT metadata cache reconciliation
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  roles:
+    - apt_metadata_cache_cleanup

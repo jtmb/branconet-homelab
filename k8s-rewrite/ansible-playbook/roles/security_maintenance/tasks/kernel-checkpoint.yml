@@ -1,0 +1,15 @@
+---
+- name: Verify hash-bound current identity and fresh backup checkpoint
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - -B
+      - "{{ role_path }}/files/kernel_checkpoint.py"
+      - --manifest
+      - "{{ security_maintenance_backup_reference }}"
+      - --sha256
+      - "{{ security_maintenance_checkpoint_sha256 }}"
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  check_mode: false

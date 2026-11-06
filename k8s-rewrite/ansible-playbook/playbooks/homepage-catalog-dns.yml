@@ -1,0 +1,17 @@
+---
+- name: Preserve DNS records and provision Homepage ingress aliases
+  hosts: masternode
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Preview or add the two existing service aliases without replacing records
+      ansible.builtin.command:
+        argv: "{{ [ansible_playbook_python, '-B', playbook_dir + '/../roles/homepage_catalog_dns/files/aliases.py'] + (['--apply'] if homepage_catalog_dns_apply | default(false) | bool and not ansible_check_mode else []) }}"
+      delegate_to: localhost
+      become: false
+      check_mode: false
+      register: homepage_catalog_dns_result
+      changed_when: (homepage_catalog_dns_result.stdout | from_json).changed
+      environment:
+        PYTHONDONTWRITEBYTECODE: '1'
+        TMPDIR: "{{ lookup('env', 'ANSIBLE_LOCAL_TEMP') }}"

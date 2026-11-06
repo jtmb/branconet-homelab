@@ -1,0 +1,9 @@
+---
+- name: Install current antivirus and launch a non-destructive full local-filesystem scan
+  hosts: k8s_nodes
+  become: true
+  gather_facts: false
+  vars_files:
+    - ../group_vars/all.yml
+  roles:
+    - antivirus_scan

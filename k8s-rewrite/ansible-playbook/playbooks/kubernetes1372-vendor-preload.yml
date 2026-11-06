@@ -1,0 +1,32 @@
+---
+- name: Exact official Kubernetes1.37.2 native prestaging
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  vars:
+    kubernetes1372_vendor_preload_enabled: false
+    kubernetes1372_vendor_preload_mode: observe
+    kubernetes1372_vendor_preload_node: all
+    kubernetes1372_vendor_preload_service: kube-apiserver
+  tasks:
+    - name: Explain disabled default
+      ansible.builtin.debug:
+        msg: No action. Explicitly enable; observe is read-only and stage must be selected.
+      when: not kubernetes1372_vendor_preload_enabled | bool or ansible_check_mode
+    - name: Validate finite approved scope
+      ansible.builtin.assert:
+        that:
+          - kubernetes1372_vendor_preload_service in ['kube-apiserver', 'kube-controller-manager', 'kube-scheduler', 'kube-proxy']
+          - kubernetes1372_vendor_preload_mode in ['observe', 'stage']
+          - kubernetes1372_vendor_preload_node in ['master', 'worker2', 'worker1', 'all']
+      when: kubernetes1372_vendor_preload_enabled | bool and not ansible_check_mode
+    - name: Invoke guarded controller with existing environment privilege input
+      ansible.builtin.raw: >-
+        python3 -B {{ (playbook_dir + '/../roles/kubernetes1372_vendor_preload/files/controller.py') | quote }}
+        {{ kubernetes1372_vendor_preload_mode | quote }} --service {{ kubernetes1372_vendor_preload_service | quote }}
+        --node {{ kubernetes1372_vendor_preload_node | quote }}
+      no_log: true
+      changed_when: kubernetes1372_vendor_preload_mode == 'stage'
+      when: kubernetes1372_vendor_preload_enabled | bool and not ansible_check_mode

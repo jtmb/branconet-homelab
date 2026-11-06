@@ -1,0 +1,120 @@
+---
+- name: Validate explicit transfer-resume proof before any host-specific preflight
+  ansible.builtin.command:
+    argv: [/home/brajam/.local/share/branconet-migration/venv/bin/python, -B, "{{ role_path }}/files/resume_transfer_proof.py", --run-id, "{{ kubernetes_security_patch_resume_run_id }}", --proof, "{{ kubernetes_security_patch_resume_kubeadm_with_transfer_proof }}", --sha256, "{{ kubernetes_security_patch_resume_kubeadm_with_transfer_proof_sha256 }}", --manifest, "{{ kubernetes_security_patch_manifest }}", --manifest-sha256, "{{ kubernetes_security_patch_manifest_sha256 }}"]
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  check_mode: false
+  register: patch_transfer_resume
+  when: kubernetes_security_patch_resume_kubeadm_with_transfer_proof is defined
+
+- name: Refuse partial or malformed transfer-resume settings
+  ansible.builtin.assert:
+    that:
+      - (kubernetes_security_patch_resume_kubeadm_with_transfer_proof is defined) == (kubernetes_security_patch_resume_kubeadm_with_transfer_proof_sha256 is defined)
+      - kubernetes_security_patch_resume_kubeadm_with_transfer_proof is not defined or ((patch_transfer_resume.stdout | from_json).passed and (patch_transfer_resume.stdout | from_json).mode == 'staged-kubeadm')
+
+- name: Require explicit hash-bound authority even for full read-only preflight
+  ansible.builtin.assert:
+    that:
+      - kubernetes_security_patch_manifest_sha256 is match('^[a-f0-9]{64}$')
+      - kubernetes_security_patch_receipt_dir is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/platform-upstream-review-20261027/autonomous-hardening-20261028/[a-z0-9-]+$')
+      - ansible_facts.distribution == 'Ubuntu'
+      - ansible_facts.distribution_release == 'jammy'
+      - ansible_facts.architecture == 'x86_64'
+
+- name: Validate signed native artifacts scans original raw backups and all-node image prestaging
+  ansible.builtin.command:
+    argv: [/home/brajam/.local/share/branconet-migration/venv/bin/python, -B, "{{ role_path }}/files/authority.py", --manifest, "{{ kubernetes_security_patch_manifest }}", --sha256, "{{ kubernetes_security_patch_manifest_sha256 }}"]
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  check_mode: false
+  register: patch_authority
+
+- name: Load qualified public authority and unchanged original drain tuples
+  ansible.builtin.set_fact:
+    patch_plan: "{{ patch_authority.stdout | from_json }}"
+    patch_original_defaults: "{{ lookup('file', role_path + '/../security_maintenance/defaults/main.yml') | from_yaml }}"
+
+- name: Preserve all original current58 and offline identities before maintenance
+  ansible.builtin.include_tasks: checkpoint.yml
+
+- name: Require exact prestaged native binaries original bytes metadata and fresh disk floor checks
+  ansible.builtin.command:
+    argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/native_binaries.py') }}", "{{ 'staged-kubeadm' if (kubernetes_security_patch_resume_kubeadm_with_transfer_proof is defined and inventory_hostname == 'masternode') else 'staged' }}"]
+    stdin: "{{ patch_plan | to_json }}"
+  changed_when: false
+  check_mode: false
+  register: patch_binaries_before
+
+- name: Freeze protected host bytes and exact original static manifests without exposing contents
+  ansible.builtin.command:
+    argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/preservation.py') }}", capture]
+    stdin: "{{ {'plan': patch_plan} | to_json }}"
+  changed_when: false
+  check_mode: false
+  register: patch_preservation_before
+  no_log: true
+
+- name: Freeze exact original cluster and addon configuration on the master
+  ansible.builtin.command:
+    argv: [python3, -B, -c, "{{ lookup('file', role_path + '/files/runtime.py') }}", capture]
+    stdin: "{}"
+  become: false
+  changed_when: false
+  check_mode: false
+  register: patch_cluster_config_before
+  when: inventory_hostname == 'masternode'
+  no_log: true
+
+- name: Verify independently managed CoreDNS declarations instead of an unused addon migration
+  ansible.builtin.command:
+    argv: [/home/brajam/.local/share/branconet-migration/venv/bin/python, -B, "{{ role_path }}/files/coredns_preservation.py"]
+  delegate_to: localhost
+  become: false
+  changed_when: false
+  check_mode: false
+
+- name: Read all node conditions and Longhorn drain policy
+  ansible.builtin.command:
+    argv: "{{ item }}"
+  loop:
+    - [kubectl, get, nodes, -o, json]
+    - [kubectl, -n, longhorn-system, get, settings.longhorn.io, node-drain-policy, -o, 'jsonpath={.value}']
+  delegate_to: "{{ groups.master[0] }}"
+  become: false
+  changed_when: false
+  register: patch_cluster_state
+
+- name: Require all original nodes Ready uncordoned and without pressure
+  ansible.builtin.assert:
+    that:
+      - (patch_cluster_state.results[0].stdout | from_json)['items'] | map(attribute='metadata.name') | sort == groups.k8s_nodes | sort
+      - item.metadata.uid == patch_plan.nodeUIDs[item.metadata.name]
+      - item.status.conditions | selectattr('type', 'equalto', 'Ready') | selectattr('status', 'equalto', 'True') | list | length == 1
+      - item.status.conditions | selectattr('type', 'in', ['MemoryPressure', 'DiskPressure', 'PIDPressure', 'NetworkUnavailable']) | selectattr('status', 'equalto', 'True') | list | length == 0
+      - not (item.spec.unschedulable | default(false))
+      - patch_cluster_state.results[1].stdout == 'block-if-contains-last-replica'
+  loop: "{{ (patch_cluster_state.results[0].stdout | from_json)['items'] }}"
+  loop_control:
+    label: "{{ item.metadata.name }}"
+
+- name: Freeze original volume and controller readiness using the existing recovery guard
+  ansible.builtin.command:
+    argv: [python3, -B, -c, "{{ lookup('file', role_path + '/../security_maintenance/files/recovery_guard.py') }}", freeze]
+  delegate_to: "{{ groups.master[0] }}"
+  become: false
+  changed_when: false
+  register: patch_recovery_before
+  retries: 12
+  delay: 10
+  until: patch_recovery_before.rc == 0 and (patch_recovery_before.stdout | from_json).ready | bool
+
+- name: Require only exact reviewed ephemeral mount tuples before cordoning
+  ansible.builtin.command:
+    argv: [python3, -B, -c, "{{ lookup('file', role_path + '/../security_maintenance/files/pod_guard.py') }}", "{{ inventory_hostname }}", 'true', "{{ (patch_original_defaults.security_maintenance_emptydir_allowlist + patch_original_defaults.security_maintenance_kernel202_emptydir_additions) | unique | list | to_json }}"]
+  delegate_to: "{{ groups.master[0] }}"
+  become: false
+  changed_when: false

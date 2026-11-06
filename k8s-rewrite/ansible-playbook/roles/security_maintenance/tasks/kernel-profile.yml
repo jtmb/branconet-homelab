@@ -1,0 +1,28 @@
+---
+- name: Require finite kernel202 current58 profile authority
+  ansible.builtin.assert:
+    that:
+      - security_maintenance_checkpoint_sha256 is match('^[a-f0-9]{64}$')
+      - security_maintenance_apply | bool
+      - security_maintenance_backup_verified | bool
+      - inventory_hostname in ['masternode', 'workernode1', 'workernode2']
+      - security_maintenance_recovery_receipt_dir is match('^/home/brajam/.local/share/branconet-migration/local-image-build-offload-20261025/[^\r\n]+$')
+
+- name: Qualify the exact host-specific kernel and existing390 package transaction
+  ansible.builtin.command:
+    argv: [python3, -B, -c, "{{ lookup('ansible.builtin.file', role_path + '/files/kernel_packages.py') }}", preflight]
+  changed_when: false
+  check_mode: false
+  register: kernel202_packages
+
+- name: Select finite kernel transaction without broad updates or legacy retirement
+  ansible.builtin.set_fact:
+    security_maintenance_ubuntu_packages: []
+    security_maintenance_extra_packages: "{{ (kernel202_packages.stdout | from_json).packages }}"
+    security_maintenance_retire_unused_containerd: false
+    security_maintenance_expected_kernel: 5.15.0-202-generic
+    security_maintenance_allow_reviewed_emptydir: true
+    security_maintenance_emptydir_allowlist: "{{ (security_maintenance_emptydir_allowlist + security_maintenance_kernel202_emptydir_additions) | unique | list }}"
+
+- name: Verify complete original current58 checkpoint before any cordon
+  ansible.builtin.include_tasks: kernel-checkpoint.yml

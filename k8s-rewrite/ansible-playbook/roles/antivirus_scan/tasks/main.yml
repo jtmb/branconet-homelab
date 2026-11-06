@@ -1,0 +1,136 @@
+---
+- name: Require explicit finite scan identity
+  ansible.builtin.assert:
+    that:
+      - antivirus_scan_launch | bool
+      - antivirus_scan_id is match('^[a-z0-9][a-z0-9-]{7,60}$')
+      - antivirus_scan_root == '/var/lib/branconet-antivirus'
+      - antivirus_scan_only_volume == '' or antivirus_scan_only_volume is match('^pvc-[a-f0-9-]{36}$')
+      - antivirus_scan_supplement_from == '' or antivirus_scan_supplement_from is match('^[a-z0-9][a-z0-9-]{7,60}$')
+      - antivirus_scan_supplement_from == '' or antivirus_scan_only_volume == ''
+    fail_msg: Supply antivirus_scan_launch=true and a new finite antivirus_scan_id.
+
+- name: Check the requested generation before changing packages or runner source
+  ansible.builtin.stat:
+    path: '{{ antivirus_scan_root }}/{{ antivirus_scan_id }}'
+  register: antivirus_generation
+
+- name: Refuse replay of an existing result or interrupted scan
+  ansible.builtin.assert:
+    that:
+      - not antivirus_generation.stat.exists
+    fail_msg: Inspect the existing scan generation; never overwrite its evidence.
+
+- name: Check for a currently active node scanner before admitting another
+  ansible.builtin.command:
+    argv: [systemctl, list-units, '--type=service', '--state=active,activating', --no-legend, --no-pager, 'branconet-antivirus-*']
+  register: antivirus_active_units
+  changed_when: false
+  tags: [antivirus_runner_config]
+
+- name: Keep one antivirus scan within the per-node CPU and memory budget
+  ansible.builtin.assert:
+    that:
+      - antivirus_active_units.stdout | trim == ''
+    fail_msg: An existing node scan is active; inspect it rather than starting a duplicate.
+  tags: [antivirus_runner_config]
+
+- name: Measure available root capacity before installing scanner and signatures
+  ansible.builtin.command:
+    argv:
+      - python3
+      - -B
+      - -c
+      - "import os; s=os.statvfs('/'); print(s.f_bavail*s.f_frsize)"
+  register: antivirus_free
+  changed_when: false
+
+- name: Preserve 15 GiB floor plus 4 GiB reserved scratch and 1 GiB package/margin allowance
+  ansible.builtin.assert:
+    that:
+      - antivirus_free.stdout | int >= (antivirus_scan_minimum_free_bytes | int + 5368709120)
+
+- name: Install supported Ubuntu scanner without starting an unconfigured updater
+  ansible.builtin.apt:
+    name:
+      - clamav
+      - clamav-freshclam
+    state: latest
+    update_cache: true
+    cache_valid_time: 3600
+    install_recommends: false
+    policy_rc_d: 101
+
+- name: Disable notifications to an uninstalled clamd daemon
+  ansible.builtin.lineinfile:
+    path: /etc/clamav/freshclam.conf
+    regexp: '^NotifyClamd\s'
+    state: absent
+  notify: Restart antivirus signature updater
+  tags: [antivirus_updater_config]
+
+- name: Apply updater configuration before the finite update takes its database lock
+  ansible.builtin.meta: flush_handlers
+  tags: [antivirus_updater_config]
+
+- name: Create finite antivirus runtime root
+  ansible.builtin.file:
+    path: '{{ antivirus_scan_root }}'
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+
+- name: Install reproducible non-destructive scan runner
+  ansible.builtin.file:
+    path: /usr/local/libexec
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  tags: [antivirus_runner_config]
+
+- name: Copy reproducible non-destructive scan runner
+  ansible.builtin.copy:
+    src: scan.py
+    dest: /usr/local/libexec/branconet-antivirus-scan.py
+    owner: root
+    group: root
+    mode: '0755'
+  tags: [antivirus_runner_config]
+
+- name: Start bounded one-shot signature update and local-filesystem scan
+  ansible.builtin.command:
+    argv:
+      - systemd-run
+      - '--unit=branconet-antivirus-{{ antivirus_scan_id }}'
+      - --property=CPUQuota=150%
+      - --property=Nice=15
+      - --property=IOSchedulingClass=idle
+      - --property=MemoryMax=3G
+      - --property=TasksMax=64
+      - --property=NoNewPrivileges=yes
+      - --property=ProtectKernelTunables=yes
+      - --property=ProtectKernelModules=yes
+      - --property=ProtectControlGroups=yes
+      - --property=UMask=0077
+      - --property=RuntimeMaxSec=24h
+      - /usr/bin/python3
+      - -B
+      - /usr/local/libexec/branconet-antivirus-scan.py
+      - '{{ antivirus_scan_id }}'
+      - '--only-volume={{ antivirus_scan_only_volume }}'
+      - '--supplement-from={{ antivirus_scan_supplement_from }}'
+  register: antivirus_launch
+  changed_when: antivirus_launch.rc == 0
+
+- name: Apply the bounded scan CPU allowance to an existing owned generation
+  ansible.builtin.command:
+    argv:
+      - systemctl
+      - set-property
+      - --runtime
+      - 'branconet-antivirus-{{ antivirus_scan_id }}.service'
+      - CPUQuota=150%
+  changed_when: true
+  tags: [antivirus_runtime_tuning]

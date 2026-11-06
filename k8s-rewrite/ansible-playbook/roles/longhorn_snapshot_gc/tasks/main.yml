@@ -1,0 +1,15 @@
+---
+- name: Require finite native GC opt-in
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'localhost'
+      - (longhorn_snapshot_gc_after_closed_backup_status_format_failure | length > 0) == (longhorn_snapshot_gc_after_closed_backup_status_format_failure_sha256 | length > 0)
+      - longhorn_snapshot_gc_candidate in ['sonarr', 'ingenium', 'radarr-data-0', 'xteve-data-0', 'ruckus-db-upstream-20261026']
+      - longhorn_snapshot_gc_mode in ['qualify', 'apply', 'observe']
+      - longhorn_snapshot_gc_mode != 'apply' or longhorn_snapshot_gc_apply | bool
+      - longhorn_snapshot_gc_mode == 'qualify' or longhorn_snapshot_gc_qualification_sha256 is match('^[0-9a-f]{64}$')
+- name: Run one finite native profile
+  ansible.builtin.command:
+    argv: "{{ ['/usr/bin/python3', '-B', role_path + '/files/controller.py', '--candidate', longhorn_snapshot_gc_candidate, '--mode', longhorn_snapshot_gc_mode] + (['--qualification-sha256', longhorn_snapshot_gc_qualification_sha256] if longhorn_snapshot_gc_mode != 'qualify' else []) + (['--after-closed-backup-status-format-failure', longhorn_snapshot_gc_after_closed_backup_status_format_failure, '--after-closed-backup-status-format-failure-sha256', longhorn_snapshot_gc_after_closed_backup_status_format_failure_sha256] if longhorn_snapshot_gc_after_closed_backup_status_format_failure | length > 0 else []) }}"
+  register: longhorn_snapshot_gc_result
+  changed_when: longhorn_snapshot_gc_mode == 'apply' and longhorn_snapshot_gc_result.rc == 0
