@@ -96,3 +96,52 @@ launcher uses authenticated Linux abstract sockets for this Ansible invocation
 only, retaining all filesystem output on D: without changing installed Ansible.
 The existing charts publisher retains its separately authorized F:-backed root;
 it must not be replaced by a second publisher or moved into this task root.
+
+## Observed completion — November 6, 2026
+
+All three full passes and their required deep-directory/archive corrections
+finished by 18:26:19 UTC. ClamAV 1.5.4 used verified official databases (initial
+daily 28174; later master/worker1 corrections daily 28175).
+
+| Node | Full-pass file visits | Corrective file visits | State |
+| --- | ---: | ---: | --- |
+| masternode | 426797 | 258944 | Completed |
+| workernode1 | 1419931 | 2253193 | Completed |
+| workernode2 | 318088 | 99543 | Completed |
+
+These are per-pass visits with deliberate overlap, not counts of unique files.
+No confirmed malware was found. The master's one non-limit finding,
+`Heuristics.Zip.OverlappingFiles`, was reproduced by scanning the unmodified
+public Klauspost ZIP fuzz corpus with the same engine/database. Its SHA-256
+`8b2655dc4480530e1a1d682ee27a823bcebddd1c4afb606e202e057419501e14`
+also matches the corpus inside the flagged retained build archive. The original
+finding remains recorded; no package-cache exclusion or automatic removal was
+introduced.
+
+Coverage exceptions remain explicit: files larger than 2 GiB (swap and one
+application database), 4 GiB expanded image preloads, a retained archive's
+100,000-entry bound, original recursion-limit archives and parser/access errors.
+The disappeared `/run/user/1000` mount was not recreated. The original infected-
+only output mode does not provide an exhaustive per-path error list. Mounted
+plaintext local data was included; NAS shares and detached encrypted volumes
+remain outside this node-local scan. This result is not a guarantee against
+unknown malware or certification of every unsupported input.
+
+Final mount reconciliation found no new persistent local roots outside recorded
+scopes. All r1/r2/r3 scratch mounts, images and loop associations are absent;
+the public diagnostic fixture and its temporary mount were also removed. Initial
+r1 failures remain labelled incomplete, with minimal evidence preserved.
+
+Live Plex verification at approximately 18:28 UTC retained the original account,
+server identity, library keys 1/2/4, paths and all 59 baseline PVC UID/PV bindings.
+Plex was Ready with zero restarts; authenticated library access returned 200 and
+anonymous access 401. Media remained read-only, config writable; effective Plex
+capabilities were zero, NoNewPrivileges and seccomp active, and no API token was
+mounted. Its encrypted Longhorn config remained healthy with two replicas. All
+three nodes were Ready without memory/disk/PID pressure. Flux source and Plex
+release were Ready on charts revision `1fc427b310c11394bd91c4bd2992cd90e091abe6`.
+
+Protected full logs, actual summaries, scope reconciliation, hashes and the
+earlier targeted IOC assessment remain in the existing local task root's
+`FULL-ANTIVIRUS-REPORT.md` and its referenced observations. Production data,
+original rollback material, images, snapshots and models were not deleted.
