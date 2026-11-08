@@ -28,4 +28,11 @@ Public websites use Cloudflare Tunnel. Plex uses a dedicated MetalLB address and
 - Keep the Netgear adapter read-only while testing the proposed request-only write workflow. Bind each approval to the exact setting, target and change, enforce expiry and replay protection, and verify before and after state for any separately approved live write.
 - Record final acceptance, Ansible and chart ownership, and rollback procedures. Keep BORTUS publication and production acceptance separate. Retire redundant checkouts only after current work is integrated, unique work is recoverable, and ownership and inactivity are verified.
 
+## Rollout checklist
+
+- [ ] **Phase 1.** Recheck port availability and endpoint placement. Obtain approval for publishing and removing the isolated test Service. Verify real LAN client IPs on both nodes with endpoints, expected behavior on the third node and continuity of existing routes. Confirm Cloudflare attribution separately before enabling bans. Revert the declaration, remove the test Service and verify the port is released.
+- [ ] **Phase 2 preparation, in parallel with Phase 1.** Match tools to live etcd and rehearse restoring the encrypted snapshot in isolation. Verify API decryption without exposing Secret values. Rehearse a three-member restore and confirm two members keep serving after one stops.
+- [ ] **Phase 2 rollout, after recovery passes.** Qualify the stable API endpoint and TLS. Under the separate rollout approvals, promote nodes one at a time and verify quorum, scheduling, storage and Flux through a controlled node outage. Stage floating HTTPS and redundant LAN DNS and verify both paths before retiring the old ones.
+- [ ] **Phase 3.** Verify read-only Kubernetes inventory in Codex and OpenCode, including denial of Secret access, exec, port forwarding and writes. Then qualify the remaining private adapters.
+
 This tracked plan uses role-based names. Operational identifiers, local evidence and credentials belong outside the tracked plan.
