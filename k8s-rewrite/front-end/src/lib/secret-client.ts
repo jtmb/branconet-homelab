@@ -463,6 +463,8 @@ function buildSecretTransport(initialListPageLimit: 20 | 200 = 20, flatListing =
         do {
           const result = await request("GET", route(namespace) + "?limit=100" + (cursor ? "&continue=" + encodeURIComponent(cursor) : ""), undefined, deadline, true);
           const page = result.value; bytes += result.bytes;
+          // Kubernetes encodes an empty PartialObjectMetadataList as items:null.
+          if (page.items === null) page.items = [];
           if (page.kind !== "PartialObjectMetadataList" || page.apiVersion !== "meta.k8s.io/v1" || !Array.isArray(page.items) ||
             page.items.length > 100 || items.length + page.items.length > 10000 || bytes > 8 * 1024 * 1024)
             throw new SecretError(503, "Metadata-only Secret list exceeds the validated limits");
@@ -482,6 +484,7 @@ function buildSecretTransport(initialListPageLimit: 20 | 200 = 20, flatListing =
       },
       probe: async (namespace, deadline = Date.now() + 8000) => {
         const { value } = await request("GET", route(namespace) + "?limit=1", undefined, deadline, true);
+        if (value.items === null) value.items = [];
         if (value.kind !== "PartialObjectMetadataList" || value.apiVersion !== "meta.k8s.io/v1" || !Array.isArray(value.items) || value.items.length > 1 ||
           value.items.some((i: any) => i.kind !== "PartialObjectMetadata" || i.apiVersion !== "meta.k8s.io/v1" || i.metadata?.namespace !== namespace || Object.hasOwn(i, "data") || Object.hasOwn(i, "stringData")))
           throw new SecretError(503, "Metadata-only Secret probe unavailable");

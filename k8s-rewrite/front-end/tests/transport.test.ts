@@ -69,7 +69,7 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
         } else if (request.method === "GET" && request.headers.accept?.includes("PartialObjectMetadataList")) {
           metadataReads++;
           result = { apiVersion: "meta.k8s.io/v1", kind: "PartialObjectMetadataList", metadata: {continue:metadataMode==="repeat" || metadataMode==="pages" && !request.url?.includes("continue=") ? "next-page" : ""},
-            items: Array.from({length:metadataMode==="oversize"?101:metadataMode==="pages"||metadataMode==="repeat"?100:object?1:0},(_,index)=>({apiVersion:"meta.k8s.io/v1",kind:"PartialObjectMetadata",
+            items: metadataMode === "null" ? null : metadataMode === "invalid" ? {} : Array.from({length:metadataMode==="oversize"?101:metadataMode==="pages"||metadataMode==="repeat"?100:object?1:0},(_,index)=>({apiVersion:"meta.k8s.io/v1",kind:"PartialObjectMetadata",
               metadata:{name:"item-"+metadataReads+"-"+index,namespace:"apps",uid:"metadata-uid",resourceVersion:"1"},...(metadataMode==="values"?{data:{private:"must not fall back"}}:{})})) };
         } else if (request.method === "GET" && listMode !== "normal") {
           listReads++;
@@ -164,6 +164,8 @@ test("real TLS client sends value bodies to a mock Kubernetes API and preserves 
     }
     const transport = createSecretTransport();
     await transport.probe("apps");
+    metadataMode="null";await transport.probe("apps");assert.deepEqual(await transport.listMetadata("apps"),[]);
+    metadataMode="invalid";await assert.rejects(transport.probe("apps"),/Metadata-only Secret probe unavailable/);await assert.rejects(transport.listMetadata("apps"),/exceeds the validated limits/);metadataMode="normal";
     metadataMode="pages";metadataReads=0;const metadata=await transport.listMetadata("apps");assert.equal(metadata.length,200);assert.equal(metadataReads,2);assert(!JSON.stringify(metadata).includes("fake TLS value"));
     metadataMode="repeat";metadataReads=0;await assert.rejects(transport.listMetadata("apps"),/Invalid Kubernetes Secret pagination/);assert.equal(metadataReads,2);
     metadataMode="oversize";await assert.rejects(transport.listMetadata("apps"),/exceeds the validated limits/);
