@@ -1,0 +1,85 @@
+---
+# Reviewed, hash-guarded addition of kubeadm/kubelet serving certificate
+# expiry watching (F13). Each node's live TLS leaf is read over the wire by
+# the existing UID998 monitor service; no host file, root, or new credential
+# access is granted. Nothing else on the host is touched. Refuses to run
+# unless every file currently installed matches the exact pre-change content.
+- name: Add TLS-endpoint certificate expiry watching to the monitor
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    monitor_code: /usr/local/libexec/bortus-certificate-monitor
+    files:
+      - name: certificate_monitor.py
+        before_sha256: f55cba8615f5d072a5e93cd0b14708cceaf1fdd51c440ce58d98b93e2008d80a
+      - name: certificate_monitor_control.py
+        before_sha256: d5175c0b7cae7c65dfcf9d1c114af5afa57180a40ac005aaa368db5eab8b4817
+      - name: run-certificate-monitor.py
+        before_sha256: d39f873ace27f7f293282a53b6563e9848f32340a6890b8997dc09b41f4ca82c
+      - name: certificate_monitor_tls_probe.py
+        before_sha256: null
+  tasks:
+    - name: Require the documented host
+      ansible.builtin.assert:
+        that:
+          - kubernetes_node_name == 'node02'
+
+    - name: Record currently installed hashes (existing files only)
+      ansible.builtin.stat:
+        path: "{{ monitor_code }}/{{ item.name }}"
+      register: monitor_stat
+      loop: "{{ files }}"
+      loop_control: { label: "{{ item.name }}" }
+
+    - name: Refuse to replace unexpected installed content
+      ansible.builtin.assert:
+        that:
+          - item.item.before_sha256 is none or (item.stat.exists and item.stat.checksum == item.item.before_sha256)
+        fail_msg: "{{ item.item.name }} does not match the reviewed checkpoint (or is unexpectedly already present)"
+      loop: "{{ monitor_stat.results }}"
+      loop_control: { label: "{{ item.item.name }}" }
+
+    - name: Install the reviewed modules
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../scripts/migration/{{ item.name }}"
+        dest: "{{ monitor_code }}/{{ item.name }}"
+        owner: root
+        group: root
+        mode: "0644"
+      loop: "{{ files }}"
+      loop_control: { label: "{{ item.name }}" }
+
+    - name: Require the installed runner to carry the TLS endpoint wiring
+      ansible.builtin.command:
+        argv: [grep, -c, "NODE_TLS_ENDPOINTS", "{{ monitor_code }}/run-certificate-monitor.py"]
+      changed_when: false
+      register: monitor_marker
+
+    - name: Refuse an install without the wiring
+      ansible.builtin.assert:
+        that:
+          - monitor_marker.stdout | trim | int >= 1
+
+    - name: Compile every installed module as the service account would load it
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, -B, -c, "import ast,sys;ast.parse(open(sys.argv[1]).read())", "{{ monitor_code }}/{{ item.name }}"]
+      changed_when: false
+      loop: "{{ files }}"
+      loop_control: { label: "{{ item.name }}" }
+
+    - name: Restart the monitor onto the reviewed modules
+      ansible.builtin.systemd_service:
+        name: bortus-certificate-monitor.service
+        state: restarted
+
+    - name: Confirm the service returned active
+      ansible.builtin.command:
+        argv: [systemctl, is-active, bortus-certificate-monitor.service]
+      changed_when: false
+      register: monitor_state
+      retries: 6
+      delay: 5
+      until: monitor_state.stdout | trim == 'active'

@@ -62,6 +62,24 @@ def normalize(resource, value, now, expiry_warning_days=7):
     return result
 
 
+def normalize_tls_endpoint(name, value, now, expiry_warning_days=7):
+    """Project only the leaf certificate's expiry from a live TLS probe result.
+
+    The probe is a plain TLS handshake against the node's own API server or
+    kubelet port; it never reads host files or requires any host privilege,
+    matching the existing low-privilege UID998 monitor design.
+    """
+    if not isinstance(value, dict) or set(value) != {"notAfter"}:
+        raise ValueError("tls_probe_invalid")
+    expiry = parse_date(value["notAfter"])
+    if not expiry:
+        raise ValueError("tls_probe_expiry_invalid")
+    state = ("expired" if expiry <= now else
+             "warning" if (expiry - now).total_seconds() <= expiry_warning_days * 86400 else "healthy")
+    return {"uid": name, "name": name, "resource": "tls-endpoint", "state": state,
+            "notAfter": expiry.isoformat()}
+
+
 class CertificateMonitor:
     def __init__(self, connection):
         self.db = connection
@@ -146,6 +164,57 @@ class CertificateMonitor:
                  ORDER BY delivered_at DESC, rowid DESC LIMIT ?)
             """, (HISTORY_ROWS,))
         return {"runId": run, "state": "partial" if failures else "complete", "unavailable": failures}
+
+    def scan_tls_endpoints(self, probe, endpoints, now=None, expiry_warning_days=30):
+        """Watch control-plane/kubelet serving certs via a live TLS handshake.
+
+        cert-manager Certificates and CSRs are Kubernetes API objects; kubeadm
+        and kubelet serving certificates are host files with no API
+        equivalent. Rather than grant this monitor host filesystem or root
+        access, each endpoint's own live leaf certificate is read over the
+        wire (the same approach already qualified for kubelet-serving CSR
+        verification), so the privilege boundary is unchanged. `endpoints` is
+        an iterable of (name, probe_args) pairs; `probe(*probe_args)` returns
+        {"notAfter": "<iso8601>"} or raises on an unreachable/failed probe.
+        """
+        now = now or dt.datetime.now(dt.timezone.utc)
+        at = now.isoformat()
+        resource = "tls-endpoint"
+        failures = []
+        for name, probe_args in endpoints:
+            uid = "tls-endpoint:" + name
+            try:
+                record = normalize_tls_endpoint(name, probe(*probe_args), now, expiry_warning_days)
+                with self.db:
+                    self.db.execute("INSERT OR REPLACE INTO certificate_monitor_observations VALUES (?, ?, ?, ?)",
+                                    (resource, uid, json.dumps(record, sort_keys=True), at))
+                    previous = self.db.execute(
+                        "SELECT state FROM certificate_monitor_alert_state WHERE resource=? AND uid=?",
+                        (resource, uid)).fetchone()
+                    state = record["state"]
+                    if state in ("expired", "warning") and previous != (state,):
+                        self.db.execute("INSERT INTO certificate_monitor_outbox VALUES (?, ?, ?, ?, ?, NULL)",
+                                        (str(uuid.uuid4()), resource, uid, state, at))
+                    self.db.execute("INSERT OR REPLACE INTO certificate_monitor_alert_state VALUES (?, ?, ?)",
+                                    (resource, uid, state))
+            except Exception:
+                failures.append(name)
+                with self.db:
+                    previous = self.db.execute(
+                        "SELECT state FROM certificate_monitor_alert_state WHERE resource=? AND uid=?",
+                        (resource, uid)).fetchone()
+                    if previous != ("unavailable",):
+                        self.db.execute("INSERT INTO certificate_monitor_outbox VALUES (?, ?, ?, ?, ?, NULL)",
+                                        (str(uuid.uuid4()), resource, uid, "unavailable", at))
+                    self.db.execute("INSERT OR REPLACE INTO certificate_monitor_alert_state VALUES (?, ?, 'unavailable')",
+                                    (resource, uid))
+        with self.db:
+            self.db.execute("""
+                DELETE FROM certificate_monitor_outbox WHERE delivered_at IS NOT NULL AND id NOT IN
+                (SELECT id FROM certificate_monitor_outbox WHERE delivered_at IS NOT NULL
+                 ORDER BY delivered_at DESC, rowid DESC LIMIT ?)
+            """, (HISTORY_ROWS,))
+        return {"state": "partial" if failures else "complete", "unavailable": failures}
 
     def delivery_state(self):
         """Derived delivery state: never assume a sender exists.
