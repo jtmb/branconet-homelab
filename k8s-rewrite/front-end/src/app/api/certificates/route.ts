@@ -12,7 +12,7 @@ export async function GET() {
   if (!await getSession())
     return NextResponse.json({ error: "Authentication required" }, { status: 401, headers });
   try {
-    const read = (args: readonly string[]) => kubectlJSON(args, 10000);
+    const read = (args: readonly string[]) => kubectlJSON(args.join(" "), 10000);
     const [report, controls] = await Promise.all([certificateInventory(read), certificateControls(read)]);
     return NextResponse.json({ ...report, controls }, { headers });
   } catch {

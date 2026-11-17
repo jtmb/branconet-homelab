@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export async function PATCH(request: Request) {
   return certificatePolicyResponse(request, {
     authorize: requireWrite,
-    read: args => kubectlJSON(args, 10000),
-    patch: args => kubectlJSON(args, 10000),
+    read: args => kubectlJSON(args.join(" "), 10000),
+    patch: args => kubectlJSON(args.join(" "), 10000),
   });
 }
