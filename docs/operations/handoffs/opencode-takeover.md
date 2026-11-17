@@ -55,8 +55,18 @@ A full review of prior work found and fixed:
 - **F13** Added `scan_tls_endpoints()` to the certificate monitor: kubeadm/
   kubelet serving certificate expiry is now watched via a live TLS handshake
   to each node's `:6443`/`:10250` (no host/root access granted). Wired into
-  the existing policy-driven scan cycle. **Not yet deployed to node02** —
-  needs the sudo password (see Open items).
+  the existing policy-driven scan cycle, and **deployed and live** on
+  node02. Deployment itself surfaced two more real bugs: a SHA1-vs-SHA256
+  mismatch in the hash guard, and "before" pins computed from an
+  already-edited local file instead of the actually-deployed content — both
+  caught by the guard refusing rather than silently overwriting, both fixed
+  by verifying the live host content byte-for-byte first. After the fix
+  deployed cleanly, every one of the 6 new TLS probes then failed because
+  the service's `IPAddressAllow` sandbox only permitted the floating API
+  VIP; this queued 6 false "unavailable" alerts which were deleted by exact
+  UID (verified undelivered first) before the sender could spam ntfy with
+  them. The sandbox was widened to the 3 node IPs the probe needs, nothing
+  broader. All 6 endpoints now report healthy with real expiry dates.
 - Cleanup: removed 3 leftover ntfy-fixture namespaces, 21 Failed pods, and
   orphaned `wordpress` namespace secrets (helm-release history + `-runtime`
   secrets with no live workload). **Not removed**: `source-acme-0..5` in
@@ -80,14 +90,14 @@ patterns behind these fixes.
 1. **Attended ntfy receipt** — still needs the owner to log into the web UI
    and confirm the corrected test notification renders legibly.
    `humanReceiptVerified` remains false.
-2. **Sudo-password-gated host work** (nothing possible without it, prepared
-   and ready to run):
-   - Stop and disable Docker on node01 (was started for an image build,
-     never cleaned up — a control-plane node running an extra daemon with
-     its own iptables chains).
-   - Deploy the F13 TLS-expiry monitor extension via the hash-guarded
-     `k8s-rewrite/ansible-playbook/playbooks/certificate-monitor-tls-expiry.yml`
-     (syntax-checked, not yet run).
+2. ~~Sudo-password-gated host work~~ **Done 2026-11-17**, with the owner
+   supplying the sudo password via a one-time 0600 file (deleted
+   immediately after use, never pasted in chat). Docker stopped and
+   disabled on node01 (FORWARD policy unchanged, Calico rules still take
+   priority; Docker's own iptables chains remain as a harmless leftover,
+   not fully removed). The F13 TLS-expiry monitor is deployed and verified
+   live on node02 (see above) — this took two additional fix cycles on top
+   of the original play.
 3. **D3** (optional `notificationDelivery` field default) is fixed in source
    and unit-tested but not yet in the deployed BORTUS image — batch it into
    the next real release rather than restarting production for it alone.
