@@ -29,7 +29,7 @@ updates before marking the task complete. Never defer docs.
 | **Purpose** | Bare-metal homelab Kubernetes cluster provisioning & management dashboard |
 | **Stack** | Next.js 15 (App Router), TypeScript, Prisma, SQLite, Tailwind CSS |
 | **Runtime** | Node.js (Next.js dev server on port 4000) |
-| **Repo** | `github.com/jtmb/branconet-homelab` — branch `k8s-rewrite` |
+| **Repo** | `github.com/jtmb/branconet-homelab` — active work branch `codex/seerr-cluster-security` (directory layout originates from `k8s-rewrite`) |
 | **Front-end root** | `k8s-rewrite/front-end/` |
 
 ---
@@ -60,6 +60,7 @@ front-end/
 │   │   │   ├── flux/           # /flux — GitRepositories & Kustomizations
 │   │   │   ├── deploy/         # /deploy — Ansible provisioning runner
 │   │   │   ├── secrets/        # /secrets — native Secret metadata, value reveal and key CRUD
+│   │   │   ├── certificates/   # /certificates — cert-manager Certificates/CSRs, monitor controls, delivery state
 │   │   │   ├── configuration/  # /configuration — nonsecret SQLite settings
 │   │   │   ├── settings/       # /settings — app settings, registration toggle, AppSetting CRUD
 │   │   │   └── users/          # /users — user CRUD (write-only for mutations)
@@ -71,6 +72,7 @@ front-end/
 │   │   │   ├── nodes/          # node CRUD
 │   │   │   ├── users/          # user CRUD (write-gated)
 │   │   │   ├── vars/           # variable CRUD, lookup (Bearer auth), sync
+│   │   │   ├── certificates/   # inventory + monitor controls (policy read/patch)
 │   │   │   └── settings/       # AppSetting CRUD
 │   │   └── welcome/            # Unauthenticated landing → redirects to /auth/login
 │   ├── components/
@@ -127,6 +129,45 @@ All documentation lives at **`docs/`** in the repo root (`/home/brajam/repos/bra
 | `kubectl-cheatsheet.md` | kubectl commands for common operations, namespaces, debugging | Adding/removing namespaces, changing common patterns, new kubectl tricks |
 | `ANSIBLE-2-API-INTERACTION.md` | Ansible lookup plugin details, variable resolution at playbook runtime | Changing lookup plugin behavior, API contract, or variable resolution |
 | `BORTUS-DEPLOYMENT.md` | Native Secret API integration, container build, probes, PVC, env references, RBAC and validation evidence | Changing app deployment or native Secret contracts |
+| `CLUSTER-TLS.md` | Host-side TLS: kubelet serving certs, API server kubelet CA, kubeadm ConfigMaps, renewal/expiry | Changing cert lifecycle, CSR approval, kubeadm PKI |
+| `CLUSTER-SECURITY.md` | Cluster maintenance/app migration history (Overseerr→Seerr) and related security work | Reviewing past migration decisions in this area |
+| `NETWORK-HARDENING.md` | nftables plaintext-restriction profiles, allowlists, boot persistence, mesh enrollment matrix | Adding/removing a restricted port, changing the allowlist, enrolling/excluding a service from the mesh |
+| `NOTIFICATIONS.md` | ntfy server/auth/web UI, monitor/watchdog/outbox/sender, credential rotation, CSR controller delivery | Changing notification config, credentials, delivery logic |
+| `BORTUS-ADMISSION-QUALIFICATION.md` | Admission qualification metadata and callable probes for `bortus-admission-qualification.py` | Changing admission-controller qualification logic |
+| `BORTUS-CONTROLLED-PERFORMANCE.md` | Qualified local security/performance checkpoint record | Reviewing a specific historical qualification run |
+| `BORTUS-ETCD-API-PROOF.md` | Isolated retained-snapshot API Secret recovery | Changing etcd Secret recovery proofs |
+| `BORTUS-ETCD-RECOVERY.md` | Fresh etcd/native Secret recovery checkpoint | Changing etcd recovery procedure |
+| `BORTUS-IMPLEMENTATION.md` | Qualified local security/performance checkpoint record (implementation side) | Reviewing implementation-side qualification |
+| `BORTUS-INDEPENDENT-RESTORE.md` | Callable independent restore coordinator | Changing restore coordination logic |
+| `BORTUS-KUBECTL-SECURITY-BUILD.md` | Custom kubectl security build | Changing the patched kubectl build |
+| `BORTUS-OPERATOR-MTLS.md` | Embedded operator mTLS adapter | Changing operator mTLS behavior |
+| `BORTUS-PATCHED-KUBECTL-IMAGE.md` | Patched ELF image build adapter | Changing the kubectl image patch pipeline |
+| `BORTUS-PHYSICAL-VOLUME-FENCE.md` | Physical Longhorn PV alias fence | Changing PV fencing/alias logic |
+| `BORTUS-QUIESCENT-ARCHIVE.md` | Deadline-aware quiescent encrypted archive | Changing quiescent archive encryption/deadlines |
+| `BORTUS-QUIESCENT-INTERVAL.md` | Lease-bound quiescent client | Changing quiescent lease/interval logic |
+| `BORTUS-QUIESCENT-PHASE.md` | Quiescent phase qualification packet | Changing quiescent phase qualification |
+| `BORTUS-QUIESCENT-SOURCE.md` | Quiescent source before forward migration | Changing pre-migration quiescent source behavior |
+| `BORTUS-QUIESCENT-WATCH.md` | Continuous quiescent controls | Changing quiescent watch/control logic |
+| `BORTUS-RELEASE-IMAGE.md` | Immutable BORTUS release image builder | Changing the release image build pipeline (see also `bortus-image-release` skill) |
+| `BORTUS-RELEASE-STAGING.md` | Immutable image export and sequential node preload | Changing export/preload staging |
+| `BORTUS-RESTORE-COMPLETION.md` | Longhorn restore-transition metadata library | Changing restore-completion metadata |
+| `BORTUS-RESTORE-DATA.md` | Independent restored-data composition | Changing restored-data composition |
+| `BORTUS-RESTORE-MUTATIONS.md` | Scoped independent restore mutation transport | Changing restore mutation transport |
+| `BORTUS-RESTORE-READER.md` | Independent inert-holder reader launcher | Changing restore reader launch logic |
+| `BORTUS-RESTORE-WATCH.md` | Durable BORTUS restore LIST/watch collector | Changing restore watch/collection logic |
+| `BORTUS-RESTORED-CONSUMER-FENCE.md` | Restored consumer metadata fence | Changing post-restore consumer fencing |
+| `CHARTS-SEPARATION.md` | Separate private charts repository and Flux delivery design | Changing the charts/homelab repo split |
+| `CI-IMAGE-SCAN-PROVENANCE.md` | Offline scanning of private CI image artifacts | Changing CI image scan/provenance checks |
+| `COLD-APPLICATION-STATE-BACKUP.md` | Cold configuration backups before compatible application updates | Changing the pre-update backup procedure |
+| `ETCD-RESTORE-REHEARSAL.md` | Offline etcd restore rehearsal | Changing etcd restore rehearsal steps |
+| `KUBERNETES-MCP-READONLY-CANDIDATE.md` | Kubernetes read-only MCP candidate design | Extending/implementing the read-only Kubernetes MCP |
+| `LAN-RESILIENCE-AND-MCP-PLAN.md` | LAN resilience and homelab MCP integration plan | Adding/changing an MCP server, LAN resilience design |
+| `METUBE-STATE-BACKUP.md` | MeTube cold state backup and legacy reobservation | Changing MeTube backup procedure |
+| `MIGRATION-OPERATIONS.md` | Approved cluster migration operations | Reviewing approved migration operation scope |
+| `RETIRED-BUILD-OFFLOAD.md` | Retired public build artifact offload proposal | Reviewing retired offload proposal |
+| `SEERR-ACCEPTANCE.md` | Seerr post-cutover verification | Changing Seerr acceptance criteria |
+| `VEYRA-LINUX-BUILD.md` | Serial current-source Veyra Linux build | Changing the Veyra Linux build pipeline |
+| `YTPTUBE-ACCEPTANCE.md` | YTPTube operator acceptance preparation | Changing YTPTube acceptance criteria |
 
 ### Documentation Rules
 
@@ -409,3 +450,54 @@ npm run db:studio     # prisma studio
 ## Native Secrets integration
 
 Read docs/BORTUS-DEPLOYMENT.md and docs/SECRETS-ENGINE.md before changing Secret behavior. Explicit alias/namespace/name/key only; never split underscores. Values never persist in SQLite/argv/generated Git files/errors/logs. Updates/deletes require resourceVersion, preserve unrelated keys/type/metadata, and keep empty objects. Readonly lists metadata only; value access and CRUD require fresh write role. Bootstrap runs externally and cannot depend on the cluster being created. Runtime ports/probes/PVC/RBAC are documented in BORTUS-DEPLOYMENT.md. The installed Next 15 package lacks bundled dist/docs, so use official versioned Next docs when absent.
+
+
+## Feature checkpoints and fresh chats
+
+Use [.agents/skills/feature-handoff/SKILL.md](.agents/skills/feature-handoff/SKILL.md)
+after each implemented feature. The user authorized focused validation,
+reviewed commit/push checkpoints to the intended existing remote, fresh local
+successor chats and handoff messages, and predecessor archive only after the
+successor verifies and acknowledges the checkpoint. Carry the full goal forward;
+do not mark it complete at a feature milestone. New successors use
+`gpt-6.1-sol` with `high` reasoning; existing chats keep their settings. Preserve
+this project's existing acceptance, resource and publication boundaries.
+
+The user's 2026-10-23 request makes handoff automatic using the Veyra pattern.
+Follow the [current handoff policy](docs/operations/handoffs/2026-10-23-bortus-autonomous-handoff-policy.md)
+and the updated skill: verify the owned feature checkpoint, establish the
+successor's own full active goal, then accept one small ownership receipt and
+archive the predecessor. Reuse the existing isolated feature checkout when the
+default checkout is busy; do not disturb unrelated work. Historical recursive
+relay audits, global ref counts and multi-stage acknowledgements are superseded
+for transport only. Preserve all evidence, original acceptance gates, execution
+restrictions, application resource limits and final-production boundaries.
+
+## Orchestration
+
+Work directly by default. Use subagents only for clearly bounded work that can
+actually run asynchronously while the main agent continues useful independent
+work. Do not delegate a task and then simply wait for the result. Wait only after
+useful independent work is exhausted.
+
+## Browser tooling
+
+When the user asks to open a web page, open it in the Codex in-app browser first using the built-in browser panel control. Use the shell for command-line work, and use the in-app browser for page navigation.
+
+For this project, do not require or use the Computer Use skill or native computer
+automation. Browser use inside Codex is allowed. Use Codex IAB through
+mcp__cua_repl for an authorized browser task; existing execution scope, resource
+limits and production boundaries still apply. This replaces older handoff
+instructions requiring the Computer Use skill first.
+
+## Handoff timing
+
+Handoff to a new chat only after the current concrete task is completed and its
+results are reviewed. Do not rotate during preparation or an active run, or only
+because time, tokens or context have elapsed. Early rotation requires an explicit
+user request. Carry the full delivery goal and any unresolved acceptance gates
+forward; a handoff does not complete the full goal.
+
+## Current OpenCode transfer instructions (2026-11-15)
+
+James requested this authoritative repository in WSL and imported this chat into OpenCode. Do not use subagents unless James explicitly changes that instruction. Read docs/operations/handoffs/opencode-takeover.md for the transfer status and legacy-path constraints.
