@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSession, getSessionFromHeaders, getSessionAccount, type Session } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import prisma from "@/lib/db";
 
 /**
@@ -11,8 +11,8 @@ import prisma from "@/lib/db";
  *   const session = await requireWrite();
  *   // session.id, session.username are available
  */
-async function requireAccess(operator: boolean): Promise<
-  Session | NextResponse
+export async function requireWrite(): Promise<
+  { id: string; username: string } | NextResponse
 > {
   const session = await getSession();
   if (!session) {
@@ -24,35 +24,17 @@ async function requireAccess(operator: boolean): Promise<
 
   const user = await prisma.user.findUnique({
     where: { id: session.id },
-    select: { role: true, engineAdmin: true, sessionVersion: true },
+    select: { role: true },
   });
 
-  if (!user || user.sessionVersion !== session.sessionVersion || user.role !== "write" || operator && !user.engineAdmin) {
+  if (!user || user.role !== "write") {
     return NextResponse.json(
-      { error: operator ? "Engine administration required for infrastructure and identity operations" : "Write access required" },
+      { error: "Forbidden — write access required" },
       { status: 403 }
     );
   }
 
   return session;
-}
-
-/** Scoped KV writers cannot use infrastructure/identity tools to bypass policy. */
-export function requireOperator() { return requireAccess(true); }
-/** Write role alone is used only for scoped/self-service operations. */
-export function requireWrite() { return requireAccess(false); }
-
-export async function isOperatorFromHeaders(cookie: string | null): Promise<boolean> {
-  const session = await getSessionFromHeaders(cookie);
-  if (!session) return false;
-  const user = await prisma.user.findUnique({ where: { id: session.id }, select: { role: true, engineAdmin: true, sessionVersion: true } });
-  return !!user && user.sessionVersion === session.sessionVersion && user.role === "write" && user.engineAdmin;
-}
-
-export async function getOperatorRole(): Promise<"readonly" | "write" | null> {
-  const account = await getSessionAccount();
-  if (!account) return null;
-  return account.role === "write" && account.engineAdmin ? "write" : "readonly";
 }
 
 /**
