@@ -113,6 +113,15 @@ class ReleaseImageTests(unittest.TestCase):
         self.assertEqual(self.context_sha, result['labels'][m.LABEL_KEYS[2]])
         self.assertEqual(self.manifest_sha, result['labels'][m.LABEL_KEYS[3]])
 
+    def test_image_tag_is_fully_qualified_for_the_published_repository(self):
+        # F7 (2026-11-17): an unqualified tag ("bortus:release-<commit>")
+        # saves under docker.io/library/bortus on export, which does not
+        # match the published jtmb92/bortus repository and causes
+        # ErrImageNeverPull on preload. The tag must already carry the
+        # repository the image is published under.
+        result = self.build()
+        self.assertEqual('jtmb92/bortus:release-' + self.commit, result['image_tag'])
+
     def test_actual_raw_git_producer_archive_is_supported(self):
         spec = importlib.util.spec_from_file_location('context_fixture', HERE / 'test_bortus_release_context.py')
         fixture_module = importlib.util.module_from_spec(spec); spec.loader.exec_module(fixture_module)

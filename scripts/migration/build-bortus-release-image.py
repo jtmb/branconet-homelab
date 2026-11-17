@@ -168,7 +168,14 @@ class Run:
             self.fd = os.open(self.name, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC, dir_fd=fd)
             self.run_identity = identity(os.fstat(self.fd)); self.record_identity = None; self.inputs = {}
             self.record = {'scope': 'Immutable BORTUS image build only; no runtime/deployment acceptance',
-                'owner': str(uuid.uuid4()), 'source_commit': commit, 'image_tag': 'bortus:release-' + commit,
+                'owner': str(uuid.uuid4()), 'source_commit': commit,
+                # F7 (2026-11-17): an unqualified tag here saved as
+                # docker.io/library/bortus:release-<commit> on export, so
+                # nodes had no reference matching the published
+                # jtmb92/bortus repository and ErrImageNeverPull followed.
+                # Every other build script in this repo already qualifies
+                # the tag; this one did not.
+                'image_tag': 'jtmb92/bortus:release-' + commit,
                 'phase': 'validating', 'started_at_utc': now(), 'deployed': False, 'runtime_accepted': False}
             self.save()
         except Exception:
