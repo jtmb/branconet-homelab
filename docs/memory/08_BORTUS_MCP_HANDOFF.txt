@@ -39,7 +39,10 @@ residual X1 recorded in docs/planning/bortus-mcp/records.json and the
 tracker. X1: the runner shares this host's only interactive account, which
 is in docker and sudo, so on-host secrecy is not enforceable; every other
 control is implemented and tested. The bortus-local-test skill is installed
-globally and was verified to trigger in a fresh OpenCode session. Do not
+in this repository at .opencode/skills/bortus-local-test and was verified to
+trigger in a fresh OpenCode session inside the repository, while staying
+absent outside it. Keep repository-specific skills in the repository, never
+in the global config. Do not
 reopen closed work. If X1 must be closed, reduce that account's access or
 move the runner to a host the agent cannot administer, then re-run G3.
 

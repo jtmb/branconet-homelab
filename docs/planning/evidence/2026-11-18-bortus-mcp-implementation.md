@@ -94,32 +94,37 @@ belonging to a concurrent runner.
 
 ## W0/R8: the operating skill is installed and triggers
 
-The designed `bortus-local-test` skill is installed at
-`~/.config/opencode/skills/bortus-local-test/SKILL.md` (global, so every
-managed repository sees it) and was exercised in two ways on OpenCode
-`v2.3.2`:
+The designed `bortus-local-test` skill is installed in this repository at
+`.opencode/skills/bortus-local-test/SKILL.md`. Repository-specific skills stay
+in the repository, not in the global config, so the skill is scoped to the
+project that owns the plan. It was exercised three ways on OpenCode `v2.3.2`:
 
 - **Explicit load:** a `skill` call with id `bortus-local-test` returned the
-  full workflow body, and the harness then advertised the skill in its
-  available-skill list with the intended description.
-- **Natural triggering in a fresh session:** `opencode run --archived
-  --format json` in an empty directory, prompted only with “I want to
-  smoke-test my container locally using the same cluster-backed settings as
-  production before I deploy. What is the safe sequence, and which tool do I
-  call?” recorded exactly one tool call:
+  full workflow body with the project path as its base directory, and the
+  harness advertised the skill in its available-skill list with the intended
+  description.
+- **Natural triggering inside the repository:** `opencode run --archived
+  --format json` in this repository, prompted only with “I want to smoke-test
+  my container locally using the same cluster-backed settings as production
+  before I deploy. What is the safe sequence, and which tool do I call?”
+  recorded:
 
   ```
   skill {"id": "bortus-local-test"}
+  execute {"code": "return search({namespace:\"bortus\",query:\"secrets_run\"})"}
   ```
 
   and answered with the fixture-first sequence and
   `tools.bortus.secrets_run({ profile: "<operator-provided-id>" })`, i.e. it
   took the intended branch without being told the skill existed.
+- **Negative scope check:** the same prompt in an empty directory outside the
+  repository produced no tool calls, no mention of the skill id and no
+  `secrets_run` reference, confirming the skill is project-scoped rather than
+  globally installed.
 
 Nested guidance resolves (the skill points at the MCP README, the contract
 document and `RULES.md`, all present), and fresh-session continuity works
-because the probe session started with no prior context and still found both
-the skill and the MCP.
+because the probe sessions started with no prior context.
 
 ## Accepted residual X1
 

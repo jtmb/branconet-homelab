@@ -17,7 +17,7 @@ The implemented paths are `mcp-servers/bortus/` in Veyra (server, policy,
 Secret reader, Docker client, runner, launcher, two test modules) and the
 `kubernetes-inventory/launch.py` delegator. The global OpenCode registration
 is `mcp.servers.bortus`, and the `bortus-local-test` skill is installed at
-`~/.config/opencode/skills/bortus-local-test/`; the `branconet-homelab` and
+`.opencode/skills/bortus-local-test/`; the `branconet-homelab` and
 `ruckus_bot` projects no longer declare their own MCP copy.
 
 W3's read path is proven live: a ServiceAccount granted `get` on exactly one
