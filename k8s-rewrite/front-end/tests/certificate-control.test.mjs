@@ -23,6 +23,22 @@ const snapshot = () => ({
 const reader = (status = snapshot(), requested = policy()) => async args => args[2] === POLICY
   ? requested : cm(OBSERVATIONS, { "snapshot.json": JSON.stringify(status) });
 
+test("deployed monitor TLS observations do not hide its heartbeat or delivery state", async () => {
+  const row = { uid: "node01:apiserver", name: "node01:apiserver", resource: "tls-endpoint",
+    state: "healthy", observedAt: new Date(now).toISOString(),
+    notAfter: new Date(now + 30 * 86400000).toISOString() };
+  const current = { ...snapshot(), observations: [row], notificationDelivery: "delivered" };
+  const result = await certificateControls(reader(current), now);
+  assert.equal(result.state, "monitoring");
+  assert.equal(result.monitor.notificationDelivery, "delivered");
+  assert.deepEqual(result.monitor.observations, [{ ...row, namespace: "" }]);
+  assert.equal((await certificateControls(reader({ ...current, notificationDelivery: undefined }), now))
+    .monitor.notificationDelivery, "not-configured");
+  assert.throws(() => monitorView(cm(OBSERVATIONS, { "snapshot.json": JSON.stringify({
+    ...current, observations: [{ ...row, name: "unapproved.example:apiserver" }],
+  }) }), now), /Invalid TLS endpoint observation/);
+});
+
 test("effective state requires a fresh heartbeat, complete sources and acknowledgement of the exact requested policy", async () => {
   assert.equal((await certificateControls(reader(), now)).state, "monitoring");
   const stale = snapshot(); stale.heartbeatAt = new Date(now - 181000).toISOString();

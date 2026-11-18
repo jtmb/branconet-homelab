@@ -106,6 +106,15 @@ export function monitorView(value: unknown, now = Date.now()): MonitorView {
   });
   const observations = data.observations.map(value => {
     const entry = record(value), resource = string(entry.resource), state = string(entry.state);
+    if (resource === "tls-endpoint") {
+      const name = string(entry.name), uid = string(entry.uid);
+      if (name !== uid || !/^node0[1-3]:(apiserver|kubelet)$/.test(name) ||
+          !["expired", "warning", "healthy"].includes(state) ||
+          (entry.namespace !== undefined && entry.namespace !== ""))
+        throw new CertificateControlError(503, "Invalid TLS endpoint observation");
+      return { uid, name, namespace: "", resource, state,
+        observedAt: time(entry.observedAt), notAfter: time(entry.notAfter) };
+    }
     if (!resources.includes(resource) || !["expired", "renewing", "unknown", "warning", "healthy", "denied", "failed", "issued", "approved", "pending"].includes(state))
       throw new CertificateControlError(503, "Invalid certificate observation");
     const projected: MonitorObservation = {
