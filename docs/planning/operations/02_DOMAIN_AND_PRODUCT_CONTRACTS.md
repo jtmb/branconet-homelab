@@ -24,6 +24,25 @@ An illustrative profile maps `testing/example-client:api_token` to a read-only f
 
 Use one dedicated read identity initially, with namespace Roles granting only `get` on exact Secret `resourceNames` used by activated profiles. No list/watch, write, token creation, exec or port-forward. Use validated cluster CA and a dedicated expiring credential, no fallback to admin `KUBECONFIG`. Fetch each named Secret once per run; Kubernetes reads the entire object, so only the runner enforces key restrictions. Choose Secrets whose other keys are acceptable to that runner; split into dedicated narrowly scoped Secrets with operator approval if needed. Cross-object snapshots are not atomic; never promise a coherent rotating multi-Secret bundle. Fail closed on missing, malformed, oversized or unapproved data. Never persist or cache Kubernetes values between runs.
 
+## C-4 · Direct scoped reads
+
+`bortus_secret_get(namespace, name, keys?)` returns the values so an agent can
+build a local env file or a `docker run` line in one call. `bortus_secret_names(namespace)`
+lists what exists. Both are enabled only when `BORTUS_SECRETS_KUBECONFIG` and
+`BORTUS_SECRET_SCOPE` are set; otherwise the tools are not offered at all.
+
+`BORTUS_SECRET_SCOPE` is a comma list of `*`, `namespace`, or
+`namespace/secret`. A request outside it is refused before any API call, with
+a fixed message. The kubeconfig's own identity (bearer token or client
+certificate) is the second limit: a 403 is reported as a permission error.
+Values are UTF-8 text in `data`; a value that is not valid UTF-8 is returned
+base64-encoded and named in `base64_keys`. Arguments are strict: unknown
+fields, invalid names, more than 64 keys and unknown keys are rejected.
+
+This path returns real values to the caller on purpose. It replaces the older
+"ask a human to paste it" workflow; the guarded `bortus_secrets_run` path
+stays available for values that must not appear in the session at all.
+
 ## C-3 · Run, failure and lifetime
 
 Default one active run total; other requests receive `busy` without fetching any Secret. Limit to 16 bindings and 64 KiB total selected decoded data, a bounded Kubernetes response per object (2 MiB), 5 seconds for a Kubernetes read, and 120 seconds total for one run, default 60. No automatic retries. For env, validate UTF-8 with no NUL and apply via the private Docker API, not a shell or `.env`; for files, support bytes via read-only mounts staged on runner-only tmpfs. Never pass inputs through process arguments. Logs disabled, no exposed ports, and no user-supplied bind mounts; only fixed approved network access if the check requires it.

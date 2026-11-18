@@ -249,12 +249,13 @@ def main():
     parser.add_argument("--renderer")
     args = parser.parse_args()
     paths, outputs = package()
+    records = json.loads((HERE / "records.json").read_text())
     states = {}
-    for gate in json.loads((HERE / "records.json").read_text())["gates"]:
+    for gate in records["gates"]:
         states[gate["state"]] = states.get(gate["state"], 0) + 1
-    print(f"Validated {len(paths)} sources, 8 mapped requirements, gates {states}, "
-          f"2 reloaded XLSX workbooks and {len(outputs['bortus-mcp-plan.zip'])} ZIP bytes",
-          flush=True)
+    print(f"Validated {len(paths)} sources, {len(records['requirements'])} mapped requirements, "
+          f"gates {states}, 2 reloaded XLSX workbooks and "
+          f"{len(outputs['bortus-mcp-plan.zip'])} ZIP bytes", flush=True)
     if args.port:
         if not all((args.cert, args.key, args.renderer)):
             parser.error("serving requires certificate, key and artifact renderer")

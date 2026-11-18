@@ -5,36 +5,34 @@ description: Use when testing a managed container locally with Kubernetes-backed
 
 # BORTUS local test
 
-The shared `bortus` MCP delivers approved Kubernetes Secret values into a
-reviewed local container and returns only a fixed state. You never receive a
-value, a `.env` dump or a handle you can redeem. Follow this order.
+Two ways to get Kubernetes configuration into a local container. Pick the
+first unless you have a reason.
 
-## 1. Decide which evidence you need
-
-| Situation | Do |
-| --- | --- |
-| Code changed in this repo | Build and run it with synthetic fixtures. Do not use cluster values. |
-| Need to prove the image starts with production-shaped configuration | Call `bortus_secrets_run` with the operator's profile id. |
-| No profile exists yet | Stop. Report that a profile must be added by the operator; do not invent one. |
-
-Never ask for a password, token or `.env` contents, and never read a Secret
-with `kubectl` to "just check" something. The point of the profile is that the
-value stays out of this session.
-
-## 2. Build without credentials
-
-Reuse the repository's existing build and test commands. Application
-credentials must not appear in build args, layers, `--build-arg`, Compose build
-secrets or a committed file. If the build itself needs registry auth, that is
-the existing registry workflow, not this skill.
-
-## 3. Run the approved profile
+## A. Read the values and use them (default)
 
 ```
-tools.bortus.secrets_run({"profile": "<operator-provided-id>"})
+tools.bortus_secret_get({"namespace": "bortus", "name": "some-secret"})
+tools.bortus_secret_get({"namespace": "bortus", "name": "some-secret", "keys": ["TOKEN"]})
+tools.bortus_secret_names({"namespace": "bortus"})
 ```
 
-Pass exactly one property. Read the reply:
+The reply is `{"namespace", "name", "data": {"KEY": "value"}}`; non-UTF-8
+keys are listed in `base64_keys`. Use the values for `docker run -e`,
+`--env-file`, or a local `.env` that is git-ignored. Never commit them, never
+paste them into a tracked file, and delete any temporary copy when done.
+
+Only namespaces and names in this machine's `BORTUS_SECRET_SCOPE` can be read
+(`*`, `namespace`, or `namespace/secret` entries). A denial means the scope
+line in the MCP `.env` needs that entry — one line, once.
+
+## B. Let the runner use the values without showing them
+
+For a value you do not want in the session at all, an operator can register a
+profile and the run tool reports only pass/fail:
+
+```
+tools.bortus_secrets_run({"profile": "<operator-provided-id>"})
+```
 
 | State | Meaning | What you do |
 | --- | --- | --- |
@@ -48,21 +46,21 @@ Pass exactly one property. Read the reply:
 | `timed_out` | Budget exhausted | Report elapsed expectation, do not rerun blindly |
 | `cleanup_required` | The runner could not verify cleanup | Stop all further runs and report immediately |
 
-## 4. Report honestly
+## Building
+
+Reuse the repository's existing build and test commands. Application
+credentials must not appear in build args, layers, `--build-arg`, Compose build
+secrets or a committed file. If the build itself needs registry auth, that is
+the existing registry workflow, not this skill.
+
+Test changed code with synthetic fixtures first; use cluster values to prove
+the image starts with production-shaped configuration, not to replace a test.
+
+## Reporting
 
 Say which evidence you have: fixture, cluster-backed local run, or deployed
-state. A `passed` run proves the approved image starts and answers its check
-with the approved configuration; it does not prove a deployment happened.
-
-Include: profile id, `run_id` when present, image digest if the operator
-documented it, and the repository revision you built.
-
-## 5. When something is missing
-
-- Need a new key, namespace or destination: the operator edits the profile.
-- Need broader access: that is a policy change, not a test step.
-- Runner identity, engine or host problem: report the exact state string and
-  stop. Do not create a user, socket, mount, container engine or credential.
+state. A value read through `bortus_secret_get` or a `passed` run does not mean
+a deployment happened.
 
 ## References
 

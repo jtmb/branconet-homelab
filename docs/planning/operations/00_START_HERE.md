@@ -3,15 +3,14 @@
 **Decision:** One MCP named `bortus`, shared across managed repositories. Keep the three existing inventory tools. Add one tool that retrieves approved Kubernetes Secret keys and uses them in a local Docker smoke run without handing the values to the agent.
 
 **Status:** Implemented and verified on 2026-11-18, with one accepted
-residual. The shared `bortus` MCP is live, registered globally, and serves the
-three inventory tools plus a gated `bortus_secrets_run`. 29 focused tests pass,
-including real-Docker delivery, a real Unix-socket run and a real cluster read
-through a ServiceAccount limited to one Secret name. The `bortus-local-test`
-skill is installed and triggers in a fresh session. Residual **X1**: the runner
-shares this host's only interactive account, which is in `docker` and `sudo`,
-so the agent can reach it; that one property is accepted, named and given a
-reconsideration trigger rather than claimed. Baseline: homelab `560db763`,
-Veyra `3f2c11528`, OpenCode `v2.3.2`.
+residual. The shared `bortus` MCP is live and registered globally. It offers
+**direct scoped Secret reads** (`bortus_secret_get`, `bortus_secret_names`) —
+the default way an agent gets configuration for a local container — plus the
+three inventory tools and an optional guarded run tool. 35 focused tests pass.
+The `bortus-local-test` skill is installed in this repository and triggers in a
+fresh session. Residual **X1** applies only to the guarded-run path's promise
+that the agent never sees a value. Baseline: homelab `560db763`, Veyra
+`3f2c11528`, OpenCode `v2.3.2`.
 
 | Read | What it answers |
 | --- | --- |

@@ -140,6 +140,34 @@ runs, verified cleanup — is implemented and tested. The residual names the
 owner, the acceptance date, the authority for accepting it, and the
 reconsideration trigger.
 
+## Direct reads (added after owner feedback, 2026-11-18)
+
+The first design only offered the guarded runner, which needed a profile, a
+grant, a socket and a separate identity before an agent could get anything.
+That was more work than pasting the value by hand, so the direct path was
+added and is now the default:
+
+```
+tools: ['bortus_secret_get', 'bortus_secret_names', 'events_list', 'pods_list', 'resources_list']
+names: {"namespace": "bortus-mcp-selftest", "names": ["demo"]}
+returned keys: ['token', 'user']
+token matches the cluster value: True
+value shown to the agent: demo-3521d5e3103a96ca
+```
+
+Scope enforcement, same build:
+
+```
+out-of-scope read: That Secret is outside this machine's configured scope.  isError: True
+```
+
+Enabling it is two lines in the private `.env` (`BORTUS_SECRETS_KUBECONFIG`,
+`BORTUS_SECRET_SCOPE`); there is no per-repo, per-session or per-run setup.
+The transport reads the existing operator kubeconfig as YAML with its client
+certificate, so no token refresh is needed. 35 tests cover scope denial before
+any request, key filtering, binary values and name listing. The test namespace
+and Secret were deleted after the check.
+
 ## Limits and what is still unproven
 
 - No production Secret was read. The live read used a purpose-made test

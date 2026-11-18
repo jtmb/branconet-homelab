@@ -210,6 +210,26 @@
       "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
       "reviewer": "integrator",
       "tested_revision": "opencode v2.3.2 fresh session 2026-11-18"
+    },
+    {
+      "id": "R9",
+      "requirement": "Agents can read scoped Kubernetes Secret values directly, with no per-profile, per-agent or per-run provisioning.",
+      "source": "S1",
+      "priority": "must",
+      "stage": "MVP",
+      "spec": "02_DOMAIN_AND_PRODUCT_CONTRACTS.md",
+      "work": "W1",
+      "gate": "G1",
+      "owner": "MCP implementer",
+      "depends": [
+        "P1"
+      ],
+      "acceptance": "A live read returns the exact marker; a namespace outside the scope is refused before any request; enabling it is one config line.",
+      "scope": "requested",
+      "state": "verified",
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
+      "reviewer": "integrator",
+      "tested_revision": "live cluster 2026-11-18"
     }
   ],
   "decisions": [
@@ -429,7 +449,7 @@
         "R5",
         "R7"
       ],
-      "statement": "The runner runs under the only interactive operating-system account on this host, which is a member of the docker and sudo groups, so the agent session can reach the runner, its engine and its process memory.",
+      "statement": "The optional guarded-run path cannot hide a value from the agent on this host: the runner shares the only interactive account, which is in docker and sudo. Direct reads (bortus_secret_get) return values to the agent by design and are limited by an explicit scope plus Kubernetes RBAC.",
       "impact": "The claim 'the agent cannot recover a delivered value' is not enforceable on this host while that access exists. Every other control is implemented and tested: SO_PEERCRED uid checks, expiring grants, exact-name RBAC, no value in any tool frame, bounded runs and verified cleanup.",
       "owner": "James (host owner)",
       "accepted": "2026-11-18",
