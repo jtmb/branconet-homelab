@@ -1,0 +1,21 @@
+# BORTUS MCP: security and operations
+
+## Release gates that matter
+
+| Risk | Control / evidence required |
+| --- | --- |
+| Agent or untrusted repo attempts arbitrary reads | No raw tool or generic runner. Negative tests exercise caller UID, nonexistent/expired grant, key and profile assertion, arbitrary Docker options and forbidden Kubernetes operations. |
+| Agent has a back door to runner data | Test actual shell identity: no access to runner config/Kubernetes credential, Docker socket, process data, memory/files, log API, escalation or Windows/WSL management capable of taking over the runner. Separately verify the agent has no usable alternate cluster-admin credential for these Secrets. If that cannot be enforced, do not claim secrecy or activate real credentials in that session. |
+| Approved workload or egress leaks a credential | Pin exact reviewed digest and entrypoint; no writable agent input mounts, agent ports, attach or general output; rootless, no privileged flags, no host network, no added capabilities; use constrained resources, read-only root filesystem where the reviewed image supports it, and no network unless necessary. Allow only operator-approved destinations and test blocked egress. Treat a malicious approved image or compromised destination as trusted-boundary compromise, not solved by redaction. |
+| Values leak on error or disk | Fake random marker sent only by fixture; verify none in normal and failing MCP frames, app/tool logs, inspection paths reachable by caller, CLI args, Git or build history. Private Docker env metadata is a residual operator-visible path; disable crash dumps and back up no runner runtime or staging. |
+| Production side effects | Prefer dev/test credentials and test endpoint; when a live profile is justified, authorize a narrowly scoped read-only identity and pinned nonmutating probe. Production writes, deployments, controllers and background tasks with side effects are not part of a smoke run. |
+
+## Promotion, health, and incident handling
+
+Run read-only rename verification first. Next expose the tool only to a synthetic backend. Activate real Kubernetes reads only after boundary and RBAC tests and explicit operator approval on one named profile and digest; expand by adding reviewed config, not tools. Owner, digest, grant expiry, file/env mapping, network destination and exact probe must be available before activation. Validate TLS and existing pins; give no fallback credentials. Run all local checks without GitHub Actions.
+
+Startup validates ownership and pinned dependencies, checks engine/cleanup, then accepts socket requests. Termination cancels and bounds cleanup; check that restart refuses a run until reconciliation succeeds. Record only run ID, profile ID in private audit, authenticated UID, state, elapsed time, timestamp and policy revision. Prefer existing host log service with 14-day retention target and access restricted to operator. No external logging/control plane. Targets, not measurements: one concurrent run, 120-second hard budget plus bounded cleanup of 15 seconds, 1 vCPU, 512 MiB app RAM default, 64 PIDs, no uncontrolled log growth. A digest already present may be reused; image pulls/builds are outside requests and need storage admission. Activation when a profile cannot fit these caps requires a reviewed profile limit, not an unbounded default.
+
+For cleanup failure or suspected exposure, disable the profile/stop admission, verify only owned run resources are removed, revoke the grant and dedicated cluster credential as appropriate, and rotate affected source credentials if exposure is plausible. Retain only safe audit evidence. Roll back to the previous `kubernetes-inventory` registration and disable the runner; do not restore stale grants or Secrets from backups. Back up only policy/schema and safe receipts. Reissue grants and revalidate named keys after recovery. A failed boundary gate leaves fixture-only testing available.
+
+Economics: reuse installed hosting and open-source dependencies; no purchases or new licenses planned. Engineering/operator attention and incremental compute/disk are not free. The cost workbook separates estimated labor inputs, compute, storage and transfer ceilings from unquoted prices. No recurring workload or hardware purchase is approved.

@@ -127,10 +127,11 @@ items 1, 4, 5 and 6 below were closed that way.
    committed. A broader repo-hygiene pass to commit the rest is a separate,
    larger task.
 
-## 2026-11-18 code-review fixes (six findings, all closed)
+## 2026-11-18 code-review fixes and follow-up
 
-A review of the uncommitted changes found six defects; all are fixed and
-verified. Commits `5e28fe6b`, `c9d24efa`, `f0cac82f`, `ee222c82`, `8eef5862`.
+A review of the uncommitted changes found six defects. Commits `5e28fe6b`,
+`c9d24efa`, `f0cac82f`, `ee222c82`, `8eef5862` cover the five operational fixes
+below; provisioning recovery remains with the unshipped dashboard refactor.
 
 1. **Firewall no-ops (high, `5e28fe6b`)** — six restriction profiles whose
    published Service port differs from the pod target port (vaultwarden,
@@ -152,23 +153,204 @@ verified. Commits `5e28fe6b`, `c9d24efa`, `f0cac82f`, `ee222c82`, `8eef5862`.
    old SSH aliases after registration moved to node01/02/03; a successful
    install would always report failure. Derives wait targets from the same
    inventory field; verified live.
-5. **Orphaned running job (medium — in the working tree, not committed)** —
-   after a dashboard restart, a job row stuck at "running" disabled Run
-   forever (stop 409, delete refused). New `src/lib/job-reconcile.ts`
-   reconciles stale unowned rows to a terminal "interrupted" state,
-   preserving the log; stop and history call it; the SSE stream treats
-   "interrupted" as done. 8 unit tests plus a stream smoke test pass
-   (8/8). **Deliberately uncommitted**: the touched routes and
-   `job-stream.ts` are part of the large staged dashboard refactor this
-   repository is preserving, so the whole fix rides with that body rather
-   than sweeping four of its files into a fix commit.
+5. **Orphaned running job (medium — working tree, not shipped)** —
+   an inherited Linux lock now blocks a new launch until the local runner
+   releases the lock, even if the dashboard disappears. Jobs with unknown
+   evidence stay blocked; a confirmed local exit without a result is marked
+   `interrupted`, keeping the saved output. A real subprocess-death check
+   with in-memory SQLite and a stream check passed; the running dashboard
+   still needs end-to-end verification. A browser check of the compiled
+   provisioning page against isolated fixture endpoints verified Run was
+   disabled while running, then re-enabled after interruption, with the
+   partial log retained. Preserve the existing
+   staged refactor rather than sweeping those files into a fix commit.
 6. **Release verifier could pass on the old pod (medium, `8eef5862`)** — now
    requires the exact pinned digest, a reconciled deployment and a Ready
    pod of the current ReplicaSet, and checks routes on that exact pod.
    Old-pod-partial-rollout now fails by unit test; live run passes.
 
+## Subscriber credential follow-up
+
+The subscriber password was rotated again after the earlier exposure. The
+replacement is in James's Windows Credential Manager; no plaintext was
+printed, and no historical plaintext was reused. The agent verified that
+the stored replacement could read the exact private test notification over
+trusted HTTPS. The previous verifier was replaced; the old plaintext was
+not submitted as a negative test.
+
+James subsequently requested the D3 release now. The committed frontend at
+`776a02879642a749ac1abd55ba2414dcbff0865f` differs from the deployed source
+`82580115b85a9aec0c092c2eda03328b6a810444` only in the fallback and its test.
+The exact-pod verifier accepts a full new image digest explicitly and passed
+against the current pod as the rollback baseline. Do not include the staged
+dashboard refactor in that build.
+
+The agent exercised both D3 states in a browser with the parser and monitor
+panel loaded directly from the committed candidate: an older snapshot
+remained monitoring and showed “no sender configured”; a current snapshot
+remained monitoring and showed “delivery confirmed by the sender.” This
+was an in-memory fixture, not a deployed image or a production data change.
+The live rollback baseline remains `44a163a9…` on Ready pod
+`bortus-6b77c798cf-ts757` at preflight. No new image or chart pin was created.
+The pending build and export require storage admission under the existing
+100 GB ceiling; the retained mixed recovery capsule remains protected and
+its canonical attribution unresolved. The previous release's saved image
+archive alone used 1,149,636,096 bytes.
+
+Storage follow-up: removed only the `image.tar` transport copies from
+`swarm-history/bortus-preload-c29fc8c44847172e040e83df11c51ad42f1da51e`
+and `swarm-history/bortus-preload-7e30b9b428a66cd3f5e618cec5e694d5f03302ac-attempt-a7d0c401e1b2`
+on the H-backed `storage-migration/builds/linux-tree-store/files` mount.
+Both completed preloads retain their receipts, logs and byte-identical
+export originals; the uncertain preload was untouched. Verified SHA-256,
+independent inodes, containment and process/container/mount references
+before deleting. Linux filesystem usage dropped by 2,297,221,120 bytes;
+this is not a Windows physical-space claim.
+
+After cleanup, the measured logical subtotal of named roots is
+56,177,531,539 bytes excluding the mixed recovery capsule. Reserving that
+protected capsule in full (53,920,129,364 logical bytes) puts the partial
+account at 110,097,660,903 bytes before any release output. This is a
+conservative admission calculation, not final ownership attribution:
+two protected subtrees were unreadable and other mixed/shared directories
+are not included. The cap could only admit the prior export size alone
+with no more than 42,672,832,365 capsule bytes attributed to this project,
+before allowing for any omitted usage, builder layers or preload copies.
+The current staging path keeps a second archive during preload (two
+4 GiB limits); avoiding only that copy does not resolve the conservative
+overage. No image build or rollout was started.
+
+The existing storage ownership ledger (`docs/operations/DOCKER-H-STORAGE.md`,
+“Certificates & Trust build admission”) resolves the operational charge:
+BORTUS/cluster operations owns full mixed-member recovery and must count
+all 53,920,129,364 capsule bytes once. The recovery receipt is for a single
+raw ext4 file with verified full reconstruction; the 255-entry historical
+member list records names and review classes, not member sizes, owners or
+compressed byte shares. It cannot establish an alternate split. Do not
+mount or restore the raw image to invent an attribution.
+
+With that charge, the known subtotal is 10,097,660,903 bytes over the
+existing cap without any new output. A one-archive path at the prior
+archive size would be 11,247,296,999 bytes over; the supported export and
+preload path at that size would be 12,396,933,095 bytes over, before build
+layers or omitted roots. The latter is a comparison using measured prior
+output, not a D3 peak measurement. An approved change to the capsule
+accounting or a bounded release-stage exception is required; the previous
+existing-image review exception does not apply.
+
+D3 release-input preflight passed the actual builder validator in memory:
+164 files from commit `776a02879642a749ac1abd55ba2414dcbff0865f`,
+9 excluded, 296,451 compressed bytes, SHA-256
+`5f943b24a261e05eb5fd090402a4f6807ccf1382614110930f16f0c86cbb57ca`.
+No image or disk output was created by this check. The read-only registry
+lookup did not establish an existing candidate for this commit; it is not
+proof the tag is absent. The separate provisioning qualification does not
+gate the D3 release.
+
+James approved proceeding with D3 now, including a one-time storage
+exception for this release only. Generated the exact H-backed context,
+verified it again, and dispatched the uniquely tagged build to node01.
+`ui-release/d3-build-started.json` records the exact commit, tag and
+provenance labels. Reconcile its corresponding outcome before any retry.
+The existing Windows credential broker verified private registry access
+and that the exact candidate tag was absent before publication. All
+three containerd filesystems reported at least 19.9 GB free in preflight.
+D3 deployed through private charts commit `b294521ab7ff9e42597649ade8bce199a9f73c2c`.
+The exact image `96910c7b4f0287e5029107b8fcb67f9b43ca6cd96187d2211b78a98c87cf1edf`
+was verified complete and unpacked on all nodes before the pin. The chart
+publisher passed 45 tests and chart validation. Its watcher stopped between
+validation and promotion; the existing publisher then promoted the exact
+successful receipt without rerunning validation. Live pod
+`bortus-6f87b47b88-2rzb7` passed the exact-image/route/HTTPS verifier with
+zero restarts; Helm reported `UpgradeSucceeded`. Node01 Docker is inactive
+and disabled again. Removed `ui-release/d3-image.tar` and
+`ui-release/d3-registry.oci.tar` after preload and rollout, freeing
+1,480,050,176 logical/allocated bytes; kept the exact published digest,
+source, build, export and live verification receipts.
+
+Signed-in browser and API checks passed for the Certificates page itself,
+but exposed a separate compatibility defect: the live snapshot includes
+six `tls-endpoint` rows, which the deployed parser rejects before showing
+notification state. The working-tree parser fix accepts the bounded endpoint
+shape without changing the required Kubernetes sources. Eight focused tests
+passed; passing the unchanged live ConfigMap through the corrected parser
+returned `monitoring`, `delivered`, six endpoints. Source commit
+`560db763e7f8d2ade2be469bd9a7b521c28469e8` is verified on the existing
+remote. Its frontend diff from the deployed D3 commit contains only the
+parser and its test, excluding all provisioning changes. The exact
+committed context was verified and its build dispatched to node01; see
+`ui-release/tls-control-build-started.json`. Build and private publication
+passed. The exact `026dae76d798a0b783202a8930696ec9958ca7e4142fe93b1260f362ec34a8e5`
+image was verified complete and unpacked on all three nodes; node01 Docker
+was stopped again and its FORWARD policy stayed DROP. The four-path private
+charts change `43fca34fb235389400cc011515576f2396498dac` passed all 45 tests
+and chart validation, and Flux applied it. Exact pod
+`bortus-79bf8cc46d-nmckh` was Ready with zero restarts; see
+`ui-release/tls-control-live-verification.json`. The signed-in agent
+browser showed **Monitoring** and **delivery confirmed by the sender**,
+agreeing with the live API (`200`, `monitoring`, `delivered`, six TLS
+endpoints). No production snapshot was modified. The disposable
+`ui-release/tls-control.oci.tar` was removed after rollout (330,414,080
+logical / 330,420,224 allocated bytes); private registry and node copies
+and verification receipts remain. The provisioning refactor was not
+released; its full operator restart check remains separate.
+
+Full operator-dashboard restart preflight: retained Next.js 15.5.28,
+Prisma 6.19.3 and React 18.3.1 match the operator lockfile, but both
+retained production server trees have zero occurrences of the restart
+lock configuration or recovery marker in their compiled server code.
+Their `/api/deploy/start` bundles are byte-identical to each other and
+predate the fix. `next start` consumes a prior build; `next dev` writes
+its build directory even with the existing dependencies. No supported
+zero-build-output launch of the changed dashboard was identified.
+Comparable prior successful H builds added up to 207,564,800 measured
+bytes at peak; this does not cap an unrun operator build. Do not overwrite
+the retained production build or point tests at the real database.
+Once scoped output is admitted, use a persistent synthetic SQLite DB,
+a harmless local child holding the real lock, and loopback browser
+access. Verify duplicate Start refuses before any inventory writes,
+then restart the dashboard, release the child, and verify `interrupted`,
+retained output and Run re-enabled. Do not launch a real playbook.
+
+Restart-test admission follow-up: the retained H dependency tree matches
+499 installed entries of the current operator lockfile, with zero
+required entries missing and zero version mismatches. `bwrap` successfully
+started a read-only isolated process, so no dependency installation or
+write access to the current checkout is necessary. The closest prior H
+qualification added 207,564,800 bytes at its build peak and 933,888 bytes
+in its fixture run. A proposed one-time **512 MiB** incremental H ceiling
+would cover only the rebuilt operator dashboard, synthetic state and
+small receipts, with a stop condition at the ceiling and cleanup before
+close. This is not a measured current build peak or permission. The
+earlier exception covered the Certificates release; the restart test
+was not started under it.
+
 ## MCP and tooling gaps identified this session
 
+- **Shared BORTUS MCP:** James requested one repo-independent credential
+  workflow and a rename from `kubernetes-inventory` to `bortus`. The
+  [implementation plan](../../planning/operations/00_START_HERE.md) and
+  [fresh-chat handoff](../../memory/08_BORTUS_MCP_HANDOFF.txt) are ready.
+- **Shared BORTUS MCP implemented (2026-11-18):** W1 and W2 are done. The
+  Veyra checkout now has `mcp-servers/bortus/` (server, policy, Secret
+  reader, Docker client, runner, launcher, 29 tests) and the old
+  `kubernetes-inventory/launch.py` delegates to it. Registration moved to
+  one global `mcp.servers.bortus`; this project and `ruckus_bot` no longer
+  declare their own copy. Inventory parity was checked against the live
+  cluster (same three tools, same table, same paging count) and a live
+  `pods_list` through the new registration succeeded. Evidence:
+  [implementation record](../../planning/evidence/2026-11-18-bortus-mcp-implementation.md).
+  W3 (real operator runner identity, real profile/grant, one nonmutating
+  cluster-backed smoke) is **not** started; the run tool stays hidden until
+  a runner socket is configured, so no cluster Secret is read today.
+- Plan delivery receipt (2026-11-18): task-owned PID `3811340` listens
+  only on `127.0.0.1:18444`. The exact plan HTML, ZIP, and two workbook
+  routes are generated in memory by `docs/planning/bortus-mcp/export_plan.py`;
+  no generated package or certificate copy was written. Linux verified
+  all 15 routes with the existing localhost certificate; Windows verified
+  the plan HTML, ZIP and tracker. Unlisted routes returned 404. Keep the
+  process only for review/download, then stop this exact owned process.
+  Certificate: `/mnt/h/AgentArtifacts/projects/veyra/runs/harness-completion-20261115/private/tls/localhost.crt`.
 - Kubernetes inventory MCP only lists pods/events — no Flux, HelmRelease,
   Certificate, CSR, or Longhorn status, forcing fallback to the admin
   kubeconfig for routine checks. A read-only extension is proposed in

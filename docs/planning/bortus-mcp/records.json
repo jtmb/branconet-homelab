@@ -1,0 +1,424 @@
+{
+  "version": 1,
+  "as_of": "2026-11-18",
+  "title": "Shared BORTUS MCP",
+  "baseline": {
+    "homelab": "560db763",
+    "veyra": "3f2c11528",
+    "opencode": "v2.3.2"
+  },
+  "scope_history": [
+    {
+      "id": "S1",
+      "authority": "James, current conversation",
+      "change": "Generalize Kubernetes Secret retrieval for local Docker across all repos. Rename kubernetes-inventory to bortus. Keep a simple scoped security layer.",
+      "affected": [
+        "R1",
+        "R3",
+        "R4",
+        "R5"
+      ],
+      "status": "requested; plan only"
+    },
+    {
+      "id": "S2",
+      "authority": "James, earlier clarification",
+      "change": "Permit secret use without exposing values to the agent. Supersedes raw retrieval and per-workload MCPs.",
+      "affected": [
+        "R3",
+        "R4",
+        "R5",
+        "R6"
+      ],
+      "status": "retained"
+    },
+    {
+      "id": "S3",
+      "authority": "existing repository rules and latest task",
+      "change": "Keep current cluster controls and inventory permissions; no live mutations, new tooling deployment, or unrelated restart work in this planning task.",
+      "affected": [
+        "R2",
+        "R7"
+      ],
+      "status": "retained"
+    }
+  ],
+  "requirements": [
+    {
+      "id": "R1",
+      "requirement": "One shared MCP named bortus, usable from any managed repo without repo-specific server code.",
+      "source": "S1",
+      "priority": "must",
+      "stage": "MVP",
+      "spec": "03_ARCHITECTURE_AND_REPOSITORY.md",
+      "work": "W1",
+      "gate": "G1",
+      "owner": "MCP implementer",
+      "depends": [
+        "P1",
+        "P2"
+      ],
+      "acceptance": "Two existing repos discover the same server and approved tools; legacy config rollback works.",
+      "scope": "requested",
+      "state": "verified",
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
+      "reviewer": "integrator",
+      "tested_revision": "veyra mcp-servers/bortus @ working tree 2026-11-18"
+    },
+    {
+      "id": "R2",
+      "requirement": "Preserve inventory tool behavior and separate its no-Secrets identity.",
+      "source": "S3",
+      "priority": "must",
+      "stage": "MVP",
+      "spec": "03_ARCHITECTURE_AND_REPOSITORY.md",
+      "work": "W1",
+      "gate": "G1",
+      "owner": "MCP implementer",
+      "depends": [
+        "P2"
+      ],
+      "acceptance": "All three names, schemas and paginated results match; inventory cannot read Secrets, exec or mutate.",
+      "scope": "retained",
+      "state": "verified",
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
+      "reviewer": "security reviewer",
+      "tested_revision": "veyra mcp-servers/bortus @ working tree 2026-11-18"
+    },
+    {
+      "id": "R3",
+      "requirement": "Authorize by expiring UID/profile grants; retrieve only exact Secret objects and deliver approved keys.",
+      "source": "S1",
+      "priority": "must",
+      "stage": "MVP",
+      "spec": "02_DOMAIN_AND_PRODUCT_CONTRACTS.md",
+      "work": "W2",
+      "gate": "G2",
+      "owner": "Runner implementer",
+      "depends": [
+        "P3",
+        "P4"
+      ],
+      "acceptance": "Expired/wrong/unknown grants fetch nothing; revoked-before-launch starts nothing; approved exact keys delivered.",
+      "scope": "requested",
+      "state": "verified",
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
+      "reviewer": "security reviewer",
+      "tested_revision": "veyra mcp-servers/bortus @ working tree 2026-11-18"
+    },
+    {
+      "id": "R4",
+      "requirement": "Run a local Docker check using approved runtime env or mounted files; builds have no app Secrets.",
+      "source": "S1",
+      "priority": "must",
+      "stage": "MVP",
+      "spec": "02_DOMAIN_AND_PRODUCT_CONTRACTS.md",
+      "work": "W2",
+      "gate": "G2",
+      "owner": "Runner implementer",
+      "depends": [
+        "P3",
+        "P4"
+      ],
+      "acceptance": "Synthetic UTF-8 env and binary file fixtures reach exactly approved runtime bindings; digests and arbitrary overrides enforced.",
+      "scope": "requested",
+      "state": "verified",
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
+      "reviewer": "security reviewer",
+      "tested_revision": "veyra mcp-servers/bortus @ working tree 2026-11-18"
+    },
+    {
+      "id": "R5",
+      "requirement": "Neither the agent's model nor tools can recover retrieved values.",
+      "source": "S2",
+      "priority": "must",
+      "stage": "MVP",
+      "spec": "06_SECURITY_AND_OPERATIONS.md",
+      "work": "W2",
+      "gate": "G2",
+      "owner": "Runner implementer",
+      "depends": [
+        "P3",
+        "P4"
+      ],
+      "acceptance": "Caller cannot retrieve marker through tool frames, logs, process/file access, alternate credentials, Docker or privilege takeover; reenforce on real launch context at G3.",
+      "scope": "retained",
+      "state": "verified",
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
+      "reviewer": "security reviewer",
+      "tested_revision": "veyra mcp-servers/bortus @ working tree 2026-11-18"
+    },
+    {
+      "id": "R6",
+      "requirement": "Bound local runs and return safe results only after verified cleanup.",
+      "source": "S2",
+      "priority": "must",
+      "stage": "MVP",
+      "spec": "02_DOMAIN_AND_PRODUCT_CONTRACTS.md",
+      "work": "W2",
+      "gate": "G2",
+      "owner": "Runner implementer",
+      "depends": [
+        "P3"
+      ],
+      "acceptance": "Concurrent busy before reads, timeout, disconnect and crash cleanup exercised; incomplete cleanup blocks admission.",
+      "scope": "derived implementation requirement",
+      "state": "verified",
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
+      "reviewer": "security reviewer",
+      "tested_revision": "veyra mcp-servers/bortus @ working tree 2026-11-18"
+    },
+    {
+      "id": "R7",
+      "requirement": "Activate real Secret access only under explicit operator approval after RBAC and trust proof.",
+      "source": "S3",
+      "priority": "must",
+      "stage": "MVP",
+      "spec": "06_SECURITY_AND_OPERATIONS.md",
+      "work": "W3",
+      "gate": "G3",
+      "owner": "Operator",
+      "depends": [
+        "P1",
+        "P3",
+        "P4",
+        "P5"
+      ],
+      "acceptance": "One reviewed digest/probe and expiring real grant pass nonmutating smoke; forbidden operations and rollback proven.",
+      "scope": "retained",
+      "state": "planned",
+      "evidence": null,
+      "reviewer": "security reviewer",
+      "tested_revision": null
+    },
+    {
+      "id": "R8",
+      "requirement": "Verify operating guidance, discovery and clean handoff in OpenCode v2 before application work.",
+      "source": "S3",
+      "priority": "must",
+      "stage": "MVP",
+      "spec": "04_SKILL_AND_AGENT_DESIGNS.md",
+      "work": "W0",
+      "gate": "G0",
+      "owner": "Integrator",
+      "depends": [
+        "P1"
+      ],
+      "acceptance": "Exact installed version and evidence for tool discovery, natural/explicit skill use, nested guidance, permissions, ownership and fresh-session continuity.",
+      "scope": "planning contract",
+      "state": "partial",
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
+      "reviewer": "integrator",
+      "tested_revision": "opencode v2.3.2 discovery only"
+    }
+  ],
+  "decisions": [
+    {
+      "id": "D1",
+      "selected": "Extend the shared Veyra launcher and preserve the pinned inventory child.",
+      "rejected": "One server per repo or a Go fork",
+      "why": "Reuse contract and pin; no repo-specific logic.",
+      "revisit": "Inventory protocol no longer forwards safely."
+    },
+    {
+      "id": "D2",
+      "selected": "One synchronous profile-based injection and check; no redeemable output.",
+      "rejected": "Plaintext get, .env export, generic destination or shell",
+      "why": "Caller's CLI and model cannot be trusted with returned bytes or handles.",
+      "revisit": "A distinct non-Docker consumer has an independently verified trust boundary."
+    },
+    {
+      "id": "D3",
+      "selected": "Unix peer UID plus expiring profile grant.",
+      "rejected": "API key inside agent context, repo path as authentication, per-repo OAuth",
+      "why": "Local scoped principal without managing another credential service.",
+      "revisit": "Remote consumers or independent per-session scopes are required."
+    },
+    {
+      "id": "D4",
+      "selected": "Private rootless Docker, pinned image and fixed check for real values; fixtures for arbitrary edits.",
+      "rejected": "Injecting real credentials into an agent-controlled build or Docker engine.",
+      "why": "App code and engine admins can read what is delivered.",
+      "revisit": "An existing stronger isolation domain is approved and verified."
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "P1",
+      "input": "Actual OpenCode v2 context, user/project config and migration authority",
+      "owner": "Integrator",
+      "status": "version observed; harness behavior pending"
+    },
+    {
+      "id": "P2",
+      "input": "Existing pinned inventory binary, launcher and scoped identity",
+      "owner": "MCP implementer",
+      "status": "source observed; G1 comparison pending"
+    },
+    {
+      "id": "P3",
+      "input": "Existing usable Linux domain, isolated rootless Docker, enforceable egress and separate UID",
+      "owner": "Operator",
+      "status": "activation input unverified"
+    },
+    {
+      "id": "P4",
+      "input": "Named profile, approved image and nonmutating probe; exact keys, names and dedicated expiring Kubernetes identity",
+      "owner": "Operator",
+      "status": "activation input unselected"
+    },
+    {
+      "id": "P5",
+      "input": "Approved runtime/output storage and private chart delivery authority if RBAC changes",
+      "owner": "Operator",
+      "status": "activation approval pending"
+    }
+  ],
+  "assumptions": [
+    {
+      "id": "A1",
+      "statement": "One local operator-managed cluster and trust domain; no multi-tenant remote API.",
+      "confirm": "W0; remote use reopens D3."
+    },
+    {
+      "id": "A2",
+      "statement": "Some apps can smoke-test with existing entrypoint and env or file bindings without writes.",
+      "confirm": "W3; unsuitable profiles remain fixture-only."
+    },
+    {
+      "id": "A3",
+      "statement": "A managed repo shares a caller identity unless deliberately launched under a different one.",
+      "confirm": "W0 and W3; never infer scope from repo name."
+    }
+  ],
+  "sources": [
+    {
+      "id": "SRC1",
+      "location": "opencode.json; Veyra mcp-servers/kubernetes-inventory/launch.py and README.md",
+      "reviewed": "2026-11-18",
+      "revision": "560db763 / 3f2c11528",
+      "claim": "Existing local launch, pinned child and exact three inventory tools; source inspected, not changed."
+    },
+    {
+      "id": "SRC2",
+      "location": "https://opencode.ai/docs/mcp-servers",
+      "reviewed": "2026-11-18",
+      "revision": "current v2 docs; installed v2.3.2",
+      "claim": "Global local stdio registration, namespace naming, permissions and session metadata contract."
+    },
+    {
+      "id": "SRC3",
+      "location": "https://opencode.ai/docs/skills",
+      "reviewed": "2026-11-18",
+      "revision": "current v2 docs",
+      "claim": "Skill discovery, explicit invocation and permission design."
+    },
+    {
+      "id": "SRC4",
+      "location": "https://kubernetes.io/docs/reference/access-authn-authz/rbac/",
+      "reviewed": "2026-11-18",
+      "revision": "v1.37 documentation",
+      "claim": "Namespaced RBAC and resourceNames; runner must enforce data-key filtering."
+    },
+    {
+      "id": "SRC5",
+      "location": "https://docs.docker.com/engine/security/rootless/",
+      "reviewed": "2026-11-18",
+      "revision": "current Docker Engine documentation",
+      "claim": "Rootless uses user namespaces and has host prerequisites; real boundary needs verification."
+    },
+    {
+      "id": "SRC6",
+      "location": "https://docs.docker.com/compose/how-tos/use-secrets/",
+      "reviewed": "2026-11-18",
+      "revision": "current Compose documentation",
+      "claim": "Prefer read-only secret file delivery; env has a wider exposure surface."
+    }
+  ],
+  "gates": [
+    {
+      "id": "G0",
+      "work": "W0",
+      "state": "partial",
+      "depends": [],
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md"
+    },
+    {
+      "id": "G1",
+      "work": "W1",
+      "state": "passed",
+      "depends": [
+        "G0"
+      ],
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md"
+    },
+    {
+      "id": "G2",
+      "work": "W2",
+      "state": "passed",
+      "depends": [
+        "G1"
+      ],
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md"
+    },
+    {
+      "id": "G3",
+      "work": "W3",
+      "state": "pending",
+      "depends": [
+        "G2"
+      ],
+      "evidence": null
+    }
+  ],
+  "visuals": [
+    {
+      "file": "flow.svg",
+      "class": "architecture design, not runtime evidence",
+      "provenance": "Hand-authored SVG from architecture and C-1\u2013C-3",
+      "requirements": [
+        "R2",
+        "R3",
+        "R4",
+        "R5"
+      ]
+    }
+  ],
+  "cost_model": {
+    "as_of": "2026-11-18",
+    "currency": "USD",
+    "notes": "Planning allowances, not quotes. No new purchase planned. Existing hosting, operator labor rate and power price were not quoted; labor and operating USD values remain unpriced. Image storage estimates are contingent, not admitted output.",
+    "scenarios": [
+      {
+        "label": "Low",
+        "runs_per_month": 10,
+        "mean_seconds": 30,
+        "vcpu_limit": 1,
+        "memory_mib": 512,
+        "cached_images_gib": 1,
+        "labor_hours": 6,
+        "transfer_mib_per_run": 1
+      },
+      {
+        "label": "Base",
+        "runs_per_month": 40,
+        "mean_seconds": 60,
+        "vcpu_limit": 1,
+        "memory_mib": 512,
+        "cached_images_gib": 3,
+        "labor_hours": 12,
+        "transfer_mib_per_run": 3
+      },
+      {
+        "label": "High",
+        "runs_per_month": 120,
+        "mean_seconds": 120,
+        "vcpu_limit": 1,
+        "memory_mib": 512,
+        "cached_images_gib": 8,
+        "labor_hours": 24,
+        "transfer_mib_per_run": 8
+      }
+    ]
+  }
+}

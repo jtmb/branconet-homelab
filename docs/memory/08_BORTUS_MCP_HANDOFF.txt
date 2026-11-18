@@ -4,10 +4,28 @@ the contracts, architecture, operating kit, security, roadmap and canonical
 records. Current source baseline for planning: homelab 560db763, Veyra
 3f2c11528, OpenCode v2.3.2; verify the actual revisions and unrelated work.
 
+STATE 2026-11-18: W1 and W2 are implemented and verified in Veyra
+mcp-servers/bortus (29 tests, real Docker delivery, real socket run) and the
+server is registered globally as mcp.servers.bortus. Evidence:
+docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md. Do not redo
+that work. W0 is partial (tool discovery and registration verified; the skill
+and nested-guidance rehearsal is not). W3 has not started and is blocked on
+operator inputs listed in the roadmap: a separate runner Unix identity, a
+private rootless Docker socket, an approved image digest and probe, exact
+resourceNames RBAC and one time-limited grant.
+
+Next task: obtain or record those operator inputs, then run W3 exactly as the
+roadmap describes, starting with a nonmutating test profile against a test
+destination. Never expose the run tool or read a real Secret before that
+boundary is proven. Do not change project rules, publish, or start other
+infrastructure to work around a missing input; report the exact gap.
+
 First task: W0. Inventory existing MCP registrations and active owners without
 reading credentials. Verify the operating kit and a secret-free discovery mock
 in an isolated OpenCode v2 context before application scaffolding. Do not
 change the live server name, RBAC or permissions as part of the planning turn.
+(W0 is now partially done: registration and tool discovery were verified;
+the skill rehearsal is still open.)
 
 The goal is one shared bortus MCP available to managed repos, preserving the
 three existing inventory tools and adding profile-based local Docker checks
