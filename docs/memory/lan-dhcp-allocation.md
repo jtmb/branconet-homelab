@@ -1,5 +1,5 @@
 ---
-{"version":1,"scope":"branconet-homelab","id":"lan-dhcp-allocation","title":"Approved LAN DHCP allocation and rollback","tags":["dhcp","network","rollback"],"kind":"decision","updated":"2026-11-14","verified":"2026-11-14","sources":["docs/MIGRATION-PLAN.md","k8s-rewrite/ansible-playbook/playbooks/lan-dhcp-handoff.yml","k8s-rewrite/ansible-playbook/templates/lan-dhcp.conf.j2"]}
+{"version": 1, "owner": "opencode-memory", "scope": "repo", "id": "lan-dhcp-allocation", "title": "Approved LAN DHCP allocation and rollback", "tags": ["dhcp", "network", "rollback"], "kind": "decision", "updated": "2026-11-14", "verified": "2026-11-14", "sources": ["docs/MIGRATION-PLAN.md", "k8s-rewrite/ansible-playbook/playbooks/lan-dhcp-handoff.yml", "k8s-rewrite/ansible-playbook/templates/lan-dhcp.conf.j2"]}
 ---
 
 The operator approved the freed upper LAN range with `.246` explicitly excluded.
