@@ -16,38 +16,53 @@ profile on all three nodes via
 
 ### Two hook types
 
-- **`input` hook** — for ports the node itself listens on directly (Cockpit
-  9090, MetalLB speaker metrics 9120/32158/32359-style health-check ports).
-- **`forward` hook at priority -10** — **required** for any port reached via
-  a Kubernetes Service `externalIPs` publication. Host `input` rules never
-  see this traffic: kube-proxy DNATs it before it reaches the local stack,
-  so it's forwarded, not delivered locally. Using `input` here is a no-op
-  that silently restricts nothing. (This was discovered the hard way on
-  `pihole-exporter`.)
+- **`input` hook at priority -10** — for ports the node itself listens on
+  directly (Cockpit 9090, MetalLB speaker metrics 9120/32158/32359-style
+  health-check ports). The packet is delivered locally, never rewritten, so
+  `tcp dport` sees the real port.
+- **`prerouting` hook at priority -110** — required for any port reached via
+  a Kubernetes Service `externalIPs` publication. kube-proxy rewrites the
+  destination to the pod address/port in the NAT hook at priority -100, so
+  **any** rule placed at `input` or `forward` only ever sees the *translated*
+  pod port. Two lessons, both learned the hard way:
+  - At the `input` hook this traffic is invisible entirely (discovered on
+    `pihole-exporter`).
+  - At the `forward` hook it is visible but carries the **pod's** port, not
+    the published one. Every profile whose published port differs from its
+    pod target port was therefore a silent no-op (2026-11-18 finding:
+    vaultwarden 8096→80, mealie 8089→9000, aplb 8082→80,
+    minecraft-website 8083→80, web-apps 8080/8081→80, ruckus-bot
+    8088→8080 — operator traffic passed with every rule counter at zero,
+    so the restriction had never engaged). The fix is not a smarter selector
+    at `forward` — the nodes' nftables 1.0.2 predates `ct original proto-dst`
+    — but matching **before the rewrite**, in `prerouting` at -110, where
+    `tcp dport` is still the port the client originally contacted.
+  - Prerouting sees every entering packet, so those rules are additionally
+    scoped to the three node IP destinations (`ip daddr`); pod or node
+    egress to any other address on the same port is untouched.
 
 ### The pod-CIDR trap
 
-A forward-hook profile that only allows LAN/operator addresses will reject
-**in-cluster callers**, because cross-node Service traffic arrives at the
-target node with a **pod-network source address** (`10.244.0.0/16`), not the
-original LAN client's address. Every forward-hook profile must allow
-`10.244.0.0/16` in addition to loopback, the three node IPs, and the
-operator host, or it silently breaks pod-to-pod traffic through that port
-while looking like it only restricted external access.
+A prerouting profile that only allows LAN/operator addresses will reject
+**in-cluster callers**, because Service traffic from pods arrives with a
+**pod-network source address** (`10.244.0.0/16`). Every prerouting profile
+must allow `10.244.0.0/16` in addition to loopback, the three node IPs, and
+the operator host, or it silently breaks pod-to-Service traffic through
+that port while looking like it only restricted external access.
 
 ### Current inventory (identical on all three nodes)
 
 | Profile | Ports | Hook | Notes |
 |---|---|---|---|
 | `core` | 32158, 32359, 9090 | input | MetalLB health-check ports, Cockpit |
-| `pihole-exporter` | 9617 | forward | No in-cluster scraper existed; pods use the ClusterIP |
-| `ruckus-db` | 3306 | forward | |
-| `ruckus-bot` | 3003, 8088 | forward | Both published ports of one Service must be covered together |
-| `mealie` | 8089 | forward | |
-| `minecraft-website` | 8083 | forward | |
-| `aplb` | 8082 | forward | |
-| `web-apps-local` | 8080, 8081 | forward | Only node-self traffic observed; pod CIDR still included for safety |
-| `vaultwarden` | 8096 | forward | Deferred pending owner decision (sporadic external sync clients), then approved and applied |
+| `pihole-exporter` | 9617 | prerouting | No in-cluster scraper existed; pods use the ClusterIP |
+| `ruckus-db` | 3306 | prerouting | |
+| `ruckus-bot` | 3003, 8088 | prerouting | Both published ports of one Service must be covered together |
+| `mealie` | 8089 | prerouting | |
+| `minecraft-website` | 8083 | prerouting | |
+| `aplb` | 8082 | prerouting | |
+| `web-apps-local` | 8080, 8081 | prerouting | Only node-self traffic observed; pod CIDR still included for safety |
+| `vaultwarden` | 8096 | prerouting | Deferred pending owner decision (sporadic external sync clients), then approved and applied |
 
 Deliberately **not** restricted: Plex (32400, real external/LAN clients),
 LAN DNS (53, real LAN+pod clients), Traefik ingress ports, kubelet/API
