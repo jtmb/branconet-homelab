@@ -1,0 +1,27 @@
+Implement the shared BORTUS MCP plan once implementation is authorized. Start
+with RULES.md, MEMORY.md, docs/planning/operations/00_START_HERE.md, then read
+the contracts, architecture, operating kit, security, roadmap and canonical
+records. Current source baseline for planning: homelab 560db763, Veyra
+3f2c11528, OpenCode v2.3.2; verify the actual revisions and unrelated work.
+
+First task: W0. Inventory existing MCP registrations and active owners without
+reading credentials. Verify the operating kit and a secret-free discovery mock
+in an isolated OpenCode v2 context before application scaffolding. Do not
+change the live server name, RBAC or permissions as part of the planning turn.
+
+The goal is one shared bortus MCP available to managed repos, preserving the
+three existing inventory tools and adding profile-based local Docker checks
+with Kubernetes Secret values delivered only inside the trusted runner. New
+profiles do not require app-specific MCPs. Never send plaintext or redeemable
+secret handles to an agent. Test edited code with synthetic fixtures; real keys
+require an approved immutable image, proven separate runtime, and an explicit
+grant read by the broker. No Kubernetes writes, deployment, GitHub Actions,
+new storage roots, or unapproved infrastructure. No subagents. Do not mix in
+the unrelated full-dashboard restart test or existing working-tree changes.
+
+Continue authorized work through G0–G3 with focused evidence and scope checks.
+Use the established private chart delivery process only if rollout is approved.
+Stop live activation if the actual agent can administer or inspect the runner;
+report exactly what is still missing. Preserve fallback inventory registration
+until migration is verified. Complete only when the real scoped path and
+fail-closed cases are verified; do not mistake artifact delivery for activation.
