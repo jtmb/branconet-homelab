@@ -73,12 +73,31 @@ intervention.
 
 ### Operator-host dependency
 
-Every profile allowlists one operator host IP
-(`scripts/migration/plaintext_restriction.py:ALLOWED`). This is **not**
-confirmed to be a DHCP reservation — if that address changes, admin access
-to the restricted ports is lost (the cluster itself is unaffected). Verify
-or add a router-side reservation separately; no MCP tool currently exposes
-DHCP reservations for automated verification (see `LAN-RESILIENCE-AND-MCP-PLAN.md`).
+Every profile allowlists one operator host IP, `192.168.0.13`
+(`scripts/migration/plaintext_restriction.py:ALLOWED`). Verified 2026-11-18:
+the LAN DHCP server actually in use is `branconet-lan-dhcp.service` on node03
+(not the router), and its `/etc/branconet-lan-dhcp.conf` reserves it with
+`dhcp-host=04:7c:16:bb:21:5c,192.168.0.13,24h` (source:
+`playbooks/lan-dhcp-handoff.yml`). The Windows operator adapter has that
+hardware address, holds `192.168.0.13` from DHCP server `192.168.0.5`, and
+reaches the restricted port 8096 on all three nodes. If that adapter is ever
+replaced, update the reservation and the allowlist together.
+
+### Traefik dashboard certificate (`proxy.branconet.lan`)
+
+The dashboard route lives in the native Secret `traefik/traefik-dashboard-config`
+(file provider) with `tls: {}`, meaning "use any certificate in Traefik's
+store that matches the name". Until 2026-11-18 none matched, so browsers got
+Traefik's self-signed "TRAEFIK DEFAULT CERT". Private charts
+`flux/releases/foundation/proxy-dashboard-tls.yaml` now issues
+`proxy.branconet.lan` from `branconet-local-ca` (Secret
+`traefik/proxy-dashboard-tls`) and loads it into Traefik's store through a
+TLS-only anchor Ingress whose rule is a `.invalid` host on the internal
+`health` entrypoint, so it can never receive traffic. The route, its sign-in,
+and the Traefik Deployment are untouched; cert-manager renewals reload
+automatically. Verified: chain to the home-network root, Windows trust store,
+`401` sign-in prompt still enforced, other `.lan` sites unchanged, anchor
+host `404`.
 
 ### Rollback
 

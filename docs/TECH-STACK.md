@@ -15,7 +15,7 @@ One control plane needs a documented etcd/configuration restore; it is not a hig
 | Component | Configured version | Purpose |
 |---|---|---|
 | Kubernetes | v1.37.1 | kubeadm, API, scheduling and kubelet |
-| containerd | v2.4.1 static | Independent Kubernetes CRI runtime |
+| containerd | v2.4.2 configured and verified live on all three nodes | Independent Kubernetes CRI runtime, existing configuration and socket retained |
 | runc | v1.5.2 | Independent OCI runtime |
 | CRI tools | v1.37.0 | Runtime diagnostics |
 | CNI plugins | v1.9.1 | CNI executable prerequisites |
@@ -24,14 +24,262 @@ One control plane needs a documented etcd/configuration restore; it is not a hig
 | Longhorn | v1.12.1 | Replicated V1 volumes, LUKS encryption, retained PVs |
 | CSI snapshot controller | v8.6.0 | VolumeSnapshot API/controller for tested Longhorn restore |
 | SMB CSI | v1.20.3 | Existing NAS share mounts in application pods |
-| Traefik | v2.11 original digest | Native LAN 80/443 routing through NodePorts 30080/30443; application ingress |
+| Traefik | v2.11.60 pinned digest, two updated Ready replicas | Native LAN 80/443 routing through NodePorts 30080/30443; application ingress |
 | Flux | v2.9.6 | Source, Kustomize, Helm and notification controllers |
+| Istio (ambient) | 1.31.4, vendored upstream charts, digest-pinned images | Workload mTLS and identity-based authorization for enrolled namespaces (istiod ×2, istio-cni and ztunnel per node); see the private charts `docs/WORKLOAD-MESH.md` and [cluster TLS](CLUSTER-TLS.md) |
+| cert-manager | v1.21.3 | Private LAN CA issuer and LAN HTTPS certificates |
 | Helm CLI | v4.3.0 | Individual chart validation and infrastructure install |
 | Ansible core | 2.21.5 operator runtime | Host provisioning through SSH |
 | age | v1.3.2 operator runtime | Encrypted configuration/data recovery archives |
 | BORTUS | Repository application | Kubernetes management; native Secrets integration developed separately |
 
-Kubernetes uses containerd-k8s.service, /run/containerd-k8s/containerd.sock and /var/lib/containerd-k8s. Existing Docker/containerd configuration, runtime and data remain available during migration. Native Kubernetes Secrets use API encryption at rest; secret values remain outside Git. Encryption keys and Kubernetes recovery configuration must be included in encrypted recovery backups.
+The Certificates & Trust follow-up includes an inactive independent monitor
+candidate using existing host Python 3.10.12/SQLite, kubectl and systemd 249,
+with Ansible initial staging. No new dependency installation or deployed
+service is claimed. Node02 is the proposed placement; scoped credentials,
+always-on service/resource/restart and notification acceptance remain pending.
+See `CLUSTER-TLS.md` and the current follow-up in `MIGRATION-PLAN.md`.
+The monitor-only identity bootstrap is now reconciled through the private
+publisher/Flux path. Credential refresh uses Python standard-library code and
+the pinned existing kubectl, with one-hour TokenRequests and a proposed external
+systemd timer. Actual API identity/permissions and atomic refresh passed; the
+root broker and public enrollment are now installed on node02. Actual cgroup/
+process checks passed; its credential timer is enabled and the actual
+twenty-minute refresh passed. The read-only observer has exited.
+The installed host runner remains disabled/inactive;
+its restart/persistence and notifications are not yet qualified.
+The notification path is now prepared with Python-standard-library HTTPS/SSL,
+the existing SQLite outbox and a separate inactive systemd candidate.
+Self-hosted ntfy is the selected protocol, not a deployed server or public relay.
+Eight synthetic/real-loopback-TLS tests passed without adding dependencies.
+The monitor-unit cache/accounting revision is source-only; no installed service
+or credential-timer behavior changed during this preparation.
+Private ntfy now has an inactive v2.38.1 digest-pinned, zero-replica
+Kustomization candidate, using existing private CA/Traefik/Longhorn conventions.
+Registry metadata was read, not an image pull/scan/runtime test. An independent
+Python3.10/systemd node03 watchdog and separate sender candidates have no added
+Python dependencies or installed units. Node01 is the proposed ntfy location;
+neither service is live. See the latest `MIGRATION-PLAN.md` section.
+The pinned ntfy image was subsequently acquired once on the existing H daemon
+and run in an isolated internal-network/loopback fixture. Actual TLS/Bearer ACL,
+machine subscriber receipt and isolated cache restart passed. Runtime remains
+undeployed; image vulnerability scanning and production integration are still
+unqualified. One exact image is retained for that outstanding security check,
+not a second runtime/dependency tree.
+The existing approved worker Trivy0.76.1 binary subsequently completed the
+database-free exact-image secret scan: zero findings. It is distinct from the
+BORTUS `.3` scanner. Fresh CVE DB admission remains blocked by the 4 GB stage;
+the preserved October snapshot was not used for current security approval.
+Anonymous scanner telemetry occurred despite skip-version-check; the driver
+now explicitly disables telemetry for future runs. See the migration plan.
+After James's one-stage4.25GB approval, the pinned fresh DB and full exact-export
+vulnerability scan completed:17 Alpine/86 Go packages, one Medium zlib
+CVE-2026-4738 finding (vendor fix1.4-r0), zero High/Critical scanner findings.
+The digest is on security HOLD, not approved or suppressed. Raw reports and
+advisory applicability limits remain; the completed scan's fresh DB/export and
+exact local image were retired. No runtime dependency/pin or production changed.
+The user then authorized a local vendor-fixed derivative: unchanged ntfy2.38.1
+executable, signed Alpine zlib1.4-r0 only, nonroot default1000:1000.
+Candidatee26ace78… passed new unfiltered current-DB scanning (zero
+vulnerabilities/secrets) and real isolated TLS/ACL/cache restart. The source
+offline Dockerfile recipe and actual bounded install/commit method are
+distinguished; no new/unconstrained builder or ntfy compilation was used.
+Unique local image/export remain for authorized delivery/integration.
+Private deployment pin is still the old held digest; nothing is activated.
+Integration preflight then found no installed Traefik TCP CRD/provider. The
+inactive ntfy route source now uses the existing file provider via a public
+ConfigMap, not new CRDs/RBAC. Live Traefik/native dashboard Secret are untouched.
+The separate preparation-only contract/runbook has no execution/publication
+approval or registry image. Seven preflight/seven candidate tests, actual
+Kustomize renders and full private validator pass; no dependencies were added.
+Live TLS rotation, policy, storage/resource and attended acceptance remain open.
+James subsequently directed execution. Unchanged ntfye26ace78… is now published
+to the existing verified-private `docker.io/jtmb92/bortus` repository under an
+ntfy-specific tag, with full remote graph readback, and verified/unpacked on
+node01/node02 via sealed memory (no pod registry credentials). Isolated
+cert-manager/Longhorn/file-provider/Calico qualification is active; production
+remains unchanged. Diagnostic Pods enforce native deadlines because ReplicaSet
+templates do not support activeDeadlineSeconds. No new dependencies or CRDs.
+Real isolated path/rotation/cache/policy and bounded state checks now passed;
+all diagnostic Pods ended. Private candidate source pins published e26ace78…
+but remains unreferenced/zero-replica. New scoped rotation modules use Node
+built-in HTTPS/TLS/crypto/fs only, eight policy/seven adapter tests passed;
+no new dependency, controller image or installed scheduler. Existing verified
+Node runtime is the intended executor, subject to live role/transport checks.
+Live fixture identity and initial observation have now passed using that cached
+runtime: native projected API-audience tokens, namespace-only RBAC and public
+certificate mounts. Job limits100m/128Mi,60s/no retry and network policy pin
+API VIP/selected edge; no dependency or image rebuild. Initial ConfigMap
+symlink CLI-detection failure is preserved and fixed with a focused regression;
+new live observation uses the corrected source. Renewal/interruption/native
+CronJob scheduling qualification is active, not production activation.
+Live guarded renewal, post-acknowledged-PATCH interruption recovery (no
+duplicate rollout) and two native CronJob executions subsequently passed.
+The native scheduler was suspended and its temporary grant/workloads removed;
+zero diagnostic Pods remain. Existing Node image and built-in libraries were
+reused throughout; no production controller, reboot proof or new dependency.
+The ended synthetic fixture was retired by exact reviewed identities, including
+its retained claim/volume and generated replicas, without forced finalizers.
+Private production packaging now reuses the identical controller source and
+Node image via content-hashed ConfigMap/public projection, separate operator-
+owned observe enrollment and a suspended five-minute CronJob. New Flux children
+stage ntfy at zero replicas; this is not enabled serving/rotation. Publisher
+checks advance35→44 and reuse existing H tool inodes rather than another copy.
+Exactfcdabd21… is now validated/Flux-applied: real private-CA Certificate Ready,
+zero ntfy Pods and suspended/unenrolled rotation. A real projected production
+identity passed positive reads/PATCH server dry run/eight403 denials; diagnostics
+removed without changing generation/replicas. Actual serving, native ntfy auth,
+live edge projection and scheduled enrollment remain unaccepted.
+Native authentication is now provisioned with three ordinary identities.
+Serving-source integration corrects the draft name to notifications.branconet.lan
+because the existing root is name-constrained, preserves the native dashboard
+Secret in a0644 read-only projection and enables one writer while rotation stays
+suspended. Only base-url differs from the qualified ntfy config. An existing
+self-signed proxy.branconet.lan dashboard endpoint is separately tracked, not
+counted as a successful trusted-HTTPS regression control. (Resolved 2026-11-18: proxy.branconet.lan now serves a certificate from branconet-local-ca via private-charts `flux/releases/foundation/proxy-dashboard-tls.yaml`, commit f269e31; sign-in unchanged. See docs/NETWORK-HARDENING.md.)
+The corrected route now serves trusted TLS1.3 with native publisher/subscriber
+machine receipt and six403 denials. One writer and its original encrypted
+healthy two-replica volume are live. CAS-enrolled auto rotation is enabled via
+source5de2c45d…; the native five-minute run at22:40 UTC verified the expected
+fingerprint without a duplicate rollout. DNS now resolves through both
+advertised resolvers/ordinary client paths after the serial immutable-v4
+rollout; trusted normal-DNS HTTPS200 passed. Attended receipt and actual
+monitor/watchdog alert delivery remain unaccepted.
+Independent node02 monitor now runs as an unprivileged systemd service with
+private16MiB-capped SQLite, scoped external API token and paused-first/restart
+qualification. Separate notifier uses the same metadata outbox,128MiB/no swap/
+5%CPU/32-task bounds and fixed root-managed original-destination nft filtering.
+The prior systemd VIP-only filter failed after Service DNAT and was retired,
+not widened to pod addresses. Real outbox acknowledgement is being reconciled;
+node03 has only its separate publisher profile, not a live watchdog.
+Node02's bounded real-outbox/native subscriber and delivered-row restart
+qualification now passed; diagnostic CSR cleanup and fresh complete inventory
+passed. Six failure attempts and66.2min observed delivery latency remain
+explicit limits with no established intermittent cause. Node03 identity/
+refresh/watchdog service and UI status/release still require their own delivery.
+Separate watchdog identity7970fc1… and node03 broker source/staging/first
+actual root run now passed (13 source checks,44-test private publication,
+2/30 effective scope,295 kernel samples). Only its one-hour/twenty-minute
+credential timer is enabled; actual periodic acceptance is being observed.
+Detector/notifier remain absent; prepared cache/firewall/runtime units are not
+live. No node02 provider change, new image/dependency or BORTUS build occurred.
+Its credential refresh then passed at a real1200.31s interval, followed by
+runtime install and an enabled healthy detector plus a real node02 monitor
+outage/recovery delivered to an authenticated machine subscriber (one copy
+each, missed detected in181.13s). Detector/sender/credential timer are enabled;
+human receipt, node reboot and full-cluster resilience remain unqualified.
+
+Kubernetes uses containerd-k8s.service, /run/containerd-k8s/containerd.sock and /var/lib/containerd-k8s. Retired Docker, Gluster and the unused stock containerd remain stopped/disabled; their retained data is preserved. Native Kubernetes Secrets use API encryption at rest; secret values remain outside Git. Encryption keys and Kubernetes recovery configuration must be included in encrypted recovery backups.
+
+The dedicated inspect-by-default `filesystem-growth.yml` path handles only the
+reviewed existing worker1 ext4 filesystem inside its already larger LV. It uses
+the installed e2fsprogs `resize2fs`, with no new dependency, partition/LV change
+or storage threshold relaxation. See the
+[pinned filesystem contract](../k8s-rewrite/ansible-playbook/README.md#pinned-worker1-existing-lv-filesystem-growth).
+The guarded online growth completed at 22:28:14 UTC, increasing usable filesystem
+capacity to 249,322,430,464 bytes while retaining the existing UUID and LV.
+
+The separate worker1 OCI scanner pins existing verified Trivy 0.76.1 and the
+2026-10-23 offloaded database snapshot. It runs offline in one 1 GiB/two-CPU
+cgroup against the exact selected linux/amd64 manifest, retaining residuals and
+DB provenance without full image config/Env reports. This is separate from the
+historical BORTUS Trivy 0.75.0 evidence below; see the
+[scanner contract](../k8s-rewrite/ansible-playbook/README.md#exact-offline-worker1-oci-vulnerability-scans).
+
+## 2026-10-23 host security maintenance preparation
+
+The dedicated `k8s-rewrite/ansible-playbook/playbooks/security-maintenance.yml`
+patches workers serially before the single control plane. It requires explicit
+apply and reviewed backup inputs, preserves the independent runtime configuration,
+uses normal Kubernetes evictions and Longhorn's last-replica protection, updates
+only selected Ubuntu security-pocket packages or exact optional package versions,
+and permits an explicitly selected reboot. A failed drain stops before patching;
+no force eviction, PDB bypass, persistent-data deletion or automatic rollback is
+included. See the [Ansible instructions](../k8s-rewrite/ansible-playbook/README.md).
+All three nodes now boot kernel 5.15.0-198 and their authoritative CRI reports
+v2.4.2. The master also has all four selected NVIDIA toolkit packages at 1.20.1-1.
+The exact original 30-volume/54-Deployment/seven-DaemonSet recovery gate passed
+at 22:44:11 UTC. The master play's transient API authorization failure is retained,
+followed by independent host checks, uncordon and full recovery verification.
+The broader dated audit is tracked in [cluster security](CLUSTER-SECURITY.md).
+The separate [Seerr security derivative](../images/seerr/README.md) is prepared
+source pending its actual image build, scan and deployment; it does not change
+the BORTUS application or close its existing delivery gates.
+
+The prepared [Jackett](../images/jackett/README.md) and
+[Pi-hole](../images/pihole/README.md) derivatives retain the current immutable
+vendor images and application versions, changing only Alpine packages within
+their existing 3.22 and 3.23 branches. They preserve inherited startup metadata
+and verify application files remain byte-identical during a future build.
+Dated repository candidate metadata is not an installed-package or scan result;
+neither derivative is accepted for deployment. Jackett's OS-only derivative built
+and its scan retains two critical and 29 high bundled .NET findings; those remain
+outside the OS-only recipe. A separate unbuilt same-source runtime candidate
+rebuilds Jackett 0.24.1440 server/updater with official SDK 9.0.319 and .NET 9.0.21,
+retaining LSIO startup and Alpine 3.22. See its image README for provenance,
+required auto-update prevention and remaining compatibility/scan gates.
+
+The explicit reviewed-cache option now permits loss only of allowlisted emptyDir
+mounts after read-only checks before and after cordoning, while persistent data
+and all PDBs stay protected. The user confirmed FlareSolverr `/config` is
+disposable runtime/session state. A separate serial `storage-checkpoint.yml`
+creates fresh online snapshots/incremental off-node backups only for healthy
+attached Longhorn volumes, retains every old/partial resource, and emits a
+metadata-only receipt labeled `crash-consistent-online`. The dedicated launcher
+uses protected stdin credentials for maintenance; checkpoint mode needs none.
+This controller completion/freshness gate does not qualify a cold application
+backup or independently restored recovery. Read-only NVIDIA dependency simulation
+selects exactly four 1.20.1-1 upgrades without installs/removals or Docker changes.
+
+Live read-only inspection found all three hosts already have
+`linux-image-5.15.0-198-generic` **5.15.0-198.208** installed; the corresponding
+`linux-generic` / `linux-image-generic` meta packages are **5.15.0.198.171**.
+These are different package version schemes, not conflicting image evidence.
+The running kernels remain 5.15.0-173 (master), 5.15.0-157 (worker2), and
+5.15.0-160 (worker1), with reboot-required markers. Ubuntu fixes
+[Dirty Frag CVE-2026-43284](https://ubuntu.com/security/CVE-2026-43284)
+in Jammy GA kernel 5.15.0-181.191, so installed packages alone do not close this
+running-kernel exposure. The newer
+[CVE-2026-98260](https://ubuntu.com/security/CVE-2026-98260) still lists Jammy
+GA vulnerable and supported Jammy HWE 6.8 vulnerable with a work-in-progress
+6.8.0-148.148~22.04.1 fix as of 2026-10-23; changing kernel tracks is not a
+currently verified fix. The advisory lists no general mitigation. Restrict
+untrusted local execution and qualify workload seccomp/privilege restrictions
+as defense in depth; do not describe those controls or the reboot as closing it.
+
+The configured containerd 2.4.2 archive SHA-256 is
+`da656542e754c699a0f438eab925e6ffdbd6346a4428e659f83dc058f04dcffe`,
+verified against the official release asset digest and checksum file. The patch
+addresses applicable [CVE-2026-95839](https://github.com/containerd/containerd/security/advisories/GHSA-vwhp-8p66-mq4f).
+The separate [parallel-layer Content-Length advisory](https://github.com/containerd/containerd/security/advisories/GHSA-8647-2jxj-p2rc)
+requires enabled parallel layer fetch; both live configuration settings are zero
+on every node, so its required condition was not observed.
+Docker and glusterd are intentionally inactive; bootstrap's old coexistence
+assertion is now opt-in. Maintenance accepts service-facts `inactive` or `stopped`
+for those retired units before and after the node change; other states refuse.
+The older distribution `containerd.service` remains
+active and distinct from Kubernetes. Maintenance now inventories its namespaces
+and actual tasks through the stock socket, verifies distinct MainPIDs, and
+stops/disables only that unit if every namespace has zero running tasks. It
+neither upgrades nor removes its packages or retained state. Kubernetes 1.37.1 is the latest
+observed upstream stable release; this playbook does not perform kubeadm upgrades.
+After each node, the maintenance gate also requires the exact original attached
+volume UIDs to be attached/healthy and all preexisting active Deployment and
+StatefulSet UIDs/desired counts to recover Ready status with current observed
+generation. Deployment availability/updated counts must recover too; detached
+volumes or missing/scaled-down controllers cannot disappear from the gate.
+Before cordoning, the exact frozen identities are retained in a unique private
+controller recovery receipt, so failure recovery does not depend on Ansible's
+in-memory registers. The live CRI version check permits only the optional `v`
+prefix around the exact reviewed containerd 2.4.2 version.
+Before every node, all three nodes must also have no True memory/disk/PID pressure
+or network-unavailable condition. All thirty original checkpoint volume names
+and UIDs must still be present, attached and healthy; the preflight cannot ignore
+an original volume merely because an eviction left it detached. These operational
+guards do not change the online backup consistency or unverified-restore limits.
+The read-only node Ready check retries transient post-reboot API/authorization
+initialization errors with bounded ten-second requests and forty retries; it
+does not change RBAC or repeat maintenance after a failed recovery gate.
 
 The targeted configuration capture uses the checkpoint transport interface and
 age, with no new runtime dependency. Its32 standard recovery files complement

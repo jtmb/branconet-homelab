@@ -87,9 +87,14 @@ patterns behind these fixes.
 
 ## Open items
 
-1. **Attended ntfy receipt** — still needs the owner to log into the web UI
-   and confirm the corrected test notification renders legibly.
-   `humanReceiptVerified` remains false.
+Per `RULES.md` Rule 1 (2026-11-18), agents run routine checks themselves;
+items 1, 4, 5 and 6 below were closed that way.
+
+1. ~~Attended ntfy receipt~~ **Closed — verified by the agent** in the agent
+   browser on 2026-11-17: signed in as `bortus-subscriber`, subscribed to
+   `bortus-certificates`, and the "✅ Attended receipt test" title and message
+   rendered legibly (screenshot under the agent-browser screenshots folder).
+   Recorded as agent-verified, not as James personally viewing it.
 2. ~~Sudo-password-gated host work~~ **Done 2026-11-17**, with the owner
    supplying the sudo password via a one-time 0600 file (deleted
    immediately after use, never pasted in chat). Docker stopped and
@@ -98,17 +103,23 @@ patterns behind these fixes.
    not fully removed). The F13 TLS-expiry monitor is deployed and verified
    live on node02 (see above) — this took two additional fix cycles on top
    of the original play.
-3. **D3** (optional `notificationDelivery` field default) is fixed in source
-   and unit-tested but not yet in the deployed BORTUS image — batch it into
-   the next real release rather than restarting production for it alone.
-4. **kubelet CSR approval gap** — node01/node03 serving-cert renewals are
-   unattended-approval-free; a genuinely new privileged-service deployment,
-   not a quick fix. Needs its own explicit go-ahead.
-5. **proxy.branconet.lan** dashboard still serves a self-signed certificate
-   (pre-existing, not addressed).
-6. **DHCP reservation for the operator host IP** used throughout the nftables
-   allowlists is unverified — no MCP tool currently exposes router DHCP
-   reservations (only pool bounds). See `docs/LAN-RESILIENCE-AND-MCP-PLAN.md`.
+3. **D3** (optional `notificationDelivery` field default) — **committed**
+   (previously only an uncommitted edit, which a commit-based release build
+   would have silently left out); 7/7 control tests pass. Ships with the next
+   regular BORTUS release by James's decision. At that release: include it,
+   then check an older snapshot without the field still renders and a
+   current one still shows its real delivery state.
+4. ~~kubelet CSR approval gap~~ **Closed 2026-11-18.** node01 and node03 now
+   renew unattended; see `docs/NOTIFICATIONS.md` "Unattended kubelet
+   certificate renewal". Evidence:
+   `…/certificates-qualification-20261116/kubelet-multinode-rollout/`
+   (watch/renew/verify per machine, plus the first node01 attempt that
+   rolled back because the test script read the log too early).
+5. ~~proxy.branconet.lan self-signed~~ **Closed 2026-11-18** (private charts
+   `f269e31`); see `docs/NETWORK-HARDENING.md`.
+6. ~~Operator-host DHCP reservation unverified~~ **Closed 2026-11-18** — the
+   reservation lives on node03's DHCP server and matches this computer; see
+   `docs/NETWORK-HARDENING.md` "Operator-host dependency".
 7. This production monitor/notification/watchdog codebase
    (`certificate_monitor*.py`, `run-certificate-monitor.py`, etc.) was
    **entirely untracked in git** before this session despite running live on

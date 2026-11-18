@@ -93,13 +93,40 @@ strongest supported cause, not a confirmed, reproduced fix — if long delays
 recur, check `transportKind`/`transportStage` on the failed attempt before
 assuming the same cause.
 
-## Known limitation: CSR approval is node02-only
+## Unattended kubelet certificate renewal — all three machines (2026-11-18)
 
-`k8s-rewrite/ansible-playbook/playbooks/csr-controller-host.yml` is
-hardcoded to `hosts: workernode1` (node02) with an `enrollment.json` that
-only trusts `name: node02, ips: [192.168.0.6]`. **node01 and node03 kubelet
-serving-certificate renewals are not covered** — their CSRs will sit pending
-until an operator manually approves them. Extending coverage to the other
-two nodes is a new privileged-service deployment (its own identity, RBAC,
-credential broker, systemd units), not a small fix — treat it as a separate,
-explicitly-authorized task (see the `node-host-ops` skill).
+One approver, `bortus-csr-controller.service` on node02, renews kubelet
+serving certificates for **node01, node02 and node03**. It approves a request
+only when the requesting machine (as recorded by the API server) is on its
+list, the request names exactly that machine's own name and address, and that
+machine's own switch is on.
+
+```text
+request → which machine sent it? → on the list? ──no──→ recorded, never approved
+                                        │ yes
+                    exactly its own name + address? ──no──→ recorded, refused
+                                        │ yes
+                          its switch: watch-only → recorded only
+                                      approve    → approved once
+```
+
+- List and switches: `/etc/bortus-csr-controller/enrollment.json` on node02
+  (version 2), written only by
+  `k8s-rewrite/ansible-playbook/playbooks/csr-controller-multinode.yml`
+  (`-e '{"csr_approve_nodes": [...]}'`). The previous file is kept at
+  `/var/backups/bortus-csr-controller-enrollment.previous.json`.
+- Per-machine test: `scripts/migration/qualify-node-csr-rollout.py`
+  `watch|renew|verify node01|node03`.
+- Proof on 2026-11-18: node01 and node03 each passed watch-only (own request
+  eligible but not approved; a request also claiming another machine's
+  address refused as `sans_invalid`), then a real renewal approved by the
+  service with no operator command and served by the machine (node01
+  `csr-rrqth`, node03 `csr-xlskq`). node03's DHCP and DNS were checked after.
+  node02 kept serving its existing certificate.
+- Two approver bugs fixed at the same time: the host's cryptography 3.4.8
+  made the "issued certificate is correct" check always fail (now passes:
+  `issuedVerified` 0 → 3), and a definite approval failure crashed on an
+  undefined name instead of releasing the request for retry.
+- Rollback for one machine: re-run the play without it in
+  `csr_approve_nodes` (it returns to watch-only); `[]` returns all three to
+  manual approval.
