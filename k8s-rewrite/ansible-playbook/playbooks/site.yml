@@ -39,8 +39,15 @@
   become: true
   any_errors_fatal: true
   tasks:
-    - name: Verify every expected node is Ready
+    # The kubernetes role registers each host as its kubernetes_node_name
+    # (node01/node02/node03), not its SSH alias, so the readiness wait must
+    # ask for those same names — asking for the SSH aliases waits for nodes
+    # that were never registered and reports a successful install as failed.
+    - name: Verify every expected node is Ready by its Kubernetes name
       ansible.builtin.command:
-        argv: [kubectl, --kubeconfig=/etc/kubernetes/admin.conf, wait, node/masternode, node/workernode1, node/workernode2, --for=condition=Ready, --timeout=300s]
+        argv: "{{ ['kubectl', '--kubeconfig=/etc/kubernetes/admin.conf', 'wait']
+                  + (groups['all'] | map('extract', hostvars, 'kubernetes_node_name')
+                                     | map('regex_replace', '^(.*)$', 'node/\\1') | list)
+                  + ['--for=condition=Ready', '--timeout=300s'] }}"
       changed_when: false
       tags: [verify]
