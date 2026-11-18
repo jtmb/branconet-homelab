@@ -46,6 +46,16 @@ test("missing policy is not implicitly enabled and malformed snapshots cannot be
   assert.ok(!JSON.stringify(monitorView(cm(OBSERVATIONS, { "snapshot.json": JSON.stringify(projected) }), now)).includes("never-return-this"));
 });
 
+test("delivery state is optional for older snapshots but an unknown value is refused", async () => {
+  const absent = snapshot();
+  delete absent.notificationDelivery;
+  assert.equal((await certificateControls(reader(absent), now)).monitor?.notificationDelivery, "not-configured");
+  const derived = snapshot(); derived.notificationDelivery = "delivered";
+  assert.equal((await certificateControls(reader(derived), now)).monitor?.notificationDelivery, "delivered");
+  const bogus = snapshot(); bogus.notificationDelivery = "probably-fine";
+  assert.equal((await certificateControls(reader(bogus), now)).state, "offline");
+});
+
 test("policy mode is an exact enum, not a coerced array or approval capability", () => {
   for (const mode of [["monitor"], "approve-all", true, null]) {
     assert.throws(() => monitoringPolicy({ ...desired, mode }), error => error.status === 400);

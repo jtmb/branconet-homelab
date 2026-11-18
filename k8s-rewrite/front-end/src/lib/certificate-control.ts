@@ -90,7 +90,10 @@ export function monitorView(value: unknown, now = Date.now()): MonitorView {
       !Array.isArray(data.sources) || data.sources.length > 2 ||
       !Array.isArray(data.observations) || data.observations.length > 2000 ||
       !Number.isSafeInteger(data.notificationsPending) || Number(data.notificationsPending) < 0 ||
-      !DELIVERY_STATES.includes(data.notificationDelivery as never))
+      // Delivery state is optional so an older monitor snapshot still renders;
+      // an unrecognised value is still rejected rather than guessed at.
+      (data.notificationDelivery !== undefined &&
+       !DELIVERY_STATES.includes(data.notificationDelivery as never)))
     throw new CertificateControlError(503, "Invalid certificate monitor snapshot");
   const seen = new Set<string>();
   const sources = data.sources.map(value => {
@@ -125,7 +128,7 @@ export function monitorView(value: unknown, now = Date.now()): MonitorView {
   return { heartbeatAt: time(data.heartbeatAt), policyUid: string(policy.uid), policyRevision: string(policy.revision),
     mode: data.mode as MonitorView["mode"], sources, observations, lastRun,
     notificationsPending: data.notificationsPending as number,
-    notificationDelivery: data.notificationDelivery as MonitorView["notificationDelivery"] };
+    notificationDelivery: (data.notificationDelivery ?? "not-configured") as MonitorView["notificationDelivery"] };
 }
 export async function certificateControls(read: Read, now = Date.now()): Promise<CertificateControls> {
   const get = (name: string) => read(["get", "configmap", name, "-n", CERTIFICATE_CONTROL_NAMESPACE]);
