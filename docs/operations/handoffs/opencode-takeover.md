@@ -167,7 +167,7 @@ verified. Commits `5e28fe6b`, `c9d24efa`, `f0cac82f`, `ee222c82`, `8eef5862`.
    pod of the current ReplicaSet, and checks routes on that exact pod.
    Old-pod-partial-rollout now fails by unit test; live run passes.
 
-
+## MCP and tooling gaps identified this session
 
 - Kubernetes inventory MCP only lists pods/events — no Flux, HelmRelease,
   Certificate, CSR, or Longhorn status, forcing fallback to the admin
