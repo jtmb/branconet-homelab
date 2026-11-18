@@ -32,10 +32,16 @@ change is even needed. Always do this first.
 Playbooks in this repo expect
 `ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"`
 or an equivalent stdin-supplied value — **never** a hardcoded password or one
-embedded in a command line (visible in `ps`/shell history). If you don't
-have this value, that is a genuine missing requirement: ask for it once,
-batched with every other pending privileged action, rather than stopping
-the whole task.
+embedded in a command line (visible in `ps`/shell history).
+
+**Don't ask James for it.** It is already stored in his vaulted native
+Secrets. `scripts/migration/saved-node-credential.py` reads it in memory
+(`existing_password()`), and `--check-sudo` confirms it works on all three
+nodes without printing it. Pass it to `ansible-playbook` through the process
+environment of a small wrapper, or to `sudo -S` on stdin (see
+`scripts/migration/qualify-node-csr-rollout.py`). Never write it to a file,
+log or chat. (Asking James for it on 2026-11-17 was a mistake; see RULES.md
+Rule 1.)
 
 ## The hash-guarded play pattern
 

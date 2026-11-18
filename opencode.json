@@ -1,0 +1,18 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "instructions": [
+    "/home/brajam/repos/AGENTS.md",
+    "RULES.md",
+    "MEMORY.md",
+    "docs/operations/handoffs/opencode-takeover.md"
+  ],
+  "mcp": {
+    "servers": {
+      "kubernetes-inventory": {"type": "local", "command": ["/usr/bin/python3", "-B", "/home/brajam/repos/veyra-monorepo/mcp-servers/kubernetes-inventory/launch.py"]},
+      "netgear-xr500": {"type": "local", "command": ["/usr/bin/python3", "-B", "/home/brajam/repos/veyra-monorepo/mcp-servers/netgear-xr500/server.py"]},
+      "pihole-dns": {"type": "local", "command": ["/usr/bin/python3", "-B", "/home/brajam/repos/veyra-monorepo/mcp-servers/pihole-dns/server.py"]},
+      "plex-inventory": {"type": "local", "command": ["/usr/bin/python3", "-B", "/home/brajam/repos/veyra-monorepo/mcp-servers/plex-inventory/server.py"]},
+      "agent-browser": {"type": "local", "command": ["/usr/bin/python3", "-B", "/home/brajam/repos/veyra-monorepo/mcp-servers/agent-browser/launch.py"]}
+    }
+  }
+}

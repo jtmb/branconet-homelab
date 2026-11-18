@@ -10,3 +10,4 @@ See the [memory note format](docs/memory/README.md). Current assignments and acc
 
 - [TLS naming and workload authentication scope](docs/memory/tls-and-workload-scope.md)
 - [Owner decisions from the 2026-11-17 consolidation pass](docs/memory/2026-11-17-consolidation-decisions.md)
+- [Agents own routine testing; RULES.md is authoritative](docs/memory/2026-11-18-agents-own-testing.md)

@@ -8,6 +8,14 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 > LLM-readable project overview for the BORTUS Kubernetes management dashboard.
 
+## ⚠️ AUTHORITATIVE: read [RULES.md](RULES.md) first
+
+[`RULES.md`](RULES.md) is the authoritative set of working rules for this
+repository. It overrides anything in this file, the docs, or the skills that
+conflicts with it. Key rule: **agents own routine testing** — use the agent
+browser and the network/cluster tools yourself; don't hand routine checks back
+to James.
+
 ## ⚠️ CRITICAL: Update docs alongside code
 
 **When you edit, create, or delete any source file, you MUST check every doc
@@ -482,13 +490,15 @@ useful independent work is exhausted.
 
 ## Browser tooling
 
-When the user asks to open a web page, open it in the Codex in-app browser first using the built-in browser panel control. Use the shell for command-line work, and use the in-app browser for page navigation.
+Follow Rule 1 in [RULES.md](RULES.md): agents own routine testing. In OpenCode,
+use the agent browser (`tools["agent-browser"]`, isolated session, pass the LAN
+CA with `caCert` for `.lan` sites) to sign in, exercise pages and check what is
+on screen. Use the shell, kubectl, Ansible and MCP tools for checks a browser
+can't answer. Don't ask James to repeat a test the agent can perform.
 
-For this project, do not require or use the Computer Use skill or native computer
-automation. Browser use inside Codex is allowed. Use Codex IAB through
-mcp__cua_repl for an authorized browser task; existing execution scope, resource
-limits and production boundaries still apply. This replaces older handoff
-instructions requiring the Computer Use skill first.
+Do not require or use the Computer Use skill or native computer automation.
+Existing execution scope, resource limits and production boundaries still
+apply. (Older Codex in-app-browser instructions are superseded.)
 
 ## Handoff timing
 
