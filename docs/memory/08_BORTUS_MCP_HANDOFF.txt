@@ -20,6 +20,20 @@ destination. Never expose the run tool or read a real Secret before that
 boundary is proven. Do not change project rules, publish, or start other
 infrastructure to work around a missing input; report the exact gap.
 
+LATER STATE 2026-11-18 (second pass): W3's read path is now proven live. A
+ServiceAccount restricted to get on one Secret name read it over TLS,
+delivered it into a real alpine container as both an env value and a file,
+was denied every other name and verb, and left no container or staging
+directory behind. Three defects the fakes missed were fixed: staged files
+must be 0444 because CapDrop ALL removes CAP_DAC_OVERRIDE, container removal
+needs a bounded retry, and the operator command limit is 512 characters per
+part. The only open property is the runner's separate operating-system
+identity: this host has a single interactive account in docker and sudo, so
+the agent can always reach the runner. That is an access-model fact; closing
+it means reducing that account's access or moving the runner to a host the
+agent cannot administer. Do not pretend otherwise, and do not widen the
+runner to compensate.
+
 First task: W0. Inventory existing MCP registrations and active owners without
 reading credentials. Verify the operating kit and a secret-free discovery mock
 in an isolated OpenCode v2 context before application scaffolding. Do not

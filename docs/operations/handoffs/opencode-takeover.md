@@ -340,9 +340,13 @@ was not started under it.
   cluster (same three tools, same table, same paging count) and a live
   `pods_list` through the new registration succeeded. Evidence:
   [implementation record](../../planning/evidence/2026-11-18-bortus-mcp-implementation.md).
-  W3 (real operator runner identity, real profile/grant, one nonmutating
-  cluster-backed smoke) is **not** started; the run tool stays hidden until
-  a runner socket is configured, so no cluster Secret is read today.
+  W3 read path was then proven live: a ServiceAccount limited to `get` on
+  one Secret name read it over TLS, delivered it into a real container as an
+  env value and a file, was denied every other name and verb, and left no
+  container behind. The one open property is the runner's separate OS
+  identity: this host has one interactive account in `docker` and `sudo`, so
+  the agent can always reach the runner. See the same implementation record
+  for the exact matrix and the three defects live testing fixed.
 - Plan delivery receipt (2026-11-18): task-owned PID `3811340` listens
   only on `127.0.0.1:18444`. The exact plan HTML, ZIP, and two workbook
   routes are generated in memory by `docs/planning/bortus-mcp/export_plan.py`;

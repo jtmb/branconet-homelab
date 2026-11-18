@@ -10,9 +10,10 @@ Successful check response: `{"run_id":"<random UUID>","state":"passed","check":"
 
 Installed, versioned, operator-owned profile schema: `id`, `image_digest`, `bindings[]`, `probe`, `egress_policy`, `timeout_seconds`, `runtime_mode`, and explicit `live_approved` (false by default; distinct from a scoped dev grant). Each binding contains `namespace`, `secret`, `key`, `delivery` (`file` or `env`) and destination. File destinations are fixed direct children of `/run/secrets/`; env destinations match `[A-Z_][A-Z0-9_]*`. Reject duplicate destinations and allow env only for reviewed env-only workloads. The operator pins image, existing entrypoint, nonsecret config, and a fixed health check (runner-issued TCP/HTTP readiness or reviewed image health check, with fixed pass/fail only). No agent-supplied code, commands, probe text, environment, image, working-directory mount, endpoint or manifest. The profile and grant store are not writable by the calling UID.
 
-A profile may also pin `command`, a list of 1–8 short strings. It exists for
-an approved image without a long-running default entrypoint, is part of the
-operator policy, and is never supplied by a caller. Probe kinds are
+A profile may also pin `command`, a list of 1–8 strings of at most 512
+characters (4 KiB in total). It exists for an approved image without a
+long-running default entrypoint, is part of the operator policy, and is never
+supplied by a caller. Probe kinds are
 `running` (process must stay up for 1–30 seconds), `tcp` and `http`; the
 network probes require `network: "bridge"` because they use the container's
 private address, while an isolated run uses `running`.

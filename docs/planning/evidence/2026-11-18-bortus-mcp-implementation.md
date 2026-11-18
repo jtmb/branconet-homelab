@@ -56,15 +56,56 @@ operator runner identity exists yet.
    `passed`, `not_authorized` and `invalid_request`, with no containers
    left behind.
 
+## Live cluster and container proof (same day, second pass)
+
+A disposable namespace `bortus-mcp-selftest` held one Secret with a random
+marker, a ServiceAccount, and a Role granting only `get` on that Secret by
+`resourceNames`. A 20-minute token was minted into a 0600 kubeconfig; the
+value was never printed. Results:
+
+```
+auth can-i get secrets/selftest-secret: yes
+auth can-i get secrets/other-secret:   no
+auth can-i list secrets:                no
+auth can-i get pods:                    no
+auth can-i create pods:                 no
+auth can-i get configmaps:              no
+live Kubernetes read: 1 object, 2 deliveries, value matches
+live denial for a non-approved name: CredentialError(unavailable)
+runner result: {"state": "passed", "run_id": "19ae14ca488240aa"}
+cleanup: no owned containers, staging directory empty
+wrong-uid result: {"state": "not_authorized", "run_id": null}
+```
+
+That exercised `KubeconfigTransport` against the real API server, delivered
+the real cluster value as both an environment variable and a read-only file
+into a real `alpine:3.20` container, proved the container compares them, and
+proved the value-dependent check fails otherwise. The namespace, its objects
+and the temporary kubeconfig were deleted afterwards; no `bortus` container
+remains.
+
+Live testing found and fixed three defects the fakes could not: staged files
+had to be `0444` (dropping all capabilities removes `CAP_DAC_OVERRIDE`, so a
+`0400` file owned by the runner is unreadable in the container), container
+removal needed a bounded retry, and the operator `command` limit was raised
+from 128 to 512 characters per part (4 KiB total). The test suite now also
+asserts that env and file delivery agree, and no longer removes containers
+belonging to a concurrent runner.
+
 ## Limits and what is still unproven
 
-- No production Secret was read. `kube.KubeconfigTransport` is exercised
-  only through its parsing/limits paths in tests; the live TLS read is part
-  of W3.
-- No separate runner identity, no operator-owned rootless Docker socket and
-  no real profile or grant exist. `recover()`, `serve()` and the CLI are
-  implemented, but the trust boundary described in the plan is not yet
-  enforced by an actual second Unix user on this host.
+- No production Secret was read. The live read used a purpose-made test
+  Secret, deleted at the end; `kube.KubeconfigTransport` is now proven
+  against the real API server with a scoped identity.
+- **The runner's own operating-system identity is not established.** There
+  is one interactive account (`brajam`), it is in the `docker` group, and it
+  is in `sudo`. Creating a second Unix user needs root; more importantly,
+  while the agent session holds root-equivalent access on this machine, any
+  on-host process separation can be undone from that session, so the
+  "agent cannot inspect the runner" property cannot be honestly claimed
+  here. This is a property of the host's access model, not a missing code
+  path: `runner.py` already checks `SO_PEERCRED`, refuses unexpected uids,
+  and owns its socket and Docker socket by path.
 - Container-level resistance to a malicious approved image is out of scope:
   a reviewed image that prints its inputs is a boundary compromise by
   definition.
