@@ -127,7 +127,47 @@ items 1, 4, 5 and 6 below were closed that way.
    committed. A broader repo-hygiene pass to commit the rest is a separate,
    larger task.
 
-## MCP and tooling gaps identified this session
+## 2026-11-18 code-review fixes (six findings, all closed)
+
+A review of the uncommitted changes found six defects; all are fixed and
+verified. Commits `5e28fe6b`, `c9d24efa`, `f0cac82f`, `ee222c82`, `8eef5862`.
+
+1. **Firewall no-ops (high, `5e28fe6b`)** — six restriction profiles whose
+   published Service port differs from the pod target port (vaultwarden,
+   mealie, aplb, minecraft-website, web-apps, ruckus-bot's 8088) never
+   restricted anything: at the forward hook the packet already carries the
+   translated pod port. Now matched pre-NAT in `prerouting` at -110, scoped
+   to the node IP destinations; deployed to all three nodes and proven with
+   accept/reject counters plus a temporary probe table.
+2. **Undelivered expiry alerts (high, `c9d24efa`)** — the ntfy sender
+   rejected the monitor's `tls-endpoint` events, so kubelet/kubeadm
+   certificate-expiry alerts never reached the topic. Fixed, deployed to
+   node02, and proven end to end through the real sender loop.
+3. **Rollback hazard (high, `f0cac82f`)** — the rotation tool restored from
+   a fixed shared backup on *any* failure, so a pre-flight refusal could
+   overwrite kubelet's current certificate with an older one. Per-attempt
+   verified backups; restore only after this attempt changed files; failed
+   rollbacks are loud. Both paths proven live on node02.
+4. **Wrong readiness names (medium, `ee222c82`)** — site.yml waited for the
+   old SSH aliases after registration moved to node01/02/03; a successful
+   install would always report failure. Derives wait targets from the same
+   inventory field; verified live.
+5. **Orphaned running job (medium — in the working tree, not committed)** —
+   after a dashboard restart, a job row stuck at "running" disabled Run
+   forever (stop 409, delete refused). New `src/lib/job-reconcile.ts`
+   reconciles stale unowned rows to a terminal "interrupted" state,
+   preserving the log; stop and history call it; the SSE stream treats
+   "interrupted" as done. 8 unit tests plus a stream smoke test pass
+   (8/8). **Deliberately uncommitted**: the touched routes and
+   `job-stream.ts` are part of the large staged dashboard refactor this
+   repository is preserving, so the whole fix rides with that body rather
+   than sweeping four of its files into a fix commit.
+6. **Release verifier could pass on the old pod (medium, `8eef5862`)** — now
+   requires the exact pinned digest, a reconciled deployment and a Ready
+   pod of the current ReplicaSet, and checks routes on that exact pod.
+   Old-pod-partial-rollout now fails by unit test; live run passes.
+
+
 
 - Kubernetes inventory MCP only lists pods/events — no Flux, HelmRelease,
   Certificate, CSR, or Longhorn status, forcing fallback to the admin
