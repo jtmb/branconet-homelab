@@ -13,7 +13,7 @@ import socket
 import ssl
 from urllib.parse import urlsplit
 
-from certificate_monitor import MAX_DATABASE_BYTES, RESOURCES
+from certificate_monitor import MAX_DATABASE_BYTES, RESOURCES, TLS_ENDPOINT_RESOURCE
 
 
 class NotificationError(RuntimeError):
@@ -44,7 +44,11 @@ def validate_destination(value):
 def event_message(event):
     """Project only existing outbox fields, not arbitrary resource payloads."""
     if (not isinstance(event, dict) or set(event) != {"id", "resource", "uid", "state", "createdAt"} or
-            event["resource"] not in (*RESOURCES, "monitor-heartbeat") or
+            # TLS_ENDPOINT_RESOURCE: kubeadm/kubelet serving-certificate expiry
+            # (scan_tls_endpoints) flows through this same outbox→sender→ntfy
+            # path. Before 2026-11-18 it was absent here, so every such alert
+            # failed as notification_event_invalid and never reached the topic.
+            event["resource"] not in (*RESOURCES, TLS_ENDPOINT_RESOURCE, "monitor-heartbeat") or
             event["state"] not in ("expired", "warning", "unknown", "pending", "failed", "denied", "unavailable", "missed", "recovered") or
             not all(isinstance(event[key], str) and re.fullmatch(r"[-_.:A-Za-z0-9+TZ]{1,128}", event[key])
                     for key in ("id", "uid", "createdAt"))):

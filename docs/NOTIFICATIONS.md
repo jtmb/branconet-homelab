@@ -77,7 +77,11 @@ reads the certificate currently being served — the same low-privilege
 "observe what's actually presented" approach already used for kubelet
 CSR verification. Alerts for TLS-endpoint expiry flow through the existing
 outbox/sender/ntfy path and share the same `expiryWarningDays` policy
-threshold as the API-object scan.
+threshold as the API-object scan. (Fixed 2026-11-18: the sender's event
+validator rejected the `tls-endpoint` resource, so every such alert stayed
+pending forever behind its retry backoff and never reached the topic.
+Verified end to end with a clearly-labeled synthetic warning: monitor row →
+sender → ntfy → subscriber, delivered within one 60s loop.)
 
 ## Notification delay — known contributing factor
 
@@ -127,6 +131,15 @@ request → which machine sent it? → on the list? ──no──→ recorded, 
   made the "issued certificate is correct" check always fail (now passes:
   `issuedVerified` 0 → 3), and a definite approval failure crashed on an
   undefined name instead of releasing the request for retry.
+- The controlled-rotation tool (`qualify-kubelet-rotation.py`) takes a
+  **per-attempt** backup under `/root/bortus-kubelet-pki-backup/<attempt>/`
+  and restores only if *that attempt* actually changed the serving files:
+  a pre-flight refusal leaves the host untouched (verified live: refusal
+  with zero kubelet restarts and no backup directory), and a failure after
+  the files change restores exactly that attempt's own certificate,
+  including the `kubelet-server-current.pem` symlink (verified live with
+  an aside→restore round trip returning the identical fingerprint). A
+  failed rollback is recorded loudly, never swallowed.
 - Rollback for one machine: re-run the play without it in
   `csr_approve_nodes` (it returns to watch-only); `[]` returns all three to
   manual approval.

@@ -8,6 +8,10 @@ import json
 import uuid
 
 RESOURCES = ("certificates.cert-manager.io", "certificatesigningrequests.certificates.k8s.io")
+# Serving-certificate endpoints probed over the wire by scan_tls_endpoints().
+# The notification sender allows exactly RESOURCES, TLS_ENDPOINT_RESOURCE and
+# "monitor-heartbeat" — nothing else can ever reach the ntfy topic.
+TLS_ENDPOINT_RESOURCE = "tls-endpoint"
 MAX_DATABASE_BYTES = 16 * 1024 * 1024
 HISTORY_ROWS = 1000
 
@@ -76,7 +80,7 @@ def normalize_tls_endpoint(name, value, now, expiry_warning_days=7):
         raise ValueError("tls_probe_expiry_invalid")
     state = ("expired" if expiry <= now else
              "warning" if (expiry - now).total_seconds() <= expiry_warning_days * 86400 else "healthy")
-    return {"uid": name, "name": name, "resource": "tls-endpoint", "state": state,
+    return {"uid": name, "name": name, "resource": TLS_ENDPOINT_RESOURCE, "state": state,
             "notAfter": expiry.isoformat()}
 
 
@@ -179,7 +183,7 @@ class CertificateMonitor:
         """
         now = now or dt.datetime.now(dt.timezone.utc)
         at = now.isoformat()
-        resource = "tls-endpoint"
+        resource = TLS_ENDPOINT_RESOURCE
         failures = []
         for name, probe_args in endpoints:
             uid = "tls-endpoint:" + name
