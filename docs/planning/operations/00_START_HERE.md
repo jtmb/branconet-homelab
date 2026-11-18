@@ -2,16 +2,16 @@
 
 **Decision:** One MCP named `bortus`, shared across managed repositories. Keep the three existing inventory tools. Add one tool that retrieves approved Kubernetes Secret keys and uses them in a local Docker smoke run without handing the values to the agent.
 
-**Status:** Implemented and verified through W2, plus a live scoped read, on
-2026-11-18. The shared `bortus` MCP is live in the Veyra checkout, registered
-globally, and serves the three inventory tools plus a gated
-`bortus_secrets_run`. 29 focused tests pass, including real-Docker delivery,
-a real Unix-socket run and a real cluster read through a ServiceAccount
-limited to one Secret name. One property remains open: the runner's separate
-operating-system identity, because this host has a single interactive account
-with `docker` and `sudo` membership, so on-host secrecy cannot be asserted
-from this session. Baseline for the plan: homelab `560db763`, Veyra
-`3f2c11528`, OpenCode `v2.3.2`.
+**Status:** Implemented and verified on 2026-11-18, with one accepted
+residual. The shared `bortus` MCP is live, registered globally, and serves the
+three inventory tools plus a gated `bortus_secrets_run`. 29 focused tests pass,
+including real-Docker delivery, a real Unix-socket run and a real cluster read
+through a ServiceAccount limited to one Secret name. The `bortus-local-test`
+skill is installed and triggers in a fresh session. Residual **X1**: the runner
+shares this host's only interactive account, which is in `docker` and `sudo`,
+so the agent can reach it; that one property is accepted, named and given a
+reconsideration trigger rather than claimed. Baseline: homelab `560db763`,
+Veyra `3f2c11528`, OpenCode `v2.3.2`.
 
 | Read | What it answers |
 | --- | --- |
@@ -27,12 +27,11 @@ from this session. Baseline for the plan: homelab `560db763`, Veyra
 
 **First implementation task, after authorization:** inventory existing client registrations and test a secret-free `bortus` registration in a clean OpenCode v2 session. Prove discovery and the runner boundary with synthetic data before giving the runner any Kubernetes Secret access.
 
-**Where it stopped:** W1 and W2 passed; W0 and W3 are partial. The live
-proof read a purpose-made Secret through a ServiceAccount limited to that
-one name, delivered it into a real container, and cleaned up; the evidence is
-in [the implementation record](../evidence/2026-11-18-bortus-mcp-implementation.md).
-The one open property is the runner's separate operating-system identity:
-this host has a single interactive account that is in `docker` and `sudo`, so
-"the agent cannot inspect the runner" is not assertable until that account's
-own access is reduced or the runner moves to a host the agent cannot
-administer. Everything else the plan asks for is implemented.
+**Where it stopped:** every work package is delivered. W0–W2 passed, W3 and
+requirement R5/R7 are accepted with residual **X1** recorded in
+`records.json` and the tracker: the runner shares this host's only interactive
+account (`docker` and `sudo` membership), so on-host secrecy is not
+assertable. Evidence: [the implementation record](../evidence/2026-11-18-bortus-mcp-implementation.md).
+The residual names its owner, acceptance date and the change that would let a
+future run close it: reduce that account's access, or run the runner on a host
+the agent cannot administer.

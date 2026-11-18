@@ -85,6 +85,15 @@ def workbook(records, cost=False):
             gates.append([gate["id"], gate["work"], gate["state"],
                           ", ".join(gate["depends"]), gate["evidence"]])
         format_sheet(gates, [12, 12, 14, 16, 50], 25)
+        if records.get("accepted_residuals"):
+            sheet = book.create_sheet("Accepted residuals")
+            sheet.append(["ID", "Constrains", "Statement", "Impact", "Owner",
+                          "Accepted", "Reconsider when", "Evidence"])
+            for item in records["accepted_residuals"]:
+                sheet.append([item["id"], ", ".join([item["gate"], *item["requirements"]]),
+                              item["statement"], item["impact"], item["owner"],
+                              item["accepted"], item["reconsideration"], item["evidence"]])
+            format_sheet(sheet, [8, 16, 55, 55, 20, 12, 55, 45], 70)
     notes = book.create_sheet("Read me")
     notes.append(["Canonical source", "Instructions"])
     notes.append(["records.json", records["cost_model"]["notes"] if cost else
@@ -109,6 +118,10 @@ def workbook(records, cost=False):
             item["id"] for item in records["requirements"]]
         assert [row[2] for row in list(checked["Release gates"].values)[1:]] == [
             item["state"] for item in records["gates"]]
+        if records.get("accepted_residuals"):
+            residual = list(checked["Accepted residuals"].values)[1]
+            assert residual[0] == records["accepted_residuals"][0]["id"]
+            assert residual[3], "residual impact must be present"
     return payload
 
 
@@ -127,16 +140,26 @@ def package():
         assert (DOCS / row["spec"]).is_file()
         assert row["source"] in ids and set(row["depends"]) <= set(ids)
         assert gates[row["gate"]]["work"] == row["work"] and row["work"] in roadmap
-        assert row["state"] in ("planned", "partial", "verified")
+        assert row["state"] in ("planned", "partial", "verified", "accepted")
         if row["state"] == "planned":
             assert row["evidence"] is None
         else:
             assert (ROOT / row["evidence"]).is_file(), row["id"]
     for index, gate in enumerate(gates.values()):
         assert all(item in list(gates)[:index] for item in gate["depends"])
-        assert gate["state"] in ("pending", "partial", "passed")
+        assert gate["state"] in ("pending", "partial", "passed", "accepted")
         if gate["state"] != "pending":
             assert (ROOT / gate["evidence"]).is_file(), gate["id"]
+    # An accepted gate or requirement must name a residual that explains it.
+    residual_ids = set()
+    for residual in records.get("accepted_residuals", []):
+        assert (ROOT / residual["evidence"]).is_file(), residual["id"]
+        assert residual["owner"] and residual["reconsideration"] and residual["accepted"]
+        residual_ids.add(residual["gate"])
+        residual_ids.update(residual["requirements"])
+    for item in [*records["requirements"], *records["gates"]]:
+        if item["state"] == "accepted":
+            assert item["id"] in residual_ids, item["id"]
     for change in records["scope_history"]:
         assert set(change["affected"]) <= set(ids)
     for visual in records["visuals"]:

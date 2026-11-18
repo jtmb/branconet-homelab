@@ -343,10 +343,12 @@ was not started under it.
   W3 read path was then proven live: a ServiceAccount limited to `get` on
   one Secret name read it over TLS, delivered it into a real container as an
   env value and a file, was denied every other name and verb, and left no
-  container behind. The one open property is the runner's separate OS
-  identity: this host has one interactive account in `docker` and `sudo`, so
-  the agent can always reach the runner. See the same implementation record
-  for the exact matrix and the three defects live testing fixed.
+  container behind. The one property this host cannot provide is recorded as
+  accepted residual **X1** in `records.json`: the runner shares the only
+  interactive account, which is in `docker` and `sudo`. The
+  `bortus-local-test` skill is installed at
+  `~/.config/opencode/skills/bortus-local-test/` and was verified to trigger
+  in a fresh session. See the same implementation record for the matrices.
 - Plan delivery receipt (2026-11-18): task-owned PID `3811340` listens
   only on `127.0.0.1:18444`. The exact plan HTML, ZIP, and two workbook
   routes are generated in memory by `docs/planning/bortus-mcp/export_plan.py`;

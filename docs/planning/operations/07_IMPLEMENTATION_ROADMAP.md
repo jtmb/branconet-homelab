@@ -11,22 +11,23 @@
 
 ## Current state (2026-11-18)
 
-W0 partial, W1 passed, W2 passed, W3 partial. Evidence:
+W0, W1 and W2 passed; W3 is accepted with residual X1. Evidence:
 [implementation record](../evidence/2026-11-18-bortus-mcp-implementation.md).
 The implemented paths are `mcp-servers/bortus/` in Veyra (server, policy,
 Secret reader, Docker client, runner, launcher, two test modules) and the
 `kubernetes-inventory/launch.py` delegator. The global OpenCode registration
-is `mcp.servers.bortus`; the `branconet-homelab` and `ruckus_bot` projects no
-longer declare their own copy.
+is `mcp.servers.bortus`, and the `bortus-local-test` skill is installed at
+`~/.config/opencode/skills/bortus-local-test/`; the `branconet-homelab` and
+`ruckus_bot` projects no longer declare their own MCP copy.
 
 W3's read path is proven live: a ServiceAccount granted `get` on exactly one
 Secret name read it over TLS, delivered it into a real container, was denied
-every other name and verb, and left nothing behind. The remaining gap is the
-runner's separate operating-system identity. This host has one interactive
-account and it is in `docker` and `sudo`, so from this session the agent can
-always reach the runner; that is an access-model fact, not a code gap. Closing
-it requires reducing that account's access or moving the runner to a host the
-agent cannot administer.
+every other name and verb, and left nothing behind. Residual X1 records the
+one property this host cannot provide: the runner shares the only interactive
+account, which is in `docker` and `sudo`. It is accepted, owned and has a
+reconsideration trigger, so it is not an open implementation task. Closing it
+means reducing that account's access or moving the runner to a host the agent
+cannot administer.
 
 ### Focused tests, oracles and fixtures
 

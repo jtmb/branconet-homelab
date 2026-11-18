@@ -92,6 +92,49 @@ from 128 to 512 characters per part (4 KiB total). The test suite now also
 asserts that env and file delivery agree, and no longer removes containers
 belonging to a concurrent runner.
 
+## W0/R8: the operating skill is installed and triggers
+
+The designed `bortus-local-test` skill is installed at
+`~/.config/opencode/skills/bortus-local-test/SKILL.md` (global, so every
+managed repository sees it) and was exercised in two ways on OpenCode
+`v2.3.2`:
+
+- **Explicit load:** a `skill` call with id `bortus-local-test` returned the
+  full workflow body, and the harness then advertised the skill in its
+  available-skill list with the intended description.
+- **Natural triggering in a fresh session:** `opencode run --archived
+  --format json` in an empty directory, prompted only with “I want to
+  smoke-test my container locally using the same cluster-backed settings as
+  production before I deploy. What is the safe sequence, and which tool do I
+  call?” recorded exactly one tool call:
+
+  ```
+  skill {"id": "bortus-local-test"}
+  ```
+
+  and answered with the fixture-first sequence and
+  `tools.bortus.secrets_run({ profile: "<operator-provided-id>" })`, i.e. it
+  took the intended branch without being told the skill existed.
+
+Nested guidance resolves (the skill points at the MCP README, the contract
+document and `RULES.md`, all present), and fresh-session continuity works
+because the probe session started with no prior context and still found both
+the skill and the MCP.
+
+## Accepted residual X1
+
+The only unmet clause in the whole plan is recorded as residual **X1** in
+`docs/planning/bortus-mcp/records.json` and in the tracker: the runner shares
+the single interactive account on this host, which is in `docker` and `sudo`,
+so the agent session can reach the runner, its engine and its memory. The
+consequence is stated plainly: “the agent cannot recover a delivered value”
+is not enforceable here until that account's access is reduced or the runner
+moves to a host the agent cannot administer. Everything else — peer uid
+checks, expiring grants, exact-name RBAC, no value in any frame, bounded
+runs, verified cleanup — is implemented and tested. The residual names the
+owner, the acceptance date, the authority for accepting it, and the
+reconsideration trigger.
+
 ## Limits and what is still unproven
 
 - No production Secret was read. The live read used a purpose-made test

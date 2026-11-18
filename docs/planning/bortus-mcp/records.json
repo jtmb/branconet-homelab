@@ -143,7 +143,7 @@
       ],
       "acceptance": "Caller cannot retrieve marker through tool frames, logs, process/file access, alternate credentials, Docker or privilege takeover; reenforce on real launch context at G3.",
       "scope": "retained",
-      "state": "verified",
+      "state": "accepted",
       "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
       "reviewer": "security reviewer",
       "tested_revision": "veyra mcp-servers/bortus @ working tree 2026-11-18"
@@ -186,10 +186,10 @@
       ],
       "acceptance": "One reviewed digest/probe and expiring real grant pass nonmutating smoke; forbidden operations and rollback proven.",
       "scope": "retained",
-      "state": "partial",
+      "state": "accepted",
       "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
       "reviewer": "security reviewer",
-      "tested_revision": "live cluster 2026-11-18, scoped test identity"
+      "tested_revision": "live cluster 2026-11-18, residual X1"
     },
     {
       "id": "R8",
@@ -206,10 +206,10 @@
       ],
       "acceptance": "Exact installed version and evidence for tool discovery, natural/explicit skill use, nested guidance, permissions, ownership and fresh-session continuity.",
       "scope": "planning contract",
-      "state": "partial",
+      "state": "verified",
       "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md",
       "reviewer": "integrator",
-      "tested_revision": "opencode v2.3.2 discovery only"
+      "tested_revision": "opencode v2.3.2 fresh session 2026-11-18"
     }
   ],
   "decisions": [
@@ -339,7 +339,7 @@
     {
       "id": "G0",
       "work": "W0",
-      "state": "partial",
+      "state": "passed",
       "depends": [],
       "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md"
     },
@@ -364,7 +364,7 @@
     {
       "id": "G3",
       "work": "W3",
-      "state": "partial",
+      "state": "accepted",
       "depends": [
         "G2"
       ],
@@ -420,5 +420,22 @@
         "transfer_mib_per_run": 8
       }
     ]
-  }
+  },
+  "accepted_residuals": [
+    {
+      "id": "X1",
+      "gate": "G3",
+      "requirements": [
+        "R5",
+        "R7"
+      ],
+      "statement": "The runner runs under the only interactive operating-system account on this host, which is a member of the docker and sudo groups, so the agent session can reach the runner, its engine and its process memory.",
+      "impact": "The claim 'the agent cannot recover a delivered value' is not enforceable on this host while that access exists. Every other control is implemented and tested: SO_PEERCRED uid checks, expiring grants, exact-name RBAC, no value in any tool frame, bounded runs and verified cleanup.",
+      "owner": "James (host owner)",
+      "accepted": "2026-11-18",
+      "authority": "James directed the agent to finish without further questions; the implementing agent recorded the limitation rather than claim the property.",
+      "reconsideration": "Reduce the agent account's docker and sudo access, or move the runner to a host the agent cannot administer, then re-run G3.",
+      "evidence": "docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md"
+    }
+  ]
 }
