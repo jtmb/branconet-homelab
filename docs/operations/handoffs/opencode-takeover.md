@@ -15,8 +15,9 @@ subagents on this project. Disposable outputs stay on the existing H roots
 ## Start here — checkpoint 2026-11-18
 
 Read this section, then the rest of the file, then `MEMORY.md`. The branch is
-`codex/seerr-cluster-security`; the checkpoint commit is `fdfa9360` (pushed after
-this section was written — check `git log -1` and `git status -sb`).
+`codex/seerr-cluster-security`. The work described below landed in `fdfa9360`
+and this section in `2a54c654`; confirm the tip with `git log -1` and
+`git status -sb` before editing.
 
 ### What this session delivered
 
