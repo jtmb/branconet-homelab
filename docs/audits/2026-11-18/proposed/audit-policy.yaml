@@ -1,0 +1,28 @@
+# Proposed: metadata-level audit policy with Secret, RBAC and exec capture.
+# Apply on each control-plane node as /etc/kubernetes/audit-policy.yaml, then add
+#   --audit-policy-file=/etc/kubernetes/audit-policy.yaml
+#   --audit-log-path=/var/log/kubernetes/audit.log
+#   --audit-log-maxage=30 --audit-log-maxbackup=10 --audit-log-maxsize=100
+# to kube-apiserver (kubeadm ClusterConfiguration apiServer.extraArgs) and roll
+# one apiserver at a time.
+apiVersion: audit.k8s.io/v1
+kind: Policy
+omitStages: ["RequestReceived"]
+rules:
+  - level: None
+    users: ["system:kube-proxy"]
+    verbs: ["watch"]
+    resources: [{group: "", resources: ["endpoints", "services"]}]
+  - level: None
+    userGroups: ["system:nodes"]
+    verbs: ["get"]
+    resources: [{group: "", resources: ["nodes"]}]
+  - level: Request
+    verbs: ["get", "list", "watch"]
+    resources: [{group: "", resources: ["secrets", "configmaps"]}]
+  - level: RequestResponse
+    verbs: ["create", "update", "patch", "delete", "deletecollection"]
+    resources:
+      - {group: "", resources: ["secrets", "serviceaccounts", "pods/exec", "pods/attach"]}
+      - {group: "rbac.authorization.k8s.io", resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]}
+  - level: Metadata
