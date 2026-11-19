@@ -1,5 +1,9 @@
 # LAN resilience and homelab MCP plan
 
+The shared MCP rename and credential-backed local Docker runs are planned
+separately in the [BORTUS MCP plan](planning/operations/00_START_HERE.md).
+The deployed inventory identity stays read-only and cannot read Secrets.
+
 ## Current state
 
 The October 30 architecture snapshot records node specifications, storage layout and deployment flow. Later networking and failover changes are recorded in this plan. [Cluster architecture](../ARCHITECTURE.md).
@@ -271,7 +275,7 @@ OpenCode 2.2.6 lists all five as connected:
 
 Run `/home/brajam/.opencode/bin/opencode mcp list` from this repository.
 For an expired inventory token, run
-`/usr/bin/python3 -B /home/brajam/repos/veyra-monorepo/mcp-servers/kubernetes-inventory/refresh-kubeconfig.py`.
+`/usr/bin/python3 -B /home/brajam/repos/branconet-homelab/mcp-servers/bortus/refresh-kubeconfig.py`.
 Reconnect only the inventory MCP if its process retains expired credentials.
 Do not restart the shared OpenCode service for a configuration change.
 

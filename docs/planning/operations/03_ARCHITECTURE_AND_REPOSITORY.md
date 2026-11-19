@@ -33,8 +33,8 @@ Run the broker and its private rootless Docker engine as a dedicated non-agent L
 | Homelab `README.md`, `docs/README.md`, `docs/planning/operations/` | Plan entrypoints and primary decisions; homelab integrator |
 | Homelab `docs/planning/bortus-mcp/` | Canonical `records.json`, validation and reproducible workbook/export source; homelab integrator |
 | Homelab `docs/memory/08_BORTUS_MCP_HANDOFF.txt` | One active paste-ready handoff for this work; homelab integrator |
-| Veyra `mcp-servers/kubernetes-inventory/` → `mcp-servers/bortus/` | Proposed canonical shared code; retain old launcher path as a compatibility delegator during transition |
-| Veyra `mcp-servers/bortus/{launch.py,server.py,runner.py,policy.py,tests/,README.md,AGENTS.md}` | Proposed implementation; launch/wire transport, privileged run, policy validation, focused fixtures and local guides |
+| `mcp-servers/bortus/` (this repository) | Canonical shared code, moved here from Veyra on 2026-11-18; the former Veyra launcher path is retired |
+| `mcp-servers/bortus/{launch.py,server.py,runner.py,policy.py,refresh-kubeconfig.py,tests/,README.md,AGENTS.md}` | Implementation in this repository: transport, privileged run, policy validation, credential renewal, focused fixtures and local guides |
 | OpenCode user config `mcp.servers.bortus`; existing project/Codex registrations | Global launch with existing client-specific syntax, no per-repo code; migrate existing registrations only after verification |
 | Private charts, after approval | Exact-name RBAC and bindings under existing Flux change review; no credential values in Git |
 | Runner-owned config, credential, runtime socket and tmpfs outside checkout | Installed by operator; no repo access or sharing with agent; excluded from deliverables |

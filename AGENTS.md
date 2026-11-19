@@ -117,6 +117,15 @@ front-end/
 
 ---
 
+## Shared MCP (`mcp-servers/bortus/`)
+
+The cluster's credential-aware MCP lives in this repository: `server.py`
+(dual-era MCP, inventory proxy, scoped Secret reads), `runner.py` (operator
+guarded run), `policy.py`, `kube.py`, `engine.py`, `launch.py`,
+`refresh-kubeconfig.py` and focused tests. It is registered per project in
+`opencode.json`, never globally. Run its tests with
+`python3 -B -m unittest discover -s mcp-servers/bortus/tests -p 'test_*.py'`.
+
 ## Documentation (`docs/` at repo root)
 
 > **MANDATORY**: When you add a feature, change behavior, fix a bug, or rework architecture, you MUST check whether any doc in `docs/` needs updating — and if so, update it. Treat docs as part of the feature, not an afterthought.

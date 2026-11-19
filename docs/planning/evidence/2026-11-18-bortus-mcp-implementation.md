@@ -1,14 +1,14 @@
 # BORTUS MCP: implementation evidence, 2026-11-18
 
 **Scope of this record.** What was actually built and observed in the
-shared Veyra checkout (`mcp-servers/bortus/`), the compatibility alias, the
+shared checkout (now `mcp-servers/bortus/` in this repository), the launcher, the
 client registrations, and the two project configs. It is not a W3
 activation record: no real profile, real grant, cluster Secret read or
 operator runner identity exists yet.
 
 | Item | Value |
 | --- | --- |
-| Veyra source | `mcp-servers/bortus/` (new), `mcp-servers/kubernetes-inventory/launch.py` (now a delegator) |
+| Source | `mcp-servers/bortus/` in this repository (moved from Veyra 2026-11-18); the Veyra launcher path was retired |
 | OpenCode | `v2.3.2`, global registration `mcp.servers.bortus` |
 | Code under test | `policy.py`, `kube.py`, `engine.py`, `runner.py`, `server.py`, `launch.py` |
 | Test command | `python3 -B -m unittest discover -s tests -p 'test_*.py'` in `mcp-servers/bortus` |

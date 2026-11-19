@@ -64,7 +64,7 @@ a deployment happened.
 
 ## References
 
-- `/home/brajam/repos/veyra-monorepo/mcp-servers/bortus/README.md` — setup,
+- `/home/brajam/repos/branconet-homelab/mcp-servers/bortus/README.md` — setup,
   runner environment, exact limits.
 - `/home/brajam/repos/branconet-homelab/docs/planning/operations/02_DOMAIN_AND_PRODUCT_CONTRACTS.md`
   — tool contract, profile schema, result vocabulary.

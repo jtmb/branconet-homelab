@@ -13,7 +13,7 @@
 
 W0, W1 and W2 passed; W3 is accepted with residual X1. Evidence:
 [implementation record](../evidence/2026-11-18-bortus-mcp-implementation.md).
-The implemented paths are `mcp-servers/bortus/` in Veyra (server, policy,
+The implemented paths are `mcp-servers/bortus/` in this repository (server, policy,
 Secret reader, Docker client, runner, launcher, two test modules) and the
 `kubernetes-inventory/launch.py` delegator. The global OpenCode registration
 is `mcp.servers.bortus`, and the `bortus-local-test` skill is installed at
