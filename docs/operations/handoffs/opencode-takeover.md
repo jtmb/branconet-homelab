@@ -41,6 +41,8 @@ Read this section, then the rest of the file, then `MEMORY.md`. Branch
    `--source-sha`/`--stage`. Exact commands are now in
    `.agents/skills/private-chart-delivery/SKILL.md`.
 5. The untracked audit report was committed as-is (`cb87a777`) before edits.
+6. Charts `main` is at `79014bd` (docs only: published ports bypass namespace
+   policies for pods); `validated` stays at `6f8d1e9` until the next publish.
 
 Receipts: `/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/files/bortus-operator-recovery/audit-remediation-20261118/`
 (audit rollout) and `.../local-charts-publisher/local-charts-publish-{1f8535e1…,9f0672ed…,0d2dea40…}/`
@@ -54,16 +56,23 @@ Receipts: `/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/fi
    every backend plus API server), then the other application namespaces.
    Follow charts `docs/NAMESPACE-NETWORK-POLICIES.md`; `wordpress` has no
    pods and is last.
-2. **Audit log follow-ups:** measure the gzip ratio after node01's first
+2. **Decision for James: vaultwarden's `:8096` is reachable from any pod.**
+   A probe pod in another namespace got 200 from `node:8096` on all three
+   nodes. kube-proxy SNATs it to node or tunnel addresses that the mesh and
+   NetworkPolicy must admit, and the nftables profile admits the pod CIDR.
+   This predates this session. Proposed fix: measure in-cluster callers with
+   `conntrack -L --dport 8096`, then drop the pod CIDR from the `vaultwarden`
+   nftables profile. Details in the audit's A3 section.
+3. **Audit log follow-ups:** measure the gzip ratio after node01's first
    rotation (about 100 MB, a few hours after enablement); node01 keeps
    about 3 days; logs are node-local only.
-3. **`docs/CLUSTER-TLS.md` is untracked** (1,536 lines of earlier work). It
+4. **`docs/CLUSTER-TLS.md` is untracked** (1,536 lines of earlier work). It
    holds a four-line rollback note from this session, left uncommitted so
    the whole file is not swept in; commit it in the repo-hygiene pass.
-4. Pooling observation for the BORTUS MCP is still inferred, not measured.
-5. Longhorn backup freshness/restore evidence (B2) and `bortus-secrets` RBAC
+5. Pooling observation for the BORTUS MCP is still inferred, not measured.
+6. Longhorn backup freshness/restore evidence (B2) and `bortus-secrets` RBAC
    narrowing (A4).
-6. `docs/memory/planning-directory.json` is untracked and was left alone.
+7. `docs/memory/planning-directory.json` is untracked and was left alone.
 
 Pre-existing, not investigated: `bortus-notifications/private-ntfy-rotation`
 fails occasionally (2 retained failures 32 h apart; recent runs pass), and

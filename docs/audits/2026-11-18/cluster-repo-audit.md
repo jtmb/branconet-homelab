@@ -96,6 +96,17 @@ after Flux applied it, with the same pod (0 restarts):
 | pod → API server `10.96.0.1:443`, LAN `192.168.0.6:8096` | 200, 200 | timeout, timeout |
 | other-namespace pod → vaultwarden pod IP / Service | not measured | timeout (dropped) |
 | other-namespace pod → Traefik route | not measured | 200 |
+| other-namespace pod → `node:8096` (each node) | not measured | **200 — not blocked** |
+
+The last row is a pre-existing gap that neither layer closes. kube-proxy
+SNATs pod traffic to `externalIPs` to a node or tunnel address, which both
+the mesh policy and the NetworkPolicy must admit for the LAN route, and the
+node nftables profile admits the pod CIDR on 8096. Pods could already reach
+the same API through Traefik, so the added exposure is plaintext HTTP that
+skips Traefik's LAN ban. Closing it means dropping the pod CIDR from the
+nftables `vaultwarden` profile after confirming no in-cluster caller uses
+`:8096`. That profile's scope was an owner decision, so this is open for
+James.
 
 The first commit broke `:8096` through node01 only. On the node hosting the
 pod, Calico checks policy before kube-proxy's SNAT and sees the real client,

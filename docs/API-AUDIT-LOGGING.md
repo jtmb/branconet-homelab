@@ -40,7 +40,7 @@ rule records bodies.
 - Rotation: 100 MB per file, 30 gzip-compressed backups, 30 days
   (`--audit-log-maxsize=100 --audit-log-maxbackup=30 --audit-log-maxage=30
   --audit-log-compress=true`).
-- Measured 2026-11-19: 1,151 bytes per event. Kept-request rates from the API
+- Measured 2026-11-19 on node02: 1,151 bytes per event. Kept-request rates from the API
   servers' own counters before the change were about 10/s on node01 and about 2/s
   on node02 and node03. That is roughly 1 GB/day on node01 (about **3 days** of history)
   and 60–200 MB/day elsewhere (up to the 30-day cap).
@@ -117,6 +117,19 @@ Afterwards: 3/3 nodes Ready, 12/12 Kustomizations and 36/36 HelmReleases
 Ready, VIP back on node01. The node03 log already held 20 RBAC changes with
 full bodies, and all three logs held zero Secret/ConfigMap/token bodies. The
 restore path was not exercised live, because every attempt passed.
+
+## Changing the policy
+
+kube-apiserver reads the policy file only when it starts. The play also
+refuses a node copy that differs from the repository file, so editing the
+repository file and re-running the play fails at "Refuse a drifted or
+non-regular policy file" on every node. That refusal is deliberate. A policy
+change needs its own reviewed step: install the new file on one node, then
+restart that API server (move its manifest out of `/etc/kubernetes/manifests`
+for about 20 seconds and back, as in `docs/CLUSTER-TLS.md`). Wait for
+`readyz` and a probe event before moving to the next node. Run the policy
+tests in `scripts/migration/tests/test_apiserver_audit.py` first; they are what
+keeps credential bodies out of the log.
 
 ## Rollback
 
