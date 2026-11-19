@@ -24,7 +24,7 @@ It serves two things:
 | `kube.py` | Bounded Secret reads, name listing, exact-name fetch. |
 | `engine.py` | Minimal Docker Engine API client for the private socket. |
 | `runner.py` | Optional privileged runner: authorize, fetch, deliver, check, clean up. |
-| `tests/` | 43 focused tests, including real Docker, a real socket, scope rules and credential refresh. |
+| `tests/` | 46 focused tests, including real Docker, a real socket, scope rules, credential refresh and inventory stream recovery. |
 
 ## Two ways to use it
 
@@ -77,6 +77,15 @@ seconds ("server did not offer pinned protocol version 2026-07-28"), and every
 directory fell back to its own connection. Both refresh calls now pass
 `stdin=DEVNULL`, the helper's ssh uses `-n`, and
 `CredentialRefreshStreamTests` fails if any of the three regresses.
+
+**Inventory replies are capped at 64 KiB** (`MAX_LINE`). `pods_list` and
+`resources_list` cover every namespace and have no `namespace` argument, so
+narrow them with `fieldSelector` (for example `metadata.namespace=vaultwarden`),
+`labelSelector`, or `limit` plus `continue`. An oversized reply comes back as
+a tool error saying exactly that. Any failed inventory call (oversized, timed
+out or unreadable) restarts the stateless child before returning. Until
+2026-11-19 the unread tail of an oversized reply, or a timed-out call's late
+reply, was handed to the next caller; `InventoryStreamTests` covers both.
 
 The OpenCode service remembers a pool refusal for a given set of server
 settings until the service restarts, so a fixed server keeps per-directory

@@ -600,6 +600,79 @@ class CredentialRefreshStreamTests(unittest.TestCase):
         self.assertIs(call.call_args.kwargs.get("stdin"), subprocess.DEVNULL)
 
 
+class InventoryStreamTests(unittest.TestCase):
+    """A failed inventory call must not leave the child's stream out of step.
+
+    Regression for 2026-11-19: an unpaged pods_list reply exceeded MAX_LINE,
+    the proxy read only its first 64 KiB, and the next call read the rest as
+    its own reply and failed. A timed-out call could likewise hand its late
+    reply (same fixed id) to the next caller. The real request() runs here
+    against a scripted stand-in for the pinned binary.
+    """
+
+    SCRIPT = "\n".join([
+        "import json, sys, time",
+        "for line in sys.stdin:",
+        "    m = json.loads(line)",
+        "    if m['method'] == 'big':",
+        "        print(json.dumps({'jsonrpc': '2.0', 'id': m['id'], 'result': {'pad': 'x' * 70000}}), flush=True)",
+        "    elif m['method'] == 'slow':",
+        "        time.sleep(1.5)",
+        "        print(json.dumps({'jsonrpc': '2.0', 'id': m['id'], 'result': {'late': True}}), flush=True)",
+        "    else:",
+        "        print(json.dumps({'jsonrpc': '2.0', 'id': m['id'], 'result': {'method': m['method']}}), flush=True)"])
+
+    class Stand_in(server.InventoryChild):
+        """InventoryChild whose child process is SCRIPT instead of the pinned binary."""
+
+        def __init__(self, script):
+            self._process = None
+            self._script = script
+            self.starts = 0
+            # No credential to renew: ensure_fresh treats a missing kubeconfig as current.
+            self._kubeconfig, self._refresh_helper = Path("/nonexistent/kubeconfig"), None
+            self._start()
+
+        def _start(self):
+            """Count starts so a test can prove the child was replaced."""
+            self.starts += 1
+            self._process = subprocess.Popen([sys.executable, "-B", "-c", self._script],
+                                             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                             stderr=subprocess.DEVNULL)
+            self._ready = False
+
+    def setUp(self):
+        self.child = self.Stand_in(self.SCRIPT)
+        self.addCleanup(self.child.close)
+
+    def test_oversized_reply_restarts_the_child_and_the_next_call_is_answered(self):
+        """The tail of a too-large reply is never read as the next answer."""
+        with self.assertRaises(server.ReplyTooLarge):
+            self.child.request({"jsonrpc": "2.0", "id": 3, "method": "big"})
+        self.assertEqual(self.child.starts, 2)
+        reply = self.child.request({"jsonrpc": "2.0", "id": 3, "method": "next"})
+        self.assertEqual(reply["result"], {"method": "next"})
+
+    def test_late_reply_to_a_timed_out_call_is_never_returned_for_the_next_one(self):
+        """Same fixed id, so only a restart keeps the late reply away from the next caller."""
+        with self.assertRaises(server.StartupError):
+            self.child.request({"jsonrpc": "2.0", "id": 3, "method": "slow"}, timeout=0.3)
+        self.assertEqual(self.child.starts, 2)
+        time.sleep(1.6)  # long enough for the old child's late reply to have been written
+        reply = self.child.request({"jsonrpc": "2.0", "id": 3, "method": "next"})
+        self.assertEqual(reply["result"], {"method": "next"})
+
+    def test_session_turns_an_oversized_reply_into_guidance(self):
+        """The caller learns to page or filter instead of seeing 'runtime unavailable'."""
+        session = server.Session(self.child, None)
+        self.child.mark_ready()
+        with mock.patch.object(self.child, "request", side_effect=server.ReplyTooLarge("big")):
+            result = session.call("pods_list", {})
+        self.assertTrue(result["isError"])
+        self.assertIn("limit", result["content"][0]["text"])
+        self.assertIn("fieldSelector", result["content"][0]["text"])
+
+
 class UnixHTTPServer(socketserver.ThreadingUnixStreamServer):
     """Tiny Docker-shaped HTTP endpoint on a Unix socket for client tests."""
 

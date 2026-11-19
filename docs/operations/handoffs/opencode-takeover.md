@@ -69,16 +69,19 @@ Receipts: `/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/fi
 4. **`docs/CLUSTER-TLS.md` is untracked** (1,536 lines of earlier work). It
    holds a four-line rollback note from this session, left uncommitted so
    the whole file is not swept in; commit it in the repo-hygiene pass.
-5. **BORTUS MCP pooling: fixed, waiting on a service restart.** Pooling
-   never worked with a stale token. The refresh helper inherited the MCP
-   stdin and its ssh swallowed OpenCode's `server/discover`, so the pool
-   probe timed out and each directory got its own process. The fix is in
-   `mcp-servers/bortus` (43 tests; the 3 new ones fail on the old code).
-   Verified by the agent: a stale-token `server/discover` is answered in 3.5 s
-   instead of never, and two locations shared one process under an identical
-   scratch registration. The current OpenCode service remembers the 02:36
-   refusal for the `bortus` settings, so the repo's own entry pools after the
-   next service restart. Confirm then with the README's check.
+5. **BORTUS MCP: pooled, working from this repository (verified by the agent).**
+   Two bugs fixed in `mcp-servers/bortus` (46 tests; each new test fails on
+   the old code). (a) The token refresh inherited the MCP stdin, so with a
+   stale token ssh swallowed OpenCode's `server/discover`, the pool probe
+   timed out and every directory got its own process. (b) An oversized or
+   timed-out inventory reply was handed to the next caller; failed calls now
+   restart the stateless child, and oversized replies return a "narrow it"
+   error. After the 2026-11-19 OpenCode service restart, the repository entry
+   runs as one pooled process (`mcp connected server=bortus` with no
+   `directory=`). From a session in this repository, `pods_list` with a
+   `fieldSelector` works, an unfiltered call returns the guidance error, and
+   the next call still works. Sessions started elsewhere do not see the
+   server: registration is project-local by design.
 6. Longhorn backup freshness/restore evidence (B2) and `bortus-secrets` RBAC
    narrowing (A4).
 7. `docs/memory/planning-directory.json` is untracked and was left alone.

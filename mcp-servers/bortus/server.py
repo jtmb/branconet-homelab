@@ -55,6 +55,11 @@ MESSAGES = {
     "cleanup_required": "Runner needs cleanup before another run.",
 }
 
+# Inventory replies are read as one line of at most MAX_LINE bytes. Kept out of
+# MESSAGES so it can never be mistaken for a runner state.
+REPLY_TOO_LARGE = ("The inventory reply was larger than 64 KiB. Narrow it with limit "
+                   "(then continue), fieldSelector or labelSelector.")
+
 RUN_TOOL = {
     "name": "bortus_secrets_run",
     "description": ("Run one operator-approved local Docker check with Kubernetes-backed "
@@ -112,6 +117,10 @@ SCOPE_MESSAGES = {
 
 class StartupError(Exception):
     """The local configuration or the pinned inventory child is unusable."""
+
+
+class ReplyTooLarge(StartupError):
+    """The child's reply exceeded MAX_LINE; the caller must narrow the request."""
 
 
 class InventoryChild:
@@ -224,21 +233,48 @@ class InventoryChild:
         return config
 
     def request(self, message, timeout=CHILD_TIMEOUT):
-        """Send one MCP request and read exactly one reply line."""
+        """Send one MCP request and read exactly one reply line.
+
+        Any failure after the request is written leaves the child's stdout out
+        of step: the unread tail of an oversized reply, or a late reply to a
+        timed-out call (the proxy reuses fixed ids), would be read as the
+        answer to the next request. So the child is replaced before the error
+        is raised and the next call starts on a clean stream.
+        """
         self._send(message)
-        ready, _, _ = select.select([self._process.stdout], [], [], timeout)
-        if not ready:
-            raise StartupError("the inventory runtime did not reply in time")
-        raw = self._process.stdout.readline(MAX_LINE + 1)
-        if not raw or len(raw) > MAX_LINE:
-            raise StartupError("the inventory runtime returned no usable reply")
         try:
-            reply = json.loads(raw)
-        except ValueError:
-            raise StartupError("the inventory runtime returned an unreadable reply") from None
-        if not isinstance(reply, dict):
-            raise StartupError("the inventory runtime returned an unexpected reply")
-        return reply
+            ready, _, _ = select.select([self._process.stdout], [], [], timeout)
+            if not ready:
+                raise StartupError("the inventory runtime did not reply in time")
+            raw = self._process.stdout.readline(MAX_LINE + 1)
+            if not raw:
+                raise StartupError("the inventory runtime returned no usable reply")
+            if len(raw) > MAX_LINE:
+                raise ReplyTooLarge("the inventory reply exceeded the size limit")
+            try:
+                reply = json.loads(raw)
+            except ValueError:
+                raise StartupError("the inventory runtime returned an unreadable reply") from None
+            if not isinstance(reply, dict):
+                raise StartupError("the inventory runtime returned an unexpected reply")
+            return reply
+        except StartupError:
+            self._reset()
+            raise
+
+    def _reset(self):
+        """Replace a child whose output may be out of step; never raises.
+
+        The inventory child is stateless, so a restart loses nothing; the
+        session repeats the initialize handshake because _start clears ready.
+        If the restart itself fails, the next call reports the runtime as
+        unavailable instead of reading a stale stream.
+        """
+        self.close()
+        try:
+            self._start()
+        except OSError:
+            self._process = None
 
     def notify(self, message):
         """Send a notification; MCP notifications have no reply to read."""
@@ -419,8 +455,12 @@ class Session:
         if name in INVENTORY_TOOLS:
             self.child.ensure_fresh()
             self._ensure_child()
-            reply = self.child.request({"jsonrpc": "2.0", "id": 3, "method": "tools/call",
-                                        "params": {"name": name, "arguments": arguments}})
+            try:
+                reply = self.child.request({"jsonrpc": "2.0", "id": 3, "method": "tools/call",
+                                            "params": {"name": name, "arguments": arguments}})
+            except ReplyTooLarge:
+                return {"isError": True, "content": [{"type": "text",
+                                                      "text": REPLY_TOO_LARGE}]}
             result = reply.get("result")
             if not isinstance(result, dict):
                 raise StartupError("the inventory runtime refused the request")
