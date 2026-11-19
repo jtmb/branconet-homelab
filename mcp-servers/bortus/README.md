@@ -24,7 +24,7 @@ It serves two things:
 | `kube.py` | Bounded Secret reads, name listing, exact-name fetch. |
 | `engine.py` | Minimal Docker Engine API client for the private socket. |
 | `runner.py` | Optional privileged runner: authorize, fetch, deliver, check, clean up. |
-| `tests/` | 35 focused tests, including real Docker, a real socket and scope rules. |
+| `tests/` | 43 focused tests, including real Docker, a real socket, scope rules and credential refresh. |
 
 ## Two ways to use it
 
@@ -66,6 +66,23 @@ A pooled connection can outlive the inventory token. Before any inventory call
 the proxy checks the kubeconfig age; past six hours it runs the existing
 refresh helper and restarts the child so the new credential is loaded. A failed
 refresh leaves the current child in place and the next call retries.
+`launch.py` also refreshes a token older than 30 minutes before starting the
+server; that takes about 2-3 seconds over ssh.
+
+**Never let the refresh helper inherit stdin.** stdin is the client's MCP
+stream, and the helper's `ssh` forwards whatever it can read to the remote
+command. Until 2026-11-19 it did exactly that: with a stale token, OpenCode's
+first `server/discover` was swallowed, the pool probe timed out after 30
+seconds ("server did not offer pinned protocol version 2026-07-28"), and every
+directory fell back to its own connection. Both refresh calls now pass
+`stdin=DEVNULL`, the helper's ssh uses `-n`, and
+`CredentialRefreshStreamTests` fails if any of the three regresses.
+
+The OpenCode service remembers a pool refusal for a given set of server
+settings until the service restarts, so a fixed server keeps per-directory
+connections until then. Check with `opencode mcp list` plus the log: a pooled
+connection logs `mcp connected server=bortus` without a `directory=` field,
+and two directories share one `server.py` process.
 
 ## Configuration
 

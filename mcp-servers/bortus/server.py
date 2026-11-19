@@ -156,7 +156,9 @@ class InventoryChild:
         The child loads the kubeconfig once at startup, so renewal means
         minting a new token with the existing helper and restarting the child.
         A failed refresh leaves the current child in place; the next call
-        retries rather than breaking the connection.
+        retries rather than breaking the connection. The helper gets /dev/null
+        as stdin: this process's stdin is the client's MCP stream, and the
+        helper's ssh would otherwise consume requests queued behind this one.
         """
         try:
             age = time.time() - self._kubeconfig.stat().st_mtime
@@ -167,8 +169,8 @@ class InventoryChild:
         if self._refresh_helper is not None and self._refresh_helper.is_file():
             try:
                 subprocess.run([sys.executable, "-B", str(self._refresh_helper)],
-                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                               timeout=25)
+                               stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                               stderr=subprocess.DEVNULL, timeout=25)
             except (OSError, subprocess.SubprocessError):
                 return
             try:

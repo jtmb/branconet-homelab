@@ -7,7 +7,9 @@ import stat
 import subprocess
 import tempfile
 
-SSH = ("ssh", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=yes", "-p", "2002", "james@192.168.0.4")
+# -n: never read stdin. Callers run inside an MCP server whose stdin is the
+# client's request stream; ssh would forward those requests to the remote side.
+SSH = ("ssh", "-n", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=yes", "-p", "2002", "james@192.168.0.4")
 NAMESPACE = "flux-system"
 ACCOUNT = "kubernetes-mcp-inventory"
 DIRECTORY = Path.home() / ".config/branconet-kubernetes-inventory"
@@ -15,7 +17,8 @@ DESTINATION = DIRECTORY / "kubeconfig.json"
 
 
 def read_operator(command):
-    return subprocess.check_output((*SSH, command), text=True, timeout=15).strip()
+    return subprocess.check_output((*SSH, command), stdin=subprocess.DEVNULL, text=True,
+                                   timeout=15).strip()
 
 
 def main():

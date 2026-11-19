@@ -75,13 +75,18 @@ def settings():
 
 
 def refresh_if_stale(kubeconfig):
-    """Mint a fresh inventory token when the cached one is old; never fatal."""
+    """Mint a fresh inventory token when the cached one is old; never fatal.
+
+    stdin is the MCP stream from the client. The helper's ssh would read it
+    and forward the client's first request (server/discover) to the remote
+    command, so the server never answered it; the helper must get /dev/null.
+    """
     try:
         if time.time() - Path(kubeconfig).stat().st_mtime < MAX_TOKEN_AGE_SECONDS:
             return
         if not REFRESH_HELPER.is_file():
             return
-        subprocess.run([sys.executable, "-B", str(REFRESH_HELPER)],
+        subprocess.run([sys.executable, "-B", str(REFRESH_HELPER)], stdin=subprocess.DEVNULL,
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=25)
     except (OSError, subprocess.SubprocessError):
         pass

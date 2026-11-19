@@ -8,11 +8,13 @@ credentials; nothing touches a cluster.
 """
 
 import base64
+import importlib.util
 import json
 import os
 import socket
 import socketserver
 import stat
+import subprocess
 import sys
 import tempfile
 import threading
@@ -537,6 +539,65 @@ class ServerTests(unittest.TestCase):
         self.assertTrue(session.legacy)
         follow = server.respond(session, {"jsonrpc": "2.0", "id": 2, "method": "tools/list"})
         self.assertNotIn("resultType", follow["result"])
+
+
+class CredentialRefreshStreamTests(unittest.TestCase):
+    """A token refresh must never consume the client's MCP request stream.
+
+    Regression for 2026-11-19: launch.py ran the refresh helper with the
+    client's stdin, the helper's ssh read it, and OpenCode's first
+    server/discover vanished, so every pooled connection timed out and fell
+    back to a per-directory one. Each case runs the real function in a child
+    process whose stdin holds one pending request, with a stand-in helper that
+    drains stdin the way ssh does; the request must still be readable after.
+    """
+
+    PENDING = '{"jsonrpc": "2.0", "id": 1, "method": "server/discover"}'
+
+    def pending_after_refresh(self, body):
+        """Run `body` against a stale kubeconfig; return the line read afterwards."""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            helper = root / "helper.py"
+            helper.write_text("import sys\nsys.stdin.read()\n")
+            kubeconfig = root / "kubeconfig.json"
+            kubeconfig.write_text("{}")
+            stale = time.time() - 7 * 3600  # past both the 30-minute and 6-hour thresholds
+            os.utime(kubeconfig, (stale, stale))
+            script = "\n".join([
+                "import sys",
+                f"sys.path.insert(0, {str(HERE.parent)!r})",
+                "from pathlib import Path",
+                f"helper, kubeconfig = Path({str(helper)!r}), Path({str(kubeconfig)!r})",
+                body,
+                "print(sys.stdin.readline().strip())"])
+            result = subprocess.run([sys.executable, "-B", "-c", script], input=self.PENDING + "\n",
+                                    capture_output=True, text=True, timeout=60)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        return result.stdout.strip()
+
+    def test_launcher_refresh_leaves_the_first_request_unread(self):
+        """launch.refresh_if_stale runs before exec, ahead of server/discover."""
+        body = "import launch\nlaunch.REFRESH_HELPER = helper\nlaunch.refresh_if_stale(str(kubeconfig))"
+        self.assertEqual(self.pending_after_refresh(body), self.PENDING)
+
+    def test_runtime_renewal_leaves_queued_requests_unread(self):
+        """InventoryChild.ensure_fresh renews mid-session, with later requests queued."""
+        body = ("import server\nchild = object.__new__(server.InventoryChild)\n"
+                "child._kubeconfig, child._refresh_helper = kubeconfig, helper\n"
+                "child.ensure_fresh()")
+        self.assertEqual(self.pending_after_refresh(body), self.PENDING)
+
+    def test_refresh_helper_ssh_never_reads_stdin(self):
+        """The helper itself also refuses stdin, in case a caller forgets."""
+        spec = importlib.util.spec_from_file_location("refresh_kubeconfig",
+                                                      HERE.parent / "refresh-kubeconfig.py")
+        helper = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(helper)
+        self.assertIn("-n", helper.SSH)
+        with mock.patch.object(helper.subprocess, "check_output", return_value="ok\n") as call:
+            helper.read_operator("true")
+        self.assertIs(call.call_args.kwargs.get("stdin"), subprocess.DEVNULL)
 
 
 class UnixHTTPServer(socketserver.ThreadingUnixStreamServer):
