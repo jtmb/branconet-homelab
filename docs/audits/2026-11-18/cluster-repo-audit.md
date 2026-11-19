@@ -54,6 +54,12 @@ or `--audit-policy-file`. There is no record of who read a Secret, changed
 RBAC, or opened an exec session, so A4 and any future incident cannot be
 reconstructed.
 
+**Remediated 2026-11-19** on all three API servers and in `kubeadm-config`;
+see [`docs/API-AUDIT-LOGGING.md`](../../API-AUDIT-LOGGING.md). The proposed
+policy below was corrected before use: it would have logged Secret values and
+issued tokens. Open: logs are node-local (about 3 days of history on node01),
+not shipped off-node.
+
 ### A2 — Pod Security not enforced (Confirmed)
 
 Only `http-echo` and `whoami` (baseline), `mesh-pilot` (restricted) and
@@ -158,8 +164,9 @@ genuinely need host access.
 ## Proposed patches
 
 `docs/audits/2026-11-18/proposed/` holds reviewable YAML for the first three
-items: `audit-policy.yaml`, `default-deny-networkpolicy.yaml`,
-`namespace-psa-labels.yaml`. They are not applied.
+items: `audit-policy.yaml` (superseded by the applied policy, see A1),
+`default-deny-networkpolicy.yaml`, `namespace-psa-labels.yaml`. The last two
+are not applied.
 
 ## Coverage limits
 

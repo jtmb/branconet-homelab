@@ -1,0 +1,321 @@
+---
+# kube-apiserver audit logging, ONE control-plane node per run (audit A1,
+# docs/audits/2026-11-18). Launch only through
+#   scripts/migration/run-apiserver-audit-logging.py <node> --work-dir <H dir>
+# which supplies the saved node credential in memory and enforces the order
+# node02 -> node03 -> node01. node01 holds the API VIP with the highest
+# keepalived priority, so it goes last: the VIP fails over to a verified standby
+# while node01 restarts and preempts back once node01 is ready again.
+# Runbook and rollback: docs/API-AUDIT-LOGGING.md.
+#
+# Re-running against a node that is already enabled changes nothing and only
+# repeats the verification.
+- name: kube-apiserver audit logging on one control-plane node
+  hosts: k8s_nodes
+  gather_facts: false
+  become: true
+  serial: 1
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    repo_root: "{{ playbook_dir }}/../../.."
+    transform_script: "{{ repo_root }}/scripts/migration/apiserver_audit.py"
+    log_check_script: "{{ repo_root }}/scripts/migration/apiserver_audit_log_check.py"
+    policy_source: "{{ playbook_dir }}/files/kube-apiserver-audit-policy.yaml"
+    policy_path: /etc/kubernetes/audit-policy.yaml
+    log_dir: /var/log/kubernetes/audit
+    log_path: /var/log/kubernetes/audit/audit.log
+    manifest_path: /etc/kubernetes/manifests/kube-apiserver.yaml
+    backup_path: "/etc/kubernetes/kube-apiserver.yaml.pre-audit-log.{{ audit_attempt }}"
+    probe_name: "audit-probe-{{ audit_attempt | lower }}"
+    target_server: "--server=https://{{ ansible_host }}:6443"
+    operator_kubectl:
+      - /home/brajam/.local/share/branconet-migration/bin/kubectl
+      - --kubeconfig=/home/brajam/.local/share/branconet-migration/admin.conf
+      - --request-timeout=20s
+
+  tasks:
+    - name: Require explicit activation of exactly this known node
+      ansible.builtin.assert:
+        that:
+          - audit_logging_apply | default(false) | bool
+          - audit_attempt is match('^[0-9]{8}T[0-9]{6}Z$')
+          - inventory_hostname == audit_target_host
+          - kubernetes_node_name == audit_target_node
+          - (inventory_hostname, kubernetes_node_name, ansible_host) in
+            [('masternode', 'node01', '192.168.0.4'),
+             ('workernode1', 'node02', '192.168.0.6'),
+             ('workernode2', 'node03', '192.168.0.5')]
+        quiet: true
+
+    # ---------------- preflight: whole control plane healthy ----------------
+    - name: Every API server answers readyz before this node changes
+      ansible.builtin.command:
+        argv: "{{ operator_kubectl + ['--server=https://' ~ hostvars[item].ansible_host ~ ':6443', 'get', '--raw', '/readyz'] }}"
+      loop: "{{ groups['k8s_nodes'] }}"
+      delegate_to: localhost
+      become: false
+      register: preflight_readyz
+      changed_when: false
+      failed_when: preflight_readyz.rc != 0 or preflight_readyz.stdout != 'ok'
+
+    - name: Read node and etcd member readiness
+      ansible.builtin.command:
+        argv: "{{ operator_kubectl + item }}"
+      loop:
+        - [get, nodes, -o, json]
+        - [get, pods, -n, kube-system, -l, component=etcd, -o, json]
+      delegate_to: localhost
+      become: false
+      register: preflight_members
+      changed_when: false
+
+    - name: Refuse unless three nodes and three etcd members are Ready
+      ansible.builtin.assert:
+        that:
+          - nodes_ready | length == 3
+          - nodes_ready | select('equalto', 'True') | list | length == 3
+          - etcd_ready | length == 3
+          - etcd_ready | select('equalto', 'True') | list | length == 3
+        quiet: true
+      vars:
+        nodes_ready: "{{ (preflight_members.results[0].stdout | from_json)['items'] | map(attribute='status.conditions') | map('items2dict', key_name='type', value_name='status') | map(attribute='Ready') | list }}"
+        etcd_ready: "{{ (preflight_members.results[1].stdout | from_json)['items'] | map(attribute='status.conditions') | map('items2dict', key_name='type', value_name='status') | map(attribute='Ready') | list }}"
+
+    # ---------------- policy file and log directory ----------------
+    - name: Checksum the reviewed policy in this repository
+      ansible.builtin.stat:
+        path: "{{ policy_source }}"
+        checksum_algorithm: sha256
+      delegate_to: localhost
+      become: false
+      register: policy_reviewed
+
+    - name: Refuse a drifted or non-regular policy file on the node
+      ansible.builtin.stat:
+        path: "{{ policy_path }}"
+        follow: false
+        checksum_algorithm: sha256
+      register: policy_current
+      failed_when: >-
+        policy_current.stat.exists and
+        (not policy_current.stat.isreg or policy_current.stat.checksum != policy_reviewed.stat.checksum)
+
+    - name: Install the policy with root-only access
+      ansible.builtin.copy:
+        src: "{{ policy_source }}"
+        dest: "{{ policy_path }}"
+        owner: root
+        group: root
+        mode: "0600"
+      when: not policy_current.stat.exists
+
+    - name: Verify the installed policy
+      ansible.builtin.stat:
+        path: "{{ policy_path }}"
+        follow: false
+        checksum_algorithm: sha256
+      register: policy_installed
+      failed_when: >-
+        not (policy_installed.stat.isreg | default(false))
+        or policy_installed.stat.checksum != policy_reviewed.stat.checksum
+        or policy_installed.stat.uid != 0
+        or policy_installed.stat.mode != '0600'
+
+    - name: Root-only audit log directory
+      ansible.builtin.file:
+        path: "{{ log_dir }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0700"
+
+    # ---------------- manifest: read, transform, back up ----------------
+    - name: Stat the live API server manifest
+      ansible.builtin.stat:
+        path: "{{ manifest_path }}"
+        follow: false
+        checksum_algorithm: sha256
+      register: manifest_before
+      failed_when: not (manifest_before.stat.isreg | default(false)) or manifest_before.stat.uid != 0
+
+    - name: Read the live API server manifest
+      ansible.builtin.slurp:
+        src: "{{ manifest_path }}"
+      register: manifest_content
+
+    - name: Compute the audit-enabled manifest with the tested transform
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, -B, "{{ transform_script }}", manifest]
+        stdin: "{{ manifest_content.content | b64decode }}"
+        stdin_add_newline: false
+      delegate_to: localhost
+      become: false
+      register: transform_output
+      changed_when: false
+
+    - name: Refuse if the manifest changed between stat and read
+      ansible.builtin.set_fact:
+        audit_transform: "{{ transform_output.stdout | from_json }}"
+      failed_when: (transform_output.stdout | from_json).sha256_before != manifest_before.stat.checksum
+
+    - name: Record the running API server pod before the change
+      ansible.builtin.command:
+        argv: "{{ operator_kubectl + ['-n', 'kube-system', 'get', 'pod', 'kube-apiserver-' ~ kubernetes_node_name, '-o', 'json'] }}"
+      delegate_to: localhost
+      become: false
+      register: pod_before
+      changed_when: false
+
+    - name: Keep this attempt's exact original outside the manifest directory
+      ansible.builtin.copy:
+        src: "{{ manifest_path }}"
+        dest: "{{ backup_path }}"
+        remote_src: true
+        force: false
+        owner: root
+        group: root
+        mode: "0600"
+      when: audit_transform.changed
+
+    - name: Verify the backup is byte-identical to the live manifest
+      ansible.builtin.stat:
+        path: "{{ backup_path }}"
+        follow: false
+        checksum_algorithm: sha256
+      register: backup_stat
+      failed_when: not (backup_stat.stat.isreg | default(false)) or backup_stat.stat.checksum != manifest_before.stat.checksum
+      when: audit_transform.changed
+
+    # ---------------- change, verify, or restore ----------------
+    - name: Enable audit logging and prove this API server records events
+      block:
+        - name: Write the audit-enabled manifest (kubelet restarts the API server)
+          ansible.builtin.copy:
+            content: "{{ audit_transform.manifest }}"
+            dest: "{{ manifest_path }}"
+            owner: root
+            group: root
+            mode: "{{ manifest_before.stat.mode }}"
+          register: manifest_write
+          diff: false
+          when: audit_transform.changed
+
+        - name: Verify the written manifest is the computed one
+          ansible.builtin.stat:
+            path: "{{ manifest_path }}"
+            follow: false
+            checksum_algorithm: sha256
+          register: manifest_after
+          failed_when: manifest_after.stat.checksum != audit_transform.sha256_after
+
+        - name: A new Ready API server pod carries the audit flags
+          ansible.builtin.command:
+            argv: "{{ operator_kubectl + ['-n', 'kube-system', 'get', 'pod', 'kube-apiserver-' ~ kubernetes_node_name, '-o', 'json'] }}"
+          delegate_to: localhost
+          become: false
+          register: pod_after
+          changed_when: false
+          retries: 48
+          delay: 5
+          until: >-
+            pod_after.rc == 0 and
+            ('--audit-policy-file=' ~ policy_path) in (pod_after.stdout | from_json).spec.containers[0].command and
+            ((pod_after.stdout | from_json).status.conditions | default([]) | selectattr('type', 'equalto', 'Ready') | map(attribute='status') | list) == ['True'] and
+            (not audit_transform.changed or
+             (pod_after.stdout | from_json).metadata.annotations['kubernetes.io/config.hash'] !=
+             (pod_before.stdout | from_json).metadata.annotations['kubernetes.io/config.hash'])
+
+        - name: This API server answers readyz
+          ansible.builtin.command:
+            argv: "{{ operator_kubectl + [target_server, 'get', '--raw', '/readyz'] }}"
+          delegate_to: localhost
+          become: false
+          register: target_readyz
+          changed_when: false
+          retries: 24
+          delay: 5
+          until: target_readyz.rc == 0 and target_readyz.stdout == 'ok'
+
+        - name: Read a nonexistent ConfigMap through this API server as a probe
+          ansible.builtin.command:
+            argv: "{{ operator_kubectl + [target_server, '-n', 'kube-system', 'get', 'configmap', probe_name] }}"
+          delegate_to: localhost
+          become: false
+          register: probe_request
+          changed_when: false
+          failed_when: "'(NotFound)' not in probe_request.stderr"
+
+        - name: The probe is recorded at Metadata and no credential body is logged
+          ansible.builtin.script:
+            cmd: "{{ log_check_script }} {{ log_path }} {{ probe_name }}"
+            executable: /usr/bin/python3
+          register: log_check
+          changed_when: false
+          retries: 6
+          delay: 5
+          until: >-
+            log_check.rc == 0 and
+            (log_check.stdout | from_json).probe is not none
+          failed_when: >-
+            log_check.rc != 0 or
+            (log_check.stdout | from_json).probe is none or
+            (log_check.stdout | from_json).probe.level != 'Metadata' or
+            (log_check.stdout | from_json).probe.verb != 'get' or
+            (log_check.stdout | from_json).probe.code != 404 or
+            (log_check.stdout | from_json).probe.has_body or
+            (log_check.stdout | from_json).credential_bodies != 0
+
+        - name: Every API server answers readyz after the change
+          ansible.builtin.command:
+            argv: "{{ operator_kubectl + ['--server=https://' ~ hostvars[item].ansible_host ~ ':6443', 'get', '--raw', '/readyz'] }}"
+          loop: "{{ groups['k8s_nodes'] }}"
+          delegate_to: localhost
+          become: false
+          register: post_readyz
+          changed_when: false
+          retries: 12
+          delay: 5
+          until: post_readyz.rc == 0 and post_readyz.stdout == 'ok'
+
+        - name: Report the verified audit state
+          ansible.builtin.debug:
+            msg: >-
+              {{ kubernetes_node_name }}: audit {{ 'enabled now' if audit_transform.changed else 'already enabled' }};
+              events={{ (log_check.stdout | from_json).events }}
+              credential_events={{ (log_check.stdout | from_json).credential_events }}
+              credential_bodies={{ (log_check.stdout | from_json).credential_bodies }}
+              backup={{ backup_path if audit_transform.changed else 'none (unchanged)' }}
+
+      rescue:
+        - name: Restore this attempt's exact original manifest
+          ansible.builtin.copy:
+            src: "{{ backup_path }}"
+            dest: "{{ manifest_path }}"
+            remote_src: true
+            owner: root
+            group: root
+            mode: "{{ manifest_before.stat.mode }}"
+          diff: false
+          when: manifest_write is defined and manifest_write is changed
+
+        - name: The restored API server answers readyz without audit flags
+          ansible.builtin.command:
+            argv: "{{ operator_kubectl + ['-n', 'kube-system', 'get', 'pod', 'kube-apiserver-' ~ kubernetes_node_name, '-o', 'json'] }}"
+          delegate_to: localhost
+          become: false
+          register: pod_restored
+          changed_when: false
+          retries: 48
+          delay: 5
+          until: >-
+            pod_restored.rc == 0 and
+            ('--audit-policy-file=' ~ policy_path) not in (pod_restored.stdout | from_json).spec.containers[0].command and
+            ((pod_restored.stdout | from_json).status.conditions | default([]) | selectattr('type', 'equalto', 'Ready') | map(attribute='status') | list) == ['True']
+          when: manifest_write is defined and manifest_write is changed
+
+        - name: Stop the rollout
+          ansible.builtin.fail:
+            msg: >-
+              Audit logging did not verify on {{ kubernetes_node_name }}.
+              {{ 'The original manifest was restored from ' ~ backup_path ~ '.' if (manifest_write is defined and manifest_write is changed) else 'The manifest was not changed by this attempt.' }}

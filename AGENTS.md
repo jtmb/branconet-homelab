@@ -147,6 +147,7 @@ All documentation lives at **`docs/`** in the repo root (`/home/brajam/repos/bra
 | `ANSIBLE-2-API-INTERACTION.md` | Ansible lookup plugin details, variable resolution at playbook runtime | Changing lookup plugin behavior, API contract, or variable resolution |
 | `BORTUS-DEPLOYMENT.md` | Native Secret API integration, container build, probes, PVC, env references, RBAC and validation evidence | Changing app deployment or native Secret contracts |
 | `CLUSTER-TLS.md` | Host-side TLS: kubelet serving certs, API server kubelet CA, kubeadm ConfigMaps, renewal/expiry | Changing cert lifecycle, CSR approval, kubeadm PKI |
+| `API-AUDIT-LOGGING.md` | kube-apiserver audit policy, log location/rotation/retention, query examples, rollout runner and rollback | Changing the audit policy, audit flags, retention, or shipping logs off-node |
 | `CLUSTER-SECURITY.md` | Cluster maintenance/app migration history (Overseerr→Seerr) and related security work | Reviewing past migration decisions in this area |
 | `NETWORK-HARDENING.md` | nftables plaintext-restriction profiles, allowlists, boot persistence, mesh enrollment matrix | Adding/removing a restricted port, changing the allowlist, enrolling/excluding a service from the mesh |
 | `NOTIFICATIONS.md` | ntfy server/auth/web UI, monitor/watchdog/outbox/sender, credential rotation, CSR controller delivery | Changing notification config, credentials, delivery logic |

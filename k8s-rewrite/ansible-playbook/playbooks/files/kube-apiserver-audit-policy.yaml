@@ -1,0 +1,59 @@
+# kube-apiserver audit policy for branconet-k8s (audit finding A1, 2026-11-18).
+# Installed as /etc/kubernetes/audit-policy.yaml on every control-plane node by
+# playbooks/apiserver-audit-logging.yml. Runbook: docs/API-AUDIT-LOGGING.md.
+#
+# The first matching rule wins. Secret, ConfigMap, token request and token
+# review bodies are never recorded: their rule is Metadata and sits above the
+# only rule that records bodies. Do not add a Request/RequestResponse rule
+# above that rule.
+apiVersion: audit.k8s.io/v1
+kind: Policy
+omitStages:
+  - RequestReceived
+omitManagedFields: true
+rules:
+  # Probe and schema traffic: high volume, no forensic value.
+  - level: None
+    nonResourceURLs:
+      - /healthz*
+      - /livez*
+      - /readyz*
+      - /version
+      - /openapi/*
+  # Leader-election and node-heartbeat renewals (about a third of requests).
+  # Lease create/patch/delete are still recorded by the catch-all.
+  - level: None
+    verbs: ["get", "list", "watch", "update"]
+    resources:
+      - group: coordination.k8s.io
+        resources: ["leases"]
+  - level: None
+    users: ["system:kube-proxy"]
+    verbs: ["watch"]
+    resources:
+      - group: ""
+        resources: ["endpoints", "services"]
+      - group: discovery.k8s.io
+        resources: ["endpointslices"]
+  - level: None
+    userGroups: ["system:nodes"]
+    verbs: ["get"]
+    resources:
+      - group: ""
+        resources: ["nodes", "nodes/status"]
+  # Credential-bearing objects: who, what, when and the result only.
+  - level: Metadata
+    resources:
+      - group: ""
+        resources: ["secrets", "configmaps", "serviceaccounts/token"]
+      - group: authentication.k8s.io
+        resources: ["tokenreviews"]
+  # RBAC changes: full request and response, so a grant can be reconstructed.
+  - level: RequestResponse
+    verbs: ["create", "update", "patch", "delete", "deletecollection"]
+    resources:
+      - group: rbac.authorization.k8s.io
+        resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+  # Everything else, including exec/attach/port-forward (the command is in the
+  # recorded request URI) and every Secret read or write.
+  - level: Metadata
