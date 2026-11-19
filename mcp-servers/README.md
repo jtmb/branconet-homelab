@@ -6,9 +6,8 @@ installed command, a fixed `cwd` (its own directory), `"pool": true` and
 `"protocol": "2026-07-28"`, so OpenCode 2.3.2 shares one process per server
 across every directory that uses an identical entry.
 
-**Disabled by default (2026-11-19).** Every entry here carries `"disabled": true`;
-only the global `wsl-interop` and this repository's `agent-browser` (launched
-from Veyra) connect automatically. Turn one on for the
+**Disabled by default (2026-11-19).** Every entry carries `"disabled": true`;
+only the global `wsl-interop` connects automatically. Turn one on for the
 current directory when a task needs it, then off again:
 
 ```sh
