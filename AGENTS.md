@@ -130,7 +130,9 @@ entry to its own `opencode.json` and then shares the same pooled process. Run it
 The LAN adapters `netgear-xr500`, `pihole-dns` and `plex-inventory` live beside
 it (moved from Veyra on 2026-11-19) and share `mcp-servers/_shared/`
 (`dual_era.py` for MCP 2026-07-28, `read_only_media.py` for Plex). All four are
-pooled with a fixed `cwd` and the pinned 2026-07-28 protocol. Their private
+pooled with a fixed `cwd` and the pinned 2026-07-28 protocol, and all are
+`"disabled": true` by default: connect one per task as `mcp-servers/README.md`
+shows, and disconnect it after. Their private
 `.env` files are local and ignored. See
 `mcp-servers/README.md`; tests:
 `python3 -B -m unittest discover -s mcp-servers/_shared/tests -p 'test_*.py'`.

@@ -6,6 +6,18 @@ installed command, a fixed `cwd` (its own directory), `"pool": true` and
 `"protocol": "2026-07-28"`, so OpenCode 2.3.2 shares one process per server
 across every directory that uses an identical entry.
 
+**Disabled by default (2026-11-19).** Every entry carries `"disabled": true`;
+only the global `wsl-interop` connects automatically. Turn one on for the
+current directory when a task needs it, then off again:
+
+```sh
+loc=$(python3 -c "import urllib.parse,os;print(urllib.parse.quote(os.getcwd(),safe=''))")
+opencode api post "/api/experimental/mcp/bortus/connect?location%5Bdirectory%5D=$loc"
+opencode api post "/api/experimental/mcp/bortus/disconnect?location%5Bdirectory%5D=$loc"
+```
+
+The owner can do the same from `/mcps`. Do not remove `disabled` from the config.
+
 **Using them from another repository.** Copy the entry from this repository's
 `opencode.json` into that repository's `opencode.json`, unchanged: same
 `command`, `cwd`, `pool` and `protocol`, with no added `environment` or
