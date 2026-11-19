@@ -43,15 +43,29 @@ Read this section, then the rest of the file, then `MEMORY.md`. Branch
 5. The untracked audit report was committed as-is (`cb87a777`) before edits.
 6. Charts `main` is at `79014bd` (docs only: published ports bypass namespace
    policies for pods); `validated` stays at `6f8d1e9` until the next publish.
-7. **LAN MCP servers moved here and migrated (2026-11-19).** `netgear-xr500`,
-   `pihole-dns` and `plex-inventory` now live in `mcp-servers/` with the shared
-   `_shared/dual_era.py` adapter (MCP 2026-07-28 plus unchanged legacy replies),
-   registered with fixed `cwd`, `pool: true`, pinned protocol. Verified by the
-   agent: live router/Pi-hole/Plex reads identical in both eras; two repository
-   directories went from 2 processes per server to 1 (pooled), and a project
-   outside this repository with copied entries reused the same four PIDs.
-   Removed from Veyra in local, unpushed commit `b6457ce8b` (same pattern as
-   BORTUS); Veyra's duplicate `.env` copies were deleted after hash checks.
+7. **MCP servers consolidated here and migrated to MCP 2026-07-28.**
+   `bortus` (already here) plus `netgear-xr500`, `pihole-dns` and
+   `plex-inventory` (moved from Veyra) live in `mcp-servers/`; the LAN three
+   use `mcp-servers/_shared/dual_era.py`, which keeps their legacy replies
+   unchanged. Two `bortus` bugs were fixed: a stale-token refresh swallowed
+   OpenCode's `server/discover` (pooling never worked) and an oversized or
+   timed-out inventory reply was handed to the next caller. Verified by the
+   agent: live reads identical in both protocol eras, one pooled process per
+   server across directories, and a project outside this repository with
+   copied entries reused the same processes. Commits `c4d15b1b`, `eec2ffc4`,
+   `f9b896d2`, `172ec228`. Veyra deletion commit `b6457ce8b` is local and
+   unpushed by James's choice; `agent-browser` stays in Veyra.
+8. **MCP defaults (James, 2026-11-19): only the global `wsl-interop` connects
+   automatically.** Every entry in this `opencode.json` (`agent-browser`,
+   `bortus`, `netgear-xr500`, `pihole-dns`, `plex-inventory`) and the global
+   `browse` carry `"disabled": true`; connect one for the current directory
+   when a task needs it and disconnect it after (`mcp-servers/README.md`).
+   Other repositories may copy an entry unchanged to share the same process
+   (memory note `mcp-shared-connections`).
+9. **Global `browser-choice` skill and global AGENTS.md "Browsers" section.**
+   Every chat is told to choose `browse` (the owner's shared real browser,
+   needs the extension) or `agent-browser` (isolated, agent-only), connect
+   only that one, and use `webfetch` for plain public pages.
 
 Receipts: `/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/files/bortus-operator-recovery/audit-remediation-20261118/`
 (audit rollout) and `.../local-charts-publisher/local-charts-publish-{1f8535e1…,9f0672ed…,0d2dea40…}/`
@@ -78,21 +92,13 @@ Receipts: `/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/fi
 4. **`docs/CLUSTER-TLS.md` is untracked** (1,536 lines of earlier work). It
    holds a four-line rollback note from this session, left uncommitted so
    the whole file is not swept in; commit it in the repo-hygiene pass.
-5. **BORTUS MCP: pooled, working from this repository (verified by the agent).**
-   Two bugs fixed in `mcp-servers/bortus` (46 tests; each new test fails on
-   the old code). (a) The token refresh inherited the MCP stdin, so with a
-   stale token ssh swallowed OpenCode's `server/discover`, the pool probe
-   timed out and every directory got its own process. (b) An oversized or
-   timed-out inventory reply was handed to the next caller; failed calls now
-   restart the stateless child, and oversized replies return a "narrow it"
-   error. After the 2026-11-19 OpenCode service restart, the repository entry
-   runs as one pooled process (`mcp connected server=bortus` with no
-   `directory=`). From a session in this repository, `pods_list` with a
-   `fieldSelector` works, an unfiltered call returns the guidance error, and
-   the next call still works. Other repositories may opt in by copying the
-   identical entry into their own `opencode.json` and then share the same
-   process (see `mcp-servers/README.md` and the `mcp-shared-connections`
-   memory note).
+5. **MCP follow-ups.** The servers are now disabled by default, so the
+   2026-11-19 pooling and live-call evidence was taken while they were
+   enabled; connect one and rerun its README check if behaviour is in doubt.
+   `agent-browser` was not migrated (still in Veyra, not pooled, protocol
+   unchecked). In `~/.config/opencode`, the skill catalog index row for
+   `browser-choice` is left uncommitted because that file also carries
+   another session's pending skill changes.
 6. Longhorn backup freshness/restore evidence (B2) and `bortus-secrets` RBAC
    narrowing (A4).
 7. `docs/memory/planning-directory.json` is untracked and was left alone.
@@ -106,9 +112,11 @@ fails occasionally (2 retained failures 32 h apart; recent runs pass), and
 > Continue the BORTUS work in `/home/brajam/repos/branconet-homelab` on
 > `codex/seerr-cluster-security`. Read `docs/operations/handoffs/opencode-takeover.md`
 > first, starting at "Start here — checkpoint 2026-11-19", then `MEMORY.md`.
-> Audit logging and the vaultwarden NetworkPolicy/Pod Security changes are
-> done and verified. Continue A3/A2 with the next namespace (`kube-system`)
-> through `branconet-charts` and the local publisher. No subagents.
+> Audit logging, the vaultwarden NetworkPolicy/Pod Security changes and the
+> MCP consolidation are done and verified. Only `wsl-interop` connects by
+> default; connect another MCP (for example `bortus`) only when the task needs
+> it. Continue A3/A2 with the next namespace (`kube-system`) through
+> `branconet-charts` and the local publisher. No subagents.
 
 ### Boundaries that still apply
 
