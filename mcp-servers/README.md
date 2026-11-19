@@ -1,7 +1,7 @@
 # MCP servers for this repository
 
 Every server here is a local stdio process. This repository registers all
-four in its `opencode.json`; none is in the global config. Each entry uses the
+five in its `opencode.json`; none is in the global config. Each entry uses the
 installed command, a fixed `cwd` (its own directory), `"pool": true` and
 `"protocol": "2026-07-28"`, so OpenCode 2.3.2 shares one process per server
 across every directory that uses an identical entry.
@@ -41,12 +41,13 @@ difference in those fields gets a separate process. For example:
 | `netgear-xr500/` | Router status, DHCP pool, logs, outbound rules; DHCP changes proposed only | `.env` (`XR500_USERNAME`, `XR500_PASSWORD`) |
 | `pihole-dns/` | Pi-hole API and resolver health, blocking state, local records | `.env` (`PIHOLE_APP_PASSWORD`); the public `lan-root-ca.pem` is committed |
 | `plex-inventory/` | Plex health, library list, title search | `.env` (`PLEX_TOKEN`) |
+| `seerr-inventory/` | Seerr health, title search, recent request status, expiry-bound request proposals | `.env` (`SEERR_API_KEY`); the public `lan-root-ca.pem` is committed |
 
-`_shared/dual_era.py` gives the three LAN servers MCP revision 2026-07-28
+`_shared/dual_era.py` gives the four LAN servers MCP revision 2026-07-28
 (`server/discover`, stateless per-request `_meta`) while their original
 legacy handlers keep answering `initialize` clients unchanged.
-`_shared/read_only_media.py` is the bounded GET-only transport used by Plex.
-`bortus` has its own dual-era implementation.
+`_shared/read_only_media.py` is the bounded GET-only transport used by Plex
+and Seerr. `bortus` has its own dual-era implementation.
 
 ```sh
 python3 -B -m unittest discover -s mcp-servers/_shared/tests -p 'test_*.py'

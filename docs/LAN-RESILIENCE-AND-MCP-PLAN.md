@@ -261,7 +261,8 @@ A failure in API readiness, etcd health, workload placement or storage pauses th
 The authoritative Branconet `opencode.json` now registers the four requested
 shared infrastructure adapters plus Vercel Agent Browser under `mcp.servers`.
 Their source was in `/home/brajam/repos/veyra-monorepo/mcp-servers/`; since
-2026-11-19 `bortus`, `netgear-xr500`, `pihole-dns` and `plex-inventory` live in
+2026-11-19 `bortus`, `netgear-xr500`, `pihole-dns`, `plex-inventory` and
+`seerr-inventory` live in
 this repository's `mcp-servers/` (see `mcp-servers/README.md`). `agent-browser`
 stays in Veyra.
 OpenCode 2.2.6 lists all five as connected:
@@ -291,6 +292,26 @@ No paid provider or remote browser is used. Infrastructure adapters keep their
 existing inventory/proposal scopes; deployment remains through Flux and Ansible.
 This registration does not implement the proposed certificate or workload-mTLS
 rollout.
+
+### Seerr adapter moved and made dual-era — 2026-11-19
+
+`seerr-inventory` (health, title search, recent request status and an
+expiry-bound request proposal; nothing is submitted) moved from the Veyra
+monorepo into `mcp-servers/seerr-inventory/`, along with its
+`operator_request.py`, `lan-root-ca.pem` and private mode-0600 `.env`. It uses
+this repository's `_shared/read_only_media.py` (the legacy-only copy there is
+retired), so it now serves MCP 2026-07-28 as well as the previous legacy
+handshake, and it is registered here with `"disabled": true`.
+
+Verified by the agent: before the move the Veyra copy answered
+`server/discover` with `Method not found` and only the legacy era worked; after
+the move `server/discover` advertises 2026-07-28 first, tool names, schemas and
+annotations are unchanged, and `seerr_health` and `seerr_requests` returned the
+same shapes in both eras. Connecting `seerr-inventory` from two directories in
+this repository left exactly one `server.py` process; both locations were
+disconnected afterwards and the entry stayed disabled. The operator
+`192.168.0.4` SSH port 2002 example in that server's README is still the
+current masternode address (`CONNECTING-TO-A-CLUSTER.md`).
 
 ## XR500 diagnostic adapter
 

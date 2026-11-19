@@ -127,10 +127,11 @@ guarded run), `policy.py`, `kube.py`, `engine.py`, `launch.py`,
 entry to its own `opencode.json` and then shares the same pooled process. Run its tests with
 `python3 -B -m unittest discover -s mcp-servers/bortus/tests -p 'test_*.py'`.
 
-The LAN adapters `netgear-xr500`, `pihole-dns` and `plex-inventory` live beside
-it (moved from Veyra on 2026-11-19) and share `mcp-servers/_shared/`
-(`dual_era.py` for MCP 2026-07-28, `read_only_media.py` for Plex). All four are
-pooled with a fixed `cwd` and the pinned 2026-07-28 protocol, and all are
+The LAN adapters `netgear-xr500`, `pihole-dns`, `plex-inventory` and
+`seerr-inventory` live beside it (moved from Veyra on 2026-11-19) and share
+`mcp-servers/_shared/` (`dual_era.py` for MCP 2026-07-28, `read_only_media.py`
+for Plex and Seerr). All five are pooled with a fixed `cwd` and the pinned
+2026-07-28 protocol, and all are
 `"disabled": true` by default: connect one per task as `mcp-servers/README.md`
 shows, and disconnect it after. Their private
 `.env` files are local and ignored. See

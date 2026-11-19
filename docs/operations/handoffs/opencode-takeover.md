@@ -57,7 +57,8 @@ Read this section, then the rest of the file, then `MEMORY.md`. Branch
    unpushed by James's choice; `agent-browser` stays in Veyra.
 8. **MCP defaults (James, 2026-11-19): only the global `wsl-interop` connects
    automatically.** Every entry in this `opencode.json` (`agent-browser`,
-   `bortus`, `netgear-xr500`, `pihole-dns`, `plex-inventory`) and the global
+   `bortus`, `netgear-xr500`, `pihole-dns`, `plex-inventory`,
+   `seerr-inventory`) and the global
    `browse` carry `"disabled": true`; connect one for the current directory
    when a task needs it and disconnect it after (`mcp-servers/README.md`).
    Other repositories may copy an entry unchanged to share the same process
@@ -66,6 +67,17 @@ Read this section, then the rest of the file, then `MEMORY.md`. Branch
    Every chat is told to choose `browse` (the owner's shared real browser,
    needs the extension) or `agent-browser` (isolated, agent-only), connect
    only that one, and use `webfetch` for plain public pages.
+10. **`seerr-inventory` moved from Veyra and made dual-era** (same pattern as
+    `plex-inventory`). It lives in `mcp-servers/seerr-inventory/` with its
+    operator CLI, committed LAN root certificate and private mode-0600 `.env`,
+    is registered in `opencode.json` with `"disabled": true`, and now serves
+    MCP 2026-07-28 as well as the legacy handshake. Tool names, schemas and
+    annotations are unchanged; `server/discover` is answered instead of
+    `Method not found`. Verified by the agent: identical tool sets and call
+    shapes in both eras, one pooled process across two repository
+    directories, then disconnected from both. The legacy-only
+    `read_only_media.py` and the moved files were retired in Veyra with a
+    local, unpushed commit; Veyra's ignored `.env` was left in place.
 
 Receipts: `/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/files/bortus-operator-recovery/audit-remediation-20261118/`
 (audit rollout) and `.../local-charts-publisher/local-charts-publish-{1f8535e1…,9f0672ed…,0d2dea40…}/`
@@ -98,7 +110,11 @@ Receipts: `/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/fi
    `agent-browser` was not migrated (still in Veyra, not pooled, protocol
    unchecked). In `~/.config/opencode`, the skill catalog index row for
    `browser-choice` is left uncommitted because that file also carries
-   another session's pending skill changes.
+   another session's pending skill changes. The two Veyra deletion commits
+   (`b6457ce8b` for the first three servers, and the `seerr-inventory` /
+   `read_only_media.py` retirement) are local and unpushed by James's choice;
+   Veyra's ignored `mcp-servers/seerr-inventory/.env` was deliberately left in
+   place for the owner to remove.
 6. Longhorn backup freshness/restore evidence (B2) and `bortus-secrets` RBAC
    narrowing (A4).
 7. `docs/memory/planning-directory.json` is untracked and was left alone.

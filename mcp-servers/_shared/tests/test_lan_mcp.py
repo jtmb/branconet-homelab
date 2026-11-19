@@ -1,10 +1,11 @@
-"""Dual-era contract for the LAN MCP servers (netgear-xr500, pihole-dns, plex-inventory).
+"""Dual-era contract for the LAN MCP servers (netgear-xr500, pihole-dns, plex-inventory,
+seerr-inventory).
 
 The adapter tests drive dual_era.make_responder against a recording fake
 legacy handler. The server tests run each real server.py over stdio, the
 way OpenCode starts it, and use only requests that never reach the router,
-Pi-hole or Plex (discovery, listing and argument validation), so they need
-no network or credentials.
+Pi-hole, Plex or Seerr (discovery, listing and argument validation), so they
+need no network or credentials.
 """
 import json
 from pathlib import Path
@@ -97,12 +98,14 @@ class ServerTests(unittest.TestCase):
         "netgear-xr500": ["router_status", "dhcp_pool", "router_logs", "outbound_rules", "propose_dhcp_pool_end"],
         "pihole-dns": ["pihole_health", "pihole_blocking", "pihole_local_records"],
         "plex-inventory": ["plex_health", "plex_libraries", "plex_search"],
+        "seerr-inventory": ["seerr_health", "seerr_search", "seerr_requests", "seerr_propose_request"],
     }
     # A tools/call for each server that fails argument validation before any network use.
     REJECTED = {
         "netgear-xr500": ("propose_dhcp_pool_end", {"expected_end": "not-an-ip", "new_end": "x"}),
         "pihole-dns": ("pihole_health", {"unexpected": 1}),
         "plex-inventory": ("plex_search", {"query": ""}),
+        "seerr-inventory": ("seerr_search", {"query": ""}),
     }
 
     def exchange(self, name, messages):
