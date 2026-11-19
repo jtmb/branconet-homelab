@@ -48,8 +48,10 @@ Read this section, then the rest of the file, then `MEMORY.md`. Branch
    `_shared/dual_era.py` adapter (MCP 2026-07-28 plus unchanged legacy replies),
    registered with fixed `cwd`, `pool: true`, pinned protocol. Verified by the
    agent: live router/Pi-hole/Plex reads identical in both eras; two repository
-   directories went from 2 processes per server to 1 (pooled). Removed from
-   Veyra in a local, unpushed commit (same pattern as BORTUS).
+   directories went from 2 processes per server to 1 (pooled), and a project
+   outside this repository with copied entries reused the same four PIDs.
+   Removed from Veyra in local, unpushed commit `b6457ce8b` (same pattern as
+   BORTUS); Veyra's duplicate `.env` copies were deleted after hash checks.
 
 Receipts: `/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/files/bortus-operator-recovery/audit-remediation-20261118/`
 (audit rollout) and `.../local-charts-publisher/local-charts-publish-{1f8535e1…,9f0672ed…,0d2dea40…}/`
@@ -87,8 +89,10 @@ Receipts: `/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/fi
    runs as one pooled process (`mcp connected server=bortus` with no
    `directory=`). From a session in this repository, `pods_list` with a
    `fieldSelector` works, an unfiltered call returns the guidance error, and
-   the next call still works. Sessions started elsewhere do not see the
-   server: registration is project-local by design.
+   the next call still works. Other repositories may opt in by copying the
+   identical entry into their own `opencode.json` and then share the same
+   process (see `mcp-servers/README.md` and the `mcp-shared-connections`
+   memory note).
 6. Longhorn backup freshness/restore evidence (B2) and `bortus-secrets` RBAC
    narrowing (A4).
 7. `docs/memory/planning-directory.json` is untracked and was left alone.

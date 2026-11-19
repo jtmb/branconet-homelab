@@ -1,10 +1,27 @@
 # MCP servers for this repository
 
-Every server here is a local stdio process registered only in this
-repository's `opencode.json` (never in global config). Each entry uses the
+Every server here is a local stdio process. This repository registers all
+four in its `opencode.json`; none is in the global config. Each entry uses the
 installed command, a fixed `cwd` (its own directory), `"pool": true` and
-`"protocol": "2026-07-28"`, so all OpenCode directories inside this repository
-share one process per server.
+`"protocol": "2026-07-28"`, so OpenCode 2.3.2 shares one process per server
+across every directory that uses an identical entry.
+
+**Using them from another repository.** Copy the entry from this repository's
+`opencode.json` into that repository's `opencode.json`, unchanged: same
+`command`, `cwd`, `pool` and `protocol`, with no added `environment` or
+`timeout`. It then attaches to the same running process instead of starting a
+new one (verified 2026-11-19 from a project outside this repository). Any
+difference in those fields gets a separate process. For example:
+
+```json
+"bortus": {
+  "type": "local",
+  "command": ["/usr/bin/python3", "-B", "/home/brajam/repos/branconet-homelab/mcp-servers/bortus/launch.py"],
+  "cwd": "/home/brajam/repos/branconet-homelab/mcp-servers/bortus",
+  "pool": true,
+  "protocol": "2026-07-28"
+}
+```
 
 | Server | What it does | Credentials (local, ignored) |
 | --- | --- | --- |

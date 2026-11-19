@@ -13,3 +13,5 @@ See the [memory note format](docs/memory/README.md). Current assignments and acc
 - [Agents own routine testing; RULES.md is authoritative](docs/memory/2026-11-18-agents-own-testing.md)
 
 - [Repository-specific skills stay in the repository](docs/memory/skill-location-scope.md)
+
+- [MCP servers live here; any repository may opt in and share one pooled process](docs/memory/mcp-shared-connections.md)

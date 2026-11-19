@@ -123,7 +123,8 @@ The cluster's credential-aware MCP lives in this repository: `server.py`
 (dual-era MCP, inventory proxy, scoped Secret reads), `runner.py` (operator
 guarded run), `policy.py`, `kube.py`, `engine.py`, `launch.py`,
 `refresh-kubeconfig.py` and focused tests. It is registered per project in
-`opencode.json`, never globally. Run its tests with
+`opencode.json`, never globally; another repository may add the identical
+entry to its own `opencode.json` and then shares the same pooled process. Run its tests with
 `python3 -B -m unittest discover -s mcp-servers/bortus/tests -p 'test_*.py'`.
 
 The LAN adapters `netgear-xr500`, `pihole-dns` and `plex-inventory` live beside
