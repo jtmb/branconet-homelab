@@ -69,6 +69,12 @@ Only `http-echo` and `whoami` (baseline), `mesh-pilot` (restricted) and
 admission restriction, so a chart change can silently introduce a privileged
 pod.
 
+**vaultwarden remediated 2026-11-19** (charts `6f8d1e9`): enforce `baseline`,
+audit/warn `restricted`, v1.37. Verified by the agent with server dry runs
+after Flux: a pod from the live Deployment template is admitted (restricted
+warnings only), a privileged variant is refused with `violates PodSecurity
+"baseline:v1.37"`, and the running pod was not restarted.
+
 ### A3 — No east-west policy (Confirmed presence/absence)
 
 NetworkPolicies exist only in `longhorn-system` (6), `plex` (4), `flux-system`
@@ -77,6 +83,26 @@ with none include `kube-system`, `traefik`, `vaultwarden`, `wordpress`,
 `ruckus`, `bortus`, `games`, `web-apps`, `cert-manager`. Calico can enforce
 policy, but none is defined, so every pod can reach every other pod and the
 API server.
+
+**vaultwarden remediated 2026-11-19** (charts `0a5cf6f`, fixed in `9e6aa2c`;
+design in charts `docs/NAMESPACE-NETWORK-POLICIES.md`). Verified by the agent
+after Flux applied it, with the same pod (0 restarts):
+
+| Check | Before | After |
+| --- | --- | --- |
+| `https://vault.branconet.lan/alive` via Traefik | 200 | 200 |
+| `:8096` via node01 / node02 / node03 | 200 / 200 / 200 | 200 / 200 / 200 |
+| pod → DNS, `https://github.com` (icons) | ok, 200 | ok, 200 |
+| pod → API server `10.96.0.1:443`, LAN `192.168.0.6:8096` | 200, 200 | timeout, timeout |
+| other-namespace pod → vaultwarden pod IP / Service | not measured | timeout (dropped) |
+| other-namespace pod → Traefik route | not measured | 200 |
+
+The first commit broke `:8096` through node01 only. On the node hosting the
+pod, Calico checks policy before kube-proxy's SNAT and sees the real client,
+not the node address the mesh policy sees. Adding the operator host
+`192.168.0.13` (the only LAN source the node nftables profile admits) fixed
+it. Next namespaces: `kube-system`, `traefik`, then the application namespaces.
+`wordpress` has no pods and is the lowest priority.
 
 ### A4 — Broad Secret RBAC (Confirmed)
 

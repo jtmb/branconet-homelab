@@ -41,6 +41,18 @@ profile on all three nodes via
     scoped to the three node IP destinations (`ip daddr`); pod or node
     egress to any other address on the same port is untouched.
 
+### NetworkPolicy on an `externalIPs` pod sees two different sources
+
+The node nftables profile and a pod's NetworkPolicy do not see the same
+source address. If a client enters at the node hosting the pod, Calico checks
+policy before kube-proxy's SNAT and sees the real client, for example the
+operator host `192.168.0.13`. If it enters at another node, the pod receives it
+SNATed to that node's Calico tunnel address. ztunnel sees the post-SNAT
+address in both cases. A NetworkPolicy for a published port must therefore
+list the clients this profile admits as well as the node and tunnel
+addresses. Found on 2026-11-19 when vaultwarden's `:8096` failed only through
+node01; see the charts repository's `docs/NAMESPACE-NETWORK-POLICIES.md`.
+
 ### The pod-CIDR trap
 
 A prerouting profile that only allows LAN/operator addresses will reject

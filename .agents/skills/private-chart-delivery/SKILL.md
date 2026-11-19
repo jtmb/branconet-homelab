@@ -43,6 +43,11 @@ tools = pub / 'source/.tools'
 # always unlink .tools/.validation afterward, even on failure
 ```
 
+`.validation/` may already exist as a (gitignored) directory in the
+checkout. `ln -s target .validation` then creates a link *inside* it and the
+validator writes its report there; check with `ls -la` first and remove only
+what the run created.
+
 **The test count is pinned twice** — once implicitly (the suite just has N
 tests) and once explicitly, in a *separate* repository:
 `C:/Users/james/.codex/local-ci/branconet-charts-local-ci/scripts/local-publish.py`
@@ -67,18 +72,42 @@ silently reverting it). Never `git add -A` or plain `git commit` here.
 
 Push directly to `main` (`git push origin <sha>:refs/heads/main`) only after
 the parent check (`git rev-parse HEAD` must equal
-`git ls-remote origin refs/heads/main`) and the full gate passing locally —
-pushing triggers the real publisher, which re-runs everything and actually
-promotes the `validated` tag and lets Flux apply it.
+`git ls-remote origin refs/heads/main`) and the full gate passing locally.
+Pushing does not publish; run the publisher below, which re-runs the gate on
+the exact commit and promotes `validated` for Flux.
 
-## After pushing
+## After pushing: publish with the checkout's own publisher
 
-Poll `status.json` at
-`/mnt/f/branconet-migration-artifacts/maintenance-storage-20261025/branconet-charts-local-ci-state/status.json`
-for `sourceSHA` matching your commit and `finishedUTC` set. On failure, read
-`check.json` in the referenced stage directory for the `checks` array (each
-entry has its own exit code) before assuming the cause — don't guess or
-retry blindly; the watcher explicitly refuses automatic same-SHA retries.
+Pushing `main` deploys nothing. Run the checkout's
+`scripts/local-publish.py` from WSL with the migration venv (Python 3.12,
+PyYAML 6.0.3) and a **fresh** stage for each commit. Verified 2026-11-19 for
+charts `0a5cf6f`, `9e6aa2c` and `6f8d1e9`:
+
+```bash
+C=/mnt/c/Users/james/AppData/Local/BORTUS/repos/branconet-charts
+V=/home/brajam/.local/share/branconet-migration/venv/bin/python
+S=/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/files/local-charts-publisher
+SHA=<full 40-char sha, equal to local main, origin/main and remote main>
+ST=$S/local-charts-publish-$(python3 -c 'import secrets;print(secrets.token_hex(16))')
+cd $C
+$V -B scripts/local-publish.py prepare --stage-root $S --source-sha $SHA --stage $ST
+$V -B scripts/local-publish.py check   --stage-root $S --source-sha $SHA --stage $ST
+$V -B scripts/local-publish.py publish --apply --stage-root $S --source-sha $SHA --stage $ST \
+  --check-receipt-sha256 $(sha256sum $ST/check.json | cut -d' ' -f1)
+```
+
+`check` runs pinned tool versions, all 45 tests and the unchanged validator on
+an exact `git archive` export. `publish` atomically moves `validated` and
+creates `refs/tags/validated-<sha>`. The earlier `native_wsl_exact_sha_required`
+refusal is what the publisher reports when `--source-sha`/`--stage` is missing
+or it is not run under Linux; it does not need a separate WSL clone. On a
+failed check, read `check.json`'s `checks` array (each entry has an exit code)
+before assuming a cause, and do not retry the same stage.
+
+The older Windows local-CI watcher
+(`/mnt/f/.../branconet-charts-local-ci-state/status.json`) last ran for
+`217f24f` and ended `failed_or_uncertain_no_automatic_same_sha_retry`; do not
+rely on it to publish.
 
 Then poll the relevant Flux Kustomization's `lastAppliedRevision` for your
 short SHA, force a reconcile annotation if it doesn't show up within ~10
