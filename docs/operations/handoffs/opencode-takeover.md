@@ -12,10 +12,94 @@ branch `codex/seerr-cluster-security`). Do not create another checkout. No
 subagents on this project. Disposable outputs stay on the existing H roots
 (100 GB combined repository allowance).
 
+## Start here — checkpoint 2026-11-18
+
+Read this section, then the rest of the file, then `MEMORY.md`. The branch is
+`codex/seerr-cluster-security`; the checkpoint commit is `fdfa9360` (pushed after
+this section was written — check `git log -1` and `git status -sb`).
+
+### What this session delivered
+
+1. **The shared MCP now lives in this repository.**
+   `mcp-servers/bortus/` holds `server.py`, `launch.py`, `runner.py`,
+   `policy.py`, `kube.py`, `engine.py`, `refresh-kubeconfig.py` and focused
+   tests, copied out of the Veyra monorepo, which no longer carries it.
+   Registration is **project-local** in `opencode.json` (never global):
+   fixed `cwd`, `pool: true`, `protocol: "2026-07-28"`.
+2. **Protocol migration.** The server is dual-era: modern requests are served
+   statelessly (server/discover, `resultType`, `ttlMs`, `cacheScope`,
+   `-32022` for an unknown version) and `initialize` still selects legacy
+   semantics. The proxy renews a stale inventory kubeconfig and restarts the
+   child so a pooled connection outlives the 12-hour token.
+3. **Ruckus rollout cleared and deployed.** Image
+   `docker.io/jtmb92/ruckus-bot@sha256:45c942c97add…` published, charts
+   `validated` promoted to `217f24f` after 45 tests plus chart validation,
+   pod `ruckus-bot-7b6df4897-c8xz4` Ready with 0 restarts on node03 and
+   `GET /health` returning `{"status":"ok"}`.
+4. **Cluster and repository audit completed.**
+   `docs/audits/2026-11-18/cluster-repo-audit.md` plus three unapplied
+   proposals in `docs/audits/2026-11-18/proposed/`. Headline risks: no API
+   server audit logging, Pod Security unenforced in 25 of 30 namespaces, 24
+   namespaces with no NetworkPolicy, `bortus-secrets` RBAC replicated into
+   seven namespaces, newest Longhorn backup three days old.
+5. **Skills installed in this repository:** `bortus-local-test` and
+   `kubernetes-repo-audit` under `.opencode/skills/`.
+
+### Verification already run (do not repeat)
+
+- `python3 -B -m unittest discover -s mcp-servers/bortus/tests -p 'test_*.py'` → 40 tests OK.
+- Modern: `server/discover` returns `2026-07-28` first, `tools/list` and a live
+  `pods_list` succeed with `resultType: complete`; legacy `initialize` still
+  answers `2025-06-18`.
+- Renewal: an aged kubeconfig (7 h) was refreshed in place and the call
+  succeeded.
+- `opencode mcp list` in this repo shows `bortus connected`; from another repo
+  the server is absent, as intended.
+
+### Open items, in priority order
+
+1. **Audit remediation has not started.** Begin with API server audit logging,
+   then one namespace of default-deny NetworkPolicy (`kube-system`, `traefik`,
+   `vaultwarden`, `wordpress` are the useful first four), then Pod Security
+   `baseline`. Proposals are ready; nothing is applied.
+2. **Pooling observation is still inferred, not measured.** The shared
+   OpenCode server restarted repeatedly during the two-directory test, so no
+   stable "two locations, one child" PID count exists yet. Config is correct;
+   capture the count in a quiet window.
+3. **Charts publisher limitation.** `local-publish.py` refuses this
+   environment (`native_wsl_exact_sha_required`) because there is no native
+   WSL clone of `branconet-charts`. The ruckus promotion ran the same gates
+   manually and fast-forwarded `validated`. Either create the WSL checkout or
+   fix the publisher; otherwise every release repeats that manual step.
+4. **Longhorn backup freshness and restore evidence** (audit B2) and the
+   `bortus-secrets` RBAC narrowing (A4) remain open.
+5. **`docs/memory/planning-directory.json`** is untracked and was left alone.
+
+### Paste this into the new chat
+
+> Continue the BORTUS work in `/home/brajam/repos/branconet-homelab` on
+> `codex/seerr-cluster-security`. Read `docs/operations/handoffs/opencode-takeover.md`
+> first, starting at "Start here — checkpoint 2026-11-18", then `MEMORY.md`.
+> Do not redo the MCP move, protocol migration, ruckus rollout or audit — they
+> are done and verified. Start with audit remediation: API server audit
+> logging, then default-deny NetworkPolicy for one namespace at a time, then
+> Pod Security baseline. Read-only verification is fine; deployments go
+> through `branconet-charts` and Flux. No subagents.
+
+### Boundaries that still apply
+
+No subagents. Repository-specific skills and MCP entries stay in the
+repository, never in global config. Read-only until a change is explicitly
+authorized; the audit proposals are review material. Secrets are read only
+through the scoped MCP tool, never printed. One checkout: do not create
+another.
+
 ## What's deployed and healthy (verified 2026-11-17)
 
 - 3/3 nodes Ready (v1.37.2); 12/12 Flux Kustomizations and all HelmReleases
-  Ready; 14/14 cert-manager Certificates healthy; 0 pending CSRs.
+  Ready; 15/15 cert-manager Certificates healthy; 0 pending CSRs.
+- ruckus_bot 1.1.0 deployed from charts `217f24f` on
+  `sha256:45c942c9…`, pod Ready with 0 restarts (2026-11-18).
 - BORTUS dashboard: live on `jtmb92/bortus@sha256:44a163a9…`, including the
   released Certificates UI (`/certificates`, `/api/certificates`).
 - ntfy notifications: web UI enabled (`https://notifications.branconet.lan`),
