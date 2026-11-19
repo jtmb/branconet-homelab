@@ -43,6 +43,13 @@ Read this section, then the rest of the file, then `MEMORY.md`. Branch
 5. The untracked audit report was committed as-is (`cb87a777`) before edits.
 6. Charts `main` is at `79014bd` (docs only: published ports bypass namespace
    policies for pods); `validated` stays at `6f8d1e9` until the next publish.
+7. **LAN MCP servers moved here and migrated (2026-11-19).** `netgear-xr500`,
+   `pihole-dns` and `plex-inventory` now live in `mcp-servers/` with the shared
+   `_shared/dual_era.py` adapter (MCP 2026-07-28 plus unchanged legacy replies),
+   registered with fixed `cwd`, `pool: true`, pinned protocol. Verified by the
+   agent: live router/Pi-hole/Plex reads identical in both eras; two repository
+   directories went from 2 processes per server to 1 (pooled). Removed from
+   Veyra in a local, unpushed commit (same pattern as BORTUS).
 
 Receipts: `/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/files/bortus-operator-recovery/audit-remediation-20261118/`
 (audit rollout) and `.../local-charts-publisher/local-charts-publish-{1f8535e1…,9f0672ed…,0d2dea40…}/`

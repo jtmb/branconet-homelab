@@ -126,6 +126,14 @@ guarded run), `policy.py`, `kube.py`, `engine.py`, `launch.py`,
 `opencode.json`, never globally. Run its tests with
 `python3 -B -m unittest discover -s mcp-servers/bortus/tests -p 'test_*.py'`.
 
+The LAN adapters `netgear-xr500`, `pihole-dns` and `plex-inventory` live beside
+it (moved from Veyra on 2026-11-19) and share `mcp-servers/_shared/`
+(`dual_era.py` for MCP 2026-07-28, `read_only_media.py` for Plex). All four are
+pooled with a fixed `cwd` and the pinned 2026-07-28 protocol. Their private
+`.env` files are local and ignored. See
+`mcp-servers/README.md`; tests:
+`python3 -B -m unittest discover -s mcp-servers/_shared/tests -p 'test_*.py'`.
+
 ## Documentation (`docs/` at repo root)
 
 > **MANDATORY**: When you add a feature, change behavior, fix a bug, or rework architecture, you MUST check whether any doc in `docs/` needs updating — and if so, update it. Treat docs as part of the feature, not an afterthought.

@@ -260,7 +260,10 @@ A failure in API readiness, etcd health, workload placement or storage pauses th
 
 The authoritative Branconet `opencode.json` now registers the four requested
 shared infrastructure adapters plus Vercel Agent Browser under `mcp.servers`.
-Their source remains in `/home/brajam/repos/veyra-monorepo/mcp-servers/`.
+Their source was in `/home/brajam/repos/veyra-monorepo/mcp-servers/`; since
+2026-11-19 `bortus`, `netgear-xr500`, `pihole-dns` and `plex-inventory` live in
+this repository's `mcp-servers/` (see `mcp-servers/README.md`). `agent-browser`
+stays in Veyra.
 OpenCode 2.2.6 lists all five as connected:
 
 - `kubernetes-inventory`: native pod inventory passed after the existing
@@ -291,8 +294,8 @@ rollout.
 
 ## XR500 diagnostic adapter
 
-The first read-only implementation lives in the WSL Veyra monorepo at
-`/home/brajam/repos/veyra-monorepo/mcp-servers/netgear-xr500`. Codex and OpenCode launch the same WSL Python stdio server. New Branconet MCP
+The first read-only implementation was written in the WSL Veyra monorepo and
+now lives at `mcp-servers/netgear-xr500` in this repository. New Branconet MCP
 servers must support both clients and load credentials from an ignored local
 `.env`. For the XR500, set `XR500_USERNAME` and `XR500_PASSWORD` in the
 mode-0600 file beside `server.py`. Authenticated log and outbound rule reads
