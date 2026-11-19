@@ -512,7 +512,9 @@ useful independent work is exhausted.
 Follow Rule 1 in [RULES.md](RULES.md): agents own routine testing. In OpenCode,
 use the agent browser (`tools["agent-browser"]`, isolated session, pass the LAN
 CA with `caCert` for `.lan` sites) to sign in, exercise pages and check what is
-on screen. Use the shell, kubectl, Ansible and MCP tools for checks a browser
+on screen. It is registered here with `"disabled": true` (as is the global
+`browse` server, the owner's shared real browser); follow the global
+`browser-choice` skill to pick one, connect it for the task and disconnect after. Use the shell, kubectl, Ansible and MCP tools for checks a browser
 can't answer. Don't ask James to repeat a test the agent can perform.
 
 Do not require or use the Computer Use skill or native computer automation.
