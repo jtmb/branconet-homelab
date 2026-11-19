@@ -8,10 +8,49 @@
   ],
   "mcp": {
     "servers": {
-      "netgear-xr500": {"type": "local", "command": ["/usr/bin/python3", "-B", "/home/brajam/repos/veyra-monorepo/mcp-servers/netgear-xr500/server.py"]},
-      "pihole-dns": {"type": "local", "command": ["/usr/bin/python3", "-B", "/home/brajam/repos/veyra-monorepo/mcp-servers/pihole-dns/server.py"]},
-      "plex-inventory": {"type": "local", "command": ["/usr/bin/python3", "-B", "/home/brajam/repos/veyra-monorepo/mcp-servers/plex-inventory/server.py"]},
-      "agent-browser": {"type": "local", "command": ["/usr/bin/python3", "-B", "/home/brajam/repos/veyra-monorepo/mcp-servers/agent-browser/launch.py"]}
+      "netgear-xr500": {
+        "type": "local",
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "/home/brajam/repos/veyra-monorepo/mcp-servers/netgear-xr500/server.py"
+        ]
+      },
+      "pihole-dns": {
+        "type": "local",
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "/home/brajam/repos/veyra-monorepo/mcp-servers/pihole-dns/server.py"
+        ]
+      },
+      "plex-inventory": {
+        "type": "local",
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "/home/brajam/repos/veyra-monorepo/mcp-servers/plex-inventory/server.py"
+        ]
+      },
+      "agent-browser": {
+        "type": "local",
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "/home/brajam/repos/veyra-monorepo/mcp-servers/agent-browser/launch.py"
+        ]
+      },
+      "bortus": {
+        "type": "local",
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "/home/brajam/repos/veyra-monorepo/mcp-servers/bortus/launch.py"
+        ],
+        "cwd": "/home/brajam/repos/veyra-monorepo/mcp-servers/bortus",
+        "pool": true,
+        "protocol": "2026-07-28"
+      }
     }
   }
 }
