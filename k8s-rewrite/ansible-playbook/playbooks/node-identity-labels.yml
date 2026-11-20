@@ -1,0 +1,63 @@
+---
+- name: Stage role-neutral Kubernetes node identity labels
+  hosts: master
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  vars:
+    node_identity_apply: false
+    node_identity_key: branconet.lan/node-id
+    node_identity_addresses:
+      192.168.0.4: node01
+      192.168.0.6: node02
+      192.168.0.5: node03
+  tasks:
+    - name: Read the current Kubernetes nodes
+      ansible.builtin.command:
+        argv: [kubectl, get, nodes, -o, json]
+      register: node_identity_list
+      changed_when: false
+
+    - name: Resolve exactly one node for each inventory address
+      ansible.builtin.set_fact:
+        node_identity_targets: "{{ (node_identity_list.stdout | from_json)['items'] }}"
+
+    - name: Confirm the three-node inventory
+      ansible.builtin.assert:
+        that:
+          - node_identity_targets | length == node_identity_addresses | length
+          - >-
+            (node_identity_targets | map(attribute='status.addresses') | flatten
+             | selectattr('type', 'equalto', 'InternalIP') | map(attribute='address') | sort)
+            == (node_identity_addresses.keys() | sort)
+
+    - name: Reject conflicting identity labels
+      vars:
+        node_address: >-
+          {{ item.status.addresses | selectattr('type', 'equalto', 'InternalIP')
+             | map(attribute='address') | first }}
+        assigned: "{{ node_identity_addresses[node_address] }}"
+      ansible.builtin.assert:
+        that:
+          - item.metadata.labels.get(node_identity_key, assigned) == assigned
+        quiet: true
+      loop: "{{ node_identity_targets }}"
+      loop_control:
+        label: "{{ item.metadata.name }}"
+
+    - name: Validate or apply the labels without replacing an existing value
+      vars:
+        node_address: >-
+          {{ item.status.addresses | selectattr('type', 'equalto', 'InternalIP')
+             | map(attribute='address') | first }}
+      ansible.builtin.command:
+        argv: >-
+          {{ ['kubectl', 'label', 'node', item.metadata.name,
+              node_identity_key ~ '=' ~ node_identity_addresses[node_address],
+              '--resource-version=' ~ item.metadata.resourceVersion]
+             + ([] if node_identity_apply | bool else ['--dry-run=server']) }}
+      changed_when: node_identity_apply | bool
+      when: node_identity_key not in item.metadata.labels
+      loop: "{{ node_identity_targets }}"
+      loop_control:
+        label: "{{ item.metadata.name }}"

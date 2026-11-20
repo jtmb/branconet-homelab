@@ -198,10 +198,19 @@ class PhaseQualifier:
             return pin, value
         except Exception: pin.close(); raise
 
+    def _reader_context(self):
+        if not self.operation.r.get('holder_identity'):
+            return None
+        need(self.operation.r.get('holder_create_state')=='confirmed','source')
+        pod=self.operation.holder()
+        self.graph.archive.reader.inert_holder(pod,self.operation.r['holder_proposal'])
+        need(pod['metadata']['uid']==self.operation.r['holder_identity']['uid'],'source')
+        return {k:pod['metadata'][k] for k in ('name','namespace','uid')}|{'spec_sha256':sha(validator.canonical(pod['spec']))}
+
     def _ready_schema(self, deadline):
         floor = time.monotonic_ns()
         result = ready.collect(self.directory, self.reader_path, self.manifest_path, deadline,
-                               floor, self.ready_api.get)
+                               floor, self.ready_api.get, **({'reader_context':self._reader_context()} if self.operation.r.get('holder_identity') else {}))
         need(type(result) is dict and set(result) == {'path', 'sha256', 'receipt'} and digest(result['sha256']) and
              pathlib.Path(result['path']).parent == self.directory and
              re.fullmatch('schema-metadata-[0-9a-f]{12}\\.json', pathlib.Path(result['path']).name), 'schema')
@@ -297,7 +306,7 @@ class PhaseQualifier:
         if self.archive_result is not None:
             self._archive_schema()  # Fresh zero-writer/source pin after the remaining long IO.
         else:
-            current = ready.snapshot(self.ready_api.get, limit)
+            current = ready.snapshot(self.ready_api.get, limit, self._reader_context())
             need(current['writer'] == self.last_ready_writer, 'source')
         self._bounded()
         packet = {k: binding[k] for k in ('phase','image','source_sha256','qualification_receipt_sha256','policy_pins')}

@@ -1,0 +1,8 @@
+---
+- name: Build the reviewed Seerr derivative in a bounded isolated master worker
+  hosts: master
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  roles: [seerr_image_build]

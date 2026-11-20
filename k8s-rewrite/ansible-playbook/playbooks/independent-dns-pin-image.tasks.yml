@@ -1,0 +1,46 @@
+---
+- name: Verify the standalone resolver image has been preloaded
+  ansible.builtin.command:
+    argv:
+      - /opt/containerd-k8s/bin/crictl
+      - --config
+      - /dev/null
+      - --runtime-endpoint
+      - unix:///run/containerd-k8s/containerd.sock
+      - inspecti
+      - "{{ independent_dns_image }}"
+  register: independent_dns_image_status
+  changed_when: false
+
+- name: Protect the standalone resolver image from kubelet garbage collection
+  ansible.builtin.command:
+    argv:
+      - /opt/containerd-k8s/bin/ctr
+      - --address
+      - /run/containerd-k8s/containerd.sock
+      - --namespace
+      - k8s.io
+      - images
+      - label
+      - "{{ independent_dns_image }}"
+      - io.cri-containerd.pinned=pinned
+  when: not ((independent_dns_image_status.stdout | from_json).status.pinned | default(false))
+
+- name: Verify the CRI reports the image as pinned
+  ansible.builtin.command:
+    argv:
+      - /opt/containerd-k8s/bin/crictl
+      - --config
+      - /dev/null
+      - --runtime-endpoint
+      - unix:///run/containerd-k8s/containerd.sock
+      - inspecti
+      - "{{ independent_dns_image }}"
+  register: independent_dns_pinned
+  changed_when: false
+  failed_when: >-
+    independent_dns_pinned.rc != 0 or
+    not ((independent_dns_pinned.stdout | from_json).status.pinned | default(false))
+  retries: 5
+  delay: 1
+  until: independent_dns_pinned is succeeded

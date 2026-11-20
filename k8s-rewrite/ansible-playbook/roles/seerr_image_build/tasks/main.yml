@@ -1,0 +1,83 @@
+---
+- name: Require the exact reviewed isolated build scope
+  ansible.builtin.assert:
+    that:
+      - seerr_build_apply | bool
+      - inventory_hostname == 'masternode'
+      - seerr_build_phase in ['setup', 'lock', 'runtime', 'status', 'stop']
+      - seerr_build_root == '/home/james/.local/share/branconet-migration/seerr-build-20261023'
+      - seerr_build_unit_prefix == 'bortus-seerr-build-20261023'
+      - seerr_build_archive_sha256 == 'a59539daf547fe0958efe2d07e41c0a6944e1112a66d7e519ec1cf5b673ef15b'
+    fail_msg: Only the reviewed master-only standalone builder scope is supported.
+
+- name: Preserve the failed attempt and refuse further builds on production storage
+  ansible.builtin.assert:
+    that:
+      - seerr_build_phase in ['status', 'stop']
+    fail_msg: The October 23 builder is retained for inspection and stopping only after its filesystem-pressure incident. Use the reviewed off-cluster image-build workflow; do not reuse or overwrite this attempt.
+
+- name: Inspect the existing protected build identity
+  ansible.builtin.stat:
+    path: "{{ seerr_build_root }}/build-inputs.json"
+  register: seerr_build_seal
+
+- name: Set up isolated verified build inputs
+  ansible.builtin.include_tasks: setup.yml
+  when: seerr_build_phase == 'setup'
+
+- name: Require sealed setup for operational phases
+  ansible.builtin.assert:
+    that: [seerr_build_seal.stat.exists]
+    fail_msg: Complete and review setup before selecting lock/runtime/status/stop.
+  when: seerr_build_phase != 'setup'
+
+- name: Dispatch one bounded asynchronous build phase
+  ansible.builtin.command:
+    argv:
+      - systemd-run
+      - "--unit={{ seerr_build_unit_prefix }}-{{ seerr_build_phase }}"
+      - --property=Type=exec
+      - --property=MemoryMax=3221225472
+      - --property=MemorySwapMax=0
+      - --property=CPUQuota=150%
+      - --property=AllowedCPUs=0-1
+      - --property=TasksMax=512
+      - --property=Delegate=yes
+      - --property=KillMode=control-group
+      - --property=TimeoutStopSec=45
+      - --property=RuntimeMaxSec=14400
+      - --property=UMask=0077
+      - "--property=StandardOutput=append:{{ seerr_build_root }}/{{ seerr_build_phase }}-unit.log"
+      - "--property=StandardError=append:{{ seerr_build_root }}/{{ seerr_build_phase }}-unit.log"
+      - --
+      - /usr/bin/python3
+      - "{{ seerr_build_root }}/build_phase.py"
+      - "{{ seerr_build_phase }}"
+      - "{{ seerr_build_root }}"
+      - "{{ seerr_build_unit_prefix }}"
+  changed_when: true
+  when: seerr_build_phase in ['lock', 'runtime']
+
+- name: Report only bounded unit and retained artifact metadata
+  ansible.builtin.command:
+    argv: [/usr/bin/python3, "{{ seerr_build_root }}/build_phase.py", status, "{{ seerr_build_root }}", "{{ seerr_build_unit_prefix }}"]
+  changed_when: false
+  register: seerr_build_status
+  when: seerr_build_phase in ['status', 'lock', 'runtime']
+
+- name: Show sanitized builder status metadata
+  ansible.builtin.debug:
+    msg: "{{ seerr_build_status.stdout | from_json }}"
+  when: seerr_build_phase in ['status', 'lock', 'runtime']
+
+- name: Stop only this isolated builder's two exact units
+  ansible.builtin.command:
+    argv: [/usr/bin/python3, "{{ seerr_build_root }}/build_phase.py", stop, "{{ seerr_build_root }}", "{{ seerr_build_unit_prefix }}"]
+  changed_when: true
+  register: seerr_build_stop
+  when: seerr_build_phase == 'stop'
+
+- name: Show exact owned units after stopping
+  ansible.builtin.debug:
+    msg: "{{ seerr_build_stop.stdout | from_json }}"
+  when: seerr_build_phase == 'stop'

@@ -7,6 +7,7 @@ import os
 import pathlib
 import re
 import stat
+import subprocess
 import sys
 import time
 
@@ -22,6 +23,8 @@ def load(name, filename):
 metadata = load('restore_source_metadata', 'bortus-restore-metadata.py')
 preflight = load('restore_source_preflight', 'inspect-bortus-independent-restore.py')
 MAX_JOURNAL = 1024 * 1024
+H_STORE = pathlib.Path('/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/files')
+H_UUID = 'e4c3cddc-ace6-4f27-a8b8-23278c17b53f'
 
 
 class SourceRefused(RuntimeError):
@@ -33,6 +36,21 @@ class SourceRefused(RuntimeError):
 def need(condition, code):
     if not condition:
         raise SourceRefused(code)
+
+
+def verified_h_boundary():
+    """Existing root-owned ext4 mount, not the Windows drive's projected modes."""
+    need(H_STORE.resolve(strict=True) == H_STORE and H_STORE.is_mount(), 'ownership')
+    result = subprocess.run(['findmnt', '--json', '--target', str(H_STORE),
+        '--output', 'TARGET,FSTYPE,UUID'], capture_output=True, timeout=10)
+    need(result.returncode == 0 and len(result.stdout) <= 16384, 'ownership')
+    mounts = json.loads(result.stdout).get('filesystems', [])
+    need(len(mounts) == 1 and mounts[0].get('target') == str(H_STORE) and
+         mounts[0].get('fstype') == 'ext4' and mounts[0].get('uuid') == H_UUID, 'ownership')
+    info = H_STORE.lstat()
+    need(stat.S_ISDIR(info.st_mode) and info.st_uid == 0 and not info.st_mode & 0o022
+         and info.st_dev != os.stat('/').st_dev, 'ownership')
+    return info.st_dev, info.st_ino, info.st_uid, info.st_mode
 
 
 def deadline_valid(deadline):
@@ -85,6 +103,7 @@ class SourceFence:
         self.fd = None
         self.anchors = []
         self.directory_fds = []
+        self.h_mount_identity = None
         failure = None
         try:
             need(os.name == 'posix' and type(checkpoint_sha256) is str and
@@ -94,6 +113,8 @@ class SourceFence:
             self.path = pathlib.Path(path)
             need(self.path.is_absolute() and '..' not in self.path.parts and
                  1 < len(self.path.parts) <= 32, 'ownership')
+            if self.path.is_relative_to(H_STORE):
+                self.h_mount_identity = verified_h_boundary()
             fd = os.open('/', os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_CLOEXEC)
             self.directory_fds.append(fd)  # Register before any fallible identity check.
             current = pathlib.Path('/')
@@ -104,8 +125,15 @@ class SourceFence:
                 current /= part
                 info = os.fstat(fd)
                 self.anchors.append((current, fd, info))
-                need(info.st_uid in (0, os.getuid()) and stat.S_IMODE(info.st_mode) & 0o022 == 0,
-                     'ownership')
+                if self.h_mount_identity is not None and current in H_STORE.parents:
+                    # Windows projects 0777 here. Pin these exact root-owned, nofollow
+                    # ancestors; the verified mount and private inner chain own trust.
+                    need(info.st_uid == 0, 'ownership')
+                else:
+                    need(info.st_uid in (0, os.getuid()) and stat.S_IMODE(info.st_mode) & 0o022 == 0,
+                         'ownership')
+                if self.h_mount_identity is not None and (current == H_STORE or current.is_relative_to(H_STORE)):
+                    need(info.st_dev == self.h_mount_identity[0], 'ownership')
             need(os.fstat(fd).st_uid == os.getuid(), 'ownership')
             self.fd = os.open(self.path.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | os.O_CLOEXEC,
                               dir_fd=fd)
@@ -113,6 +141,8 @@ class SourceFence:
             need(stat.S_ISREG(info.st_mode) and info.st_uid == os.getuid() and
                  stat.S_IMODE(info.st_mode) == 0o600 and info.st_nlink == 1 and
                  0 < info.st_size <= MAX_JOURNAL, 'ownership')
+            if self.h_mount_identity is not None:
+                need(info.st_dev == self.h_mount_identity[0], 'ownership')
             self.file_identity = stable_file(info)
             self.checkpoint_sha256, self.image, self.alternate_node, self.api = (
                 checkpoint_sha256, image, alternate_node, api)
@@ -127,11 +157,15 @@ class SourceFence:
 
     def _read(self):
         need(self.fd is not None, 'ownership')
+        if self.h_mount_identity is not None:
+            need(verified_h_boundary() == self.h_mount_identity, 'ownership')
         for path, fd, original in self.anchors:
             actual, opened = path.lstat(), os.fstat(fd)
             need(stat.S_ISDIR(actual.st_mode) and (actual.st_dev, actual.st_ino) ==
                  (opened.st_dev, opened.st_ino) == (original.st_dev, original.st_ino) and
-                 actual.st_uid == original.st_uid and stat.S_IMODE(actual.st_mode) & 0o022 == 0,
+                 actual.st_uid == original.st_uid and
+                 (actual.st_mode == original.st_mode if self.h_mount_identity is not None and path in H_STORE.parents
+                  else stat.S_IMODE(actual.st_mode) & 0o022 == 0),
                  'ownership')
         need(stable_file(self.path.lstat()) == self.file_identity == stable_file(os.fstat(self.fd)), 'ownership')
         os.lseek(self.fd, 0, os.SEEK_SET)

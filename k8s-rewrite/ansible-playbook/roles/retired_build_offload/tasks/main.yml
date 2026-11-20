@@ -1,0 +1,42 @@
+---
+- name: Require explicit exact retired artifact capacity scope
+  ansible.builtin.assert:
+    that:
+      - retired_build_offload_apply | bool
+      - inventory_hostname == 'masternode'
+      - ansible_host == '192.168.0.4'
+      - ansible_user == 'james'
+      - ansible_port | int == 2002
+      - retired_build_offload_mode in ['inspect', 'archive', 'clear-cache']
+      - retired_build_offload_output_dir is match('^/home/brajam/.local/share/branconet-migration/retired-kubectl-offload-20261023[^/\r\n]*$')
+      - retired_build_offload_selected_caches | difference(['b5d6d1', 'f73dc0']) | length == 0
+      - retired_build_offload_mode == 'clear-cache' or retired_build_offload_selected_caches | length == 0
+      - retired_build_offload_mode != 'clear-cache' or retired_build_offload_verified_receipt | length > 0
+      - retired_build_offload_mode != 'clear-cache' or retired_build_offload_reviewed_receipt_sha256 is match('^[0-9a-f]{64}$')
+    fail_msg: Only the two retired public master trees and separately reviewed exact cache selection are supported; apply defaults false.
+
+- name: Run the independent controller helper without logging private credential environment
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - "{{ role_path }}/files/offload.py"
+      - --mode
+      - "{{ retired_build_offload_mode }}"
+      - --output-dir
+      - "{{ retired_build_offload_output_dir }}"
+      - --additional-units-json
+      - "{{ retired_build_offload_additional_units | to_json }}"
+      - --selected-caches-json
+      - "{{ retired_build_offload_selected_caches | to_json }}"
+      - --verified-receipt
+      - "{{ retired_build_offload_verified_receipt }}"
+      - --reviewed-receipt-sha256
+      - "{{ retired_build_offload_reviewed_receipt_sha256 }}"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when: not ansible_check_mode
+
+- name: Report only the operator evidence location
+  ansible.builtin.debug:
+    msg: "Inspect owner-only receipts under {{ retired_build_offload_output_dir }}. Archive never deletes; clear-cache requires the separately reviewed complete verified receipt SHA. No application, original source, output, failure or log deletion is permitted."

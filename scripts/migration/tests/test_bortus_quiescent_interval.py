@@ -22,6 +22,21 @@ m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
 w=m.watch
 
 
+class SnapshotNameCollisionTests(unittest.TestCase):
+ def test_snapshot_name_collision_routes_by_kind(self):
+  c=object.__new__(m.IntervalClient)
+  c.journal=type('Journal',(),{'record':{'holder_proposal':{'metadata':{'name':'bortus-cold-123456abcdef'}},'snapshot_name':'bortus-cold-123456abcdef','backup_name':'backup-123456abcdef'}})()
+  dispatched=[]
+  def dispatch(action,args,body,**kwargs):
+   dispatched.append(action);return dict(body,metadata=dict(body['metadata'],uid='snapshot-uid',resourceVersion='rv'))
+  c._public=dispatch
+  body={'apiVersion':'longhorn.io/v1beta2','kind':'Snapshot','metadata':{'name':'bortus-cold-123456abcdef','namespace':'longhorn-system'},'spec':{}}
+  c.create(body)
+  self.assertEqual(dispatched,['create-snapshot'])
+  body['kind']='Backup'
+  with self.assertRaises(m.Refused):c.create(body)
+  self.assertEqual(dispatched,['create-snapshot'])
+
 @unittest.skipUnless(os.name=='posix','actual POSIX/TLS/owned children required')
 class IntervalTests(unittest.TestCase):
  @classmethod

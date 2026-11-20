@@ -1,0 +1,90 @@
+---
+- name: Point control-plane kubelets at the verified shared API
+  hosts: k8s_nodes
+  become: true
+  gather_facts: false
+  serial: 1
+  any_errors_fatal: true
+  vars_files:
+    - ../group_vars/all.yml
+  vars:
+    api_endpoint: https://k8s-api.branconet.lan:6443
+    kubelet_config: /etc/kubernetes/kubelet.conf
+
+  tasks:
+    - name: Require explicit activation on the known node identities
+      ansible.builtin.assert:
+        that:
+          - kubelet_shared_api_apply | default(false) | bool
+          - inventory_hostname in ['masternode', 'workernode1', 'workernode2']
+
+    - name: Read only the current API endpoint
+      ansible.builtin.command:
+        argv:
+          - kubectl
+          - "--kubeconfig={{ kubelet_config }}"
+          - config
+          - view
+          - --minify
+          - "-o=jsonpath={.clusters[0].cluster.server}"
+      register: current_api
+      changed_when: false
+      failed_when: >-
+        current_api.rc != 0 or
+        current_api.stdout not in [api_endpoint, 'https://' ~ ansible_host ~ ':6443']
+
+    - name: Switch and verify each kubelet independently
+      block:
+        - name: Set the shared endpoint and validate the existing node credential
+          ansible.builtin.replace:
+            path: "{{ kubelet_config }}"
+            regexp: '^([ \t]+)server: https://{{ ansible_host | regex_escape }}:6443$'
+            replace: '\1server: {{ api_endpoint }}'
+            backup: true
+            validate: "kubectl --kubeconfig=%s --request-timeout=6s get node {{ inventory_hostname }} -o name"
+          when: current_api.stdout != api_endpoint
+          register: kubelet_endpoint_change
+          diff: false
+
+        - name: Restart only the changed kubelet
+          ansible.builtin.systemd_service:
+            name: kubelet
+            state: restarted
+          when: kubelet_endpoint_change is changed
+
+        - name: Verify the kubelet credential reaches the shared API
+          ansible.builtin.command:
+            argv:
+              - kubectl
+              - "--kubeconfig={{ kubelet_config }}"
+              - --request-timeout=6s
+              - get
+              - node
+              - "{{ inventory_hostname }}"
+              - -o
+              - name
+          register: verified_api
+          changed_when: false
+          failed_when: verified_api.rc != 0 or verified_api.stdout != ('node/' ~ inventory_hostname)
+
+      rescue:
+        - name: Restore the exact protected worker kubeconfig
+          ansible.builtin.copy:
+            src: "{{ kubelet_endpoint_change.backup_file }}"
+            dest: "{{ kubelet_config }}"
+            remote_src: true
+            owner: root
+            group: root
+            mode: "0600"
+          when: kubelet_endpoint_change is changed
+          diff: false
+
+        - name: Restart the restored kubelet
+          ansible.builtin.systemd_service:
+            name: kubelet
+            state: restarted
+          when: kubelet_endpoint_change is changed
+
+        - name: Stop the rollout after a failed endpoint verification
+          ansible.builtin.fail:
+            msg: The shared API endpoint did not verify for this kubelet.

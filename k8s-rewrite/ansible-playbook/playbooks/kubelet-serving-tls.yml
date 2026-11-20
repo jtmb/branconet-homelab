@@ -1,0 +1,147 @@
+---
+# Make API server -> kubelet connections (logs, exec, attach, port-forward)
+# verify the kubelet identity with the existing Kubernetes cluster CA.
+#
+# Phase "kubelet": enable serverTLSBootstrap one node at a time, approve only
+# that node's validated kubelet-serving CSR, then prove the kubelet presents a
+# cluster-CA certificate valid for its InternalIP.
+# Phase "apiserver": add --kubelet-certificate-authority to each API server
+# serially and prove logs/exec through that specific API server still work.
+# Run phase "kubelet" first. Launch via scripts/migration/run-kubelet-serving-tls.py.
+# Runbook and rollback: docs/CLUSTER-TLS.md.
+- name: Kubelet serving certificates signed by the cluster CA
+  hosts: k8s_nodes
+  gather_facts: false
+  become: true
+  serial: 1
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    repo_root: "{{ playbook_dir }}/../../.."
+    operator_kubectl: /home/brajam/.local/share/branconet-migration/bin/kubectl --kubeconfig /home/brajam/.local/share/branconet-migration/admin.conf --request-timeout=30s
+  tasks:
+    - name: Require an explicit phase and the exported cluster CA
+      ansible.builtin.assert:
+        that:
+          - kubelet_serving_phase in ['kubelet', 'apiserver']
+          - cluster_ca_file is defined
+      delegate_to: localhost
+      become: false
+
+    # ---------------- phase: kubelet ----------------
+    - name: Preserve the original kubelet configuration once
+      ansible.builtin.copy:
+        src: /var/lib/kubelet/config.yaml
+        dest: /var/lib/kubelet/config.yaml.pre-serving-tls
+        remote_src: true
+        force: false
+        mode: "0600"
+      when: kubelet_serving_phase == 'kubelet'
+
+    - name: Enable kubelet serving certificate bootstrap
+      ansible.builtin.lineinfile:
+        path: /var/lib/kubelet/config.yaml
+        regexp: '^serverTLSBootstrap:'
+        line: 'serverTLSBootstrap: true'
+        insertafter: '^rotateCertificates:'
+      register: kubelet_config
+      when: kubelet_serving_phase == 'kubelet'
+
+    - name: Restart kubelet (running pods are not restarted)
+      ansible.builtin.systemd:
+        name: kubelet
+        state: restarted
+      when: kubelet_serving_phase == 'kubelet' and kubelet_config.changed
+
+    - name: Approve this node's validated kubelet-serving CSR
+      ansible.builtin.command: python3 -B {{ repo_root }}/scripts/migration/approve-kubelet-serving-csr.py --node {{ kubernetes_node_name }}
+      delegate_to: localhost
+      become: false
+      register: csr_approval
+      changed_when: "'\"approved\": true' in csr_approval.stdout"
+      when: kubelet_serving_phase == 'kubelet' and kubelet_config.changed
+
+    - name: Kubelet presents a cluster-CA certificate valid for its address
+      ansible.builtin.command: >-
+        openssl s_client -connect {{ ansible_host }}:10250 -CAfile {{ cluster_ca_file }}
+        -verify_return_error -verify_ip {{ ansible_host }} -brief
+      args:
+        stdin: ""
+      delegate_to: localhost
+      become: false
+      register: kubelet_tls
+      retries: 20
+      delay: 3
+      until: kubelet_tls.rc == 0
+      changed_when: false
+      when: kubelet_serving_phase == 'kubelet'
+
+    - name: Node is Ready after the kubelet restart
+      ansible.builtin.command: >-
+        {{ operator_kubectl }} get node {{ kubernetes_node_name }}
+        -o 'jsonpath={.status.conditions[?(@.type=="Ready")].status}'
+      delegate_to: localhost
+      become: false
+      register: node_ready
+      retries: 20
+      delay: 3
+      until: node_ready.stdout == 'True'
+      changed_when: false
+      when: kubelet_serving_phase == 'kubelet'
+
+    # ---------------- phase: apiserver ----------------
+    - name: Every kubelet already serves a cluster-CA certificate
+      ansible.builtin.command: >-
+        openssl s_client -connect {{ hostvars[item].ansible_host }}:10250 -CAfile {{ cluster_ca_file }}
+        -verify_return_error -verify_ip {{ hostvars[item].ansible_host }} -brief
+      args:
+        stdin: ""
+      delegate_to: localhost
+      become: false
+      loop: "{{ groups['k8s_nodes'] }}"
+      changed_when: false
+      when: kubelet_serving_phase == 'apiserver'
+
+    - name: Preserve the original API server manifest outside the manifests directory
+      ansible.builtin.copy:
+        src: /etc/kubernetes/manifests/kube-apiserver.yaml
+        dest: /etc/kubernetes/kube-apiserver.yaml.pre-kubelet-ca
+        remote_src: true
+        force: false
+        mode: "0600"
+      when: kubelet_serving_phase == 'apiserver'
+
+    - name: Verify kubelet serving certificates with the cluster CA
+      ansible.builtin.lineinfile:
+        path: /etc/kubernetes/manifests/kube-apiserver.yaml
+        regexp: '^    - --kubelet-certificate-authority='
+        line: '    - --kubelet-certificate-authority=/etc/kubernetes/pki/ca.crt'
+        insertafter: '^    - --kubelet-client-key='
+      register: apiserver_manifest
+      when: kubelet_serving_phase == 'apiserver'
+
+    - name: Restarted API server carries the flag and is ready
+      ansible.builtin.shell: >-
+        {{ operator_kubectl }} --server https://{{ ansible_host }}:6443 -n kube-system
+        get pod kube-apiserver-{{ kubernetes_node_name }} -o jsonpath='{.spec.containers[0].command}'
+        | grep -q -- '--kubelet-certificate-authority=/etc/kubernetes/pki/ca.crt'
+        && {{ operator_kubectl }} --server https://{{ ansible_host }}:6443 get --raw /readyz
+      delegate_to: localhost
+      become: false
+      register: apiserver_ready
+      retries: 40
+      delay: 5
+      until: apiserver_ready.rc == 0
+      changed_when: false
+      when: kubelet_serving_phase == 'apiserver'
+
+    - name: Logs from every node through this API server
+      ansible.builtin.shell: >-
+        {{ operator_kubectl }} --server https://{{ ansible_host }}:6443 -n kube-system logs --tail=1
+        $({{ operator_kubectl }} -n kube-system get pod -l k8s-app=calico-node
+        --field-selector spec.nodeName={{ hostvars[item].kubernetes_node_name }} -o name) >/dev/null
+      delegate_to: localhost
+      become: false
+      loop: "{{ groups['k8s_nodes'] }}"
+      changed_when: false
+      when: kubelet_serving_phase == 'apiserver'

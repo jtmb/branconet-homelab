@@ -295,17 +295,20 @@ def capture(checkpoint):
         require(checkpoint.cold())
         run_id = checkpoint.r['run_id']
         require(len(run_id) == 12 and all(c in '0123456789abcdef' for c in run_id))
-        nas = '/mnt/container-backups/k8s-migration-20261009/bortus-sqlite-' + run_id + '.age'
-        copy = subprocess.run(['scp', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes',
-            '-P', '2002', result['artifact'], 'james@192.168.0.4:' + nas],
-            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
-        require(copy.returncode == 0)
-        check = subprocess.run(['ssh', '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes',
-            '-p', '2002', 'james@192.168.0.4', 'sha256sum', nas],
-            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=20)
-        require(check.returncode == 0 and len(check.stdout) < 4096 and
-                check.stdout.split()[0].decode('ascii') == result['ciphertext_sha256'])
-        result['nas_artifact'] = nas
+        # Legacy host SMB mounts are retired; send ciphertext through the existing Windows NAS session.
+        helper = pathlib.Path(__file__).with_name('copy-bortus-ciphertext-to-nas.py')
+        windows_helper = subprocess.check_output(['wslpath', '-w', str(helper)], timeout=10).decode().strip()
+        windows_source = '\\\\wsl.localhost\\Ubuntu' + result['artifact'].replace('/', '\\')
+        with open(result['artifact'], 'rb') as ciphertext:
+            copied = subprocess.run(['/mnt/c/Users/james/AppData/Local/Programs/Python/Python312/python.exe',
+                '-I', '-B', windows_helper, '--source', windows_source,
+                '--sha256', result['ciphertext_sha256'], '--run-id', run_id,
+                '--bytes', str(os.fstat(ciphertext.fileno()).st_size)], stdin=ciphertext,
+                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=120)
+        require(copied.returncode == 0 and len(copied.stdout) < 4096)
+        metadata = json.loads(copied.stdout)
+        require(metadata.get('nas_ciphertext_equal') is True and metadata.get('plaintext_persisted') is False)
+        result['nas_artifact'] = metadata['nas_artifact']
         result['nas_ciphertext_equal'] = True
         require(checkpoint.cold())
         return result

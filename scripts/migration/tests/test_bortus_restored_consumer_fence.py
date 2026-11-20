@@ -94,6 +94,17 @@ class FenceTests(unittest.TestCase):
             m.evaluate(self.e, self.o)
         self.assertNotIn('PRIVATE', str(caught.exception))
 
+    def test_113_profile_requires_exact_engine_digest_everywhere(self):
+        self.e['longhorn_version']='1.13.0'
+        engine=m.ENGINE_PROFILES['1.13.0']
+        self.o['volume']['status']['currentImage']=engine
+        for obj in self.o['engines']['items']+self.o['replicas']['items']:
+            obj['spec']['image']=engine
+            obj['status']['currentImage']=engine
+        self.assertTrue(m.evaluate(self.e,self.o).metadata_eligible)
+        self.o['replicas']['items'][0]['status']['currentImage']=m.ENGINE_IMAGE
+        with self.assertRaises(m.Refused):m.evaluate(self.e,self.o)
+
     def test_complete_metadata_not_data_or_runtime(self):
         result = m.evaluate(self.e, self.o)
         self.assertTrue(result.metadata_eligible)

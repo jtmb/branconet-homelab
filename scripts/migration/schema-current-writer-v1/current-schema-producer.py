@@ -104,7 +104,7 @@ def identity(obj):
     return value
 
 
-def snapshot(get, deadline):
+def snapshot(get, deadline, reader_context=None):
     dep = get('/apis/apps/v1/namespaces/bortus/deployments/bortus', deadline)
     claim = get('/api/v1/namespaces/bortus/persistentvolumeclaims/bortus-data', deadline)
     pv = get('/api/v1/persistentvolumes/' + VOLUME, deadline)
@@ -128,6 +128,18 @@ def snapshot(get, deadline):
     consumers = [p for p in pods['items'] if any(
         v.get('persistentVolumeClaim', {}).get('claimName') == 'bortus-data'
         for v in p['spec'].get('volumes', []))]
+    if reader_context is not None:
+        need(type(reader_context) is dict and set(reader_context)=={'name','namespace','uid','spec_sha256'})
+        readers=[p for p in consumers if p['metadata']['uid']==reader_context['uid']]
+        need(len(readers)==1)
+        reader=readers[0];rspec=reader['spec'];cs=rspec.get('containers',[])
+        need(reader['metadata']['name']==reader_context['name'] and reader['metadata']['namespace']==reader_context['namespace']=='bortus'
+             and not reader['metadata'].get('ownerReferences') and rspec.get('automountServiceAccountToken') is False
+             and len(cs)==1 and cs[0].get('command')==['node','-e','setInterval(()=>{},1000)']
+             and all(m.get('readOnly') is True for m in cs[0].get('volumeMounts',[]))
+             and rspec.get('volumes')==[{'name':'data','persistentVolumeClaim':{'claimName':'bortus-data','readOnly':True}}]
+             and hashlib.sha256(json.dumps(rspec,sort_keys=True,separators=(',',':')).encode()).hexdigest()==reader_context['spec_sha256'])
+        consumers=[p for p in consumers if p['metadata']['uid']!=reader_context['uid']]
     need(len(consumers) == 1)
     pod = consumers[0]
     public = identity(pod)
@@ -221,7 +233,7 @@ def node_exec(writer, container, reader, deadline):
                 stream.close()
 
 
-def collect(directory, reader_path, manifest_path, deadline, invocation_started_ns, get, execute=node_exec):
+def collect(directory, reader_path, manifest_path, deadline, invocation_started_ns, get, execute=node_exec, *, reader_context=None):
     """Fresh receipt for this invocation only. Tests inject controlled metadata/exec."""
     left(deadline)
     need(type(invocation_started_ns) is int and 0 < invocation_started_ns <= time.monotonic_ns())
@@ -233,7 +245,7 @@ def collect(directory, reader_path, manifest_path, deadline, invocation_started_
     try:
         initial = os.fstat(root)
         need(initial.st_uid == os.getuid() and stat.S_IMODE(initial.st_mode) == 0o700)
-        before = snapshot(get, deadline)
+        before = snapshot(get, deadline, reader_context)
         raw = execute(before['writer'], before['container'], reader, deadline)
         expected = {'abi': 1, 'node_version': 'v22.23.3', 'read_only_requested': True,
                     'schema_migration_count': 7, 'expected_legacy_migrations': True,
@@ -243,7 +255,7 @@ def collect(directory, reader_path, manifest_path, deadline, invocation_started_
         need(type(raw) is bytes and len(raw) <= 4096)
         parsed = json.loads(raw)
         need(parsed == expected and all(type(parsed[k]) is type(v) for k, v in expected.items()))
-        after = snapshot(get, deadline)
+        after = snapshot(get, deadline, reader_context)
         need(before == after)
         left(deadline)
         receipt = {'abi': 1, 'scope': 'actual-current-writer-schema-metadata-only',

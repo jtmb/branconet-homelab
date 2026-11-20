@@ -1,0 +1,191 @@
+- name: Require the protected pre-change Plex storage receipt
+  ansible.builtin.assert:
+    that:
+      - plex_hardening_baseline_receipt is match('^/mnt/d/Codex/plex-antivirus-20261107/receipts/[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}-plex-baseline\\.json$')
+
+- name: Load the pre-change storage receipt on the controller
+  ansible.builtin.set_fact:
+    plex_hardening_baseline: "{{ lookup('ansible.builtin.file', plex_hardening_baseline_receipt) | from_json }}"
+
+- name: Require a complete Plex config PVC baseline
+  ansible.builtin.assert:
+    that:
+      - plex_hardening_baseline.schema_version == 1
+      - plex_hardening_baseline.plex_storage_baseline.claim_name == 'plex-data-0'
+      - plex_hardening_baseline.plex_storage_baseline.claim_uid is match('^[0-9a-f-]{36}$')
+      - plex_hardening_baseline.plex_storage_baseline.pv_uid is match('^[0-9a-f-]{36}$')
+      - plex_hardening_baseline.plex_storage_baseline.pv_reclaim_policy == 'Retain'
+
+- name: Read live Flux-managed Plex objects and storage metadata
+  ansible.builtin.command:
+    argv: "{{ item }}"
+  loop:
+    - [kubectl, -n, plex, get, deployment, plex, -o, json]
+    - [kubectl, -n, plex, get, pods, -l, app=plex, -o, json]
+    - [kubectl, -n, plex, get, networkpolicy, plex, -o, json]
+    - [kubectl, -n, plex, get, pvc, plex-data-0, -o, json]
+    - [kubectl, get, pv, "{{ plex_hardening_baseline.plex_storage_baseline.pv_name }}", -o, json]
+    - [kubectl, -n, flux-system, get, helmrelease, plex, -o, json]
+  register: plex_hardening_live
+  changed_when: false
+  no_log: true
+
+- name: Decode live metadata without exposing it in the operator log
+  ansible.builtin.set_fact:
+    plex_hardening_deployment: "{{ plex_hardening_live.results[0].stdout | from_json }}"
+    plex_hardening_pods: "{{ plex_hardening_live.results[1].stdout | from_json }}"
+    plex_hardening_network_policy: "{{ plex_hardening_live.results[2].stdout | from_json }}"
+    plex_hardening_pvc: "{{ plex_hardening_live.results[3].stdout | from_json }}"
+    plex_hardening_pv: "{{ plex_hardening_live.results[4].stdout | from_json }}"
+    plex_hardening_release: "{{ plex_hardening_live.results[5].stdout | from_json }}"
+
+- name: Require the single retained Flux-owned Plex release to be Ready
+  ansible.builtin.assert:
+    that:
+      - (plex_hardening_release.status.conditions | selectattr('type', 'equalto', 'Ready') | selectattr('status', 'equalto', 'True') | list | length) == 1
+      - plex_hardening_deployment.spec.replicas | int == 1
+      - plex_hardening_deployment.status.availableReplicas | default(0) | int == 1
+      - plex_hardening_deployment.status.updatedReplicas | default(0) | int == 1
+      - plex_hardening_pods['items'] | length == 1
+      - plex_hardening_pods['items'][0].status.phase == 'Running'
+      - plex_hardening_pods['items'][0].spec.nodeName in (groups['k8s_nodes'] | map('extract', hostvars, 'kubernetes_node_name') | list)
+      - plex_hardening_pods['items'][0].status.containerStatuses | selectattr('name', 'equalto', 'plex') | selectattr('ready', 'equalto', true) | list | length == 1
+      - plex_hardening_pvc.metadata.uid == plex_hardening_baseline.plex_storage_baseline.claim_uid
+      - plex_hardening_pvc.spec.volumeName == plex_hardening_baseline.plex_storage_baseline.pv_name
+      - plex_hardening_pvc.status.phase == 'Bound'
+      - plex_hardening_pv.metadata.uid == plex_hardening_baseline.plex_storage_baseline.pv_uid
+      - plex_hardening_pv.spec.persistentVolumeReclaimPolicy == 'Retain'
+    fail_msg: Plex, the Flux HelmRelease or an original storage identity is not in the expected ready and retained state.
+
+- name: Select the live Plex container and pod template
+  ansible.builtin.set_fact:
+    plex_hardening_container: "{{ plex_hardening_deployment.spec.template.spec.containers | selectattr('name', 'equalto', 'plex') | first }}"
+    plex_hardening_template: "{{ plex_hardening_deployment.spec.template.spec }}"
+
+- name: Derive the Plex release from its pinned image and select its running image ID
+  ansible.builtin.set_fact:
+    plex_hardening_image_version: "{{ plex_hardening_baseline.plex_storage_baseline.image | regex_replace('^.*:([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)-.*$', '\\1') }}"
+    plex_hardening_image_id: "{{ plex_hardening_pods['items'][0].status.containerStatuses | selectattr('name', 'equalto', 'plex') | map(attribute='imageID') | first }}"
+
+- name: Require the intended Plex container isolation contract
+  ansible.builtin.assert:
+    that:
+      - plex_hardening_template.serviceAccountName == 'plex'
+      - not (plex_hardening_template.automountServiceAccountToken | default(true) | bool)
+      - not (plex_hardening_template.hostNetwork | default(false) | bool)
+      - plex_hardening_template.securityContext.seccompProfile.type == 'RuntimeDefault'
+      - plex_hardening_container.securityContext.runAsNonRoot | bool
+      - plex_hardening_container.securityContext.runAsUser | int == 1000
+      - plex_hardening_container.securityContext.runAsGroup | int == 1000
+      - plex_hardening_container.securityContext.allowPrivilegeEscalation is false
+      - plex_hardening_container.securityContext.readOnlyRootFilesystem | bool
+      - "'ALL' in plex_hardening_container.securityContext.capabilities.drop"
+      - plex_hardening_container.image == plex_hardening_baseline.plex_storage_baseline.image
+      - (plex_hardening_container.env | selectattr('name', 'equalto', 'TMPDIR') | map(attribute='value') | first) == '/transcode'
+      - plex_hardening_container.volumeMounts | selectattr('mountPath', 'equalto', '/config') | list | length == 1
+      - plex_hardening_container.volumeMounts | selectattr('mountPath', 'equalto', '/movies') | selectattr('readOnly', 'equalto', true) | list | length == 1
+      - plex_hardening_container.volumeMounts | selectattr('mountPath', 'equalto', '/pvr') | selectattr('readOnly', 'equalto', true) | list | length == 1
+      - plex_hardening_container.volumeMounts | selectattr('mountPath', 'equalto', '/tv') | selectattr('readOnly', 'equalto', true) | list | length == 1
+      - plex_hardening_container.volumeMounts | selectattr('mountPath', 'equalto', '/run') | list | length == 1
+      - plex_hardening_container.volumeMounts | selectattr('mountPath', 'equalto', '/tmp') | list | length == 1
+      - plex_hardening_container.volumeMounts | selectattr('mountPath', 'equalto', '/transcode') | list | length == 1
+      - plex_hardening_template.volumes | selectattr('name', 'equalto', 'data-0') | map(attribute='persistentVolumeClaim.claimName') | first == 'plex-data-0'
+      - plex_hardening_template.volumes | selectattr('name', 'equalto', 'runtime') | map(attribute='emptyDir.medium') | first == 'Memory'
+      - plex_hardening_template.volumes | selectattr('name', 'equalto', 'tmp') | map(attribute='emptyDir') | list | length == 1
+      - plex_hardening_template.volumes | selectattr('name', 'equalto', 'transcode') | map(attribute='emptyDir') | list | length == 1
+    fail_msg: The live Plex Pod template does not match its non-root, read-only, writable-runtime, and retained-volume contract.
+
+- name: Require every declared Plex ingress rule to have a constrained source
+  ansible.builtin.assert:
+    that:
+      - plex_hardening_network_policy.spec.ingress | length == 3
+      - plex_hardening_network_policy.spec.ingress | selectattr('from', 'undefined') | list | length == 0
+      - plex_hardening_network_policy.spec.ingress[0].from[0].ipBlock.cidr == '192.168.0.0/24'
+      - plex_hardening_network_policy.spec.ingress[1].from[0].ipBlock.cidr == '0.0.0.0/0'
+      - plex_hardening_network_policy.spec.ingress[1].from[0].ipBlock.except | sort == ["10.0.0.0/8", "127.0.0.0/8", "169.254.0.0/16", "172.16.0.0/12", "192.168.0.0/16"] | sort
+      - plex_hardening_network_policy.spec.ingress[1].ports | selectattr('port', 'equalto', 32400) | list | length == 1
+      - plex_hardening_network_policy.spec.ingress[1].ports | length == 1
+      - plex_hardening_network_policy.spec.ingress[2].from[0].namespaceSelector is defined
+      - plex_hardening_network_policy.spec.ingress[2].ports | length == 1
+      - plex_hardening_network_policy.spec.ingress[2].ports[0].port == 32400
+    fail_msg: Plex ingress policy is absent or wider than LAN, the remote Plex endpoint, and cluster Pod access to TCP 32400.
+
+- name: Read each managed node's actual Calico tunnel address
+  ansible.builtin.command:
+    argv: [ip, -j, -4, addr, show, dev, tunl0, scope, global]
+  delegate_to: "{{ item }}"
+  loop: "{{ groups['k8s_nodes'] }}"
+  register: plex_hardening_tunnels
+  changed_when: false
+
+- name: Require exactly the current tunnel sources on the Plex TCP rule
+  vars:
+    interface: "{{ item.stdout | from_json | first }}"
+    permitted: "{{ plex_hardening_network_policy.spec.ingress[2].from | selectattr('ipBlock', 'defined') | map(attribute='ipBlock.cidr') | list }}"
+  ansible.builtin.assert:
+    that:
+      - interface.addr_info | length == 1
+      - interface.addr_info[0].prefixlen == 32
+      - permitted | length == groups['k8s_nodes'] | length
+      - (interface.addr_info[0].local ~ '/32') in permitted
+    fail_msg: The Plex NetworkPolicy must match the current Calico tunnel addresses.
+  loop: "{{ plex_hardening_tunnels.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+
+- name: Check actual container identity, writable runtime paths, and Plex account-backed library access
+  ansible.builtin.command:
+    argv:
+      - kubectl
+      - -n
+      - plex
+      - exec
+      - deploy/plex
+      - --
+      - sh
+      - -c
+      - |
+        set -eu
+        echo "uid=$(id -u)"
+        echo "gid=$(id -g)"
+        awk '/^CapEff:/{print "cap_eff=" $2} /^NoNewPrivs:/{print "no_new_privs=" $2}' /proc/1/status
+        awk '$2=="/" { if ($4 ~ /(^|,)ro(,|$)/) print "rootfs=ro"; else print "rootfs=rw" }' /proc/mounts
+        awk '$2=="/run" && $3=="tmpfs" && $4 ~ /(^|,)rw(,|$)/ {ok=1} END {print "run_tmpfs_rw=" (ok?"yes":"no")}' /proc/mounts
+        for p in /config /run /tmp /transcode; do test -w "$p" || exit 20; done
+        for p in /movies /pvr /tv; do test ! -w "$p" || exit 21; done
+        tok="$(sed -n 's/.*PlexOnlineToken="\([^"]*\)".*/\1/p' "/config/Library/Application Support/Plex Media Server/Preferences.xml" | head -1)"
+        test -n "$tok" || exit 22
+        sections="$(printf 'header = "X-Plex-Token: %s"\n' "$tok" | curl --config - --silent --show-error --fail --max-time 12 http://127.0.0.1:32400/library/sections | grep -o '<Directory ' | wc -l)"
+        echo "plex_library_sections=$sections"
+        identity=$(curl --silent --show-error --fail --max-time 8 http://127.0.0.1:32400/identity)
+        printf '%s' "$identity" | grep -q '<MediaContainer' || exit 23
+        echo plex_api=reachable
+  register: plex_hardening_runtime
+  changed_when: false
+  no_log: true
+
+- name: Require the live Plex runtime and existing account-backed library
+  ansible.builtin.assert:
+    that:
+      - plex_hardening_runtime.stdout is search('(?m)^uid=1000$')
+      - plex_hardening_runtime.stdout is search('(?m)^gid=1000$')
+      - plex_hardening_runtime.stdout is search('(?m)^cap_eff=0000000000000000$')
+      - plex_hardening_runtime.stdout is search('(?m)^no_new_privs=1$')
+      - plex_hardening_runtime.stdout is search('(?m)^rootfs=ro$')
+      - plex_hardening_runtime.stdout is search('(?m)^run_tmpfs_rw=yes$')
+      - plex_hardening_runtime.stdout is search('(?m)^plex_library_sections=[1-9][0-9]*$')
+      - plex_hardening_runtime.stdout is search('(?m)^plex_api=reachable$')
+      - plex_hardening_image_version is match('^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$')
+      - plex_hardening_image_id.endswith(plex_hardening_baseline.plex_storage_baseline.image.split('@')[-1])
+    fail_msg: Plex failed its actual UID, capability, filesystem, API-backed library, pinned image, or retained-storage checks.
+
+- name: Report sanitized Plex security and preservation acceptance
+  ansible.builtin.debug:
+    msg:
+      helm_release_ready: true
+      pod_ready: true
+      config_claim_uid_preserved: "{{ plex_hardening_pvc.metadata.uid }}"
+      retained_pv_uid: "{{ plex_hardening_pv.metadata.uid }}"
+      image_version: "{{ plex_hardening_image_version }}"
+      account_backed_library_endpoint: reachable
+

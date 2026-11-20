@@ -53,6 +53,15 @@ def need(value, code):
     if not value: raise OperatorRefused(code)
 
 
+def failure_locations(error):
+    locations = []
+    tb = error.__traceback__
+    while tb:
+        locations.append(pathlib.Path(tb.tb_frame.f_code.co_filename).name + ':' + str(tb.tb_lineno))
+        tb = tb.tb_next
+    return locations[-12:]
+
+
 def alive(deadline):
     now = time.monotonic()
     need(type(deadline) in (int, float) and math.isfinite(deadline) and now < deadline <= now + 300, 'deadline')
@@ -159,14 +168,16 @@ class API:
         return result
 
     def workload(self, method, kind, name=None, body=None, *, deadline, dry_run=False, subresource=''):
-        result, failure = None, None
+        result, failure, locations = None, None, []
         try: result = self._workload(method, kind, name, body, deadline=deadline,
                                     dry_run=dry_run, subresource=subresource)
-        except OperatorRefused as error: failure = error.code
-        except Exception: failure = 'probe'
+        except OperatorRefused as error: failure = error.code; locations = failure_locations(error)
+        except Exception as error: failure = 'probe'; locations = failure_locations(error)
         if failure:
             method = kind = name = body = deadline = result = None
-            raise OperatorRefused(failure)
+            rejection = OperatorRefused(failure)
+            rejection.locations = locations
+            raise rejection
         return result
 
 
@@ -342,11 +353,22 @@ class ProbeRun:
         self.record['operations'][action] = entry; self.save()
         failure = False
         try:
-            reply = dispatch(); identity = validate(reply)
+            reply = dispatch()
+            # Persist an authenticated returned identity before checking server
+            # defaults, so failed normalization does not erase a known create UID.
+            if (type(reply) is tuple and len(reply) == 2 and reply[0] in (200, 201, 202)
+                    and type(reply[1]) is dict and reply[1].get('kind') in ('Pod', 'Deployment')
+                    and not action.endswith('-delete')):
+                entry['returned_identity'] = selected(reply[1])
+                self.save()
+            identity = validate(reply)
             entry.update(state='confirmed', identity=identity); self.save()
             return reply
-        except Exception:
+        except Exception as error:
             failure = True
+            entry['failure_locations'] = getattr(error, 'locations', failure_locations(error))
+            entry['failure_type'] = type(error).__name__
+            entry['failure_code'] = getattr(error, 'code', None)
             entry['state'] = 'uncertain'
             try: self.save()
             except Exception: pass
@@ -379,6 +401,22 @@ def fixture_matches(obj, proposal):
     for key, default in (('dnsPolicy', 'ClusterFirst'), ('schedulerName', 'default-scheduler'), ('preemptionPolicy', 'PreemptLowerPriority')):
         if key in pod: need(pod.pop(key) == default, 'fixture')
     if 'serviceAccount' in pod: need(pod.pop('serviceAccount') == expected_pod['serviceAccountName'], 'fixture')
+    if 'priority' in pod and 'priority' not in expected_pod:
+        need(pod.pop('priority') == 0, 'fixture')
+    if 'tolerations' in pod and 'tolerations' not in expected_pod:
+        defaults = [{'effect': 'NoExecute', 'key': 'node.kubernetes.io/' + condition,
+                     'operator': 'Exists', 'tolerationSeconds': 300}
+                    for condition in ('not-ready', 'unreachable')]
+        actual = pod.pop('tolerations')
+        need(type(actual) is list and sorted(validator.canonical(v) for v in actual) ==
+             sorted(validator.canonical(v) for v in defaults), 'fixture')
+    expected_volumes = {v['name']: v for v in expected_pod.get('volumes', [])}
+    for volume in pod.get('volumes', []):
+        for kind in ('secret', 'projected'):
+            if kind in volume and 'defaultMode' in volume[kind]:
+                expected_volume = expected_volumes.get(volume.get('name'), {}).get(kind, {})
+                if 'defaultMode' not in expected_volume:
+                    need(volume[kind].pop('defaultMode') == 0o644, 'fixture')
     for c in pod.get('containers', []):
         for key, default in (('resources', {}), ('terminationMessagePath', '/dev/termination-log'), ('terminationMessagePolicy', 'File')):
             if key in c: need(c.pop(key) == default, 'fixture')
@@ -448,7 +486,7 @@ class AdmissionOperator:
         try:
             alive(deadline); prepared = self.fence.prepare(deadline=deadline)
             target = prepared['restore_target_name']; seed = prepared['checkpoint_run_id']
-            need(self.contract['protected_pvc_names'] == ['bortus-data', target] and
+            need(self.contract['protected_pvc_names'][:2] == ['bortus-data', target] and
                 type(seed) is str and re.fullmatch('[0-9a-f]{12}',seed), 'source')
             publication, pins, guards = self._publication(prepared, deadline)
             stable_publication = {k:v for k,v in publication.items() if k not in ('guard_pins','flux_owner')}
@@ -484,6 +522,7 @@ class AdmissionOperator:
                     lambda reply,k=kind:admitted(k,reply))
                 fixtures[kind]=selected(reply[1])
             for index,case in enumerate(validator.probe_catalog(self.contract)):
+                run.record['current_case'] = case['case_id']
                 fresh();kind=case['kind'];scenario=case['scenario'];name='bortus-admission-'+seed+'-case-'+str(index)
                 if scenario=='oldObject-reference-removal':
                     current=get('Deployment');old=fixture_matches(current,proposals['Deployment'])
@@ -517,9 +556,15 @@ class AdmissionOperator:
                 run.perform(kind+'-delete',body,lambda k=kind:self.api.workload('DELETE',k,names[k],body,deadline=deadline),
                     lambda reply,k=kind:deleted(reply,self.api,k,names[k],identity,deadline,fresh))
             fresh();run.record['phase']='completed';run.save()
-            result=ProbeResult('record.json',final.guards)
-        except OperatorRefused as error:failure=error.code
-        except Exception:failure='probe'
+            result=ProbeResult('record.json',final.guards,collected_cases=len(final.case_ids))
+        except OperatorRefused as error:
+            failure=error.code
+            if run is not None:run.record['failure_locations']=getattr(error,'locations',failure_locations(error))
+        except Exception as error:
+            failure='probe'
+            if run is not None:
+                run.record['failure_locations']=failure_locations(error)
+                run.record['failure_type']=type(error).__name__
         finally:
             if run is not None:
                 if failure:
@@ -577,7 +622,7 @@ def deleted(reply,api,kind,name,identity,deadline,fresh):
             type(meta)is dict and metadata.text(meta.get('resourceVersion'))and meta.get('continue','')=='' and
             ('remainingItemCount'not in meta or type(meta['remainingItemCount'])is int and meta['remainingItemCount']==0)and
             type(items)is list and len(items)<=10000,'cleanup')
-        need(all(type(item)is dict and item.get('kind')==kind and item.get('apiVersion')==WORKLOADS[kind][0] for item in items),'cleanup')
+        need(all(type(item)is dict and item.get('kind',kind)==kind and item.get('apiVersion',WORKLOADS[kind][0])==WORKLOADS[kind][0] for item in items),'cleanup')
         ids=[selected(item,allow_deleting=True)for item in items]
         need(len({i['name']for i in ids})==len(ids)and len({i['uid']for i in ids})==len(ids),'cleanup')
         need(not any(i['name']==name and i['uid']!=identity['uid']for i in ids),'cleanup')

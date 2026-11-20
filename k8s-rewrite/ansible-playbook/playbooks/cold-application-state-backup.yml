@@ -1,0 +1,7 @@
+---
+- name: Preserve one explicitly selected cold application configuration
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - cold_application_state_backup

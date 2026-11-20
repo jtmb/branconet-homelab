@@ -1,0 +1,12 @@
+[branconet-traefik-lan]
+enabled = true
+filter = branconet-traefik-lan
+backend = polling
+usedns = no
+findtime = 60
+maxretry = 5
+bantime = 300
+bantime.increment = false
+logpath = /run/branconet-traefik-ban/fail2ban-empty.log
+          /var/log/containers/traefik-*_traefik_traefik-*.log tail
+action = branconet-traefik-lan-shared

@@ -1,0 +1,52 @@
+[Unit]
+Description=Independent watchdog outbox delivery (fixed original-destination egress)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=bortus-certificate-watchdog
+Group=bortus-certificate-watchdog
+WorkingDirectory=/var/lib/bortus-certificate-watchdog
+Environment=PYTHONDONTWRITEBYTECODE=1
+UnsetEnvironment=KUBECONFIG HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy
+ExecStartPre=+/usr/bin/python3 -B /usr/local/libexec/bortus-certificate-watchdog/certificate_watchdog_firewall.py start
+ExecStart=/usr/bin/python3 -B /usr/local/libexec/bortus-certificate-watchdog/deliver-certificate-notifications.py --managed-host --watchdog --config /etc/bortus-certificate-watchdog/notifications.json --state-dir /var/lib/bortus-certificate-watchdog --loop
+ExecStopPost=+/usr/bin/python3 -B /usr/local/libexec/bortus-certificate-watchdog/certificate_watchdog_firewall.py stop
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=35
+KillMode=control-group
+UMask=0077
+MemoryMax=128M
+MemorySwapMax=0
+CPUQuota=5%
+TasksMax=32
+LimitCORE=0
+LimitFSIZE=20M
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictRealtime=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_NETLINK
+ReadWritePaths=/var/lib/bortus-certificate-watchdog
+InaccessiblePaths=-/etc/kubernetes -/run/bortus-certificate-watchdog
+# Fixed root pre-start/stop helper owns only this sender's cgroup table,
+# permitting original VIP252/TCP443 and rejecting all other IP egress.
+# No post-DNAT pod address/subnet allowance or caller-supplied destination.
+LogRateLimitIntervalSec=60s
+LogRateLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target

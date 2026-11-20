@@ -1,0 +1,43 @@
+---
+- name: Create versioned staging directory without touching retained state
+  ansible.builtin.file:
+    path: "/opt/containerd-k8s/releases/{{ containerd_version }}"
+    state: directory
+    mode: '0755'
+
+- name: Download the independently checksum-verified security release
+  ansible.builtin.get_url:
+    url: "https://github.com/containerd/containerd/releases/download/{{ containerd_version }}/containerd-static-{{ containerd_version | regex_replace('^v', '') }}-linux-amd64.tar.gz"
+    checksum: "sha256:{{ containerd_sha256 }}"
+    dest: "/opt/containerd-k8s/releases/{{ containerd_version }}/containerd.tar.gz"
+    mode: '0644'
+
+- name: Extract the verified runtime into its versioned directory
+  ansible.builtin.unarchive:
+    src: "/opt/containerd-k8s/releases/{{ containerd_version }}/containerd.tar.gz"
+    dest: "/opt/containerd-k8s/releases/{{ containerd_version }}"
+    remote_src: true
+
+- name: Verify the staged release before installation
+  ansible.builtin.command: "/opt/containerd-k8s/releases/{{ containerd_version }}/bin/containerd --version"
+  register: maintenance_staged_runtime
+  changed_when: false
+
+- name: Require the exact staged version
+  ansible.builtin.assert:
+    that:
+      - maintenance_staged_runtime.stdout.split()[2] == containerd_version
+
+- name: Install runtime files atomically with retained previous binaries
+  ansible.builtin.copy:
+    src: "/opt/containerd-k8s/releases/{{ containerd_version }}/bin/{{ item }}"
+    dest: "/opt/containerd-k8s/bin/{{ item }}"
+    remote_src: true
+    mode: '0755'
+    backup: true
+  loop: [containerd, containerd-shim-runc-v2, ctr]
+
+- name: Restart only the independent Kubernetes runtime
+  ansible.builtin.systemd_service:
+    name: containerd-k8s
+    state: restarted

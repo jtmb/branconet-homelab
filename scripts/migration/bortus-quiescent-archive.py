@@ -23,6 +23,7 @@ def load(name, filename):
     spec.loader.exec_module(module); return module
 
 
+h_source = load('quiescent_archive_h_source', 'bortus-restore-source.py')
 quiescent = load('quiescent_archive_source', 'bortus-quiescent-source.py')
 reader = load('quiescent_archive_reader', 'bortus-restore-reader.py')
 archive = load('quiescent_archive_crypto', 'bortus-sqlite-archive.py')
@@ -80,23 +81,29 @@ class Children:
 
 
 class Pin:
-    def __init__(self, path, maximum, *, parent_mode=0o700):
+    def __init__(self, path, maximum, *, parent_mode=0o700, public_recipient=False):
         self.path, self.fds, self.anchors = pathlib.Path(path), [], []
+        self.h_boundary = None
         try:
             need(self.path.is_absolute() and '..' not in self.path.parts and len(self.path.parts)<=32,'ownership')
-            fd=os.open('/',os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC);self.fds.append(fd);place=pathlib.Path('/')
-            for part in self.path.parts[1:-1]:
+            place=pathlib.Path('/')
+            if self.path.is_relative_to(h_source.H_STORE):
+                self.h_boundary=h_source.verified_h_boundary();place=h_source.H_STORE
+            fd=os.open(place,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC);self.fds.append(fd)
+            for part in self.path.relative_to(place).parts[:-1]:
                 fd=os.open(part,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC,dir_fd=fd);self.fds.append(fd);place/=part
                 i=os.fstat(fd);need(i.st_uid in (0,os.getuid()) and stat.S_IMODE(i.st_mode)&0o022==0,'ownership')
                 self.anchors.append((place,fd,(i.st_dev,i.st_ino,i.st_uid,stat.S_IMODE(i.st_mode))))
             need(os.fstat(fd).st_uid==os.getuid() and stat.S_IMODE(os.fstat(fd).st_mode)==parent_mode,'ownership')
             self.fd=os.open(self.path.name,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK|os.O_CLOEXEC,dir_fd=fd);self.fds.append(self.fd)
-            i=os.fstat(self.fd);need(stat.S_ISREG(i.st_mode) and i.st_uid==os.getuid() and stat.S_IMODE(i.st_mode)==0o600 and i.st_nlink==1 and 0<i.st_size<=maximum,'ownership')
+            i=os.fstat(self.fd);need(stat.S_ISREG(i.st_mode) and i.st_uid==os.getuid() and (stat.S_IMODE(i.st_mode)==0o600 or (public_recipient is True and self.path==pathlib.Path.home()/'.ssh/id_ed25519.pub' and stat.S_IMODE(i.st_mode)==0o644)) and i.st_nlink==1 and 0<i.st_size<=maximum,'ownership')
             self.identity=reader.credentials.fingerprint(i);self.check()
         except Exception:
             self.close();raise
 
-    def check(self): reader.check_pinned(self.path,self.fd,self.identity,self.anchors)
+    def check(self):
+        if self.h_boundary is not None:need(h_source.verified_h_boundary()==self.h_boundary,'ownership')
+        reader.check_pinned(self.path,self.fd,self.identity,self.anchors)
     @property
     def child_path(self): return '/proc/'+str(os.getpid())+'/fd/'+str(self.fd)
     def close(self):
@@ -164,12 +171,24 @@ finally:
 
 
 def binary(name):
-    path=RUNTIME/'bin'/name;place=pathlib.Path('/')
-    for part in path.parts[1:-1]:
+    path=RUNTIME/'bin'/name
+    resolved=path.resolve(strict=True)
+    store=pathlib.Path('/mnt/h/AgentArtifacts/projects/storage-migration/builds/linux-tree-store/files')
+    place=pathlib.Path('/')
+    if resolved != path:
+        need(name in ('kubectl','age','ssh') and resolved==store/'swarm-history/bin'/name and store.is_mount() and store.resolve()==store,'ownership')
+        found=subprocess.run(['findmnt','--json','--target',str(store),'--output','TARGET,FSTYPE,UUID'],capture_output=True,timeout=10)
+        need(found.returncode==0 and len(found.stdout)<16384,'ownership')
+        need(json.loads(found.stdout)['filesystems']==[{'target':str(store),'fstype':'ext4','uuid':'b2a13cbb-1f20-4dac-acba-49d7367632a0'}],'ownership')
+        info=store.lstat();need(info.st_uid==0 and not info.st_mode&0o022,'ownership')
+        path=resolved;place=store
+    elif path.is_relative_to(h_source.H_STORE):
+        h_source.verified_h_boundary();place=h_source.H_STORE
+    for part in path.relative_to(place).parts[:-1]:
         place/=part;i=place.lstat()
-        need(stat.S_ISDIR(i.st_mode) and i.st_uid in(0,os.getuid()) and stat.S_IMODE(i.st_mode)&0o022==0,'ownership')
+        need(stat.S_ISDIR(i.st_mode) and i.st_uid in(0,os.getuid()) and not i.st_mode&0o022,'ownership')
     i=path.lstat();need(stat.S_ISREG(i.st_mode) and i.st_uid==os.getuid() and i.st_nlink==1 and
-        stat.S_IMODE(i.st_mode)&0o022==0 and stat.S_IMODE(i.st_mode)&0o100,'ownership')
+        not i.st_mode&0o022 and i.st_mode&0o100,'ownership')
     return path
 
 
@@ -350,8 +369,31 @@ def _copy_nas_cipher(cipher,run_id,expected_sha,deadline,children,*,cifs_ciphert
     return NAS_ROOT+'/'+name
 
 
+def copy_nas_windows(cipher,run_id,digest,deadline,operation):
+    cipher.check();size=os.fstat(cipher.fd).st_size
+    need(cipher.path==operation.journal.directory/'sqlite-files.age' and 0<size<=513*1024**2,'nas')
+    helper=pathlib.Path(__file__).with_name('copy-bortus-ciphertext-to-nas.py')
+    helper_sha=hashlib.sha256(helper.read_bytes()).hexdigest()
+    windows_helper=subprocess.check_output(['wslpath','-w',str(helper)],timeout=10).decode().strip()
+    source='\\\\wsl.localhost\\Ubuntu'+str(cipher.path).replace('/','\\')
+    intent=NasIntent(operation,{'transport':'existing-Windows-UNC-stdin','helper_sha256':helper_sha},'bortus-sqlite-'+run_id+'.age',size,digest)
+    try:
+        os.lseek(cipher.fd,0,os.SEEK_SET)
+        copied=subprocess.run(['/mnt/c/Users/james/AppData/Local/Programs/Python/Python312/python.exe','-I','-B',windows_helper,
+            '--source',source,'--sha256',digest,'--run-id',run_id,'--bytes',str(size)],stdin=cipher.fd,
+            stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,timeout=min(120,remaining(deadline)))
+        need(copied.returncode==0 and len(copied.stdout)<4096,'nas')
+        result=json.loads(copied.stdout)
+        need(result.get('nas_ciphertext_equal') is True and result.get('plaintext_persisted') is False and result.get('bytes')==size,'nas')
+        cipher.check();need(hashlib.sha256(helper.read_bytes()).hexdigest()==helper_sha,'ownership')
+        intent.finish('confirmed',result)
+        return result['nas_artifact']
+    except Exception:
+        intent.finish('uncertain-inspect-before-any-retry')
+        raise
+
 class QuiescentArchive:
-    def __init__(self,options,kubeconfig_path,recipient_path,identity_path,*,quiescent_module=None,cifs_ciphertext_nas=False,ssh_sha256=None):
+    def __init__(self,options,kubeconfig_path,recipient_path,identity_path,*,quiescent_module=None,cifs_ciphertext_nas=False,ssh_sha256=None,windows_ciphertext_nas=False):
         need(type(options)is credentials.OperatorMTLSOptions and options.path==pathlib.Path(kubeconfig_path),'configuration')
         selected=quiescent if quiescent_module is None else quiescent_module
         need(type(selected)is types.ModuleType and pathlib.Path(selected.__file__).resolve()==
@@ -361,6 +403,8 @@ class QuiescentArchive:
         self.options,self.config=options,pathlib.Path(kubeconfig_path)
         self.recipient,self.identity=pathlib.Path(recipient_path),pathlib.Path(identity_path)
         need(type(cifs_ciphertext_nas)is bool and(not cifs_ciphertext_nas or type(ssh_sha256)is str and re.fullmatch('[0-9a-f]{64}',ssh_sha256)),'configuration')
+        need(type(windows_ciphertext_nas)is bool and not(windows_ciphertext_nas and cifs_ciphertext_nas),'configuration')
+        self.windows_ciphertext_nas=windows_ciphertext_nas
         self.cifs_ciphertext_nas,self.ssh_sha256=cifs_ciphertext_nas,ssh_sha256
         self.attempted=False
 
@@ -378,7 +422,8 @@ class QuiescentArchive:
                     pod['metadata']['namespace']=='bortus','holder')
                 remaining(deadline);return pod
             pod=fresh();holder={k:pod['metadata'][k]for k in('name','namespace','uid','resourceVersion')}
-            for path in(self.recipient,self.identity):pins.append(Pin(path,65536))
+            pins.append(Pin(self.recipient,65536,public_recipient=True))
+            pins.append(Pin(self.identity,65536))
             config_fd,descriptors,anchors,config_identity=reader.pin_config(self.config)
             context,headers=self.options();context=headers=None
             current=fresh();need(all(current['metadata'][k]==holder[k] for k in holder),'holder')
@@ -401,13 +446,20 @@ class QuiescentArchive:
             for pin in pins:pin.check()
             fresh();reader.check_pinned(self.config,config_fd,config_identity,anchors)
             cipher=Pin(target,archive.MAX_TOTAL+1048576);pins.append(cipher)
-            result['nas_artifact']=copy_nas(cipher,run_id,result['ciphertext_sha256'],deadline,children,
-                **({'cifs_ciphertext':True,'operation':operation,'ssh_sha256':self.ssh_sha256}if self.cifs_ciphertext_nas else{}))
+            if self.windows_ciphertext_nas:
+                result['nas_artifact']=copy_nas_windows(cipher,run_id,result['ciphertext_sha256'],deadline,operation)
+            else:
+                result['nas_artifact']=copy_nas(cipher,run_id,result['ciphertext_sha256'],deadline,children,
+                    **({'cifs_ciphertext':True,'operation':operation,'ssh_sha256':self.ssh_sha256}if self.cifs_ciphertext_nas else{}))
             result['nas_ciphertext_equal']=True;fresh()
             for pin in pins:pin.check()
             remaining(deadline)
-        except Refused as error:failure=error.code
-        except Exception:failure='archive'
+        except Exception as error:
+            failure=error.code if isinstance(error,Refused) else 'archive'
+            locations=[];tb=error.__traceback__
+            while tb:locations.append(pathlib.Path(tb.tb_frame.f_code.co_filename).name+':'+str(tb.tb_lineno));tb=tb.tb_next
+            operation.r['archive_failure_detail']={'type':type(error).__name__,'code':failure,'locations':locations[-12:]}
+            operation.journal.save()
         finally:
             try:children(source)
             except Exception:failure='cleanup'

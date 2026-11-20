@@ -11,6 +11,8 @@ from urllib.parse import parse_qs, urlsplit
 
 
 LONGHORN_VERSION = "1.12.1"
+CURRENT_LONGHORN_VERSION = "1.13.0"
+SUPPORTED_SOURCE_COMMITS = {"1.12.1": "8320238242e8c804325d9588ec1db10feb9f36b8", "1.13.0": "20d9c0790312b45aafd5668674e73dbf2eba1832"}
 API_VERSION = "longhorn.io/v1beta2"
 SOURCE_COMMIT = "8320238242e8c804325d9588ec1db10feb9f36b8"
 MAX_EVENTS = 256
@@ -174,7 +176,7 @@ def evaluate_restore_transition(expected, events, *, watch_started_before_create
     or continuity. Never use this return value alone to authorize a holder or deploy.
     """
     _require(watch_started_before_create is True, "watch_prerequisite")
-    _require(longhorn_version == LONGHORN_VERSION and api_version == API_VERSION,
+    _require(longhorn_version in SUPPORTED_SOURCE_COMMITS and api_version == API_VERSION,
              "schema_scope")
     _expected(expected)
     _require(type(events) in (list, tuple) and 1 <= len(events) <= MAX_EVENTS, "event_bound")

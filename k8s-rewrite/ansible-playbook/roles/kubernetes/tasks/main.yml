@@ -61,19 +61,20 @@
         advertiseAddress: {{ ansible_host }}
         bindPort: 6443
       nodeRegistration:
-        name: {{ inventory_hostname }}
+        name: {{ kubernetes_node_name | default(inventory_hostname) }}
         criSocket: {{ containerd_socket }}
       ---
       apiVersion: kubeadm.k8s.io/v1beta4
       kind: ClusterConfiguration
       clusterName: {{ cluster_name }}
       kubernetesVersion: {{ k8s_version }}
-      controlPlaneEndpoint: {{ hostvars[groups['master'][0]].ansible_host }}:6443
+      controlPlaneEndpoint: {{ ((kubernetes_control_plane_hostname | default(hostvars[groups['master'][0]].ansible_host, true)) ~ ':6443') | to_json }}
       networking:
         podSubnet: {{ pod_network_cidr }}
         serviceSubnet: {{ service_cidr }}
         dnsDomain: {{ cluster_domain }}
       apiServer:
+        certSANs: {{ ([kubernetes_control_plane_hostname] if kubernetes_control_plane_hostname | default('') else []) | to_json }}
         extraArgs:
           - name: encryption-provider-config
             value: /etc/kubernetes/encryption-config.json
@@ -109,14 +110,14 @@
   run_once: true
 
 - name: Join workers once using their actual addresses
-  ansible.builtin.command: "{{ worker_join.stdout }} --cri-socket={{ containerd_socket }} --node-name={{ inventory_hostname }}"
+  ansible.builtin.command: "{{ worker_join.stdout }} --cri-socket={{ containerd_socket }} --node-name={{ kubernetes_node_name | default(inventory_hostname) }}"
   args:
     creates: /etc/kubernetes/kubelet.conf
   no_log: true
   when: inventory_hostname in groups['worker']
 
 - name: Allow workloads on the retained control-plane host
-  ansible.builtin.command: kubectl --kubeconfig=/etc/kubernetes/admin.conf taint node masternode node-role.kubernetes.io/control-plane:NoSchedule-
+  ansible.builtin.command: kubectl --kubeconfig=/etc/kubernetes/admin.conf taint node {{ kubernetes_node_name | default(inventory_hostname) }} node-role.kubernetes.io/control-plane:NoSchedule-
   register: remove_taint
   changed_when: remove_taint.rc == 0
   failed_when: remove_taint.rc != 0 and 'not found' not in remove_taint.stderr

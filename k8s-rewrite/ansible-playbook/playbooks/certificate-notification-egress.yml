@@ -1,0 +1,61 @@
+---
+- name: Repair only the owned notifier's post-DNAT egress enforcement
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+  tasks:
+    - name: Require reviewed fixed host and previous unit hash
+      ansible.builtin.assert:
+        that:
+          - kubernetes_node_name == 'node02'
+          - notifier_previous_unit_sha256 is match('^[a-f0-9]{64}$')
+    - name: Inspect the exact previous notifier files
+      ansible.builtin.stat:
+        path: "{{ item }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop:
+        - /etc/systemd/system/bortus-certificate-notifications.service
+        - /etc/systemd/system/bortus-certificate-notifications.service.d/destination.conf
+        - /usr/local/libexec/bortus-certificate-monitor/certificate_notification_firewall.py
+      register: notifier_egress_before
+    - name: Refuse unknown unit, drop-in or existing helper
+      ansible.builtin.assert:
+        that:
+          - notifier_egress_before.results[0].stat.uid == 0
+          - notifier_egress_before.results[0].stat.checksum == notifier_previous_unit_sha256
+          - notifier_egress_before.results[1].stat.uid == 0
+          - notifier_egress_before.results[1].stat.checksum == notifier_previous_dropin_sha256
+          - not notifier_egress_before.results[2].stat.exists
+    - name: Stop only the notifier while preserving its database and backoff
+      ansible.builtin.systemd_service:
+        name: bortus-certificate-notifications.service
+        state: stopped
+    - name: Install the fixed root-owned cgroup policy helper
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../scripts/migration/certificate_notification_firewall.py"
+        dest: /usr/local/libexec/bortus-certificate-monitor/certificate_notification_firewall.py
+        owner: root
+        group: root
+        mode: "0644"
+    - name: Install reviewed original-destination notifier unit
+      ansible.builtin.copy:
+        src: bortus-certificate-notifications.service
+        dest: /etc/systemd/system/bortus-certificate-notifications.service
+        owner: root
+        group: root
+        mode: "0644"
+    - name: Remove only the verified obsolete VIP-only drop-in
+      ansible.builtin.file:
+        path: /etc/systemd/system/bortus-certificate-notifications.service.d/destination.conf
+        state: absent
+    - name: Validate and reload without starting the repaired service
+      ansible.builtin.command:
+        argv: [systemd-analyze, verify, /etc/systemd/system/bortus-certificate-notifications.service]
+      changed_when: false
+    - name: Reload only unit definitions
+      ansible.builtin.systemd_service:
+        daemon_reload: true

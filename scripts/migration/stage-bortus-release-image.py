@@ -21,6 +21,11 @@ MAX_ARCHIVE = 4 * 1024 ** 3
 MAX_MEMBERS = 4096
 MAX_METADATA = 8 * 1024 ** 2
 HOSTS = ('192.168.0.4', '192.168.0.5', '192.168.0.6')
+QUALIFIED_SOURCE = '12dce115006877fed2c674cad1ffd40805932974'
+QUALIFIED_TREE = '1dc8699dc4749bd724ad6759025305f01af8df55'
+QUALIFIED_ARCHIVE = 'cf0d950a263b4ae63911f51560980fdce2211f7836852495bc2f189523e934dc'
+QUALIFIED_MANIFEST = 'sha256:ac261f9cc146171469dd9bd660acae39ae9563656a9a873e0fa251d4b2fda58b'
+QUALIFIED_CONFIG = 'sha256:42e3a1a9e6fe5cd3c9912262b0cbeaca9a8cdff7b7b1891392eb100127d84698'
 
 
 def require(ok, code): b.require(ok, code)
@@ -266,6 +271,118 @@ def archive_identity(stream, tag, config_id, labels, *, allow_repeated_layers=Fa
             'layer_blob_digests': blob_ids, 'ordered_diff_ids': ordered}
 
 
+def qualified_oci_identity(archive_path, qualification_path, checkout):
+    """Bind the unchanged qualified OCI input; no build, load, tag or publication.
+
+    The older export/preload path intentionally still requires its build receipt.
+    This distinct read-only path never fabricates that receipt or image labels.
+    """
+    archive_path, qualification_path, checkout = map(pathlib.Path, (archive_path, qualification_path, checkout))
+    require(archive_path.is_absolute() and qualification_path.is_absolute() and checkout.is_absolute(), 'qualified_paths')
+    with qualification_path.open('rb') as source:
+        raw = source.read(MAX_METADATA + 1)
+    require(len(raw) <= MAX_METADATA, 'qualified_receipt_bound')
+    qualification = json.loads(raw, object_pairs_hook=b.unique)
+    expected = qualification.get('image', {})
+    require(qualification.get('source') == QUALIFIED_SOURCE and qualification.get('inputs') == 1002 and
+            expected.get('sha256') == QUALIFIED_ARCHIVE and expected.get('manifest') == QUALIFIED_MANIFEST and
+            expected.get('config') == QUALIFIED_CONFIG and expected.get('bytes') == 497920000 and
+            expected.get('layers') == 9, 'qualified_receipt')
+    git_command, git_checkout = ['git'], str(checkout)
+    # Use the checkout's native filesystem client. Linux Git can spend its entire
+    # deadline statting this existing Windows checkout through DrvFS/OneDrive.
+    windows_git = pathlib.Path('/mnt/c/Program Files/Git/cmd/git.exe')
+    if os.name == 'posix' and str(checkout).startswith('/mnt/c/') and windows_git.is_file():
+        converted = subprocess.run(['wslpath', '-w', str(checkout)], stdin=subprocess.DEVNULL,
+                                   capture_output=True, timeout=10, check=True)
+        git_command, git_checkout = [str(windows_git)], converted.stdout.decode().strip()
+    def git(*args):
+        result = subprocess.run([*git_command, '-C', git_checkout, *args], stdin=subprocess.DEVNULL,
+                                capture_output=True, timeout=30, check=False)
+        require(result.returncode == 0 and len(result.stdout) <= MAX_METADATA, 'qualified_source')
+        return result.stdout.strip()
+    require(git('rev-parse', QUALIFIED_SOURCE + ':k8s-rewrite/front-end').decode('ascii') == QUALIFIED_TREE,
+            'qualified_tree')
+    git('diff', '--quiet', '--no-ext-diff', '--no-textconv', QUALIFIED_SOURCE, '--', 'k8s-rewrite/front-end')
+    git('diff', '--cached', '--quiet', '--no-ext-diff', '--no-textconv', QUALIFIED_SOURCE, '--', 'k8s-rewrite/front-end')
+    fd = os.open(archive_path, os.O_RDONLY | os.O_NOFOLLOW | os.O_CLOEXEC)
+    with os.fdopen(fd, 'rb') as stream:
+        before = os.fstat(stream.fileno())
+        require(stat.S_ISREG(before.st_mode) and before.st_size == expected['bytes'], 'qualified_archive_file')
+        require(b.stream_hash(stream) == QUALIFIED_ARCHIVE, 'qualified_archive_hash')
+        stream.seek(0); files = {}; metadata = {}; names = set(); total = 0
+        with tarfile.open(fileobj=stream, mode='r|', tarinfo=ImageTarInfo) as archive:
+            for member in archive:
+                path_ok(member.name)
+                require(member.name not in names and len(names) < MAX_MEMBERS and member.isfile() and
+                        not member.linkname and not member.pax_headers, 'qualified_archive_member')
+                names.add(member.name); total += member.size
+                require(total <= MAX_ARCHIVE, 'qualified_archive_total')
+                payload = archive.extractfile(member); hashed = hashlib.sha256()
+                value = bytearray() if member.size <= MAX_METADATA else None
+                with payload:
+                    for chunk in iter(lambda: payload.read(65536), b''):
+                        hashed.update(chunk)
+                        if value is not None: value.extend(chunk)
+                files[member.name] = (member.offset_data, member.size, hashed.hexdigest())
+                if value is not None: metadata[member.name] = bytes(value)
+            while True:
+                raw = archive.fileobj.read(65536)
+                if not raw: break
+                require(not any(raw), 'qualified_archive_trailing')
+        def document(name):
+            require(name in metadata, 'qualified_metadata_missing')
+            return json.loads(metadata[name], object_pairs_hook=b.unique)
+        def blob(descriptor, media):
+            require(type(descriptor) is dict and set(descriptor) <= {'digest', 'size', 'mediaType', 'platform'} and
+                    descriptor.get('mediaType') == media and type(descriptor.get('digest')) is str and
+                    re.fullmatch(r'sha256:[0-9a-f]{64}', descriptor['digest']) and
+                    type(descriptor.get('size')) is int and descriptor['size'] >= 0, 'qualified_descriptor')
+            name = 'blobs/sha256/' + descriptor['digest'][7:]
+            require(name in files and files[name][1:] == (descriptor['size'], descriptor['digest'][7:]), 'qualified_blob')
+            return name
+        require(document('oci-layout') == {'imageLayoutVersion': '1.0.0'}, 'qualified_layout')
+        index = document('index.json')
+        require(type(index) is dict and index.get('schemaVersion') == 2 and
+                type(index.get('manifests')) is list and len(index['manifests']) == 1 and
+                index['manifests'][0].get('digest') == QUALIFIED_MANIFEST and
+                index['manifests'][0].get('platform') == {'os': 'linux', 'architecture': 'amd64'}, 'qualified_index')
+        manifest = document(blob(index['manifests'][0], 'application/vnd.oci.image.manifest.v1+json'))
+        require(manifest.get('schemaVersion') == 2 and manifest.get('mediaType') ==
+                'application/vnd.oci.image.manifest.v1+json' and
+                manifest.get('config', {}).get('digest') == QUALIFIED_CONFIG and
+                type(manifest.get('layers')) is list and len(manifest['layers']) == 9, 'qualified_manifest')
+        config = document(blob(manifest['config'], 'application/vnd.oci.image.config.v1+json'))
+        labels = config.get('config', {}).get('Labels', {})
+        require(config.get('os') == 'linux' and config.get('architecture') == 'amd64' and
+                config.get('config', {}).get('User') == '1000:1000' and
+                labels.get('org.opencontainers.image.revision') == QUALIFIED_SOURCE and
+                labels.get('io.branconet.bortus.build-id') == expected.get('buildID') and
+                labels.get('io.branconet.bortus.source-manifest-sha256') == qualification.get('sourceManifestSHA256'),
+                'qualified_config')
+        ordered, layer_paths, expanded = [], [], 0
+        for descriptor in manifest['layers']:
+            name = blob(descriptor, 'application/vnd.oci.image.layer.v1.tar+gzip'); layer_paths.append(name)
+            hashed = hashlib.sha256()
+            with gzip.GzipFile(fileobj=MemberSlice(stream, files[name][0], files[name][1]), mode='rb') as layer:
+                for chunk in iter(lambda: layer.read(65536), b''):
+                    expanded += len(chunk); require(expanded <= MAX_ARCHIVE, 'qualified_expansion'); hashed.update(chunk)
+            ordered.append('sha256:' + hashed.hexdigest())
+        require(config.get('rootfs') == {'type': 'layers', 'diff_ids': ordered}, 'qualified_diff_ids')
+        require(names == {'oci-layout', 'index.json', 'blobs/sha256/' + QUALIFIED_MANIFEST[7:],
+                          'blobs/sha256/' + QUALIFIED_CONFIG[7:], *layer_paths}, 'qualified_members')
+        after = os.fstat(stream.fileno())
+        require((before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns, before.st_ctime_ns) ==
+                (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns, after.st_ctime_ns), 'qualified_stability')
+    return {'scope': 'Existing qualified OCI graph/source binding only; no runtime/publication/deployment acceptance',
+            'source_commit': QUALIFIED_SOURCE, 'application_tree': QUALIFIED_TREE,
+            'archive_sha256': QUALIFIED_ARCHIVE, 'archive_bytes': before.st_size,
+            'selected_manifest_digest': QUALIFIED_MANIFEST, 'config_image_id': QUALIFIED_CONFIG,
+            'layer_blob_digests': [d['digest'] for d in manifest['layers']], 'ordered_diff_ids': ordered,
+            'labels': labels, 'ordered_diff_ids_verified': True, 'rebuilt': False,
+            'image_loaded': False, 'image_published': False, 'deployed': False}
+
+
 def inspect_command(tag, labels=None, local=False):
     template = '{' + json.dumps('local_image_id' if local else 'config_image_id') + ':{{json .Id}},"labels":{' + ','.join(
         json.dumps(k) + ':{{json (index .Config.Labels ' + json.dumps(k) + ')}}' for k in (labels or b.LABEL_KEYS)) + '}}'
@@ -444,12 +561,21 @@ def preload(build_receipt, receipt_sha, export_receipt, export_sha, commit, conf
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('operation', choices=('export', 'preload'))
+    parser = argparse.ArgumentParser(description=__doc__); parser.add_argument('operation', choices=('export', 'preload', 'verify-qualified'))
     for name in ('build-receipt', 'receipt-sha256', 'source-commit', 'runtime-parent'):
-        parser.add_argument('--' + name, required=True)
+        parser.add_argument('--' + name)
+    parser.add_argument('--qualified-receipt'); parser.add_argument('--archive'); parser.add_argument('--source-checkout')
     parser.add_argument('--config-image-id'); parser.add_argument('--local-image-id')
     parser.add_argument('--export-receipt'); parser.add_argument('--export-sha256'); parser.add_argument('--attempt-id'); args = parser.parse_args()
     try:
+        if args.operation == 'verify-qualified':
+            require(all((args.qualified_receipt, args.archive, args.source_checkout)) and
+                    not any((args.build_receipt, args.receipt_sha256, args.source_commit, args.runtime_parent,
+                             args.config_image_id, args.local_image_id, args.export_receipt, args.export_sha256, args.attempt_id)),
+                    'qualified_arguments')
+            print(json.dumps(qualified_oci_identity(args.archive, args.qualified_receipt, args.source_checkout))); return 0
+        require(all((args.build_receipt, args.receipt_sha256, args.source_commit, args.runtime_parent)) and
+                not any((args.qualified_receipt, args.archive, args.source_checkout)), 'operation_arguments')
         require((args.config_image_id is None) != (args.local_image_id is None), 'image_identity_argument')
         require(args.operation == 'export' or args.local_image_id is None, 'preload_config_identity')
         values = [args.build_receipt, args.receipt_sha256, args.source_commit,
@@ -463,7 +589,11 @@ def main():
                 args.source_commit, args.config_image_id, args.runtime_parent, request.pop('sudo_password'), attempt_id=args.attempt_id)
             raw = None
         print(json.dumps({k: result[k] for k in ('phase', 'source_commit', 'image_tag', 'config_image_id', 'runtime_qualified', 'deployed')})); return 0
-    except Exception:
+    except Exception as error:
+        if args.operation == 'verify-qualified':
+            code = error.code if isinstance(error, b.BuildRefused) else (
+                'qualified_source_timeout' if isinstance(error, subprocess.TimeoutExpired) else 'qualified_verification_error')
+            print('Read-only qualified OCI verification failed: ' + code, file=__import__('sys').stderr); return 1
         print('Image staging refused or uncertain; inspect protected receipts without replay.', file=__import__('sys').stderr); return 1
 
 

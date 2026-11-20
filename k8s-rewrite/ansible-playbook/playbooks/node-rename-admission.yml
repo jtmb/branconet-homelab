@@ -1,0 +1,56 @@
+---
+- name: Evaluate Longhorn storage before renaming a node
+  hosts: master
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+
+  tasks:
+    - name: Require an exact existing Kubernetes node identity
+      ansible.builtin.assert:
+        that:
+          - rename_candidate_node is defined
+          - rename_candidate_node in (groups['master'] + groups['worker'])
+
+    - name: Find workloads and storage that depend on the retiring identity
+      ansible.builtin.command:
+        argv:
+          - python3
+          - -B
+          - -c
+          - "{{ lookup('ansible.builtin.file', 'files/node-rename-dependencies.py') }}"
+          - "{{ rename_candidate_node }}"
+      register: rename_dependencies
+      changed_when: false
+
+    - name: Report identity dependencies without printing Pod specifications
+      ansible.builtin.debug:
+        msg: "{{ rename_dependencies.stdout | from_json }}"
+
+    - name: Project replica placement on the surviving nodes
+      ansible.builtin.command:
+        argv:
+          - python3
+          - -c
+          - "{{ lookup('ansible.builtin.file', 'files/node-rename-capacity.py') }}"
+          - "{{ rename_candidate_node }}"
+      register: rename_capacity
+      changed_when: false
+      failed_when: false
+
+    - name: Report the projected capacity and reject an unsafe candidate
+      ansible.builtin.assert:
+        that:
+          - rename_capacity.rc == 0
+        success_msg: "{{ rename_capacity.stdout }}"
+        fail_msg: "{{ rename_capacity.stdout }} {{ rename_capacity.stderr }}"
+
+    - name: Require a separately verified transition for identity-bound resources
+      vars:
+        dependencies: "{{ rename_dependencies.stdout | from_json }}"
+      ansible.builtin.assert:
+        that:
+          - dependencies.hard_workloads | length == 0
+          - dependencies.unmanaged_pods | length == 0
+          - dependencies.pinned_volumes | length == 0
+        fail_msg: Resolve the reported workload, local Pod state, and PV dependencies before changing the node identity.

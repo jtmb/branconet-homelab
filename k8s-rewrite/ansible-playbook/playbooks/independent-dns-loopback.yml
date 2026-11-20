@@ -1,0 +1,94 @@
+---
+- name: Start the standalone DNS resolver on the worker loopback
+  hosts: workernode2
+  gather_facts: false
+  any_errors_fatal: true
+  become: true
+  tasks:
+    - name: Keep the local resolver image available across restarts
+      ansible.builtin.import_tasks: independent-dns-pin-image.tasks.yml
+      vars:
+        independent_dns_image: docker.io/pihole/pihole@sha256:d34134716fc32038b052a8674c7c6879e0ff21f0e6d8af345166fffa2c27c113
+
+    - name: Record the current loopback service status
+      ansible.builtin.command:
+        argv: [systemctl, is-active, branconet-independent-dns-loopback.service]
+      register: independent_dns_previous
+      changed_when: false
+      failed_when: independent_dns_previous.rc not in [0, 3, 4]
+
+    - name: Install the loopback resolver launcher
+      ansible.builtin.copy:
+        src: independent-dns-loopback.py
+        dest: /usr/local/libexec/branconet-independent-dns-loopback
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Install the independent resolver service
+      ansible.builtin.copy:
+        src: branconet-independent-dns-loopback.service
+        dest: /etc/systemd/system/branconet-independent-dns-loopback.service
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Start and qualify the loopback resolver
+      block:
+        - name: Start the loopback service
+          ansible.builtin.systemd_service:
+            name: branconet-independent-dns-loopback.service
+            daemon_reload: true
+            state: started
+
+        - name: Verify a local address from staged state
+          ansible.builtin.command:
+            argv: [dig, '@127.0.0.1', -p, '10554', k8s-api.branconet.lan, A,
+                   '+short', '+time=2', '+tries=1']
+          register: independent_dns_answer
+          changed_when: false
+          retries: 8
+          delay: 1
+          until: independent_dns_answer.rc == 0 and independent_dns_answer.stdout == '192.168.0.251'
+
+        - name: Inspect the actual resolver listeners
+          ansible.builtin.command:
+            argv: [ss, -H, -lntu, sport, '=', ':10554']
+          register: independent_dns_listeners
+          changed_when: false
+
+        - name: Require TCP and UDP listeners bound only to loopback
+          ansible.builtin.assert:
+            that:
+              - independent_dns_listeners.stdout is search('(?m)^tcp\s+.*127\.0\.0\.1:10554\s')
+              - independent_dns_listeners.stdout is search('(?m)^udp\s+.*127\.0\.0\.1:10554\s')
+              - >-
+                (independent_dns_listeners.stdout_lines |
+                 reject('match', '^\S+\s+\S+\s+\d+\s+\d+\s+(127\.0\.0\.1|\[::1\]):10554\s') |
+                 list | length) == 0
+
+        - name: Verify filtering over UDP and TCP
+          ansible.builtin.command:
+            argv: [dig, '@127.0.0.1', -p, '10554', doubleclick.net, A,
+                   '+short', '+time=2', '+tries=1', '{{ item }}']
+          loop: ['+notcp', '+tcp']
+          register: independent_dns_filter
+          changed_when: false
+          failed_when: independent_dns_filter.rc != 0 or independent_dns_filter.stdout != '0.0.0.0'
+
+        - name: Enable the verified loopback resolver at boot
+          ansible.builtin.systemd_service:
+            name: branconet-independent-dns-loopback.service
+            enabled: true
+
+      rescue:
+        - name: Stop a new service after failed qualification
+          ansible.builtin.systemd_service:
+            name: branconet-independent-dns-loopback.service
+            state: stopped
+            enabled: false
+          when: independent_dns_previous.rc != 0
+
+        - name: Report failed qualification
+          ansible.builtin.fail:
+            msg: The loopback resolver did not pass its startup check.

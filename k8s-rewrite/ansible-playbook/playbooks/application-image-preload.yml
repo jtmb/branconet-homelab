@@ -1,0 +1,9 @@
+---
+- name: Preload reviewed maintenance application OCI artifacts without deploying them
+  hosts: k8s_nodes
+  serial: 1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  roles: [application_image_preload]

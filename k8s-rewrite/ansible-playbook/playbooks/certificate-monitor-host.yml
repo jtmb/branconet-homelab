@@ -1,0 +1,201 @@
+---
+# Initial staging/public enrollment only. No token creation or service activation.
+- name: Qualify or stage the independent certificate metadata monitor
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    certificate_monitor_action: preflight
+    certificate_monitor_code: /usr/local/libexec/bortus-certificate-monitor
+    certificate_monitor_sources:
+      - run-certificate-monitor.py
+      - certificate_monitor.py
+      - certificate_monitor_control.py
+      - certificate_monitor_process.py
+      - certificate_monitor_runtime.py
+      - certificate_monitor_credentials.py
+      - refresh-certificate-monitor-credential.py
+  tasks:
+    - name: Require the selected host and an explicitly supported action
+      ansible.builtin.assert:
+        that:
+          - kubernetes_node_name == 'node02'
+          - certificate_monitor_action in ['preflight', 'stage']
+
+    - name: Read current service state without starting it
+      ansible.builtin.command:
+        argv: [systemctl, show, bortus-certificate-monitor.service, --property=LoadState,ActiveState]
+      register: certificate_monitor_existing_service
+      changed_when: false
+
+    - name: Inspect exact initial installation targets
+      ansible.builtin.stat:
+        path: "{{ item }}"
+        follow: false
+      loop:
+        - "{{ certificate_monitor_code }}"
+        - /etc/systemd/system/bortus-certificate-monitor.service
+        - /etc/systemd/system/bortus-certificate-credential.service
+        - /etc/systemd/system/bortus-certificate-credential.timer
+        - /etc/bortus-certificate-monitor
+        - /var/lib/bortus-certificate-monitor
+      register: certificate_monitor_initial_paths
+
+    - name: Inspect existing account without creating or modifying it
+      ansible.builtin.command:
+        argv: [getent, passwd, bortus-certificate-monitor]
+      register: certificate_monitor_existing_account
+      changed_when: false
+      failed_when: certificate_monitor_existing_account.rc not in [0, 2]
+
+    - name: Inspect existing group without creating or modifying it
+      ansible.builtin.command:
+        argv: [getent, group, bortus-certificate-monitor]
+      register: certificate_monitor_existing_group
+      changed_when: false
+      failed_when: certificate_monitor_existing_group.rc not in [0, 2]
+
+    - name: Verify actual host identity
+      ansible.builtin.command: hostname
+      register: certificate_monitor_actual_hostname
+      changed_when: false
+
+    - name: Hash the existing node kubectl and public cluster CA
+      ansible.builtin.stat:
+        path: "{{ item }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop:
+        - /usr/local/bin/kubectl
+        - /etc/kubernetes/pki/ca.crt
+      register: certificate_monitor_public_inputs
+      when: certificate_monitor_action == 'stage'
+
+    - name: Require reviewed public enrollment and unchanged trust/tool inputs
+      ansible.builtin.assert:
+        that:
+          - certificate_monitor_actual_hostname.stdout == 'node02'
+          - certificate_monitor_enrollment is defined
+          - certificate_monitor_enrollment.version == 1
+          - certificate_monitor_enrollment.keys() | sort == ['audience', 'kubectlSHA256', 'serviceAccountUID', 'version'] | sort
+          - certificate_monitor_enrollment.serviceAccountUID is match('^[0-9a-f-]{36}$')
+          - certificate_monitor_enrollment.audience == 'https://kubernetes.default.svc.cluster.local'
+          - certificate_monitor_public_inputs.results[0].stat.isreg | default(false)
+          - certificate_monitor_public_inputs.results[0].stat.checksum == certificate_monitor_enrollment.kubectlSHA256
+          - certificate_monitor_public_inputs.results[1].stat.isreg | default(false)
+          - certificate_monitor_public_inputs.results[1].stat.checksum == certificate_monitor_ca_sha256
+      when: certificate_monitor_action == 'stage'
+
+    - name: Refuse to overwrite any existing installation or owned state
+      ansible.builtin.assert:
+        that:
+          - "'LoadState=not-found' in certificate_monitor_existing_service.stdout_lines"
+          - certificate_monitor_initial_paths.results | selectattr('stat.exists') | list | length == 0
+          - certificate_monitor_existing_account.rc == 2
+          - certificate_monitor_existing_group.rc == 2
+        fail_msg: "Initial staging only: preserve existing code, unit, credentials and state; review an explicit upgrade separately."
+      when: certificate_monitor_action == 'stage'
+
+    - name: Stage initial root-managed code and inactive service
+      when: certificate_monitor_action == 'stage'
+      block:
+        - name: Create the unprivileged service group
+          ansible.builtin.group:
+            name: bortus-certificate-monitor
+            system: true
+
+        - name: Create the unprivileged service account
+          ansible.builtin.user:
+            name: bortus-certificate-monitor
+            group: bortus-certificate-monitor
+            system: true
+            create_home: false
+            home: /var/lib/bortus-certificate-monitor
+            shell: /usr/sbin/nologin
+
+        - name: Create root-owned code directory
+          ansible.builtin.file:
+            path: "{{ certificate_monitor_code }}"
+            state: directory
+            owner: root
+            group: root
+            mode: "0755"
+
+        - name: Install reviewed runner and external broker modules without credentials
+          ansible.builtin.copy:
+            src: "{{ playbook_dir }}/../../../scripts/migration/{{ item }}"
+            dest: "{{ certificate_monitor_code }}/{{ item }}"
+            owner: root
+            group: root
+            mode: "0644"
+          loop: "{{ certificate_monitor_sources }}"
+
+        - name: Create private persistent metadata directory
+          ansible.builtin.file:
+            path: /var/lib/bortus-certificate-monitor
+            state: directory
+            owner: bortus-certificate-monitor
+            group: bortus-certificate-monitor
+            mode: "0700"
+
+        - name: Create root-managed public enrollment directory
+          ansible.builtin.file:
+            path: /etc/bortus-certificate-monitor
+            state: directory
+            owner: root
+            group: bortus-certificate-monitor
+            mode: "0750"
+
+        - name: Copy only the existing public cluster CA without private keys
+          ansible.builtin.copy:
+            src: /etc/kubernetes/pki/ca.crt
+            dest: /etc/bortus-certificate-monitor/cluster-ca.crt
+            remote_src: true
+            owner: root
+            group: bortus-certificate-monitor
+            mode: "0640"
+
+        - name: Install pinned public UID audience and tool-hash enrollment
+          ansible.builtin.copy:
+            content: "{{ certificate_monitor_enrollment | to_nice_json }}\n"
+            dest: /etc/bortus-certificate-monitor/identity.json
+            owner: root
+            group: bortus-certificate-monitor
+            mode: "0640"
+
+        - name: Install fixed public configuration with external runtime token reference only
+          ansible.builtin.copy:
+            content: >-
+              {{ {
+                'apiVersion': 'v1', 'kind': 'Config',
+                'clusters': [{'name': 'branconet', 'cluster': {
+                  'server': 'https://192.168.0.251:6443',
+                  'certificate-authority': '/etc/bortus-certificate-monitor/cluster-ca.crt'}}],
+                'users': [{'name': 'bortus-certificate-monitor', 'user': {
+                  'tokenFile': '/run/bortus-certificate-monitor/token'}}],
+                'contexts': [{'name': 'monitor', 'context': {
+                  'cluster': 'branconet', 'user': 'bortus-certificate-monitor', 'namespace': 'bortus'}}],
+                'current-context': 'monitor'
+              } | to_nice_json }}
+            dest: /etc/bortus-certificate-monitor/kubeconfig.json
+            owner: root
+            group: bortus-certificate-monitor
+            mode: "0640"
+
+        - name: Install inactive service and credential timer definitions
+          ansible.builtin.copy:
+            src: "{{ item }}"
+            dest: "/etc/systemd/system/{{ item }}"
+            owner: root
+            group: root
+            mode: "0644"
+          loop:
+            - bortus-certificate-monitor.service
+            - bortus-certificate-credential.service
+            - bortus-certificate-credential.timer
+
+        - name: Reload definitions only, without enabling or starting the service
+          ansible.builtin.systemd_service:
+            daemon_reload: true

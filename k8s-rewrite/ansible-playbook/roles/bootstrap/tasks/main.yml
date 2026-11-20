@@ -12,6 +12,19 @@
       - gluster_brick.stat.isdir | default(false)
     fail_msg: Platform or Gluster source changed; stop and reinventory.
 
+- name: Discover an existing independent runtime before bootstrap
+  ansible.builtin.command: /opt/containerd-k8s/bin/containerd --version
+  register: bootstrap_runtime_version
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: Require dedicated rolling maintenance for existing runtime upgrades
+  ansible.builtin.assert:
+    that:
+      - bootstrap_runtime_version.rc != 0 or bootstrap_runtime_version.stdout.split()[2] == containerd_version
+    fail_msg: Existing independent runtime differs from the configured pin. Use security-maintenance.yml; bootstrap must not silently skip or replace a running runtime.
+
 - name: Install Kubernetes and Longhorn prerequisites without replacing Docker
   ansible.builtin.apt:
     name: [ca-certificates, curl, conntrack, socat, iptables, ipset, open-iscsi, nfs-common, cryptsetup, jq, cifs-utils]
@@ -55,14 +68,26 @@
     src: /var/cache/branconet-migration/cni.tar.gz
     dest: /opt/cni/bin
     remote_src: true
-    creates: /opt/cni/bin/bridge
+    creates: "/opt/cni/bin/.branconet-{{ cni_sha256 }}"
+
+- name: Record the exact installed CNI archive identity
+  ansible.builtin.copy:
+    dest: "/opt/cni/bin/.branconet-{{ cni_sha256 }}"
+    content: "{{ cni_version }} {{ cni_sha256 }}\n"
+    mode: '0644'
 
 - name: Extract isolated CRI diagnostic client
   ansible.builtin.unarchive:
     src: /var/cache/branconet-migration/crictl.tar.gz
     dest: /opt/containerd-k8s/bin
     remote_src: true
-    creates: /opt/containerd-k8s/bin/crictl
+    creates: "/opt/containerd-k8s/bin/.crictl-{{ crictl_sha256 }}"
+
+- name: Record the exact installed CRI diagnostic archive identity
+  ansible.builtin.copy:
+    dest: "/opt/containerd-k8s/bin/.crictl-{{ crictl_sha256 }}"
+    content: "{{ crictl_version }} {{ crictl_sha256 }}\n"
+    mode: '0644'
 
 - name: Download checksum-verified independent runc
   ansible.builtin.get_url:
@@ -162,3 +187,4 @@
 - name: Verify Docker remains active
   ansible.builtin.command: systemctl is-active docker
   changed_when: false
+  when: migration_require_docker_coexistence | default(false) | bool

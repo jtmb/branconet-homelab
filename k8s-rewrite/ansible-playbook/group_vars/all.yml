@@ -5,8 +5,10 @@ cluster_name: branconet-k8s
 ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
 k8s_version: v1.37.1
 calico_version: v3.33.0
-containerd_version: v2.4.1
-containerd_sha256: 02ad3a7e80d7d2c018c7134d5eca7e301283db6895f100b957fb52ad8e5a30fd
+containerd_version: v2.4.2
+containerd_sha256: da656542e754c699a0f438eab925e6ffdbd6346a4428e659f83dc058f04dcffe
+# Legacy Docker/Swarm was retired on 2026-10-19; do not start it to provision K8s.
+migration_require_docker_coexistence: false
 runc_version: v1.5.2
 runc_sha256: 599f6f94ff8c5057241eff0d54c3c74f95c34935b6457b33fe545defc61e9488
 crictl_version: v1.37.0

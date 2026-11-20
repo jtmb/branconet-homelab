@@ -1,0 +1,68 @@
+---
+# Reviewed upgrade of the managed CSR controller sources (node02).
+- name: Upgrade managed CSR controller sources
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    csr_code: /usr/local/libexec/bortus-csr-controller
+    csr_sources:
+      - certificate_monitor_credentials.py
+      - kubelet_csr_controller.py
+      - run-kubelet-csr-controller.py
+      - refresh-csr-controller-credential.py
+  tasks:
+    - name: Require expected existing install
+      ansible.builtin.assert:
+        that:
+          - kubernetes_node_name == 'node02'
+          - csr_upgrade_expected_hashes is defined
+
+    - name: Record current hashes before any change
+      ansible.builtin.command:
+        argv: [sha256sum, "{{ csr_code }}/{{ item }}"]
+      loop: "{{ csr_sources }}"
+      changed_when: false
+      register: csr_before
+
+    - name: Refuse unexpected current content
+      ansible.builtin.assert:
+        that:
+          - (csr_before.results | map(attribute='stdout') | map('split') | map('first') | list) == csr_upgrade_expected_hashes
+
+    - name: Install reviewed sources
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../scripts/migration/{{ item }}"
+        dest: "{{ csr_code }}/{{ item }}"
+        owner: root
+        group: root
+        mode: "0644"
+      loop: "{{ csr_sources }}"
+
+    - name: Verify syntax as the service account would run it
+      ansible.builtin.command:
+        argv: [/bin/sh, -c, "cd {{ csr_code }} && /usr/bin/python3 -B -c 'import ast,sys;[ast.parse(open(f).read()) for f in sys.argv[1:]]' {{ csr_sources | join(' ') }}"]
+      changed_when: false
+
+    - name: Re-mint the runtime credential through the broker
+      ansible.builtin.systemd_service:
+        name: bortus-csr-controller-credential.service
+        state: started
+
+    - name: Show broker result
+      ansible.builtin.command:
+        argv: [journalctl, -u, bortus-csr-controller-credential.service, --no-pager, -n, 4, -o, cat]
+      changed_when: false
+      register: csr_broker_log
+
+    - name: Require a refreshed credential
+      ansible.builtin.assert:
+        that:
+          - "'credential-refreshed' in csr_broker_log.stdout"
+
+    - name: Restart the controller onto the fixed sources
+      ansible.builtin.systemd_service:
+        name: bortus-csr-controller.service
+        state: restarted

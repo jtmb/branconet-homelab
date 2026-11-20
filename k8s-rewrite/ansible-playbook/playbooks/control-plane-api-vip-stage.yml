@@ -1,0 +1,147 @@
+---
+- name: Stage the shared API address on the current control plane
+  hosts: master
+  become: true
+  any_errors_fatal: true
+  gather_facts: true
+  vars:
+    api_vip: 192.168.0.251
+  tasks:
+    - name: Require the reviewed initial topology and explicit activation
+      ansible.builtin.assert:
+        that:
+          - groups['master'] | length == 1
+          - groups['worker'] | length == 2
+          - ansible_default_ipv4.address == ansible_host
+          - api_vip_activate | default(false) | bool
+
+    - name: Verify the local API using the current certificate
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/curl
+          - --silent
+          - --show-error
+          - --fail
+          - --max-time
+          - "2"
+          - --cacert
+          - /etc/kubernetes/pki/ca.crt
+          - --resolve
+          - kubernetes:6443:127.0.0.1
+          - https://kubernetes:6443/readyz
+      changed_when: false
+
+    - name: Check for an existing Keepalived configuration
+      ansible.builtin.stat:
+        path: /etc/keepalived/keepalived.conf
+      register: api_vip_existing
+
+    - name: Require a dedicated Keepalived configuration
+      ansible.builtin.assert:
+        that:
+          - not api_vip_existing.stat.exists
+
+    - name: Install Keepalived without starting the packaged service
+      ansible.builtin.apt:
+        name: keepalived
+        state: present
+        policy_rc_d: 101
+
+    - name: Configure the API address with readiness tracking
+      ansible.builtin.copy:
+        dest: /etc/keepalived/keepalived.conf
+        owner: root
+        group: root
+        mode: "0600"
+        validate: /usr/sbin/keepalived -t -f %s
+        content: |
+          global_defs {
+            enable_script_security
+          }
+
+          vrrp_script kubernetes_api_ready {
+            script "/usr/bin/curl --silent --fail --max-time 1 --cacert /etc/kubernetes/pki/ca.crt --resolve kubernetes:6443:127.0.0.1 https://kubernetes:6443/readyz"
+            user root
+            interval 2
+            timeout 2
+            rise 2
+            fall 2
+            init_fail
+          }
+
+          vrrp_instance kubernetes_api {
+            state BACKUP
+            interface {{ ansible_default_ipv4.interface }}
+            virtual_router_id 151
+            priority 110
+            unicast_src_ip {{ ansible_host }}
+            unicast_peer {
+          {% for peer in groups['worker'] %}
+              {{ hostvars[peer].ansible_host }}
+          {% endfor %}
+            }
+            virtual_ipaddress {
+              {{ api_vip }}/32 dev {{ ansible_default_ipv4.interface }}
+            }
+            track_script {
+              kubernetes_api_ready
+            }
+          }
+
+    - name: Read the public API CA for peer readiness checks
+      ansible.builtin.slurp:
+        src: /etc/kubernetes/pki/ca.crt
+      register: api_vip_ca
+
+    - name: Activate the address and verify ownership
+      block:
+        - name: Start the API address announcer
+          ansible.builtin.systemd_service:
+            name: keepalived
+            enabled: true
+            state: started
+        - name: Verify that the current control plane owns the address
+          ansible.builtin.command:
+            argv:
+              - /usr/sbin/ip
+              - -o
+              - -4
+              - address
+              - show
+              - dev
+              - "{{ ansible_default_ipv4.interface }}"
+          register: api_vip_addresses
+          changed_when: false
+          until: (api_vip ~ '/32') in api_vip_addresses.stdout
+          retries: 8
+          delay: 2
+
+        - name: Verify TLS and API readiness from each worker
+          ansible.builtin.command:
+            argv:
+              - /usr/bin/curl
+              - --silent
+              - --show-error
+              - --fail
+              - --max-time
+              - "3"
+              - --cacert
+              - /dev/stdin
+              - --resolve
+              - "kubernetes:6443:{{ api_vip }}"
+              - https://kubernetes:6443/readyz
+            stdin: "{{ api_vip_ca.content | b64decode }}"
+          delegate_to: "{{ item }}"
+          become: false
+          loop: "{{ groups['worker'] }}"
+          changed_when: false
+      rescue:
+        - name: Withdraw the address if activation or verification fails
+          ansible.builtin.systemd_service:
+            name: keepalived
+            enabled: false
+            state: stopped
+
+        - name: Stop the rollout after withdrawing the address
+          ansible.builtin.fail:
+            msg: API address activation failed. Review the staged Keepalived configuration before retrying.

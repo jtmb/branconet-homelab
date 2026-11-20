@@ -21,6 +21,10 @@ loader.loader.exec_module(preflight)
 require = preflight.require
 identity = preflight.identity
 RUNTIME = preflight.RUNTIME
+H_STORE = pathlib.Path('/mnt/h/AgentArtifacts/projects/branconet/builds/wsl-artifact-store/files')
+_image_loader=importlib.util.spec_from_file_location('checkpoint_runtime_identity',pathlib.Path(__file__).with_name('bortus-runtime-image-identity.py'))
+_image_identity=importlib.util.module_from_spec(_image_loader)
+_image_loader.loader.exec_module(_image_identity)
 RESOURCES = {
     'deployment': ('deployment', 'bortus', 'bortus', 'replicas'),
     'helmrelease': ('helmrelease', 'bortus', 'flux-system', 'suspend'),
@@ -100,10 +104,16 @@ class Client(preflight.Client):
             'preconditions': {'uid': meta['uid'], 'resourceVersion': meta['resourceVersion']}})
 
 
-def checkpoint_directory():
+def checkpoint_directory(anchor=None):
     """Durably establish protected run parents before any checkpoint API call."""
     require(os.name == 'posix', 'POSIX checkpoint runtime required')
-    fd = os.open(RUNTIME, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    base = RUNTIME if anchor is None else pathlib.Path(anchor)
+    if anchor is not None:
+        require(base.is_absolute() and base.resolve() == base and H_STORE in base.parents
+                and base.stat().st_dev == H_STORE.stat().st_dev
+                and stat.S_IMODE(base.stat().st_mode) == 0o700,
+                'Explicit private directory on the existing H native store required')
+    fd = os.open(base, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
     try:
         info = os.fstat(fd)
         require(info.st_uid == os.getuid() and stat.S_IMODE(info.st_mode) & 0o022 == 0,
@@ -125,7 +135,7 @@ def checkpoint_directory():
             os.close(fd)
             fd = next_fd
         os.fsync(fd)
-        return RUNTIME / 'recovery/bortus-checkpoints'
+        return base / 'recovery/bortus-checkpoints'
     finally:
         os.close(fd)
 
@@ -323,8 +333,8 @@ class Checkpoint:
                 volume['spec']['numberOfReplicas'] == 2, 'Longhorn safety changed')
         status = volume.get('status', {})
         healthy = status.get('robustness') == 'healthy'
-        require(healthy or (resuming and status.get('robustness') == 'unknown' and
-                status.get('state') in ('detached', 'detaching', 'attaching')),
+        require(healthy or (resuming and status.get('robustness') in ('unknown','degraded') and
+                status.get('state') in ('detached', 'detaching', 'attaching','attached')),
                 'Longhorn safety changed')
         return healthy
 
@@ -360,9 +370,9 @@ class Checkpoint:
             require(type(display) is str and 0 < len(display) <= 4096 and
                     all(32 <= ord(c) <= 126 for c in display), 'Holder runtime changed')
             if cs.get('imageID'):
-                require(cs['imageID'] == proposed['image'], 'Holder runtime changed')
+                require(_image_identity.matches(cs['imageID'], proposed['image']), 'Holder runtime changed')
         if obj.get('status', {}).get('phase') == 'Running':
-            require(len(statuses) == 1 and statuses[0].get('imageID') == proposed['image'] and
+            require(len(statuses) == 1 and _image_identity.matches(statuses[0].get('imageID'), proposed['image']) and
                     statuses[0].get('ready') is True and
                     isinstance(statuses[0].get('state'), dict) and
                     set(statuses[0]['state']) == {'running'} and
@@ -500,6 +510,14 @@ class Checkpoint:
         # A retained intent is never replayed, even if the reply might have been lost.
         self.storage()
         allowed = {self.r['baseline']['writer']['uid'], self.r['holder_identity']['uid']}
+        if self.r.get('writer_resumed_ready') is True and self.r.get('reconcile_flags_restored') is True and isinstance(self.r['baseline'].get('legacy_image'),str):
+            require(self.writer_ready(), 'Resumed writer must remain healthy before reader cleanup')
+            deployment=self.client.get('deployment','bortus','bortus')
+            require(all(c.get('image')==self.r['baseline'].get('legacy_image') for c in deployment['spec']['template']['spec']['containers']),
+                    'Resumed writer image changed before reader cleanup')
+            resumed=[p for p in self.consumers() if identity(p)['uid']!=self.r['holder_identity']['uid']]
+            require(len(resumed)==1, 'Exactly one authenticated resumed writer required')
+            allowed.add(identity(resumed[0])['uid'])
         require(all(identity(p)['uid'] in allowed for p in self.consumers()),
                 'Unexpected consumer blocks holder release')
         self.delete_owned_holder()
@@ -662,15 +680,17 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     modes = parser.add_subparsers(dest='mode', required=True)
     capture = modes.add_parser('capture')
+    capture.add_argument('--journal-root', type=pathlib.Path, required=True)
     capture.add_argument('--preflight-report', type=pathlib.Path, required=True)
     capture.add_argument('--holder-image', required=True)
     resume = modes.add_parser('resume')
     resume.add_argument('--run-id', required=True)
+    resume.add_argument('--journal-root', type=pathlib.Path)
     args = parser.parse_args()
     journal = None
     try:
         require(os.name == 'posix', 'Run only in the operator WSL environment')
-        directory = checkpoint_directory()
+        directory = checkpoint_directory(args.journal_root)
         client = Client()
         if args.mode == 'capture':
             expected = json.loads(args.preflight_report.read_text(encoding='utf-8'))

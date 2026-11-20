@@ -136,6 +136,33 @@ class AdmissionTests(unittest.TestCase):
         self.renders[0]['spec']['variables'][0]['expression'] = '["alternate.invalid/bortus@sha256:' + 'a' * 64 + '"]'
         self.refused('render')
 
+    def test_retained_restore_claim_keeps_all_original_cases_and_adds_denials(self):
+        original_cases = a.probe_catalog(self.contract)
+        retained = 'bortus-restore-abcdef123456'
+        self.contract['protected_pvc_names'].append(retained)
+        expanded = a.probe_catalog(self.contract)
+        self.assertEqual(expanded[:40], original_cases)
+        self.assertEqual(len(expanded), 42)
+        added = expanded[40:]
+        self.assertTrue(all(case['protected_reference'] == retained and
+                            case['expected_outcome'] == 'guard_denied' for case in added))
+        for obj in a.reviewed_renders(self.contract):
+            if obj['kind'] == a.POLICY:
+                variables = {v['name']: v['expression'] for v in obj['spec']['variables']}
+                self.assertEqual(json.loads(variables['protectedClaims']), self.contract['protected_pvc_names'])
+                self.assertEqual(obj['spec']['failurePolicy'], 'Fail')
+
+    def test_retained_claim_cannot_be_arbitrary_duplicate_or_unbounded(self):
+        for extra in ('unreviewed-claim', self.contract['protected_pvc_names'][1]):
+            contract = copy.deepcopy(self.contract)
+            contract['protected_pvc_names'].append(extra)
+            with self.assertRaises(a.AdmissionRefused):
+                a.contract_checked(contract)
+        contract = copy.deepcopy(self.contract)
+        contract['protected_pvc_names'] += ['bortus-restore-abcdef123456', 'bortus-restore-abcdef654321']
+        with self.assertRaises(a.AdmissionRefused):
+            a.contract_checked(contract)
+
     def test_missing_duplicate_extra_or_changed_probe_cannot_pass(self):
         for mutate in (lambda: self.outcomes.pop(), lambda: self.outcomes.append(copy.deepcopy(self.outcomes[0])),
             lambda: self.outcomes.__setitem__(1, copy.deepcopy(self.outcomes[0])),

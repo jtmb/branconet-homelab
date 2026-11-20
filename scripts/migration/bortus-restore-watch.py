@@ -498,7 +498,7 @@ class Collector:
     def _validate_target_trace(self):
         try:
             completion.evaluate_restore_transition(self.expected, self._target_events(),
-                watch_started_before_create=True, longhorn_version=completion.LONGHORN_VERSION,
+                watch_started_before_create=True, longhorn_version=completion.CURRENT_LONGHORN_VERSION,
                 api_version=completion.API_VERSION)
         except completion.RestoreTransitionRefused as error:
             require(error.code == 'completion_unobserved', 'target_drift')
@@ -620,7 +620,7 @@ class Collector:
                         current['spec_matches'] and current['flags_valid'] and current['status_valid'] and not current['deleting'] and
                         not current['restore_failure'] and current['flags'] == events[-1]['object']['status'], 'seal_rv')
                 result = completion.evaluate_restore_transition(self.expected, events,
-                    watch_started_before_create=True, longhorn_version=completion.LONGHORN_VERSION,
+                    watch_started_before_create=True, longhorn_version=completion.CURRENT_LONGHORN_VERSION,
                     api_version=completion.API_VERSION)
                 self.state['metadata_eligible'] = True; self.state['phase'] = 'eligible'; self._save()
                 return result

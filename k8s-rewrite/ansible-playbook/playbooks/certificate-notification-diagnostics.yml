@@ -1,0 +1,57 @@
+---
+- name: Update only fixed-code notifier failure diagnostics
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    notifier_script: /usr/local/libexec/bortus-certificate-monitor/deliver-certificate-notifications.py
+    notifier_transport: /usr/local/libexec/bortus-certificate-monitor/certificate_monitor_notifications.py
+  tasks:
+    - name: Require node02 and the reviewed installed source hash
+      ansible.builtin.assert:
+        that:
+          - kubernetes_node_name == 'node02'
+          - notifier_previous_script_sha256 is match('^[a-f0-9]{64}$')
+          - notifier_previous_transport_sha256 is match('^[a-f0-9]{64}$')
+    - name: Inspect the exact installed notifier script
+      ansible.builtin.stat:
+        path: "{{ notifier_script }}"
+        follow: false
+        checksum_algorithm: sha256
+      register: notifier_script_before
+    - name: Inspect the exact installed transport module
+      ansible.builtin.stat:
+        path: "{{ notifier_transport }}"
+        follow: false
+        checksum_algorithm: sha256
+      register: notifier_transport_before
+    - name: Refuse unknown or writable source
+      ansible.builtin.assert:
+        that:
+          - notifier_script_before.stat.isreg | default(false)
+          - notifier_script_before.stat.uid == 0
+          - notifier_script_before.stat.mode == '0644'
+          - notifier_script_before.stat.checksum == notifier_previous_script_sha256
+          - notifier_transport_before.stat.isreg | default(false)
+          - notifier_transport_before.stat.uid == 0
+          - notifier_transport_before.stat.mode == '0644'
+          - notifier_transport_before.stat.checksum == notifier_previous_transport_sha256
+    - name: Stop only the notifier without changing its retry state
+      ansible.builtin.systemd_service:
+        name: bortus-certificate-notifications.service
+        state: stopped
+    - name: Install the reviewed fixed-code diagnostic correction
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../scripts/migration/{{ item }}"
+        dest: "/usr/local/libexec/bortus-certificate-monitor/{{ item }}"
+        owner: root
+        group: root
+        mode: "0644"
+        validate: "/usr/bin/env PYTHONPATH=/usr/local/libexec/bortus-certificate-monitor /usr/bin/python3 -B %s --help"
+      loop: [certificate_monitor_notifications.py, deliver-certificate-notifications.py]
+    - name: Resume the enabled notifier with its existing database and backoff
+      ansible.builtin.systemd_service:
+        name: bortus-certificate-notifications.service
+        state: started

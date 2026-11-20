@@ -43,6 +43,13 @@ def pod(name, owner, image, ready=True, phase="Running"):
 
 
 class PodPinningTests(unittest.TestCase):
+    def test_new_release_requires_its_own_immutable_pin(self):
+        rs = replicaset("rs-new", "2")
+        current = pod("bortus-next", "rs-new", OLD_IMAGE)
+        deployed = deployment(image=OLD_IMAGE)
+        self.assertIsNone(REL.select_verified_pod(deployed, [rs], [current])[0])
+        self.assertEqual(REL.select_verified_pod(deployed, [rs], [current], OLD_IMAGE), (current, []))
+
     def test_healthy_old_pod_cannot_pass_a_partial_rollout(self):
         # The exact 2026-11-18 finding: old pod Ready and already containing
         # the routes, new pod not Ready yet. The verifier must refuse.

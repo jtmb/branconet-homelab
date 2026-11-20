@@ -1,0 +1,93 @@
+---
+- name: Require an explicit read-only boot scan and protected task output directory
+  ansible.builtin.assert:
+    that:
+      - antivirus_scan_apply | bool
+      - antivirus_scan_run_id is match('^[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$')
+      - antivirus_scan_output_dir == '/mnt/d/Codex/plex-antivirus-20261107/receipts'
+
+- name: Check ClamAV engine and updater for the boot scan
+  ansible.builtin.command:
+    argv: [clamscan, --version]
+  register: antivirus_boot_version
+  changed_when: false
+
+- name: Check the boot scan signature updater
+  ansible.builtin.command:
+    argv: [systemctl, is-active, clamav-freshclam.service]
+  register: antivirus_boot_freshclam
+  changed_when: false
+  failed_when: false
+
+- name: Inspect installed ClamAV signature database files for the boot scan
+  ansible.builtin.stat:
+    path: "/var/lib/clamav/{{ item }}"
+    get_checksum: false
+  loop: [main.cvd, main.cld, daily.cvd, daily.cld, bytecode.cvd, bytecode.cld]
+  register: antivirus_boot_databases
+  changed_when: false
+
+- name: Require fresh ClamAV signatures and updater before scanning boot
+  ansible.builtin.assert:
+    that:
+      - antivirus_boot_version.rc == 0
+      - antivirus_boot_version.stdout is search('^ClamAV 1\\.')
+      - antivirus_boot_freshclam.stdout == 'active'
+      - (antivirus_boot_databases.results | selectattr('stat.exists', 'equalto', true) | list | length) >= 2
+      - ansible_date_time.epoch | int - (antivirus_boot_databases.results | selectattr('stat.exists', 'equalto', true) | map(attribute='stat.mtime') | map('float') | max | int) <= 259200
+    fail_msg: ClamAV is unavailable, its updater is stopped, or the signatures are older than 72 hours; no boot scan is claimed.
+
+- name: Verify /boot is the reviewed local ext4 filesystem
+  ansible.builtin.command:
+    argv: [findmnt, --raw, --noheadings, --mountpoint, /boot, "--output=FSTYPE,SOURCE"]
+  register: antivirus_boot_mount
+  changed_when: false
+
+- name: Refuse an unexpected /boot filesystem or source
+  ansible.builtin.assert:
+    that:
+      - antivirus_boot_mount.stdout == 'ext4 /dev/sda2'
+    fail_msg: /boot is not mounted from the reviewed local ext4 device /dev/sda2; inspect before scanning.
+
+- name: Run a low-priority read-only ClamAV scan of /boot
+  ansible.builtin.command:
+    argv:
+      - nice
+      - -n
+      - '19'
+      - ionice
+      - -c
+      - '3'
+      - clamscan
+      - --recursive
+      - --infected
+      - --alert-exceeds-max=yes
+      - --cross-fs=no
+      - --max-filesize=4G
+      - --max-scansize=16G
+      - --max-files=2000000
+      - --max-recursion=32
+      - /boot
+  register: antivirus_boot_result
+  changed_when: false
+  failed_when: false
+  no_log: true
+
+- name: Save the private boot scan result
+  ansible.builtin.copy:
+    content: "{{ {'schema_version': 1, 'run_id': antivirus_scan_run_id, 'node': inventory_hostname, 'captured_at_utc': now(utc=true, fmt='%Y-%m-%dT%H:%M:%SZ'), 'filesystem': antivirus_boot_mount.stdout, 'clamav_version': antivirus_boot_version.stdout, 'freshclam_state': antivirus_boot_freshclam.stdout, 'scan': {'rc': antivirus_boot_result.rc, 'stdout': antivirus_boot_result.stdout, 'stderr': antivirus_boot_result.stderr}} | to_nice_json }}\n"
+    dest: "{{ antivirus_scan_output_dir }}/{{ antivirus_scan_run_id }}-{{ inventory_hostname }}-boot.json"
+    mode: '0600'
+  become: false
+  delegate_to: localhost
+  no_log: true
+
+- name: Report only sanitized boot scan counts
+  ansible.builtin.debug:
+    msg:
+      node: "{{ inventory_hostname }}"
+      filesystem: /boot
+      clamav_version: "{{ antivirus_boot_version.stdout }}"
+      scan_exit_code: "{{ antivirus_boot_result.rc }}"
+      detection_lines: "{{ antivirus_boot_result.stdout_lines | default([]) | select('search', ' FOUND$') | list | length }}"
+      limit_alerts: "{{ antivirus_boot_result.stdout_lines | default([]) | select('search', 'Heuristics\\.Limits\\.Exceeded') | list | length }}"

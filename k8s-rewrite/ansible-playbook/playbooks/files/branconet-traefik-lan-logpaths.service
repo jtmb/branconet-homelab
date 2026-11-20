@@ -1,0 +1,14 @@
+[Unit]
+Description=Refresh the Traefik CRI logs watched by the Seerr LAN jail
+After=fail2ban.service
+ConditionPathIsDirectory=/var/log/containers
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/libexec/branconet-traefik-lan-logpaths
+TimeoutStartSec=20s
+NoNewPrivileges=yes
+RestrictAddressFamilies=AF_UNIX
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes

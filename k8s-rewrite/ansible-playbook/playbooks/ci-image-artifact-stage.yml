@@ -1,0 +1,11 @@
+---
+- name: Stage exact verified private CI artifacts on worker1 without scanning or deploying
+  hosts: workernode1
+  gather_facts: false
+  serial: 1
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+  roles:
+    - ci_image_artifact_stage

@@ -232,7 +232,7 @@ def _restore(run_directory, checkpoint_journal, checkpoint_sha256, original_arch
                 try:
                     watch.completion.evaluate_restore_transition(collector.expected, events,
                         watch_started_before_create=True,
-                        longhorn_version=watch.completion.LONGHORN_VERSION,
+                        longhorn_version=watch.completion.CURRENT_LONGHORN_VERSION,
                         api_version=watch.completion.API_VERSION)
                 except watch.completion.RestoreTransitionRefused as error:
                     need(error.code == 'completion_unobserved', 'completion')
@@ -253,7 +253,7 @@ def _restore(run_directory, checkpoint_journal, checkpoint_sha256, original_arch
             'pv': selected(health.identity(pv, None)._asdict()), 'volume': selected(volume['metadata']),
             'backup': selected(backup), 'holder': selected(holder_created['identity']),
             'holder_image': holder_image, 'original_node': prepared['source_node_name'],
-            'node': selected(prepared['alternate_node_identity']), 'longhorn_version': '1.12.1',
+            'node': selected(prepared['alternate_node_identity']), 'longhorn_version': health.CURRENT_LONGHORN_VERSION,
             'backup_url': src.backup_url}
 
         def read_metadata(_deadline):

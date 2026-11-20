@@ -192,7 +192,8 @@ class QuiescentCheckpoint(cold.Checkpoint):
 
     def source(self, *, stopped, holder=False):
         self.bounded()
-        self.storage()
+        idle_backup = stopped and not holder and self.r.get('owned_holder_removed') is True and self.r.get('encrypted_nas_backup_complete') is True and self.r.get('sqlite_archive_state')=='confirmed'
+        self.storage(resuming=idle_backup)
         for kind, ns in (('pvc', 'bortus'), ('pv', None), ('storageclass', None)):
             pin = self.storage_pins[kind]
             obj = self.client.get(kind, pin['name'], ns)
@@ -378,8 +379,13 @@ class QuiescentCheckpoint(cold.Checkpoint):
             value = method() if argument is None else method(argument)
         except QuiescentRefused as error:
             failure = error.code
-        except Exception:
+        except Exception as error:
             failure = 'operation'
+            locations=[];tb=error.__traceback__
+            while tb:locations.append(pathlib.Path(tb.tb_frame.f_code.co_filename).name+':'+str(tb.tb_lineno));tb=tb.tb_next
+            self.r['quiescent_last_failure']={'type':type(error).__name__,'code':getattr(error,'code',None),'locations':locations[-12:]}
+            try:self.journal.save()
+            except Exception:pass
         return value if not failure else None, failure
 
     def capture_quiescent(self):

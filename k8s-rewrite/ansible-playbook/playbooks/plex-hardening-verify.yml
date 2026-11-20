@@ -1,0 +1,6 @@
+# Read-only acceptance checks for the Flux-owned Plex rollout.
+- name: Verify live Plex runtime hardening and retained storage identities
+  hosts: master
+  gather_facts: false
+  become: false
+  roles: [plex_hardening_verify]

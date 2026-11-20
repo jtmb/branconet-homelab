@@ -1,0 +1,188 @@
+---
+# Fixed node02 managed-host installation; observation only, never approves.
+- name: Preflight or install the observation-only CSR controller
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    csr_action: preflight
+    csr_code: /usr/local/libexec/bortus-csr-controller
+    csr_config: /etc/bortus-csr-controller
+    csr_code_sources:
+      - run-kubelet-csr-controller.py
+      - kubelet_csr_controller.py
+      - kubelet_csr_policy.py
+      - certificate_monitor_process.py
+    csr_broker_sources:
+      - certificate_monitor_credentials.py
+      - certificate_monitor_runtime.py
+      - certificate_monitor_process.py
+      - refresh-certificate-monitor-credential.py
+      - refresh-csr-controller-credential.py
+  tasks:
+    - name: Require fixed host and bounded operation
+      ansible.builtin.assert:
+        that:
+          - kubernetes_node_name == 'node02'
+          - csr_action in ['preflight', 'install']
+          - csr_public_preflight is defined
+
+    - name: Recheck fixed account and preserved node02 services
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -B
+          - -c
+          - |
+            import json,os,pwd,stat,sys
+            from pathlib import Path
+            v=json.load(sys.stdin)
+            assert os.uname().nodename=='node02'
+            a=pwd.getpwnam('bortus-csr-controller')
+            assert a.pw_uid==v['host']['uid'] and a.pw_uid!=0 and a.pw_shell=='/usr/sbin/nologin'
+            for unit in ['bortus-certificate-monitor.service','bortus-certificate-notifications.service',
+                         'bortus-certificate-credential.timer']:
+                raw={l.split('=',1)[0]:l.split('=',1)[1] for l in
+                     __import__('subprocess').check_output(['systemctl','show',unit,'--property=ActiveState,UnitFileState'],text=True).splitlines() if '=' in l}
+                assert raw=={'ActiveState':'active','UnitFileState':'enabled'},unit
+            p=Path('/etc/kubernetes/admin.conf');i=p.lstat()
+            assert stat.S_ISREG(i.st_mode) and i.st_uid==0 and stat.S_IMODE(i.st_mode)==0o600
+            print('fixed-inputs-match')
+        stdin: "{{ csr_public_preflight | to_json }}"
+      changed_when: false
+
+    - name: Inspect exact new targets
+      ansible.builtin.stat:
+        path: "{{ item }}"
+        follow: false
+      loop:
+        - "{{ csr_code }}"
+        - "{{ csr_config }}"
+        - /run/bortus-csr-controller
+        - /var/lib/bortus-csr-controller
+        - "{{ csr_config }}/enrollment.json"
+        - "{{ csr_config }}/identity.json"
+        - "{{ csr_config }}/kubeconfig.json"
+        - "{{ csr_config }}/cluster-ca.crt"
+        - /etc/systemd/system/bortus-csr-controller.service
+        - /etc/systemd/system/bortus-csr-controller-credential.service
+        - /etc/systemd/system/bortus-csr-controller-credential.timer
+      register: csr_targets
+
+    - name: Refuse replay or unknown existing targets
+      ansible.builtin.assert:
+        that: csr_targets.results | selectattr('stat.exists') | list | length == 0
+
+    - name: Install observation-only controller after live identity qualification
+      when: csr_action == 'install'
+      block:
+        - name: Require qualified identity and reviewed public enrollment
+          ansible.builtin.assert:
+            that:
+              - csr_identity_qualified | default(false) | bool
+              - csr_enrollment is defined
+              - csr_enrollment.version == 1
+              - csr_enrollment.name == 'node02'
+              - csr_enrollment.ips == ['192.168.0.6']
+              - csr_enrollment.dns == ['node02']
+
+        - name: Create root-managed code and configuration directories
+          ansible.builtin.file:
+            path: "{{ item }}"
+            state: directory
+            owner: root
+            group: root
+            mode: "0755"
+          loop:
+            - "{{ csr_code }}"
+            - "{{ csr_config }}"
+
+        - name: Install four reviewed controller sources
+          ansible.builtin.copy:
+            src: "{{ playbook_dir }}/../../../scripts/migration/{{ item }}"
+            dest: "{{ csr_code }}/{{ item }}"
+            owner: root
+            group: root
+            mode: "0644"
+          loop: "{{ csr_code_sources }}"
+
+        - name: Install five reviewed broker sources
+          ansible.builtin.copy:
+            src: "{{ playbook_dir }}/../../../scripts/migration/{{ item }}"
+            dest: "{{ csr_code }}/{{ item }}"
+            owner: root
+            group: root
+            mode: "0644"
+          loop: "{{ csr_broker_sources }}"
+
+        - name: Copy only the existing public cluster CA
+          ansible.builtin.copy:
+            src: /etc/kubernetes/pki/ca.crt
+            dest: "{{ csr_config }}/cluster-ca.crt"
+            remote_src: true
+            owner: root
+            group: bortus-csr-controller
+            mode: "0640"
+
+        - name: Install broker tool and ServiceAccount pin
+          ansible.builtin.copy:
+            content: >-
+              {{ {
+                'version': 1, 'serviceAccountUID': csr_public_preflight.serviceAccountUID,
+                'audience': 'https://kubernetes.default.svc.cluster.local',
+                'kubectlSHA256': csr_public_preflight.kubectlSHA256, 'node': 'node02'
+              } | to_nice_json }}
+            dest: "{{ csr_config }}/identity.json"
+            owner: root
+            group: bortus-csr-controller
+            mode: "0640"
+
+        - name: Install public identity enrollment
+          ansible.builtin.copy:
+            content: "{{ csr_enrollment | to_nice_json }}\n"
+            dest: "{{ csr_config }}/enrollment.json"
+            owner: root
+            group: bortus-csr-controller
+            mode: "0640"
+
+        - name: Install fixed observation-only kubeconfig with runtime token reference
+          ansible.builtin.copy:
+            content: >-
+              {{ {
+                'apiVersion': 'v1', 'kind': 'Config',
+                'clusters': [{'name': 'branconet', 'cluster': {
+                  'server': 'https://192.168.0.251:6443',
+                  'certificate-authority': '/etc/bortus-csr-controller/cluster-ca.crt'}}],
+                'users': [{'name': 'bortus-csr-controller', 'user': {
+                  'tokenFile': '/run/bortus-csr-controller/token'}}],
+                'contexts': [{'name': 'csr-controller', 'context': {
+                  'cluster': 'branconet', 'user': 'bortus-csr-controller', 'namespace': 'bortus'}}],
+                'current-context': 'csr-controller'
+              } | to_nice_json }}
+            dest: "{{ csr_config }}/kubeconfig.json"
+            owner: root
+            group: bortus-csr-controller
+            mode: "0640"
+
+        - name: Install inactive controller and credential units
+          ansible.builtin.copy:
+            src: "{{ item }}"
+            dest: "/etc/systemd/system/{{ item }}"
+            owner: root
+            group: root
+            mode: "0644"
+          loop:
+            - bortus-csr-controller.service
+            - bortus-csr-controller-credential.service
+            - bortus-csr-controller-credential.timer
+
+        - name: Verify installed unit definitions
+          ansible.builtin.command:
+            argv: [systemd-analyze, verify, /etc/systemd/system/bortus-csr-controller.service, /etc/systemd/system/bortus-csr-controller-credential.service, /etc/systemd/system/bortus-csr-controller-credential.timer]
+          changed_when: false
+
+        - name: Reload definitions without starting or enabling anything
+          ansible.builtin.systemd_service:
+            daemon_reload: true

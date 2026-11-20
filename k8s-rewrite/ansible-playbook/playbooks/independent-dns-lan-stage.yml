@@ -1,0 +1,42 @@
+---
+- name: Stage the standalone LAN DNS unit without taking over DNS
+  hosts: workernode2
+  gather_facts: false
+  any_errors_fatal: true
+  become: true
+  tasks:
+    - name: Refuse to stage changes over a running LAN resolver
+      ansible.builtin.command:
+        argv: [systemctl, is-active, branconet-independent-dns-lan.service]
+      register: independent_dns_lan_previous
+      changed_when: false
+      failed_when: independent_dns_lan_previous.stdout not in ['inactive', 'unknown']
+
+    - name: Stage the qualified launcher
+      ansible.builtin.copy:
+        src: independent-dns-loopback.py
+        dest: /usr/local/libexec/branconet-independent-dns-lan
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Stage the firewall transaction and validate its syntax
+      ansible.builtin.copy:
+        src: branconet-independent-dns-lan.nft
+        dest: /etc/branconet-independent-dns-lan.nft
+        owner: root
+        group: root
+        mode: "0600"
+        validate: /usr/sbin/nft --check --file %s
+
+    - name: Stage the inactive systemd unit
+      ansible.builtin.copy:
+        src: branconet-independent-dns-lan.service
+        dest: /etc/systemd/system/branconet-independent-dns-lan.service
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Reload unit definitions only
+      ansible.builtin.systemd_service:
+        daemon_reload: true

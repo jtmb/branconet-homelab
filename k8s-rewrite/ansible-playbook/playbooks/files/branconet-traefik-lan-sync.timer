@@ -1,0 +1,10 @@
+[Unit]
+Description=Refresh timed Traefik LAN bans
+
+[Timer]
+OnActiveSec=1s
+OnUnitInactiveSec=2s
+AccuracySec=250ms
+
+[Install]
+WantedBy=timers.target

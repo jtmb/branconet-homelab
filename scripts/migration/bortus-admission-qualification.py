@@ -101,8 +101,9 @@ def contract_checked(contract):
         need(type(values) is list and 1 <= len(values) <= 64 and all(name(v) for v in values) and
              len(set(values)) == len(values) and required <= set(values), 'contract')
     claims = contract['protected_pvc_names']
-    need(len(claims) == 2 and claims[0] == 'bortus-data' and
-         re.fullmatch('bortus-restore-[0-9a-f]{12}', claims[1]), 'contract')
+    # Keep a prior independent-restore claim protected while a fresh one is proven.
+    need(2 <= len(claims) <= 3 and claims[0] == 'bortus-data' and
+         all(re.fullmatch('bortus-restore-[0-9a-f]{12}', claim) for claim in claims[1:]), 'contract')
     images = contract['approved_image_references']
     need(type(images) is list and 1 <= len(images) <= 8 and all(type(v) is str and len(v) <= 512 and
         re.fullmatch('[a-z0-9][a-z0-9._/:-]*@sha256:[0-9a-f]{64}', v) and
@@ -175,7 +176,7 @@ def probe_catalog(contract):
         cases.append({'case_id': case_id, 'kind': kind, 'namespace': 'bortus', 'operation': operation,
             'subresource': subresource, 'scenario': scenario, 'protected_reference': reference,
             'expected_outcome': 'allowed' if allowed else 'guard_denied'})
-    original, restored = contract['protected_pvc_names']
+    original, restored = contract['protected_pvc_names'][:2]
     add('Pod', 'inert-readonly-approved', original, True)
     add('Pod', 'inert-readonly-approved', restored, True)
     for kind, scenario, reference in (
@@ -195,7 +196,10 @@ def probe_catalog(contract):
         for index, form in enumerate(('env', 'envFrom', 'volume', 'projected', 'imagePullSecret', 'azureFile',
                                      'csi', 'flexVolume', 'cephfs', 'rbd', 'iscsi', 'scaleIO', 'storageos')):
             add(tuple(KINDS)[index % len(KINDS)], 'legacy-default-secret-' + form, secret)
-    need(len(cases) == 40, 'probes')
+    for retained in contract['protected_pvc_names'][2:]:
+        add('StatefulSet', 'legacy-default-principal', retained)
+        add('Deployment', 'oldObject-reference-removal', retained, operation='UPDATE')
+    need(len(cases) == 40 + 2 * (len(contract['protected_pvc_names']) - 2), 'probes')
     return cases
 
 
@@ -206,7 +210,7 @@ def coverage_map(contract):
         categories = ['workload:' + case['kind'], 'reference:' + case['protected_reference'],
                       'scenario:' + case['scenario']]
         for category in categories: coverage.setdefault(category, []).append(case['case_id'])
-    return {'maximum_cases': 40, 'categories': coverage,
+    return {'maximum_cases': len(cases), 'categories': coverage,
         'structural_only_ephemeral_claim_names': list(contract['protected_pvc_names']),
         'structural_only_extra_secret_names': [n for n in contract['protected_secret_names']
             if n not in ('bortus-runtime', 'bortus-operator-access')]}

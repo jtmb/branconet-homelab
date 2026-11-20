@@ -61,7 +61,7 @@ class Guards:
 @unittest.skipUnless(os.name == 'posix', 'protected POSIX files/local TLS required')
 class PhaseTests(unittest.TestCase):
     def setUp(self):
-        self.folder=tempfile.TemporaryDirectory(dir=pathlib.Path.home());self.addCleanup(self.folder.cleanup)
+        self.folder=tempfile.TemporaryDirectory();self.addCleanup(self.folder.cleanup)
         self.root=pathlib.Path(self.folder.name);self.root.chmod(0o700)
         self.b=binding();self.q=object.__new__(m.PhaseQualifier)
         self.q.graph=m.interval;self.q.deadline=time.monotonic()+1000

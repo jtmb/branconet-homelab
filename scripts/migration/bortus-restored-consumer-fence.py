@@ -7,6 +7,8 @@ from typing import NamedTuple
 
 API = 'longhorn.io/v1beta2'
 ENGINE_IMAGE = 'docker.io/longhornio/longhorn-engine:v1.12.1'
+CURRENT_LONGHORN_VERSION = '1.13.0'
+ENGINE_PROFILES = {'1.12.1': ENGINE_IMAGE, '1.13.0': 'docker.io/longhornio/longhorn-engine:v1.13.0@sha256:b0cc5090889d57705acd69c5106492992e84560170ac3bec4a1cc8dd3fe83ca6'}
 SIZE = '1073741824'
 MAX_ITEMS = 10000
 MAX_NODES = 400000
@@ -139,15 +141,15 @@ def owner(obj, volume):
          ref.get('name') == volume.name and ref.get('uid') == volume.uid, 'owner')
 
 
-def instance(obj, kind, volume):
+def instance(obj, kind, volume, engine_image=ENGINE_IMAGE):
     ident = identity(obj, 'longhorn-system')
     need(obj.get('apiVersion') == API and obj.get('kind') == kind, 'instance')
     owner(obj, volume)
     spec, status = obj.get('spec', {}), obj.get('status', {})
     need(spec.get('active') is True and spec.get('volumeName') == volume.name and
          spec.get('volumeSize') == SIZE and spec.get('dataEngine') == 'v1' and
-         spec.get('image') == ENGINE_IMAGE and status.get('currentState') == 'running' and
-         status.get('currentImage') == ENGINE_IMAGE and status.get('started') is True,
+         spec.get('image') == engine_image and status.get('currentState') == 'running' and
+         status.get('currentImage') == engine_image and status.get('started') is True,
          'instance')
     need(not spec.get('failedAt'), 'instance')
     conditions_ok(status)
@@ -291,7 +293,8 @@ def _evaluate(expected, objects):
     need(type(expected) is dict and set(expected) == {'original_claim', 'original_pv',
         'original_volume', 'claim', 'pv', 'volume', 'backup', 'backup_url', 'holder',
         'holder_image', 'original_node', 'node', 'longhorn_version'}, 'expectation')
-    need(expected['longhorn_version'] == '1.12.1', 'compatibility')
+    need(expected['longhorn_version'] in ENGINE_PROFILES, 'compatibility')
+    engine_image = ENGINE_PROFILES[expected['longhorn_version']]
     need(type(objects) is dict and set(objects) == {'claim', 'pv', 'volume', 'backup',
         'node', 'pvs', 'pods', 'engines', 'replicas'}, 'input_shape')
     ids = {k: expected_id(expected[k], ns) for k, ns in (
@@ -342,7 +345,7 @@ def _evaluate(expected, objects):
          vs.get('size') == SIZE and vs.get('dataEngine') == 'v1' and
          vs.get('Standby') is False and 'standby' not in vs and
          st.get('isStandby') is False and st.get('state') == 'attached' and
-         st.get('robustness') == 'healthy' and st.get('currentImage') == ENGINE_IMAGE and
+         st.get('robustness') == 'healthy' and st.get('currentImage') == engine_image and
          st.get('restoreInitiated') is True and st.get('restoreRequired') is False and
          vs.get('nodeID') == st.get('currentNodeID') == actual['node'].name, 'volume')
     bs = backup.get('status', {})
@@ -369,12 +372,12 @@ def _evaluate(expected, objects):
     engines, replicas = relevant(engines, actual['volume']), relevant(replicas, actual['volume'])
     need(len(engines) == 1 and len(replicas) == 2, 'instances')
     engine = engines[0]
-    eid = instance(engine, 'Engine', actual['volume'])
+    eid = instance(engine, 'Engine', actual['volume'], engine_image)
     need(eid.uid not in {i.uid for i in ids.values()}, 'identity')
     need(engine['spec']['nodeID'] == actual['node'].name, 'placement')
     replica_ids, addresses = [], {}
     for obj in replicas:
-        rid = instance(obj, 'Replica', actual['volume'])
+        rid = instance(obj, 'Replica', actual['volume'], engine_image)
         rs, rst = obj['spec'], obj['status']
         need(rs.get('engineName') == eid.name and rs.get('failedAt') == '' and
              type(rs.get('healthyAt')) is str and 0 < len(rs['healthyAt']) <= 64, 'replica')

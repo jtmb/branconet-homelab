@@ -1,0 +1,29 @@
+---
+- name: Stage the independent resolver's static LAN address
+  hosts: workernode2
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Confirm the inventory still identifies the resolver host
+      ansible.builtin.assert:
+        that: ansible_host == '192.168.0.5'
+
+    - name: Stage the overlay outside Netplan's active configuration
+      ansible.builtin.copy:
+        dest: /run/99-branconet-static-lan.yaml
+        owner: root
+        group: root
+        mode: '0600'
+        content: |
+          network:
+            version: 2
+            ethernets:
+              enp3s0:
+                dhcp4: false
+                addresses: [192.168.0.5/24]
+                routes:
+                  - to: default
+                    via: 192.168.0.1
+                    metric: 100
+                nameservers:
+                  addresses: [192.168.0.1]

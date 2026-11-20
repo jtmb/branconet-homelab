@@ -1,5 +1,7 @@
 """One owned inert-holder exec child; program bytes belong exclusively to data.execute."""
 import copy
+import hashlib
+import json
 import math
 import os
 import pathlib
@@ -208,20 +210,36 @@ class ReaderLauncher:
                      [('name', 'name'), ('namespace', 'namespace'), ('uid', 'uid')]), 'ownership')
 
     def _binary(self):
-        binary = RUNTIME / 'bin/kubectl'
-        need(binary.is_absolute(), 'ownership')
-        # No binary or credential contents are logged or copied; fixed executable only.
-        location = pathlib.Path('/')
-        for part in binary.parts[1:-1]:
+        requested = RUNTIME / 'bin/kubectl'
+        binary = requested.resolve(strict=True)
+        store = pathlib.Path('/mnt/h/AgentArtifacts/projects/storage-migration/builds/linux-tree-store/files')
+        expected = store / 'swarm-history/bin/kubectl'
+        boundary = None
+        if binary != requested:
+            need(binary == expected and store.resolve(strict=True) == store and store.is_mount(), 'ownership')
+            found = subprocess.run(['findmnt','--json','--target',str(store),'--output','TARGET,FSTYPE,UUID'],
+                                   capture_output=True,timeout=10)
+            need(found.returncode == 0 and len(found.stdout) <= 16384, 'ownership')
+            mounts=json.loads(found.stdout).get('filesystems',[])
+            need(len(mounts)==1 and mounts[0]=={'target':str(store),'fstype':'ext4','uuid':'b2a13cbb-1f20-4dac-acba-49d7367632a0'},'ownership')
+            info=store.lstat()
+            need(stat.S_ISDIR(info.st_mode) and info.st_uid==0 and not info.st_mode&0o022,'ownership')
+            boundary=store
+        location = boundary or pathlib.Path('/')
+        parts = binary.relative_to(location).parts
+        for part in parts[:-1]:
             location /= part
-            path = location
-            info = path.lstat()
+            info = location.lstat()
             need(stat.S_ISDIR(info.st_mode) and info.st_uid in (0, os.getuid()) and
                  stat.S_IMODE(info.st_mode) & 0o022 == 0, 'ownership')
         info = binary.lstat()
         need(stat.S_ISREG(info.st_mode) and info.st_uid == os.getuid() and
              info.st_nlink == 1 and stat.S_IMODE(info.st_mode) & 0o022 == 0 and
              stat.S_IMODE(info.st_mode) & 0o100, 'ownership')
+        if boundary:
+            with binary.open('rb') as stream:
+                need(hashlib.file_digest(stream,'sha256').hexdigest() == '65691ff77eb6fa44c908b77a1082c9f092c3b9733b5cefabec0d1104890e21a8','ownership')
+            need(credentials.fingerprint(binary.lstat()) == credentials.fingerprint(info),'ownership')
         return binary
 
     def _launch(self, holder, deadline):

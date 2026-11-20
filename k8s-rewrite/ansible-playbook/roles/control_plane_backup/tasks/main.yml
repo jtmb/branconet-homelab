@@ -1,0 +1,42 @@
+---
+- name: Require the explicit separate maintenance backup scope
+  ansible.builtin.assert:
+    that:
+      - control_plane_backup_apply | bool
+      - inventory_hostname == 'masternode'
+      - control_plane_backup_output_dir is match('^/home/brajam/[^\r\n]+$')
+      - control_plane_backup_recipient_file == '/home/brajam/.ssh/id_ed25519.pub'
+      - control_plane_backup_identity_file == '/home/brajam/.ssh/id_ed25519'
+      - control_plane_backup_etcd_image == 'registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910'
+      - control_plane_backup_etcd_digest == 'registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910'
+    fail_msg: Explicit reviewed maintenance backup settings for this existing control plane are required.
+
+- name: Capture and authenticate a separate encrypted control-plane backup
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - "{{ role_path }}/files/control_plane_backup.py"
+      - --output-dir
+      - "{{ control_plane_backup_output_dir }}"
+      - --recipient-file
+      - "{{ control_plane_backup_recipient_file }}"
+      - --identity-file
+      - "{{ control_plane_backup_identity_file }}"
+      - --age-binary
+      - "{{ control_plane_backup_age_binary }}"
+      - --node-name
+      - "{{ kubernetes_node_name | default(inventory_hostname) }}"
+      - --etcd-image
+      - "{{ control_plane_backup_etcd_image }}"
+      - --etcd-digest
+      - "{{ control_plane_backup_etcd_digest }}"
+  # Inherit the launcher's private child environment. Rendering an Ansible
+  # environment assignment here could put the password in a shell argument.
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when: not ansible_check_mode
+
+- name: Report the separate backup artifact location and qualification boundary
+  ansible.builtin.debug:
+    msg: "Inspect the metadata-only receipt under {{ control_plane_backup_output_dir }}. A completed authenticated backup is not independent restore, API decryption or BORTUS recovery acceptance. Check mode creates no backup."

@@ -85,6 +85,23 @@ def prepare(journal_factory=f.MemoryJournal):
 
 
 class QuiescentTests(unittest.TestCase):
+    def test_resume_waits_for_health_without_accepting_degraded_capture(self):
+        c,j,op,_=prepare()
+        c.resources['volumes.longhorn.io']['status'].update(state='attached',robustness='degraded')
+        self.assertFalse(op.storage(resuming=True))
+        with self.assertRaises(RuntimeError):op.storage()
+        c.resources['volumes.longhorn.io']['status']['robustness']='faulted'
+        with self.assertRaises(RuntimeError):op.storage(resuming=True)
+
+    def test_completed_zero_writer_backup_allows_normal_detachment(self):
+        c,j,op,_=prepare()
+        op.capture_quiescent()
+        c.resources['volumes.longhorn.io']['status'].update(state='detached',robustness='unknown')
+        self.assertFalse(op.open_guard_transition()['forward_acceptance'])
+        self.assertEqual('guard-transition-open',j.record['quiescent']['state'])
+        self.assertEqual(0,c.resources['deployment']['spec']['replicas'])
+        self.assertEqual([],c.resources['pods']['items'])
+
     def test_full_backup_stays_zero_then_compatible_once_only(self):
         c, j, op, _ = prepare()
         self.assertFalse(op.capture_quiescent()['forward_acceptance'])

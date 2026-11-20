@@ -15,10 +15,12 @@ reconciled, selects a Ready pod owned by the deployment's *current*
 ReplicaSet whose image is exactly the pinned digest, and runs the route
 checks on that exact pod name.
 """
+import argparse
 import base64
 import http.client
 import json
 from pathlib import Path
+import re
 import ssl
 import subprocess
 import sys
@@ -43,7 +45,7 @@ def kubectl_json(args):
     return API.call(args, limit=8 * 1024 * 1024)
 
 
-def select_verified_pod(deployment, replicasets, pods):
+def select_verified_pod(deployment, replicasets, pods, expected_image=EXPECTED_IMAGE):
     """Return (pod_or_None, reasons) for the exact pod that proves the release.
 
     Refuses mid-rollout states: the deployment must be fully reconciled, and
@@ -53,7 +55,7 @@ def select_verified_pod(deployment, replicasets, pods):
     reasons = []
     meta, spec, status = deployment["metadata"], deployment["spec"], deployment.get("status", {})
     desired = spec["template"]["spec"]["containers"][0]["image"]
-    if desired != EXPECTED_IMAGE:
+    if desired != expected_image:
         reasons.append("desired_image_is_not_the_pinned_digest")
     if status.get("observedGeneration") != meta.get("generation"):
         reasons.append("deployment_not_reconciled")
@@ -114,10 +116,17 @@ def https(path):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--expected-image", default=EXPECTED_IMAGE)
+    parser.add_argument("--receipt", type=Path)
+    args = parser.parse_args()
+    expected = args.expected_image
+    if not re.fullmatch(r"docker\.io/jtmb92/bortus@sha256:[0-9a-f]{64}", expected):
+        parser.error("--expected-image must be a full immutable BORTUS reference")
     deployment = kubectl_json(["get", "deployment", DEPLOYMENT, "-n", NAMESPACE, "-o", "json"])
     replicasets = kubectl_json(["get", "replicaset", "-n", NAMESPACE, "-o", "json"])["items"]
     pods = kubectl_json(["get", "pods", "-n", NAMESPACE, "-l", "app=bortus", "-o", "json"])["items"]
-    pod, selection_reasons = select_verified_pod(deployment, replicasets, pods)
+    pod, selection_reasons = select_verified_pod(deployment, replicasets, pods, expected)
     pod_name = pod["metadata"]["name"] if pod else None
 
     routes_ok, route_list = False, []
@@ -132,7 +141,7 @@ def main():
         routes_ok = "certificates" in route_list
         code_api, api_dir, _ = pod_exec(pod_name, ["sh", "-c",
                                 "ls -d /app/.next/server/app/api/certificates 2>/dev/null || echo ABSENT"])
-        api_ok = api_dir.strip().endswith("api/certificates")
+        api_ok = code_api == 0 and api_dir.strip() == "/app/.next/server/app/api/certificates"
 
     restarts = sum(container.get("restartCount", 0) for container in
                    pod["status"].get("containerStatuses", [])) if pod else None
@@ -140,7 +149,7 @@ def main():
     page_http = https("/certificates")
 
     checks = {
-        "deploymentDesiredImageIsPinned": deployment["spec"]["template"]["spec"]["containers"][0]["image"] == EXPECTED_IMAGE,
+        "deploymentDesiredImageIsPinned": deployment["spec"]["template"]["spec"]["containers"][0]["image"] == expected,
         "deploymentFullyReconciled": pod is not None,
         "verifiedPodBelongsToCurrentRollout": pod is not None,
         "verifiedPodRunsPinnedImage": pod is not None,
@@ -163,12 +172,11 @@ def main():
         "checks": checks,
         "passed": all(checks.values()),
     }
-    work = API.STAGE / "ui-release"
-    work.mkdir(parents=True, exist_ok=True)
-    with (work / "release-acceptance-current.json").open("x") as stream:
-        json.dump(value, stream, indent=2)
-        stream.write("\n")
-    print(json.dumps(value, indent=2)[:1600])
+    if args.receipt:
+        with args.receipt.open("x") as stream:
+            json.dump(value, stream, indent=2)
+            stream.write("\n")
+    print(json.dumps(value, indent=2))
     return 0 if value["passed"] else 1
 
 

@@ -1,0 +1,15 @@
+---
+- name: Repair Radarr and Sonarr qBittorrent download-client addresses
+  hosts: master
+  gather_facts: false
+  become: false
+  tasks:
+    - name: Preflight both clients and update only the known legacy records
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -B
+          - "-"
+        stdin: "{{ lookup('ansible.builtin.file', 'files/qbittorrent-download-client-service.py') }}"
+      register: download_client_service
+      changed_when: "'updated legacy address' in download_client_service.stdout"

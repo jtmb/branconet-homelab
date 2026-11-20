@@ -324,8 +324,8 @@ class IntervalClient(cold.Client):
         failure = value = None
         try:
             need(type(dry_run) is bool, 'scope')
-            label = 'holder' if body.get('metadata',{}).get('name') == self.journal.record['holder_proposal']['metadata']['name'] else None
-            if label is None: label = next((k for k in ('snapshot','backup') if body.get('metadata',{}).get('name') == self.journal.record[k+'_name']), None)
+            label = 'holder' if body.get('kind')=='Pod' and body.get('apiVersion')=='v1' and body.get('metadata',{}).get('name') == self.journal.record['holder_proposal']['metadata']['name'] else None
+            if label is None: label = next((k for k in ('snapshot','backup') if body.get('kind')==('Snapshot' if k=='snapshot' else 'Backup') and body.get('apiVersion')=='longhorn.io/v1beta2' and body.get('metadata',{}).get('name') == self.journal.record[k+'_name']), None)
             need(label is not None, 'scope')
             if dry_run: need(label == 'holder' and quiescent.sha(body) == quiescent.sha(self.journal.record['holder_proposal']) and self.journal.record.get('quiescent',{}).get('state')=='pending', 'proposal')
             action = 'dry-run-holder' if dry_run else 'create-'+label

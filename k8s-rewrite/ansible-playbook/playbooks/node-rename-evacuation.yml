@@ -1,0 +1,59 @@
+---
+- name: Evacuate the original control-plane node's Longhorn replicas
+  hosts: master
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  vars:
+    rename_evacuation_action: status
+  tasks:
+    - name: Authenticate the fresh recovery checkpoint before live eviction
+      when: rename_evacuation_action == 'start'
+      delegate_to: localhost
+      block:
+        - name: Require the approved recovery directory
+          ansible.builtin.assert:
+            that:
+              - rename_checkpoint is defined
+              - rename_checkpoint is match('^/home/brajam/\.local/share/branconet-migration/control-plane-backup-post-etcd-20261024/control-plane-[a-f0-9]{32}$')
+
+        - name: Read the encrypted checkpoint receipt
+          ansible.builtin.set_fact:
+            checkpoint_receipt: "{{ lookup('ansible.builtin.file', rename_checkpoint + '/receipt.json') | from_json }}"
+          no_log: true
+
+        - name: Hash the encrypted checkpoint without opening plaintext
+          ansible.builtin.stat:
+            path: "{{ rename_checkpoint }}/control-plane.tar.age"
+            checksum_algorithm: sha256
+            follow: false
+          register: checkpoint_archive
+
+        - name: Require recent authenticated snapshot and exact archived bytes
+          ansible.builtin.assert:
+            that:
+              - checkpoint_receipt.status == 'completed'
+              - checkpoint_receipt.authenticated_archive_verified
+              - checkpoint_receipt.snapshot_footer_verified
+              - checkpoint_receipt.snapshot_status_verified
+              - not checkpoint_receipt.remote_plaintext_retained
+              - checkpoint_archive.stat.isreg and not checkpoint_archive.stat.islnk
+              - checkpoint_archive.stat.checksum == checkpoint_receipt.archive_sha256
+              - (lookup('ansible.builtin.pipe', 'date +%s') | int) - checkpoint_archive.stat.mtime < 3600
+              - (lookup('ansible.builtin.pipe', 'date +%s') | int) >= checkpoint_archive.stat.mtime
+
+    - name: Read or request the exact supported Longhorn evacuation
+      ansible.builtin.command:
+        argv:
+          - python3
+          - -B
+          - -c
+          - "{{ lookup('ansible.builtin.file', 'files/node-rename-evacuation.py') }}"
+          - "{{ rename_evacuation_action }}"
+          - "{{ lookup('ansible.builtin.file', 'files/node-rename-capacity.py') }}"
+      register: rename_evacuation
+      changed_when: "'EVACUATION_REQUESTED' in rename_evacuation.stdout"
+
+    - name: Report replica evacuation progress
+      ansible.builtin.debug:
+        var: rename_evacuation.stdout_lines

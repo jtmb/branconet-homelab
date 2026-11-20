@@ -57,6 +57,11 @@ class RestoreCompletionTests(unittest.TestCase):
         self.assertNotIn("PRIVATE_SENTINEL", str(caught.exception))
         return caught.exception
 
+    def test_reviewed_113_same_restore_transition(self):
+        result=evaluate(trace(),longhorn_version='1.13.0')
+        self.assertIsNotNone(result)
+        self.refuse(trace(),longhorn_version='1.14.0')
+
     def test_exact_transition_is_immutable_metadata_only(self):
         events = trace()
         original = copy.deepcopy(events)

@@ -1,0 +1,168 @@
+---
+- name: Activate the dedicated Seerr LAN authentication jail
+  hosts: worker
+  serial: 1
+  any_errors_fatal: true
+  become: true
+  vars:
+    jail: branconet-traefik-lan
+    jail_path: /etc/fail2ban/jail.d/90-branconet-traefik-lan.local
+    bridge_dir: /run/branconet-traefik-ban
+  tasks:
+    - name: Require both previously qualified bridge sockets
+      ansible.builtin.stat:
+        path: "{{ bridge_dir }}/{{ item }}/bridge.sock"
+      loop:
+        - reader
+        - publisher
+      register: bridge_sockets
+
+    - name: Verify the publisher and reader socket types and owners
+      ansible.builtin.assert:
+        that:
+          - bridge_sockets.results[0].stat.issock | default(false)
+          - bridge_sockets.results[0].stat.uid == 24532
+          - bridge_sockets.results[1].stat.issock | default(false)
+          - bridge_sockets.results[1].stat.uid == 24531
+
+    - name: Record whether the jail already exists on this worker
+      ansible.builtin.stat:
+        path: "{{ jail_path }}"
+      register: previous_jail
+
+    - name: Install the live-log filter and watcher definitions
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "{{ item.mode | default('0644') }}"
+      loop:
+        - src: traefik-lan-auth-candidate.conf
+          dest: /etc/fail2ban/filter.d/branconet-traefik-lan.conf
+        - src: branconet-traefik-lan-logpaths.py
+          dest: /usr/local/libexec/branconet-traefik-lan-logpaths
+          mode: "0755"
+        - src: branconet-traefik-lan-logpaths.service
+          dest: /etc/systemd/system/branconet-traefik-lan-logpaths.service
+        - src: branconet-traefik-lan-logpaths.path
+          dest: /etc/systemd/system/branconet-traefik-lan-logpaths.path
+
+    - name: Keep the empty Fail2Ban log available across boots
+      ansible.builtin.copy:
+        src: branconet-traefik-lan-bridge.tmpfiles
+        dest: /etc/tmpfiles.d/branconet-traefik-lan-bridge.conf
+        owner: root
+        group: root
+        mode: "0644"
+      tags: [lan-ban-boot-files]
+
+    - name: Create only the dedicated bridge and empty log paths
+      ansible.builtin.command:
+        argv:
+          - systemd-tmpfiles
+          - --create
+          - /etc/tmpfiles.d/branconet-traefik-lan-bridge.conf
+      changed_when: false
+      tags: [lan-ban-boot-files]
+
+    - name: Confirm the authenticated reader can apply a snapshot
+      ansible.builtin.systemd_service:
+        name: branconet-traefik-lan-sync.service
+        daemon_reload: true
+        state: started
+
+    - name: Enable and qualify only the dedicated LAN jail
+      block:
+        - name: Install the dedicated jail
+          ansible.builtin.copy:
+            src: branconet-traefik-lan.local
+            dest: "{{ jail_path }}"
+            owner: root
+            group: root
+            mode: "0644"
+            backup: true
+          register: jail_install
+
+        - name: Validate the Fail2Ban configuration
+          ansible.builtin.command: /usr/bin/fail2ban-client -t
+          changed_when: false
+
+        - name: Load the dedicated jail, allowing initial creation
+          ansible.builtin.command:
+            argv: [/usr/bin/fail2ban-client, reload, --if-exists, "{{ jail }}"]
+          changed_when: jail_install.changed
+
+        - name: Start the firewall reader timer and CRI path watcher
+          ansible.builtin.systemd_service:
+            name: "{{ item }}"
+            enabled: true
+            state: started
+          loop:
+            - branconet-traefik-lan-sync.timer
+            - branconet-traefik-lan-logpaths.path
+
+        - name: Attach the current logs to the dedicated jail
+          ansible.builtin.systemd_service:
+            name: branconet-traefik-lan-logpaths.service
+            state: started
+
+        - name: Confirm the SSH and Traefik jails are running
+          ansible.builtin.command:
+            argv: [/usr/bin/fail2ban-client, status, "{{ item }}"]
+          loop:
+            - sshd
+            - "{{ jail }}"
+          changed_when: false
+
+      rescue:
+        - name: Restore the existing jail definition when it was updated
+          ansible.builtin.copy:
+            src: "{{ jail_install.backup_file }}"
+            dest: "{{ jail_path }}"
+            remote_src: true
+            mode: preserve
+          when: jail_install.backup_file is defined
+
+        - name: Reload the restored jail
+          ansible.builtin.command:
+            argv: [/usr/bin/fail2ban-client, reload, "{{ jail }}"]
+          when: jail_install.backup_file is defined
+
+        - name: Roll back a first-time activation on this worker
+          when: not previous_jail.stat.exists
+          block:
+            - name: Stop the newly enabled watcher and reader timer
+              ansible.builtin.systemd_service:
+                name: "{{ item }}"
+                state: stopped
+                enabled: false
+              loop:
+                - branconet-traefik-lan-logpaths.path
+                - branconet-traefik-lan-sync.timer
+
+            - name: Remove the new jail declaration
+              ansible.builtin.file:
+                path: "{{ jail_path }}"
+                state: absent
+
+            - name: Stop only the new jail if Fail2Ban started it
+              ansible.builtin.command:
+                argv: [/usr/bin/fail2ban-client, stop, "{{ jail }}"]
+              register: jail_stop
+              failed_when:
+                - jail_stop.rc != 0
+                - "'does not exist' not in jail_stop.stdout"
+              changed_when: jail_stop.rc == 0
+
+            - name: Stop any reader run already triggered by the timer
+              ansible.builtin.systemd_service:
+                name: branconet-traefik-lan-sync.service
+                state: stopped
+
+            - name: Remove only the owned LAN ban table
+              ansible.builtin.command: /usr/local/libexec/branconet-traefik-ban stop
+
+        - name: Report failed activation
+          ansible.builtin.fail:
+            msg: The dedicated LAN jail activation failed on this worker.

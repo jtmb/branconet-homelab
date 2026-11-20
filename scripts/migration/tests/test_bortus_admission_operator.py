@@ -268,5 +268,41 @@ class OperatorTests(unittest.TestCase):
         obj['spec']['replicas']=1
         with self.assertRaises(a.OperatorRefused):a.fixture_matches(obj,proposal)
 
+    def test_standard_live_pod_priority_and_tolerations_only(self):
+        proposal=a.object_for('Pod','bortus-admission-123456abcdef-pod',a.idle_spec(self.contract['approved_image_references'][0],'alternate-node'))
+        obj=copy.deepcopy(proposal);obj['metadata'].update(uid=UID(50),resourceVersion='opaque')
+        obj['spec']['priority']=0
+        obj['spec']['tolerations']=[{'effect':'NoExecute','key':'node.kubernetes.io/'+condition,
+            'operator':'Exists','tolerationSeconds':300} for condition in ('not-ready','unreachable')]
+        self.assertEqual(UID(50),a.fixture_matches(obj,proposal)['uid'])
+        for mutate in (lambda o:o['spec'].update(priority=1),
+                       lambda o:o['spec']['tolerations'][0].update(tolerationSeconds=0),
+                       lambda o:o['spec']['tolerations'].append({'operator':'Exists'})):
+            changed=copy.deepcopy(obj);mutate(changed)
+            with self.assertRaises(a.OperatorRefused):a.fixture_matches(changed,proposal)
+
+    def test_returned_create_uid_survives_failed_validation_without_confirmation(self):
+        proposal=a.object_for('Pod','bortus-admission-123456abcdef-pod',a.idle_spec(self.contract['approved_image_references'][0],'alternate-node'))
+        reply=copy.deepcopy(proposal);reply['metadata'].update(uid=UID(50),resourceVersion='opaque')
+        run=a.ProbeRun(self.parent/'returned-identity',{})
+        def reject(value):raise a.OperatorRefused('fixture')
+        try:
+            with self.assertRaises(a.OperatorRefused):
+                run.perform('Pod-create',proposal,lambda:(201,reply),reject)
+            entry=run.record['operations']['Pod-create']
+            self.assertEqual(entry['state'],'uncertain')
+            self.assertIsNone(entry['identity'])
+            self.assertEqual(entry['returned_identity']['uid'],UID(50))
+        finally:run.close()
+
+    def test_standard_secret_mode_only_on_inert_fixture(self):
+        proposal=a.object_for('Deployment','bortus-admission-123456abcdef-deployment',a.idle_spec(self.contract['approved_image_references'][0],'alternate-node',reference='bortus-runtime',guarded=False))
+        obj=copy.deepcopy(proposal);obj['metadata'].update(uid=UID(50),resourceVersion='opaque')
+        secret=obj['spec']['template']['spec']['volumes'][0]['secret']
+        secret['defaultMode']=0o644
+        self.assertEqual(UID(50),a.fixture_matches(obj,proposal)['uid'])
+        secret['defaultMode']=0o777
+        with self.assertRaises(a.OperatorRefused):a.fixture_matches(obj,proposal)
+
 
 if __name__=='__main__':unittest.main()

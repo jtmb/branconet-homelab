@@ -104,6 +104,7 @@ class Sidecar:
         self.collector, self.journal = collector, collector.journal
         self.inode = self.digest = None
         self.state = {'abi': 1, 'state': 'pending', 'failure': None,
+            'failure_locations': [], 'failure_code': None, 'failure_type': None,
             'run_id': self.journal.record['run_id'], 'lease_id': collector.state['lease_id'],
             'checkpoint_journal_sha256': self.journal.record['checkpoint_journal_sha256'],
             'proposal_sha256': self.journal.record['reviewed_proposal_sha256'],
@@ -179,6 +180,10 @@ class Sidecar:
              self.state['failure'] in (None,) + FAILURES and
              self.state['overall_live_restore_acceptance'] is False and
              self.state['image_runtime_admission_acceptance'] is False, 'durability')
+        need(type(self.state['failure_locations']) is list and len(self.state['failure_locations'])<=12 and
+             all(type(x) is str and re.fullmatch(r'[A-Za-z0-9_.-]+:[0-9]+',x) for x in self.state['failure_locations']) and
+             (self.state['failure_type'] is None or re.fullmatch(r'[A-Za-z0-9_]+',self.state['failure_type'])) and
+             (self.state['failure_code'] is None or re.fullmatch(r'[A-Za-z0-9_]+',self.state['failure_code'])), 'durability')
         for key in ('source_before', 'source_after', 'health_before', 'health_after'):
             record = self.state[key]
             if record is None:
@@ -349,6 +354,13 @@ def execute(collector, expected_health, original_archive, original_ciphertext_sh
         failure = None
     except Exception as error:
         failure = failure_code(error, failure)
+        if sidecar is not None:
+            locations=[];tb=error.__traceback__
+            while tb:
+                locations.append(pathlib.Path(tb.tb_frame.f_code.co_filename).name+':'+str(tb.tb_lineno));tb=tb.tb_next
+            sidecar.state['failure_locations']=locations[-12:]
+            sidecar.state['failure_code']=getattr(error,'code',None)
+            sidecar.state['failure_type']=type(error).__name__
     finally:
         cleanup_failed = False
         for result in copies:

@@ -1,0 +1,35 @@
+---
+- name: Require one explicit reviewed application backup scope
+  ansible.builtin.assert:
+    that:
+      - cold_application_state_apply | bool
+      - inventory_hostname == 'masternode'
+      - cold_application_state_app in ['radarr', 'sonarr', 'bazarr', 'tautulli', 'vaultwarden']
+      - cold_application_state_output_dir is match('^/home/brajam/[^\r\n]+$')
+      - cold_application_state_node in ['workernode1', 'workernode2']
+      - cold_application_state_reader_uid | int in [0, 1000]
+      - cold_application_state_reader_gid | int == cold_application_state_reader_uid | int
+
+- name: Run the one-app helper on the native WSL controller
+  ansible.builtin.command:
+    argv:
+      - /home/brajam/.local/share/branconet-migration/venv/bin/python
+      - "{{ playbook_dir }}/../../../scripts/migration/cold-application-state-backup.py"
+      - "{{ cold_application_state_app }}"
+      - --apply
+      - --reader-uid
+      - "{{ cold_application_state_reader_uid }}"
+      - --reader-gid
+      - "{{ cold_application_state_reader_gid }}"
+      - --node
+      - "{{ cold_application_state_node }}"
+      - --output-dir
+      - "{{ cold_application_state_output_dir }}"
+  delegate_to: localhost
+  become: false
+  no_log: true
+  when: not ansible_check_mode
+
+- name: State the independent backup boundary
+  ansible.builtin.debug:
+    msg: "Inspect private receipts under {{ cold_application_state_output_dir }}. One app only; root must first quiesce its Flux writer. Check mode creates no Pod and captures no archive. Full archive authentication is not independent restoration."

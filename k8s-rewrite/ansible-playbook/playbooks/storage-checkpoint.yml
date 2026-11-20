@@ -1,0 +1,8 @@
+---
+- name: Create a fresh online off-node storage checkpoint
+  hosts: master
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  roles: [storage_checkpoint]

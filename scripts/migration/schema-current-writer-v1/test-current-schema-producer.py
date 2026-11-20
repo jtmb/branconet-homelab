@@ -71,6 +71,21 @@ class Controls(unittest.TestCase):
                     'items':[copy.deepcopy(self.data['pod'])]}
         return copy.deepcopy(self.data[key])
 
+    def test_only_exact_owned_readonly_reader_is_exempted(self):
+        reader={'metadata':{'name':'bortus-cold-123456abcdef','namespace':'bortus','uid':'owned-reader','resourceVersion':'reader-rv'},
+                'spec':{'automountServiceAccountToken':False,'containers':[{'command':['node','-e','setInterval(()=>{},1000)'],
+                'volumeMounts':[{'name':'data','mountPath':'/data','readOnly':True}]}],
+                'volumes':[{'name':'data','persistentVolumeClaim':{'claimName':'bortus-data','readOnly':True}}]}}
+        context={k:reader['metadata'][k] for k in ('name','namespace','uid')}|{'spec_sha256':hashlib.sha256(json.dumps(reader['spec'],sort_keys=True,separators=(',',':')).encode()).hexdigest()}
+        def get(path,deadline):
+            value=self.get(path,deadline)
+            if path.endswith('/pods'):value['items'].append(copy.deepcopy(reader))
+            return value
+        self.assertEqual(m.snapshot(get,time.monotonic()+5,context)['writer']['uid'],'fixture-writer')
+        with self.assertRaises(m.Refused):m.snapshot(get,time.monotonic()+5)
+        reader['spec']['containers'][0]['volumeMounts'][0]['readOnly']=False
+        with self.assertRaises(m.Refused):m.snapshot(get,time.monotonic()+5,context)
+
     def execute(self, writer, container, raw, deadline):
         self.execs += 1
         self.assertEqual(hashlib.sha256(raw).hexdigest(),m.READER_SHA)

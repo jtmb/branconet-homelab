@@ -1,0 +1,105 @@
+---
+# Scoped upgrade only. Preserve accepted broker/timer and do not activate services.
+- name: Stage the reviewed monitor cache profile and independent notifier
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    monitor_code: /usr/local/libexec/bortus-certificate-monitor
+  tasks:
+    - name: Require exact installed checkpoint bindings
+      ansible.builtin.assert:
+        that:
+          - kubernetes_node_name == 'node02'
+          - monitor_installed_hashes is defined
+          - monitor_installed_hashes | length == 10
+
+    - name: Read actual hostname and service states
+      ansible.builtin.command:
+        argv: "{{ item }}"
+      loop:
+        - [hostname]
+        - [systemctl, show, bortus-certificate-monitor.service, "--property=ActiveState,UnitFileState"]
+        - [systemctl, show, bortus-certificate-credential.timer, "--property=ActiveState,UnitFileState"]
+        - [systemctl, show, bortus-certificate-notifications.service, --property=LoadState]
+      register: monitor_upgrade_states
+      changed_when: false
+
+    - name: Keep the accepted timer active and the monitor stopped
+      ansible.builtin.assert:
+        that:
+          - monitor_upgrade_states.results[0].stdout == 'node02'
+          - "'ActiveState=inactive' in monitor_upgrade_states.results[1].stdout_lines"
+          - "'UnitFileState=disabled' in monitor_upgrade_states.results[1].stdout_lines"
+          - "'ActiveState=active' in monitor_upgrade_states.results[2].stdout_lines"
+          - "'UnitFileState=enabled' in monitor_upgrade_states.results[2].stdout_lines"
+          - monitor_upgrade_states.results[3].stdout == 'LoadState=not-found'
+
+    - name: Hash each exact installed module and unit
+      ansible.builtin.stat:
+        path: "{{ item.key }}"
+        follow: false
+        checksum_algorithm: sha256
+      loop: "{{ monitor_installed_hashes | dict2items }}"
+      register: monitor_upgrade_hashes
+
+    - name: Require preserved root-managed installed bytes
+      ansible.builtin.assert:
+        that:
+          - item.stat.isreg | default(false)
+          - item.stat.uid == 0
+          - item.stat.mode == '0644'
+          - item.stat.checksum == item.item.value
+      loop: "{{ monitor_upgrade_hashes.results }}"
+      loop_control:
+        label: "{{ item.item.key }}"
+
+    - name: Inspect exact new targets and persistent state
+      ansible.builtin.stat:
+        path: "{{ item }}"
+        follow: false
+      loop:
+        - "{{ monitor_code }}/certificate_monitor_notifications.py"
+        - "{{ monitor_code }}/deliver-certificate-notifications.py"
+        - "{{ monitor_code }}/certificate_notification_firewall.py"
+        - /etc/systemd/system/bortus-certificate-notifications.service
+        - /etc/systemd/system/bortus-certificate-notifications.service.d
+        - /var/lib/bortus-certificate-monitor/monitor.sqlite
+      register: monitor_upgrade_new
+
+    - name: Refuse replacement of previously created notifier or state
+      ansible.builtin.assert:
+        that: monitor_upgrade_new.results | selectattr('stat.exists') | list | length == 0
+
+    - name: Install only the new independent notifier modules
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../scripts/migration/{{ item }}"
+        dest: "{{ monitor_code }}/{{ item }}"
+        owner: root
+        group: root
+        mode: "0644"
+      loop: [certificate_monitor_notifications.py, deliver-certificate-notifications.py, certificate_notification_firewall.py]
+
+    - name: Install reviewed monitor and notifier unit definitions
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "/etc/systemd/system/{{ item }}"
+        owner: root
+        group: root
+        mode: "0644"
+      loop: [bortus-certificate-monitor.service, bortus-certificate-notifications.service]
+
+    - name: Validate the two reviewed unit definitions
+      ansible.builtin.command:
+        argv:
+          - systemd-analyze
+          - verify
+          - /etc/systemd/system/bortus-certificate-monitor.service
+          - /etc/systemd/system/bortus-certificate-notifications.service
+      changed_when: false
+
+    - name: Reload definitions only without starting or enabling anything
+      ansible.builtin.systemd_service:
+        daemon_reload: true

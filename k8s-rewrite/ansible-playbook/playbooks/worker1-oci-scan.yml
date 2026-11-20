@@ -1,0 +1,11 @@
+---
+- name: Prepare or explicitly scan exact local OCI artifacts on worker1 only
+  hosts: workernode1
+  gather_facts: false
+  serial: 1
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+  roles:
+    - worker1_oci_scan
