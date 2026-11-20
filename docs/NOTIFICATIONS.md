@@ -65,6 +65,13 @@ matches the current ConfigMap content. **Native Secret changes are
 out-of-band on purpose** (see above) and are restarted directly by the
 rotation script, not by this checksum.
 
+The exposed subscriber password was rotated again. The replacement is
+stored under `BrancoNet/ntfy/bortus-subscriber` in the owner's Windows
+Credential Manager. The agent verified the replacement on the new Ready
+ntfy pod and read the exact private test notification over trusted HTTPS.
+This was not a personal receipt by the owner. The previous bcrypt verifier
+was replaced; the exposed plaintext was not reused in a live negative test.
+
 ## Monitor coverage
 
 The monitor's `scan()` covers Kubernetes API objects (cert-manager
@@ -82,6 +89,14 @@ validator rejected the `tls-endpoint` resource, so every such alert stayed
 pending forever behind its retry backoff and never reached the topic.
 Verified end to end with a clearly-labeled synthetic warning: monitor row →
 sender → ntfy → subscriber, delivered within one 60s loop.)
+
+The monitor includes TLS endpoint rows in the published snapshot. The
+first D3 dashboard image rejected those rows and could show “Offline”
+despite a fresh heartbeat. The deployed follow-up accepts the fixed
+node01–node03 API server and kubelet records separately from the required
+Kubernetes inventory sources. The signed-in agent browser verified
+“Monitoring” and “delivery confirmed by the sender” against the production
+snapshot. This is sender confirmation, not personal receipt.
 
 ## Notification delay — known contributing factor
 

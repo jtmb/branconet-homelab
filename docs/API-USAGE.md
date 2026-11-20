@@ -1,5 +1,24 @@
 # BORTUS K8s — API Usage
 
+## Certificates & Trust (working source; not yet deployed)
+
+`GET /api/certificates` requires a current authenticated account and returns
+`{ sampledAt, certificates, requests, sources, warnings, automation, controls }`.
+Responses use `Cache-Control: private, no-store`. Missing cert-manager/CSR
+permissions and incomplete lists produce source-specific coverage warnings.
+No TLS Secret values, raw CSRs or issued certificate payloads are returned.
+`controls` contains desired policy, the independent runner's acknowledged
+revision/heartbeat, durable observations, run state and bounded policy history.
+Missing fixed ConfigMaps are explicitly unavailable; the app never creates them.
+
+`PATCH /api/certificates/policy` requires fresh operator permission and same
+origin. Body: `{ uid, revision, policy: { version: 1, mode: "paused" | "monitor",
+scanIntervalSeconds: 60..900, expiryWarningDays: 1..30 } }`. The body is bounded
+to 4 KiB. UID/resourceVersion preconditions reject stale edits with 409; the
+fixed ConfigMap's last 50 policy changes retain operator ID/time. A successful
+save is requested state, not proof the independent runner applied it.
+No CSR approval, renewal or retirement endpoint is enabled. See `CLUSTER-TLS.md`.
+
 ## getOperatorRole source qualification (2026-10-23)
 
 The unchanged exact async declaration passes 36 new finite frozen PUBLIC SOURCE
@@ -7496,7 +7515,10 @@ Exact public GET `/api/health/live` reports process liveness. `/api/health/ready
 
 **Auth:** Cookie, `write` role
 
-Run an Ansible playbook.
+Start a local operator playbook. This requires engine administration and
+the configured Linux provisioning lock directory. `409` means another run
+holds the lock, the lock is unavailable, or a previous running row cannot
+be verified. No playbook is started in those cases.
 
 ```bash
 curl -X POST -b /tmp/botrus-cookies http://localhost:4000/api/deploy/start \
@@ -7508,11 +7530,17 @@ curl -X POST -b /tmp/botrus-cookies http://localhost:4000/api/deploy/start \
 
 **Auth:** Cookie, `write` role
 
-Cancel a running playbook.
+Request cancellation (`202`) when this dashboard process still owns the
+runner. If the local runner is confirmed gone without a recorded result,
+returns `200` with `interrupted: true` and preserves the saved output.
+An unverified run or one owned by another process returns `409`; that is
+not a cancellation.
 
 ### `GET /api/deploy/history`
 
-List past job runs.
+List past job runs. In the local operator environment, an authorized
+operator's refresh can reconcile a confirmed exited runner to `interrupted`.
+Live or unverified running rows are not changed.
 
 ### `GET /api/deploy/stream`
 

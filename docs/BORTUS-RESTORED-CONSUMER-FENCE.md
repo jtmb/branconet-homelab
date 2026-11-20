@@ -97,3 +97,8 @@ scope excludes differently named test modules. Loopback/fake API and disposable
 local data checks do not prove live guard enforcement or independent recovery.
 The corrected helper has not recaptured live data; the completed checkpoint
 remains bound to its original executed source and explicit recovery journal.
+
+
+## Current recovery tooling, 2026-11-14
+
+The evaluator retains the original 1.12.1 profile and adds an explicit 1.13.0 profile bound to engine digest `b0cc5090889d57705acd69c5106492992e84560170ac3bec4a1cc8dd3fe83ca6`. Volume, Engine and both Replicas must agree with that profile; accepting a different version string alone is insufficient. Current independent restoration selects 1.13.0 after reading the installed default-engine-image setting. The live separately restored volume passed metadata health with two replicas; this does not establish row comparison or release acceptance.

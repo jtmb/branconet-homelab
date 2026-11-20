@@ -1,5 +1,81 @@
 # Flux GitOps Guide
 
+## Certificate monitoring controls — active bootstrap, inactive UI grants
+
+Private charts now split the control bootstrap from inactive UI grants.
+`flux/certificate-monitor-control` supplies only paused/empty metadata ConfigMap
+seeds, with its own release child depending on the accepted runner identity.
+`flux/certificate-monitoring` retains UI-only grants and stays unreferenced.
+After a qualified rollout, Flux `IfNotPresent` must preserve operator policy
+and runner observation data; schema/seed changes require explicit migration.
+No Secret, CSR approval or host-maintenance grant is part of the candidate.
+Preparing this split does not activate the runner or release BORTUS UI; exact
+private validation/Flux and paused acknowledgement remain required.
+Those control-only gates subsequently passed on7911a030…; operator-owned
+monitor policy/audit/observations are live and preserved, with the host runner
+and sender enabled after bounded delivery/persistence qualification. UI grants
+remain inactive; do not reapply bootstrap seeds over current operator data.
+See `CLUSTER-TLS.md` and private charts `docs/OPERATIONS.md`.
+
+## Kubelet CSR observation identity
+
+`certificate-csr-observer` (checkpointb81ba44…, unchanged44-test gate) adds a
+third scoped child: `bortus-csr-controller` with get/list on
+certificatesigningrequests and nodes only. It has no approval subresource,
+signer, Secret, ConfigMap or workload grant and is not automounted. Flux
+reconciled it exactly; effective scope was proven read-only with a sealed RAM
+token. Approval mode in the homelab controller remains disabled pending a real
+pending-CSR positive/negative qualification and installed-certificate endpoint
+verification. Do not add approval verbs to this child; a separate reviewed
+increment is required.
+
+## Separate watchdog reader identity
+
+New `certificate-watchdog-identity` release child references only the existing
+five-object scoped reader and depends on monitor controls. Exactly two named
+GETs, no inventory lists/PATCH/Secrets/token resource/workload. Preparation
+must pass the unchanged44-test/full-validator/singleton/Flux path before
+effective live RBAC/short-lived credential qualification. It does not activate
+node03 services or replace the accepted node02 identity/token.
+Identity-only checkpoint7970fc1… subsequently passed44-test singleton
+promotion and exact parent/child Flux Ready. Five live objects match source;
+no auto token/workload. Actual separate subject qualification passed two
+allow/thirty deny reviews, two named reads and seven Forbidden calls using a
+sealed RAM-only candidate. Host token publication/periodic services remain
+separately gated; native monitor/policy/outbox were unchanged.
+
+## Current notification/rotation delivery
+
+The existing singleton local validator replaces disabled Actions for current
+private publication; it validates the exact main commit,44 source tests/full
+chart+credential checks, then atomically promotes validated/immutable tag.
+`private-ntfy` and `private-ntfy-rotation` children were staged through that
+path. Native credentials/enrollment remain outside Git or IfNotPresent-owned
+data. The current serving increment preserves Traefik's native Secret in a
+read-only projected volume beside one optional public TCP file, one ntfy
+writer, and suspended/unenrolled rotation. Fresh preservation review/dry run
+precedes source publication; Flux SSA owns the actual change. Do not manually
+apply deployments or use Actions to bypass this path. Actual endpoint trust,
+notification delivery and later enrollment remain distinct live gates.
+The subsequent checkpoints0024a70…/946c1f84…/5de2c45d… delivered corrected
+private-CA issuance plus preserved projection, one writer, then schedule
+enablement after real trusted serving and CAS observe verification. The
+operator-owned ConfigMap retained auto mode/pins across source reconciliation.
+First native scheduled verification22:40 UTC passed without a duplicate
+rollout. Actual DNS/client/monitor/watchdog and later lifecycle gates remain.
+Notification DNS now uses two serial source checkpoints: add immutable v4 and
+move secondary only, observe exact validated revision/Flux/direct TCP+UDP
+legacy/new-name answers with primary untouched, then move primary. The scoped
+read-only `scripts/migration/observe-notification-dns.py` preserves claims and
+checks all four DNS paths; independent new-name acceptance follows separately
+through the existing Ansible records-only configuration. No live apply bypass,
+blanket restart, DHCP change or ntfy/rotation mutation.
+Both checkpoints passed:4a352444… secondary first,8ecc9f87… primary second,
+each44-test singleton/Flux. The independent records-only update/serial refresh
+then passed, followed by advertised-resolver and ordinary DNS/trusted HTTPS
+acceptance. Neither record ConfigMaps nor claims were pruned; ntfy and rotation
+remained unchanged. Source/preflight failures are retained separately.
+
 ## Immutable chart and guarded-adoption source review - 2026-10-19 (Toronto)
 
 The [bounded source receipt](../evidence/bortus-charts-immutable-source-root-20261019.json) selects no concrete supported correction. Charts remain `835dabeb` and application `a912ab02`; all29 selected chart/workflow/Flux/policy/validator/test/contract files match raw Git bytes and modes. The effective native profile selects the single tagless7b03 digest, dedicated history namespace,20/100 retention and guardedAdoptionfalse with Helm suspended. All three Fail/Deny policy lists select that same image/protected references. Source preserves18 current Secret Roles without delete,37 exact binding-subject substitutions and history-only deletion; this is declared wiring, not installed effective authorization.

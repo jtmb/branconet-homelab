@@ -87,3 +87,8 @@ scope excludes differently named test modules. Loopback/fake API and disposable
 local data checks do not prove live guard enforcement or independent recovery.
 The corrected helper has not recaptured live data; the completed checkpoint
 remains bound to its original executed source and explicit recovery journal.
+
+
+## Current recovery tooling, 2026-11-14
+
+The existing operator tool directory is now an approved link into the H-backed storage-migration ext4 store. ReaderLauncher accepts only the canonical swarm-history/bin/kubectl target, ext4 UUID `b2a13cbb-1f20-4dac-acba-49d7367632a0`, protected native inner ancestry and exact kubectl SHA256 `65691ff77eb6fa44c908b77a1082c9f092c3b9733b5cefabec0d1104890e21a8`. Other links/writable native parents still refuse. Credentials stay in the original protected admin.conf and inherited descriptors; no configuration permissions or shared H permissions changed. Real tool and config preflight and 29 reader tests passed. The prior capture failure is retained; this is preparation for a fresh complete run, not retroactive data acceptance.

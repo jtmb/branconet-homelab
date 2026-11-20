@@ -1,5 +1,57 @@
 # BORTUS K8s — Workflow Guide
 
+## Certificates & Trust (working source; not yet deployed)
+
+Open **Certificates & Trust** in the sidebar and use **Refresh inventory** to
+read visible cert-manager certificates and Kubernetes signing requests. Review
+source availability before interpreting an empty list. This initial UI is
+point-in-time for live inventory. Independent monitoring shows durable
+observations and run status when its fixed ConfigMaps are provisioned. Operators
+can save paused/monitor mode, scan interval and cert-manager warning thresholds;
+compare the requested revision with the runner's acknowledged revision and fresh
+heartbeat. A saved policy alone does not establish that monitoring is active.
+Heartbeat refreshes preserve unsaved policy fields when UID/revision is
+unchanged; a new policy revision refreshes the form from the current record.
+On narrow screens the certificate metadata table scrolls within its own named
+region. Tab to **Certificate metadata table**, then use horizontal arrow keys
+to reach its remaining columns; the focus outline identifies the scroll region.
+Long monitoring resource names wrap rather than widening the whole page.
+Notification status remains **delivery not configured** for the host outbox
+dispatcher: it is not yet connected to a live client subscription. The new
+ntfy server has qualified trusted serving and native machine receipts, but
+that does not prove a host monitoring alert or operator receipt. No UI action starts
+the independent monitor/notifier or bypasses their activation/recovery gates.
+This feature does not yet schedule host maintenance or approve requests.
+An issued CSR is not proof of an installed/served certificate.
+See `CLUSTER-TLS.md` and the follow-up roadmap in `MIGRATION-PLAN.md`.
+The notification hostname now resolves on both advertised DNS paths and normal
+client DNS; trusted HTTPS200 passed without an override. Host outbox delivery
+and attended subscriber receipt remain separate unfinished steps.
+The next host qualification uses paused-first startup and actual durable
+restart, then a clearly labelled diagnostic pending CSR to drive the real
+outbox and native host publisher. It neither approves the request nor tests
+production expiry/renewal. The current unreleased UI's delivery label remains
+static; do not treat host acceptance as UI delivery-status acceptance.
+Actual host qualification now completed its bounded alert path: one native
+subscriber message, delivered-row restart/no acknowledged replay, exact
+diagnostic CSR retirement and fresh healthy zero-CSR inventory. Normal monitor/
+sender/timer stay enabled. Delivery took66.2min with unresolved intermittent
+transport failures; human receipt, reboot/watchdog availability and UI status/
+release remain separate unfinished gates.
+
+## Current automatic feature handoff - 2026-10-23
+
+The [current handoff policy](operations/handoffs/2026-10-23-bortus-autonomous-handoff-policy.md)
+implements the user's request to use Veyra's focused checkpoint and single-receipt
+transfer. It supersedes older recursive relay audits, shared-checkout identity
+requirements and startup/ack/release sequences. The successor verifies the owned
+feature branch/HEAD/remote in its existing isolated checkout, confirms its own
+actual full active goal, writes one ownership receipt and continues autonomously.
+The predecessor archives after matching that receipt. Historical evidence remains
+in place; all original product acceptance gates, frozen failures/workloads,
+application resource limits and PRD-last delivery boundaries remain unchanged.
+Root documentation and these workflow changes remain local.
+
 ## KV cleanup summary compiled presentation - 2026-10-19 (Toronto)
 
 The [bounded presentation receipt](../evidence/bortus-kv-cleanup-presentation-root-20261019.json) reviews unchanged application `a912ab02` / frontend `91078cd2`, using BuildID `NXhSomXkQG0Ty4ZzFvFhX`. Root binds297 current raw Git/build inputs through actual WSL UNC reads, including one declared CRLF-to-LF relation. The initial prelaunch checks all41,723 compiled/dependency records plus native/worker bindings. After a readonly first-start refusal, the revised fixture reuses that graph check with no writer/source change and fresh source/native/worker checks. All297 inputs remain unchanged after runtime; no final graph walk, source patch, test or rebuild occurs.
@@ -92,6 +144,20 @@ The approved migration uses `ansible-playbook/playbooks/site.yml` on james@192.1
 
 The revised foundation preserves Docker's runtime, resolver, Gluster and NAS data, installs `containerd-k8s`, enables Secrets encryption at rest and retained LUKS Longhorn volumes, and uses temporary ingress NodePorts 30080/30443. Flux retains source, Kustomize, Helm and notification controllers. Chart source activation waits for individual chart/value validation; runtime configuration generation in the legacy UI is not a prerequisite for this migration.
 
+Existing worker1 filesystem capacity recovery uses the separate
+`filesystem-growth.yml` playbook and protected stdin/environment launcher.
+Inspection is the default; actual online growth requires a reviewed, exact
+inspection receipt after any planned reboot. It changes only the pinned ext4
+filesystem within the existing LV. See the
+[Ansible execution contract](../k8s-rewrite/ansible-playbook/README.md#pinned-worker1-existing-lv-filesystem-growth);
+this is separate from dashboard provisioning and from application acceptance.
+
+Fresh worker1 image artifacts use the separate disabled-by-default offline
+`worker1-oci-scan.yml` path. Setup stages the retained verified scanner/DB; scan
+requires reviewed archive and OCI root hashes and preserves every finding under
+a bounded no-network unit. Neither phase runs or deploys the application. See
+the [exact OCI scan workflow](../k8s-rewrite/ansible-playbook/README.md#exact-offline-worker1-oci-vulnerability-scans).
+
 ## Initial Setup
 
 ### 1. Start the Dashboard
@@ -130,6 +196,21 @@ Open the dashboard at `http://localhost:4000` and check the **Nodes** page. If n
    - `gitops` — FluxCD bootstrap
    - `dns` — systemd-resolved configuration
 4. Click **Run** — watch live output
+
+For local Linux provisioning, set `BORTUS_PROVISIONING_LOCK_DIR` to an
+existing dedicated directory owned by the dashboard user, not writable by
+anyone else, on a supported local filesystem. Use the same directory for
+all dashboard processes using that operator database. The directory is
+locked without creating files; do not replace or modify it while
+provisioning is enabled. `/usr/bin/flock` is required.
+
+Restarting the dashboard does not stop an Ansible runner. A live runner
+keeps the lock and blocks a second run. After a confirmed local exit, the
+next operator history refresh marks a run that lacks a result as
+`interrupted` and keeps its saved log. Review partial effects on the
+target machines before retrying. A legacy running row, a different
+directory or boot, or unavailable lock evidence is not treated as proof
+of exit: new runs are refused until the operator resolves the unknown state.
 
 ### Option B: Incremental (add a role)
 

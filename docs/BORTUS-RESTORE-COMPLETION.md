@@ -148,3 +148,8 @@ consumes no frames and cannot substitute for the durable live restore sequence,
 healthy replicas, independent archive/whole-row equality or image/admission gates.
 
 The source inspection and repeated cold storage checks also require the complete cluster PV inventory in [BORTUS-PHYSICAL-VOLUME-FENCE.md](BORTUS-PHYSICAL-VOLUME-FENCE.md); any other Longhorn PV using the original handle refuses regardless of claim namespace or inactive state. This closes a scoped inventory gap and does not establish an atomic consumer/admission barrier or restored-data acceptance.
+
+
+## Current recovery tooling, 2026-11-14
+
+The bounded transition evaluator also supports Longhorn 1.13.0, manager tag commit `20d9c0790312b45aafd5668674e73dbf2eba1832`. Its controller still initializes restoreInitiated/restoreRequired together and clears restoreRequired after matching the engine backup and checking replica state. Source: https://github.com/longhorn/longhorn-manager/blob/20d9c0790312b45aafd5668674e73dbf2eba1832/controller/volume_controller.go . The active collector explicitly selects this current profile; original 1.12.1 tests and source pins remain valid for their historical scope. Unknown versions still refuse. The first current rehearsal stopped at the old engine-image health pin; its durable failure and watch are retained.

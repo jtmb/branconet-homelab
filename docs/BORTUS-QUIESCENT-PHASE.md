@@ -66,3 +66,8 @@ eight raw files, nine unchanged dependencies and18 originals. All19 local
 controls pass on176 unchanged private files with owned-process closure.
 Actual image/publication callbacks, latest-data capture and forward acceptance
 remain pending.
+
+
+## Final release preparation, 2026-11-15
+
+Ready-writer schema qualification may coexist with the operation’s exact already-recorded inert readonly holder. PhaseQualifier validates that holder against its owned proposal and UID, then supplies an explicit name/namespace/UID/full-spec hash context to the schema producer. Complete Pod-list checks retain the sole original application writer; unknown consumers, writable mounts or changed holder specs still refuse. An actual live schema read passed with the owned reader, its exact UID was then deleted and absence confirmed. All original sixteen producer controls and a new exact-reader/writable-counterexample control passed. Failed pre-control attempt181d7aa3e9ce remains unchanged; no controller or database change occurred in it.

@@ -1,5 +1,85 @@
 # Kubernetes migration plan and acceptance contract
 
+Current checkpoint — October24, approximately 02:45UTC: Seerr is live at
+https://media.jtmb.cc with all six original account credential/permission fields,
+all eight history tables and original configuration preserved. Plex/Arr and exact
+vendor tag migrations passed. YTPTube is live at http://ytdl.branconet.lan with a
+verified real five-second H.264/AAC download, identical file/history after restart,
+and all seven old MeTube files unchanged. Both retain original PVCs/native Secrets.
+All twelve tested restored routes pass across three nodes, including verified
+media HTTPS. Final browser validation and remaining compatible CVE fixes are
+still open; the goal remains ACTIVE. BORTUS application development stays separate.
+Earlier dated checkpoints below are historical evidence.
+
+
+Current checkpoint — October 24, 02:08 UTC: the full maintenance goal remains
+**active**, with overall acceptance incomplete. Seerr's exact CI image passed
+its pinned scan and isolated native checks and is cached on all three nodes;
+Overseerr's production writer has not yet been replaced. Radarr and Sonarr
+passed data/account preservation and restart checks. Bazarr's after-state passed
+its exact, source-backed default-cleanup projection; a further strict restart
+check is pending. Authenticated Bazarr/Sonarr HTTP routes pass all three nodes;
+LAN HTTPS still presents an untrusted self-signed certificate. The installer-free
+YTPTube build succeeded, with scan/download/persistence checks still pending.
+Prepared zero-replica Overseerr maintenance and Bazarr restart changes are local
+candidates only until their explicit CI/Flux publication. BORTUS app development
+is excluded. Earlier dated observations below remain historical evidence.
+
+
+## Active cluster maintenance — 2026-10-23
+
+The user authorized execution of Overseerr → Seerr with all accounts/data
+preserved, replacement of failing MeTube, current disclosed-CVE remediation and
+repeatable fixes in Ansible. This is separate from the paused BORTUS development
+goal. See [current maintenance plan](docs/CLUSTER-SECURITY.md).
+
+Tracking: this chat now has an active goal for the full cluster maintenance,
+Seerr migration and working downloader outcome. Prepared scripts and partial
+checkpoints do not complete it; the separate BORTUS application goal is excluded.
+
+Acceptance: verified encrypted cold Overseerr recovery; preserved six accounts,
+credential/permission fingerprints and request history; working existing URLs;
+replacement downloader with a successful real download and retained NAS files;
+reviewed charts delivered through existing CI → validated → Flux; protected serial
+node maintenance with actual runtime/kernel versions and recovered storage; fresh
+image scans plus an explicit residual/unscanned findings report. Unknown zero-days
+and advisories without upstream patches cannot be represented as fixed.
+
+Verified host checkpoint: both workers completed maintenance; all three
+nodes now boot kernel 5.15.0-198 and CRI v2.4.2. Master maintenance stopped on a
+transient post-reboot API authorization error. Access recovered; verified host
+checks preceded its uncordon. The frozen recovery check passed at 22:44:11 UTC:
+30 original active volume UIDs healthy, 54 Deployments and seven DaemonSets ready.
+Thirty online Longhorn checkpoints and a verified encrypted control-plane backup
+are retained. Plex and all 30 original active volumes recovered before master
+maintenance; the subsequent post-master recovery gate also passed.
+
+The user approved private charts CI and image builds. Charts commits `8b98d73`
+and `ea5627e` passed validation; BORTUS application Actions stays disabled. The CI image runner
+failed its disk reserve preflight before building. Worker1's existing larger LV
+was safely grown online, retaining its filesystem UUID and about 169.6 GB free.
+Traefik 2.11.60 and FlareSolverr 3.5.2 reconciled and passed live functional
+checks. Seerr's first worker build failed production pruning; the corrected
+separate r2 setup retains the same frozen lock. YTPTube's build succeeded; its corrected scan found four fixable high rows.
+Seerr r2 stopped on a Nodemailer type incompatibility; both dependency fixes
+are being prepared. No application migration or real YouTube download is accepted yet.
+
+Current October 24 checkpoint: Whoami 1.12.0 reconciled through commit
+`45dcb4b` and passed HTTP host-echo checks through all three node ingresses.
+Radarr has a verified full encrypted cold backup (1,197 files); its reviewed
+image update and replica restoration were published as `3a8ba1d`, with rollout
+and data checks pending. Downloader r2 is building the remaining dependency
+fixes; Seerr r3 setup binds a new separately retained frozen lock.
+
+October24 verified progress: Radarr6.4.4 passed original API/config fingerprints,
+Flux restart, all three authenticated ingress routes and actual SQLite user-row
+comparison against its cold archive. Sonarr4.0.20 passed its original155series,
+14,728episodes,5,319files,13,099history/config fingerprints and SQLite user-row
+comparison; restart/routes remain pending. Bazarr has a valid SQL/config baseline
+and is being stopped through Flux for its cold backup. Seerr CIrun40048938336
+built successfully with the reviewed frozen lock; exact-image scan, native
+qualification and the actual six-account migration remain pending.
+
 ## getOperatorRole source qualification (2026-10-23)
 
 The unchanged exact async declaration passes 36 new finite frozen PUBLIC SOURCE

@@ -31,6 +31,21 @@ kubectl get all -n whoami
 kubectl get all -n http-echo
 kubectl get all -n longhorn-system
 kubectl get all -n flux-system
+kubectl get all -n istio-system   # Istio ambient: istiod, istio-cni-node, ztunnel
+kubectl get all -n mesh-pilot     # mesh regression canary
+```
+
+## Workload mesh (Istio ambient)
+
+```bash
+kubectl get ns -l istio.io/dataplane-mode=ambient
+kubectl get authorizationpolicy,peerauthentication -A
+# Which pods are redirected through ztunnel
+kubectl get pods -A -o custom-columns=NS:.metadata.namespace,POD:.metadata.name,MESH:.metadata.annotations.ambient\.istio\.io/redirection
+# Per-connection identities and policy denials (look for src.identity / "policy rejection")
+kubectl -n istio-system logs ds/ztunnel --since=10m
+# Approve a node's kubelet-serving CSR after validation (see docs/CLUSTER-TLS.md)
+python3 -B scripts/migration/approve-kubelet-serving-csr.py --node node01
 ```
 
 ## Switching Context

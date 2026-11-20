@@ -1,5 +1,171 @@
 # BORTUS User Permissions
 
+## Certificates & Trust working source
+
+`GET /api/certificates` requires a current session account, including readonly
+accounts. It returns public metadata only. Monitoring-policy writes at
+`PATCH /api/certificates/policy` use fresh `requireOperator()` authorization
+(write plus engineAdmin and current session version), same-origin enforcement
+and ConfigMap UID/resourceVersion preconditions. Readonly accounts cannot
+modify policy even if they submit requests outside the UI. Policy changes do
+not grant certificate approval or host-maintenance privileges. No production
+application RBAC changes or feature deployment have occurred in this increment.
+
+The independent monitor's managed-host candidate is a separate unprivileged
+service, not a BORTUS operator shell or a new UI privilege. Its only intended
+Kubernetes writes remain the fixed observations ConfigMap; no Secret read,
+CSR approval, token-minting or host-maintenance grant is implied. Externally
+provisioned short-lived credentials and effective live denials must be verified
+before activation. Selecting the host profile from the local checkout is refused.
+
+The monitor-only bootstrap now has separate live grants through private charts
+`7e1c6c9e…`, with no additional BORTUS UI permissions. Real audience-bound
+one-hour tokens passed API identity and 7 allowed/19 denied permission reviews,
+including denial of Secret access, token minting, CSR approval/signing,
+impersonation and unrelated infrastructure writes. Refresh rechecks UID and
+effective permissions before atomically replacing a token; known scope/UID
+violations quarantine its active local file. File removal is not server-side
+revocation. The external root broker is installed on node02 and its credential
+timer is enabled and real periodic refresh passed, including rechecking all
+7 allowed/19 denied permissions before replacing the token.
+The unprivileged monitor remains disabled/inactive. Actual UID998 checks prove
+it can read the published token/public config but cannot read the bootstrap
+admin credential or broker lock, or modify broker code/enrollment/token.
+The bootstrap credential never enters the UI or monitor.
+
+The prepared notifier is separate from both the root broker and API reader:
+it uses a distinct private ntfy publisher-token file, not Kubernetes credentials.
+Its candidate unit hides Kubernetes bootstrap/runtime paths, has no capabilities
+and defaults to deny-all networking. A reviewed self-hosted destination, private
+CA and narrowly scoped publisher/subscriber ACLs are required. No new web role,
+API grant, notification credential or service activation accompanied preparation.
+Only bounded outbox fields go to the configured topic; no raw backend errors,
+CSR requests, certificates or Secret payloads are sent. Live receipt and
+off-host missed-run detection remain unqualified.
+
+Prepared private ACLs split monitor publish, watchdog publish and subscriber
+read identities over two exact topics, with deny-all anonymous/default access
+and no administrator/wildcard user. Native auth material remains external and
+unprovisioned; syntactic validation is not an effective ACL proof. The inactive
+watchdog Kubernetes identity is separate too: only fixed observations ConfigMap
+get and node02 Lease get, with no list/write/Secret/token-mint/approval privilege.
+No live roles or UI permissions changed during this preparation.
+Actual isolated ntfy Bearer-token ACL qualification now passed against the
+pinned server: intended publishers wrote only their topic; the subscriber
+read both; all 26 forbidden operations returned 401/403, with no denied message
+persisted. This is actual local authentication/authorization evidence, not a
+native production Secret/role rollout or proof that a human received an alert.
+No BORTUS web role or Kubernetes grant changed during this fixture.
+
+The separate serving-rotation qualification now has a live identity only in
+`bortus-ntfy-qualify`: exact `private-ntfy` Deployment get/patch, exact synthetic
+leaf Secret/Certificate get and namespace public CertificateRequest get-only.
+It cannot LIST requests, Secrets or Pods, mint tokens, list/approve/sign CSRs,
+patch other deployments, read the synthetic CA-key Secret or access another
+namespace; eight real403 cases passed with the actual projected600s token.
+Authenticated API subject/UID and positive Certificate/metadata reads passed.
+
+RBAC cannot distinguish Secret metadata GET from value GET. The credential
+has access to that **one leaf** Secret if misused; public-only mounts and a
+strict PartialObjectMetadata response check prevent the implemented controller
+from handling its private key. This is not claimed as server-side field-level
+authorization. Signing/CA secrets and human/UI roles remain separate.
+Observe mode performs no mutation; auto mode only follows pinned consumer/
+image/object IDs, current verified issuance/projection/endpoint and fresh CAS.
+An annotation requests a rollout, never proves verified renewal. Qualification
+does not alter BORTUS operator requirements or activate a production controller.
+The actual fixture renewal, interruption recovery and two native scheduled
+runs passed with this role. Qualification teardown removed the temporary
+RoleBinding, Role, ServiceAccount and scheduler. No permanent web-user or
+cluster-wide grant follows from the fixture; no immediate server-side token
+revocation is claimed from deleting its pods/identity.
+The private production rotation package uses a separate ServiceAccount/Role
+in `bortus-notifications`, exact `private-ntfy` Deployment get/patch,
+`private-ntfy-tls` Secret and `private-ntfy` Certificate get, plus public request
+get-only in that namespace. It has no BORTUS user-role or CA-key/CSR/token grant.
+The schedule is suspended and observe enrollment intentionally incomplete.
+Stage publication/RBAC installation must be distinguished from effective
+production identity checks and later live enrollment/automatic operation.
+The staged package is now Flux-installed but still suspended/unenrolled.
+A separate projected-token diagnostic checks its actual subject/UID, enrolled
+Certificate/Secret-metadata/Deployment/current public request reads, exact
+Deployment PATCH permission via a metadata-only server dry run and eight
+effective denials. It never sets replicas or rollout annotations. CA Secret
+access is tested against the real CA namespace/name; results contain no values.
+The production-subject diagnostic passed all those checks with eight403 denials;
+no persistent Deployment generation/replica mutation, and its two diagnostic
+objects/Pods were removed. The Flux-owned production role/identity remain
+installed for later real enrollment; unlike the earlier fixture role they are
+not claimed removed. Schedule remains suspended, UI permissions unchanged.
+Native ntfy authentication is now provisioned outside Git: separate ordinary
+monitor publisher, watchdog publisher and read-only subscriber identities.
+Their token keys are authoritative only in the native auth Secret and have
+not yet been delivered to host senders or an attended client. Rotation's role
+can read only its one TLS leaf Secret, not this auth Secret or the CA key.
+No credentials enter BORTUS SQLite, command arguments or diagnostic receipts.
+The production serving controller is now CAS-enrolled and in auto mode after
+actual trusted serving/observe verification. A validated source increment
+enabled its five-minute CronJob; its first native run verified the expected
+leaf without a rollout. No broader role or UI permission was added. Existing
+UID/CA/image/endpoint pins must be re-enrolled after recreation, never inherited
+from names alone; fresh-config seed data remains invalid observe mode.
+Kubernetes RBAC scopes Deployment PATCH to the one object, not to individual
+fields. The shipped controller emits only its guarded annotation patch; no
+server-side annotation-only admission restriction is claimed. As with the one
+leaf Secret GET, keep the credential/namespace boundaries distinct from the
+implementation's stricter behavior.
+Publisher delivery now targets distinct independent host profiles: node02's
+existing monitor identity reads only its certificate publisher token; node03's
+non-login watchdog identity reads only its health publisher token. Native
+values travel through memory/encrypted SSH stdin, never argv/artifacts. Exact
+root-owned0640 files in0750 profile directories are create-only; consumer can
+read but not modify, unrelated users cannot read. Subscriber/server credentials
+are not delivered to host publishers. Delivery does not activate a service.
+The notifier's fixed root-managed pre-start/stop firewall helper installs only
+its named cgroup-scoped nft table. It is not setuid, not writable by UID998,
+and exposes no privileged request/API surface. The sender remains unprivileged/
+capability-free with API credentials inaccessible. Original252/TCP443-only
+egress avoids broad pod-subnet or dynamic-IP permission; live enforcement must
+pass positive and denied-path checks before resuming its pending outbox.
+Live cgroup enforcement passed trusted252/TCP443 and rejected API6443/VIP80;
+the fixed root helper's refusal tests separately cover foreign-table collision,
+failed transaction-check/no apply, and surviving-consumer/no stop deletion.
+AF_NETLINK is available for the fixed root policy helper; the Python sender
+has no capabilities or writable helper/unit files and cannot alter that policy.
+Notifier child/transport failures now use fixed-allowlist local journal codes.
+Backend exception text, tokens, request/response bodies and destination details
+are not logged. Missing local journal delivery does not change durable retry.
+The two focused diagnostics tests cover private-text withholding and journal
+failure; this is observability, not proof that an alert was delivered.
+Subsequent transport stage/kind annotations are independently allowlisted
+before journaling; neither arbitrary attributes nor backend exception text can
+enter them. Six current focused checks include real loopback trust/ACK
+rejection. Network/resource/credential privileges and retry policy are unchanged.
+Actual subscriber receipt used only the distinct native read identity in
+memory, not a host publisher token or a new grant; one cached original event
+was observed. Diagnostic CSR deletion used the external operator's fresh UID/
+resourceVersion guard after that consumer finished, with no approval/issuance.
+Native production auth/tokens and monitor DB/outbox/audit remain preserved.
+Watchdog credential source uses its own fixed profile: GET only
+`bortus/bortus-certificate-observations` and `kube-node-lease/node02`.
+It must deny inventory lists, observations PATCH, policy GET/PATCH, Secrets,
+token mint, approval/signing, exec/proxy and other leases. Its root broker
+is fixed to node03/root-managed paths and the existing private bootstrap;
+UID-pinned identity/resource rechecks precede atomic short-lived publication.
+Default monitor profile remains seven allows/nineteen denies and is not
+reinstalled. Source preparation is not effective live RBAC/refresh acceptance.
+Subsequent actual identity proof passed2 allow/30 deny plus7 Forbidden probes;
+the own node03 broker also passed295 actual kernel samples/root CapEff+CapBnd9
+after exec. Root:997/0640 runtime token is readable/not writable by UID997,
+which cannot read root bootstrap/lock or modify broker/unit/profile.
+Only its credential timer is enabled; first real periodic refresh is pending.
+The actual detector/sender (UID997/CapEff0) still require separate qualification.
+Those then passed: periodic refresh at1200.31s, enabled detector under
+128MiB/no swap/5%/32tasks with0700/0600 state, and a real outage/recovery where
+the notifier's kernel policy allowed only originalVIP252/TCP443 for its own
+cgroup. Detector token/config/CA remain readable-not-writable for UID997; broker,
+units and profile are not writable; root bootstrap/lock stay unreadable.
+
 ## getOperatorRole source qualification (2026-10-23)
 
 The unchanged exact async declaration passes 36 new finite frozen PUBLIC SOURCE

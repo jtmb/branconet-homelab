@@ -1,0 +1,30 @@
+# BORTUS registrationOpen checkpoint and focused successor
+
+Complete the full authorized BORTUS A01-A22 remediation and native Kubernetes Secrets delivery: Vault-style KV paths, grouped values, immutable history, CAS/rollback, policies, revocable identities, redacted audit, import/export, static rotation, retention/recovery; one private CI-validated charts-to-Flux delivery pipeline; immutable images; guarded schema; effective RBAC/admission migration; actual acceptance and compatible independent recovery/rollback. Preserve all users, credentials, aliases, identities, PVCs, Longhorn, SMB/media, originals/backups, all 44 original clauses, frozen fixtures and failures. No dynamic issuers, PKI, transit or full Vault API parity claim. Preserve existing scope/resource/publication and rejected-action boundaries, never weaken gates, and keep root documentation local with four new, prior 32 and earlier one findings unresolved. BORTUS deployment to PRD, including verification of that deployment, is the FINAL delivery phase after all original preceding security, performance, actual AT, compatible independent recovery, fresh backup, quiescence, schema, effective RBAC/admission and data gates pass. Do not mark the full goal complete at feature checkpoints. Continue autonomously with fresh-chat handoffs after features.
+
+## Checkpoint
+
+Owned branch `codex/bortus-parent-stat-a15-evaluation`, commit `0d1f82409ff8ee990997915592a82b9c6d370c0f`; local and remote verified, owner clean. Six intended test/evidence/doc files only. No production/workflow correction. Original43 source controls and focused types stay frozen/unreplayed. Fresh lint passes2files/0errors/0warnings with52 matched rules and TypeScript parser,1.406s wall/1.046875s userCPU/261160960peakbytes, all Jobs drained. All37,428 dependency bytes match before/after. The original UNC timeouts, ignored-file failure and intermediate pre-execution refusal are preserved.
+
+## First actions and transfer
+
+Read the current autonomous policy and feature-handoff skill, this handoff and the private companion supplied in the prompt. Get/create the EXACT full active goal, without a budget. Verify the OWNED checkout, branch, HEAD, clean state and live remote branch. Use the owned path explicitly; do not edit the busy default checkout. Write ONE small matching receipt with actual threadId/branch/commit/nextFeature/handoffsRead/goalStatus/goalScope/ownershipAccepted, then continue without another parent handshake. Old recursive transport audits/ref counts are superseded. Do not rehash ancestor graphs or replay frozen workloads.
+
+## Next concrete feature
+
+Prepare a grounded A07 warm-cache regression correction from the existing original failed comparisons and current source, preserving all original performance distributions, pins, six profiles, three alternating pairs, thresholds and freshness fences. Static source/candidate work only; prepare exact fresh qualification scope before any execution not already authorized.
+
+Start only after ownership acceptance. Relevant original records are docs/implementation-evidence/remaining-acceptance-matrix.json and acceptance-ledger-audit.json. Named hot paths from those records are cluster-cache.ts, secret-client.ts and secret-summary-json.ts; source bodies have not been traced for this next feature here. Preserve required fresh SQL/account/role/session/path/schema/config/deadline/sibling checks, both setImmediate yields, queue/refusal semantics and original pins. Do not replace the failed A07 requirement with easier passing source tests. Candidate/qualification preparation is not acceptance.
+
+## Execution and publication boundaries
+
+Default newer-KV execution remains inherited selected PUBLIC SOURCE-only, WindowsNode24.18.0/60s wall/30s userCPU/1GiB/twoCPUs/affinity3/oneACTIVE/kill-on-close. No original module/import/initializer/neighbour/constructor, actual account/auth/credentials/crypto/DB/SQL/ORM/HTTP/native/backend/build/server/recovery/performance/production execution without applicable further authorization. Every completed/failed/prepared helper/config/workload stays immutable and never replayed.
+
+The human separately approved Windows-local public dependencies and TWO ACTIVE only for the completed fresh lint. A separate immutable production1438b27 security-only patch and private-fixture qualification passed; those build/runtime exceptions do not authorize the newer KV source or original performance protocol. See private companion for exact evidence and limits.
+
+App Actions are disabled, but private charts Actions are currently ENABLED. The human explicitly approved only this app checkpoint push while leaving charts and all CI settings untouched. Zero app Actions runs were observed for this SHA. Both PRs remain draft/open/unmerged. No merge/deploy/Actions/visibility/private-payload authority follows; the prior claim that BOTH repos are disabled is no longer current. Do not disable unrelated charts workflows or infer a standing publication exception for future commits.
+
+All44clauses/21gates, original1386distributions/145pins/453sources/sixprofiles/threealternatingpairs and failures stay intact. Root four+prior32+earlier1 findings remain unresolved; no retry of rejected October18 security/docs/private native/recovery work. No deployment, rotation/reset/recreation, dynamic issuer/PKI/transit/full Vault parity, private payload publication or gate waiver. Preserve all users/credentials/aliases/identities/PVCs/Longhorn/SMB/media/originals/backups. Values never inSQLite/argv/Git/logs/errors. Keep native CAS/auth/schema/admission/backup-after-quiescence/compatible independent recovery and actualAT gates. FINAL PRD deployment AND verification only after all original preceding gates. Root docs/skills remain LOCAL. Browser only CodexIAB; no native automation. Work directly, no subagents unless genuinely asynchronous under explicit authorization.
+
+The full goal is ACTIVE and incomplete. Finish/review concrete work before handoff; never rotate for time, context or an active run.
+

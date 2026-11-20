@@ -110,3 +110,8 @@ Two incomplete fixture attempts remain retained without acceptance. With the
 complete private repository layout, all17 unchanged interval/composition tests
 pass on174 unchanged files, with exact owned-process closure and no warnings or
 skips. Actual latest-data capture and explicit coordinator selection remain pending.
+
+
+## Final release preparation, 2026-11-15
+
+The final approved transport can stream authenticated ciphertext through the existing Windows UNC session using the BORTUS-only owner/prefix/size-fenced helper. It retains an exclusive NAS intent and requires terminal success plus size/hash equality. The original SSH/CIFS paths remain separately selected. Private archives under the existing approved H ext4 boundary are pinned by its exact mount UUID plus protected inner ancestry; the already migrated operator binaries resolve only to the existing approved native H store. No shared permissions or mount configuration changed. Thirty-three archive tests and actual H Pin/tool preflight passed.

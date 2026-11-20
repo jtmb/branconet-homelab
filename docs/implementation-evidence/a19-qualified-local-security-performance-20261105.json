@@ -1,0 +1,223 @@
+{
+  "owner": "01a185c0-f629-7ec0-9c4f-06a45e8a8d9f",
+  "atUTC": 1793921383.4924798,
+  "scope": "Current exact local nonproduction source/image functionality, original unfiltered security and original strict controlled performance. Full delivery/adoption/actualAT/production remain separate.",
+  "source": "12dce115006877fed2c674cad1ffd40805932974",
+  "sourceManifest": "security-v506-source-manifest.json",
+  "sourceManifestSHA256": "984eff143deb214a3aee271cd3df23a764bbf08870ae2d5c4c7eaeeaeff6e562",
+  "inputs": 1002,
+  "sourcePublished": true,
+  "sourcePublication": "security-v540-source-publication.json",
+  "reviewedSourceLayerOwnedFileCounts": [
+    3,
+    2,
+    2
+  ],
+  "image": {
+    "archive": "/home/brajam/.local/share/branconet-migration/next-security-01a1740e/a19-secret-capacity-01a1797a/final-image-session-exception-diagnostic/dependency-v182-audit/candidate-pod-summary-root.oci.tar",
+    "bytes": 497920000,
+    "sha256": "cf0d950a263b4ae63911f51560980fdce2211f7836852495bc2f189523e934dc",
+    "manifest": "sha256:ac261f9cc146171469dd9bd660acae39ae9563656a9a873e0fa251d4b2fda58b",
+    "config": "sha256:42e3a1a9e6fe5cd3c9912262b0cbeaca9a8cdff7b7b1891392eb100127d84698",
+    "buildID": "-JIu_nEVuzT8TlZzvf2wJ",
+    "layers": 9,
+    "objects": 31530,
+    "imagePublished": false
+  },
+  "functional": {
+    "focusedPassed": 187,
+    "buildPipeline": "security-v510-build-pipeline.json",
+    "lintBuildTypecheckPassed": true,
+    "integrationPassed": 42,
+    "aggregate": "security-v511-aggregate-proof.json",
+    "aggregatePassed": 21089,
+    "aggregateFailed": 0,
+    "aggregateSkipped": 0,
+    "aggregateCancelled": 0,
+    "aggregateWallSeconds": 503.8368697166443,
+    "originalAggregateDeadlineSeconds": 540,
+    "entrypointRestart": "security-v521-qualified-runtime.json",
+    "originalEntrypointRestartControlsPassed": 12,
+    "HTTP": "security-v523-http-terminal.json",
+    "HTTPPassed": true
+  },
+  "security": {
+    "scan": "security-v529-scan-terminal.json",
+    "officialDatabase": "security-v528-database-binding.json",
+    "vulnerabilities": 0,
+    "secrets": 0,
+    "original12Absent": true,
+    "originalUnfilteredFlagsAndLimits": true,
+    "normalUnmountPassed": true,
+    "nativePcreDfaExactBinding": "security-v524-non-next-parity.json",
+    "unchangedNativeCasesNotReplayed": true
+  },
+  "performance": {
+    "review": "security-v534-performance-review.json",
+    "raw": "security-v534-performance-raw.json",
+    "summary": "security-v534-performance-summary.json",
+    "order": [
+      "B1",
+      "C1",
+      "C2",
+      "B2",
+      "B3",
+      "C3"
+    ],
+    "allSixFirstAttemptsAndLiteralExitsPassed": true,
+    "warmComparableCases": 10,
+    "warmP50Regressions": 0,
+    "warmP95Regressions": 0,
+    "accepted": true,
+    "originalLimitsCorpusSamplesAndStrictCriterionUnchanged": true,
+    "independentDistributionChecks": 1386,
+    "metadata1000": [
+      {
+        "fixture": "metadata-1000",
+        "phase": "warm-pods-12",
+        "http_p50_ms": {
+          "baseline": 6.030768000000535,
+          "candidate": 4.194115000000238,
+          "regressed": false
+        },
+        "http_p95_ms": {
+          "baseline": 8.806069999998726,
+          "candidate": 8.44318100000055,
+          "regressed": false
+        }
+      },
+      {
+        "fixture": "metadata-1000",
+        "phase": "warm-pods-concurrent-20",
+        "http_p50_ms": {
+          "baseline": 48.52594400000089,
+          "candidate": 30.295388000000457,
+          "regressed": false
+        },
+        "http_p95_ms": {
+          "baseline": 78.96169799999916,
+          "candidate": 69.96475699999974,
+          "regressed": false
+        }
+      }
+    ],
+    "wholeFixtureAdvisoryOnly": {
+      "baseline": {
+        "cgroup_peak_mib": {
+          "median": 374.0859375,
+          "min": 372.9453125,
+          "max": 393.5
+        },
+        "cgroup_cpu_seconds": {
+          "median": 38.158672,
+          "min": 37.211291,
+          "max": 38.477308
+        },
+        "cgroup_throttled_ms": {
+          "median": 3754.356,
+          "min": 3237.28,
+          "max": 4098.203
+        },
+        "oom_observed": false
+      },
+      "candidate": {
+        "cgroup_peak_mib": {
+          "median": 361.3671875,
+          "min": 356.41015625,
+          "max": 365.421875
+        },
+        "cgroup_cpu_seconds": {
+          "median": 31.904288,
+          "min": 31.766944,
+          "max": 32.043269
+        },
+        "cgroup_throttled_ms": {
+          "median": 265.096,
+          "min": 204.749,
+          "max": 405.511
+        },
+        "oom_observed": false
+      }
+    }
+  },
+  "preservation": {
+    "baseline": "security-v535-performance-preservation.json",
+    "imageAndSource": "security-v536-image-preservation.json",
+    "privateAndOriginalGates": "security-v539-source-publication-review.json",
+    "original29PrivateRawBodiesAndExistenceExact": true,
+    "original44Clauses21GatesRoot4Plus32Plus1Preserved": true,
+    "finalOriginalGatesAndSource": "security-v545-final-original-gates-and-source-preservation.json"
+  },
+  "positiveGC": {
+    "receipt": "a19-positive-age-gc-20261105.json",
+    "earliestEligibleUTC": "2026-11-05T08:05:48Z",
+    "qualifiedLocally": true,
+    "original24HourThresholdUnchanged": true,
+    "C05C06C07Passed": true,
+    "originalRestoredUIDRVAndTimestamp": true,
+    "noClaimOfCurrentImageReplayOrDeployedProductionRecovery": true
+  },
+  "cleanup": {
+    "reconciliation": "security-v542-storage-and-cleanup-reconciliation.json",
+    "retainedBulkInventory": "security-v543-retained-bulk-inventory.json",
+    "removedLogicalBytes": 9813871720,
+    "removedAllocatedBytes": 10152284160,
+    "removedPaths": 37,
+    "newRetainedCleanupExceptions": 0,
+    "protectedSnapshotBytes": 9401242112,
+    "noWindowsRecoveryClaim": true,
+    "followupCleanup": "security-v550-cleanup.json",
+    "totalLogicalBytesIncludingATPreparation": 12684998421,
+    "totalAllocatedBytesIncludingATPreparation": 13117247488,
+    "totalRemovedPathsIncludingATPreparation": 43,
+    "measurementScope": "Measured explicit guarded retirements; original frozen fixture internal self-cleanup is excluded from these byte totals"
+  },
+  "historicalFailedComparisonsPreserved": [
+    "security-v406-performance-review.json",
+    "security-v446-performance-review.json",
+    "security-v496-performance-review.json"
+  ],
+  "abandonedStaticMetadataDraftUnpublished": true,
+  "Actions": "OFF",
+  "PRD": "Deployment AND verification LAST",
+  "actualATQualified": false,
+  "heldOriginalGates": [
+    "Actual screen-reader announcements under native Codex browser only; no Brave or Computer Use",
+    "Original private CI/publisher/immutable-image admission and delivery gates; source-only push is not image/CI acceptance",
+    "Original deployed consumer/adoption/schema/effective RBAC/admission/fresh quiesced backup and production-data recovery acceptance; existing cluster/production access not activated"
+  ],
+  "executionBoundary": "All44originalclauses/21gates/root4new+32prior+1earlier and distinct deployed findings stay unresolved in original scopes. ActualAT,controlled final-image performance/security,compatible independent recovery,real consumer,private CI/publisher/immutable image admission/RBAC/schema/data/freshbackupafterquiescence all retain real acceptance. Actions stays disabled; local nonproduction approval does not activate hostedCI/publishimages/merge-release or production/cluster inspection/unsuspension. PRD deployment AND verification FINAL after every original preceding gate.",
+  "fullGoalComplete": false,
+  "goalStatus": "BLOCKED",
+  "ActionsBeforeAndAfter": {
+    "enabledBefore": false,
+    "enabledAfter": false,
+    "verificationReceipt": "security-v540-source-publication.json"
+  },
+  "attendedNativeATPreparation": "a15-native-browser-attended-check-20261105.json",
+  "attendedPreparationEnded": {
+    "atUTC": 1793923110.5091467,
+    "previousGoalTurnClassification": "progress: product/source changes, qualified security/performance and bounded AT target preparation",
+    "currentGoalTurnClassification": "progress: verified same live fixture handle through terminal state, completed cleanup and read actual private pipeline source",
+    "fixtureTerminal": "security-v547-administration-fixture-terminal.json",
+    "original420SecondLeaseExpired": true,
+    "literalExit": 0,
+    "containerAbsent": true,
+    "postUIExactImageAnd1002SourceProof": "security-v549-image-preservation.json",
+    "cleanup": "security-v550-cleanup.json",
+    "removedLogicalBytes": 2871126701,
+    "removedAllocatedBytes": 2964963328,
+    "removedPaths": 6,
+    "nativeBrowserTab4Closed": true,
+    "nativeBrowserTabsRemaining": [],
+    "nativeBrowserVisibilityRestoredFalse": true,
+    "actualATQualified": false,
+    "noAttendedScreenReaderResultReceived": true,
+    "noReaderLaunched": true,
+    "noBrave": true,
+    "noComputerUse": true,
+    "fullGoalComplete": false
+  },
+  "originalDeliveryInputReview": "a19-original-delivery-input-review-20261105.json",
+  "blockedAudit": "a19-original-gates-blocked-audit-20261105.json"
+}

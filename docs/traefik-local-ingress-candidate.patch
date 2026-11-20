@@ -1,0 +1,30 @@
+diff --git a/flux/releases/foundation/kustomization.yaml b/flux/releases/foundation/kustomization.yaml
+--- a/flux/releases/foundation/kustomization.yaml
++++ b/flux/releases/foundation/kustomization.yaml
+@@ -9,4 +9,5 @@ resources:
+ - local-certificates.yaml
+ - bortus-lan-tls.yaml
+ - bortus-lan-http-redirect.yaml
+ - public-web-tunnel.yaml
++- traefik-local-https-nodeport.yaml
+diff --git a/flux/releases/foundation/traefik-local-https-nodeport.yaml b/flux/releases/foundation/traefik-local-https-nodeport.yaml
+new file mode 100644
+--- /dev/null
++++ b/flux/releases/foundation/traefik-local-https-nodeport.yaml
+@@ -0,0 +1,16 @@
++apiVersion: v1
++kind: Service
++metadata:
++  name: traefik-local-https-nodeport
++  namespace: traefik
++spec:
++  type: NodePort
++  externalTrafficPolicy: Local
++  selector:
++    app: traefik
++  ports:
++  - name: websecure
++    nodePort: 32443
++    port: 443
++    protocol: TCP
++    targetPort: websecure

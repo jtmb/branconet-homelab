@@ -1,0 +1,192 @@
+{
+  "apiVersion": "v1",
+  "items": [
+    {
+      "apiVersion": "v1",
+      "spec": {
+        "resources": {
+          "requests": {
+            "storage": "1Gi"
+          }
+        },
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "storageClassName": "longhorn"
+      },
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "namespace": "pihole",
+        "name": "pihole-secondary-data-0"
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "spec": {
+        "resources": {
+          "requests": {
+            "storage": "3Gi"
+          }
+        },
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "storageClassName": "longhorn"
+      },
+      "kind": "PersistentVolumeClaim",
+      "metadata": {
+        "namespace": "pihole",
+        "name": "pihole-secondary-data-1"
+      }
+    },
+    {
+      "apiVersion": "apps/v1",
+      "spec": {
+        "template": {
+          "spec": {
+            "containers": [
+              {
+                "envFrom": [
+                  {
+                    "secretRef": {
+                      "name": "pihole-runtime"
+                    }
+                  }
+                ],
+                "image": "docker.io/pihole/pihole:2026.10.0@sha256:d34134716fc32038b052a8674c7c6879e0ff21f0e6d8af345166fffa2c27c113",
+                "imagePullPolicy": "IfNotPresent",
+                "name": "pihole",
+                "ports": [
+                  {
+                    "containerPort": 53,
+                    "name": "p53-tcp",
+                    "protocol": "TCP"
+                  },
+                  {
+                    "containerPort": 53,
+                    "name": "p53-udp",
+                    "protocol": "UDP"
+                  },
+                  {
+                    "containerPort": 80,
+                    "name": "p80-tcp",
+                    "protocol": "TCP"
+                  }
+                ],
+                "resources": {
+                  "requests": {
+                    "cpu": "25m",
+                    "memory": "64Mi"
+                  }
+                },
+                "terminationMessagePath": "/dev/termination-log",
+                "terminationMessagePolicy": "File",
+                "volumeMounts": [
+                  {
+                    "mountPath": "/etc/dnsmasq.d",
+                    "name": "data-0"
+                  },
+                  {
+                    "mountPath": "/etc/pihole",
+                    "name": "data-1"
+                  }
+                ],
+                "readinessProbe": {
+                  "exec": {
+                    "command": [
+                      "sh",
+                      "-ec",
+                      "test -n \"$(dig +time=2 +tries=1 +short @127.0.0.1 pi.hole)\""
+                    ]
+                  },
+                  "periodSeconds": 10,
+                  "timeoutSeconds": 3
+                }
+              }
+            ],
+            "dnsPolicy": "ClusterFirst",
+            "restartPolicy": "Always",
+            "schedulerName": "default-scheduler",
+            "securityContext": {},
+            "terminationGracePeriodSeconds": 30,
+            "volumes": [
+              {
+                "name": "data-0",
+                "persistentVolumeClaim": {
+                  "claimName": "pihole-secondary-data-0"
+                }
+              },
+              {
+                "name": "data-1",
+                "persistentVolumeClaim": {
+                  "claimName": "pihole-secondary-data-1"
+                }
+              }
+            ],
+            "affinity": {
+              "podAntiAffinity": {
+                "requiredDuringSchedulingIgnoredDuringExecution": [
+                  {
+                    "labelSelector": {
+                      "matchLabels": {
+                        "app": "pihole"
+                      }
+                    },
+                    "topologyKey": "kubernetes.io/hostname"
+                  }
+                ]
+              }
+            }
+          },
+          "metadata": {
+            "labels": {
+              "app": "pihole-secondary"
+            }
+          }
+        },
+        "selector": {
+          "matchLabels": {
+            "app": "pihole-secondary"
+          }
+        },
+        "strategy": {
+          "type": "Recreate"
+        },
+        "replicas": 1
+      },
+      "kind": "Deployment",
+      "metadata": {
+        "namespace": "pihole",
+        "name": "pihole-secondary"
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "spec": {
+        "ports": [
+          {
+            "protocol": "TCP",
+            "port": 53,
+            "name": "dns-tcp",
+            "targetPort": 53
+          },
+          {
+            "protocol": "UDP",
+            "port": 53,
+            "name": "dns-udp",
+            "targetPort": 53
+          }
+        ],
+        "selector": {
+          "app": "pihole-secondary"
+        }
+      },
+      "kind": "Service",
+      "metadata": {
+        "namespace": "pihole",
+        "name": "pihole-secondary"
+      }
+    }
+  ],
+  "kind": "List"
+}
