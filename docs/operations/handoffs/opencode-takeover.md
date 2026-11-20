@@ -12,7 +12,82 @@ branch `codex/seerr-cluster-security`). Do not create another checkout. No
 subagents on this project. Disposable outputs stay on the existing H roots
 (100 GB combined repository allowance).
 
-## Start here — checkpoint 2026-11-19
+## Start here — checkpoint 2026-11-20
+
+Read this section, then the rest of the file, then `MEMORY.md`. Branch
+`codex/seerr-cluster-security`; confirm the tip with `git log -1` and
+`git status -sb` before editing.
+
+### What this session delivered (all verified by the agent)
+
+1. **The Seerr MCP moved here and now serves MCP 2026-07-28.**
+   `seerr-inventory` (health, title search, recent request status and an
+   expiry-bound request proposal; nothing is submitted) moved from the Veyra
+   monorepo into `mcp-servers/seerr-inventory/` with its `operator_request.py`,
+   committed `lan-root-ca.pem` and private mode-0600 `.env`. It reuses
+   `mcp-servers/_shared/read_only_media.py` and `dual_era.py`; the only code
+   change is the discovery instructions string, so tool names, schemas and
+   annotations are unchanged. It is registered in `opencode.json` with a fixed
+   `cwd`, `"pool": true`, `"protocol": "2026-07-28"` and `"disabled": true`,
+   and appears in `opencode mcp list` and `/mcps` like the other four.
+2. **Tests:** `mcp-servers/_shared/tests` 7/7 (the suite now drives four real
+   servers over stdio in both eras) and `mcp-servers/bortus/tests` 46/46;
+   `python3 -B operator_request.py --help` still runs from the new directory.
+3. **Baseline vs migrated:** the Veyra copy answered `server/discover` with
+   `Method not found`; the migrated copy advertises 2026-07-28 first, lists
+   carry `resultType`/`ttlMs`/`cacheScope`, and `seerr_health` (version 3.5.1)
+   and `seerr_requests` (10 items) returned the same shapes in both eras. The
+   only difference is the shared module's serverInfo version, 0.1.0 → 0.2.0.
+4. **Pooling:** connecting `seerr-inventory` from two directories in this
+   repository left exactly one `server.py` process; a tool call succeeded
+   while both were attached. Both locations were then disconnected, leaving
+   zero processes and the entry still `disabled: true`.
+5. **Veyra retirement:** the moved files and the legacy-only
+   `mcp-servers/_shared/read_only_media.py` were removed there (nothing else
+   imported it) in commit `8c8618ba1`, "Retire the Seerr MCP from this
+   monorepo". Veyra's ignored `mcp-servers/seerr-inventory/.env` and
+   `lan-root-ca.pem` were deliberately left on disk for the owner.
+
+### Commits now pushed
+
+| Repository | Branch | Commit | What |
+| --- | --- | --- | --- |
+| branconet-homelab | `codex/seerr-cluster-security` | `78736f06` | Move the Seerr MCP here and serve MCP 2026-07-28 |
+| branconet-homelab | `codex/seerr-cluster-security` | `3f6db456` | Dashboard secret browser, system report and API refactor (962 files) |
+| branconet-homelab | `codex/seerr-cluster-security` | `21edfe25` | Provisioning playbooks and migration tooling (355 files) |
+| branconet-homelab | `codex/seerr-cluster-security` | `b0c72cee` | Operations documentation and evidence, incl. `docs/CLUSTER-TLS.md` (86 files) |
+| branconet-homelab | `codex/seerr-cluster-security` | `db3a2ea4` | Feature-handoff and cluster-audit skills |
+| veyra-monorepo | `main` | `8c8618ba1` | Retire the Seerr MCP from this monorepo |
+
+All are pushed to their existing remotes on the branches shown; this handoff
+commit is the branch tip. Nothing was force-pushed, retagged or published.
+
+### Deliberately not committed
+
+- `PROBE-noauto.txt` in the repository root: a one-line `probe` file left by
+  an earlier Windows command-form test. It is agent scratch, not project
+  content, and stays untracked.
+- The working tree had been written with CRLF line endings, which made ~650
+  files look modified when their content was identical to `HEAD`. Those files
+  were normalised back to LF and are not part of any commit; every file that
+  was committed was also normalised to LF, so no commit contains
+  line-ending-only changes. No content was dropped by this pass.
+- Credentials were excluded by rule: no `.env`, key, `id_*`, kubeconfig or
+  private-key file was staged in either repository.
+
+### Paste this into the new chat
+
+> Continue the BORTUS work in `/home/brajam/repos/branconet-homelab` on
+> `codex/seerr-cluster-security`. Read
+> `docs/operations/handoffs/opencode-takeover.md` first, starting at
+> "Start here — checkpoint 2026-11-20", then `MEMORY.md`.
+> The Seerr MCP move, the accumulated dashboard/provisioning/docs commit pass
+> and both pushes are done and verified. Only `wsl-interop` connects by
+> default; connect another MCP (for example `bortus`) only when the task needs
+> it. Continue A3/A2 with the next namespace (`kube-system`) through
+> `branconet-charts` and the local publisher. No subagents.
+
+## Earlier checkpoint (2026-11-19)
 
 Read this section, then the rest of the file, then `MEMORY.md`. Branch
 `codex/seerr-cluster-security`; confirm the tip with `git log -1` and
