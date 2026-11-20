@@ -4,6 +4,7 @@ import { Network, Loader2, Search } from "lucide-react";
 import ViewportWrapper from "@/app/(dashboard)/viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
+import { sortLegacyClusterRows } from "@/lib/legacy-cluster-sort";
 
 interface ServiceData {
   name: string;
@@ -43,11 +44,7 @@ export default function ServicesPage() {
         (s) => s.name.toLowerCase().includes(q) || s.namespace.toLowerCase().includes(q)
       );
     }
-    return [...result].sort((a, b) => {
-      const va = String((a as any)[sortKey] ?? "").toLowerCase();
-      const vb = String((b as any)[sortKey] ?? "").toLowerCase();
-      return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
-    });
+    return sortLegacyClusterRows(result, "services", sortKey, sortDir);
   }, [services, search, sortKey, sortDir]);
 
   useEffect(() => {

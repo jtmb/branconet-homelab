@@ -1,33 +1,28 @@
+import { validateNamespace, validateResourceName } from "@/lib/k8s";
+import { deploymentPods } from "@/lib/deployment-state";
+import { clusterRoute } from "@/lib/cluster-http";
+import { clusterResponse, clusterUnavailable, clusterMissing } from "@/lib/cluster-response";
 import { NextRequest, NextResponse } from "next/server";
 import { getCachedClusterData } from "@/lib/cluster-cache";
-
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: Promise<{ namespace: string; name: string }> }
-) {
-  const { namespace, name } = await params;
-  const data = await getCachedClusterData();
-  if (!data) {
-    return NextResponse.json({ error: "Cluster data not available" }, { status: 503 });
-  }
-
-  const rawDeploy = (data.rawDeployments || []).find(
-    (d: any) =>
-      d.metadata?.namespace === namespace && d.metadata?.name === name
-  );
-
-  if (!rawDeploy) {
-    return NextResponse.json({ error: "Deployment not found" }, { status: 404 });
-  }
-
-  // Find pods owned by this deployment via matchLabels
-  const selector = rawDeploy.spec?.selector?.matchLabels || {};
-  const selectorKeys = Object.keys(selector);
-  const pods = (data.pods || []).filter((p: any) => {
-    if (p.metadata?.namespace !== namespace) return false;
-    const labels = p.metadata?.labels || {};
-    return selectorKeys.every((k) => labels[k] === selector[k]);
-  });
-
-  return NextResponse.json({ deployment: rawDeploy, pods });
+export async function GET(_request: NextRequest, { params }: {
+    params: Promise<{
+        namespace: string;
+        name: string;
+    }>;
+}) {
+    return clusterRoute(async () => {
+        const { namespace: rawNamespace, name: rawName } = await params;
+        const namespace = validateNamespace(rawNamespace), name = validateResourceName(rawName);
+        const data = await getCachedClusterData(["deployments", "pods", "replicasets"]);
+        const unavailable = clusterUnavailable(data, "deployments");
+        if (unavailable)
+            return unavailable;
+        const rawDeploy = (data.rawDeployments || []).find((d: any) => d.metadata?.namespace === namespace && d.metadata?.name === name);
+        if (!rawDeploy) {
+            return clusterMissing(data, "deployments", "Deployment not found");
+        }
+        const ownershipAvailable = ["pods", "replicasets"].every(resource => data.availability[resource as "pods" | "replicasets"] && !["unavailable", "unsupported"].includes(data.availability[resource as "pods" | "replicasets"]!.state));
+        const pods = ownershipAvailable ? deploymentPods(rawDeploy, data.pods, data.rawReplicaSets) : null;
+        return clusterResponse(data, { deployment: rawDeploy, pods, ownershipAvailable }, ["deployments"]);
+    });
 }

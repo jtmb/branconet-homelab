@@ -5,6 +5,7 @@ import { HardDrive, Loader2, Search } from "lucide-react";
 import ViewportWrapper from "@/app/(dashboard)/viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
+import { sortLegacyClusterRows } from "@/lib/legacy-cluster-sort";
 
 type StorageType = "all" | "local" | "nfs" | "samba" | "longhorn";
 
@@ -69,19 +70,11 @@ export default function StoragePage() {
         (v) => v.name.toLowerCase().includes(q) || v.namespace.toLowerCase().includes(q)
       );
     }
-    return [...result].sort((a, b) => {
-      const va = String((a as any)[sortKey] ?? "").toLowerCase();
-      const vb = String((b as any)[sortKey] ?? "").toLowerCase();
-      return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
-    });
+    return sortLegacyClusterRows(result, "storage", sortKey, sortDir);
   }, [volumes, search, sortKey, sortDir]);
 
   const sortedStorageClasses = useMemo(() => {
-    return [...storageClasses].sort((a, b) => {
-      const va = String((a as any)[scSortKey] ?? "").toLowerCase();
-      const vb = String((b as any)[scSortKey] ?? "").toLowerCase();
-      return scSortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
-    });
+    return sortLegacyClusterRows(storageClasses, "storageClasses", scSortKey, scSortDir);
   }, [storageClasses, scSortKey, scSortDir]);
 
   useEffect(() => {

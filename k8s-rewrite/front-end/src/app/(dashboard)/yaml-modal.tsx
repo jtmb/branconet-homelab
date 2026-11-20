@@ -1,121 +1,53 @@
 "use client";
-
-import { useState } from "react";
-import { X, Save } from "lucide-react";
-import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
-import yamlLang from "react-syntax-highlighter/dist/esm/languages/prism/yaml";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-
-SyntaxHighlighter.registerLanguage("yaml", yamlLang);
+import { useEffect, useRef, useState } from "react";
+import { Modal } from "@/components/ui/modal";
 
 interface YamlModalProps {
-  open: boolean;
-  onClose: () => void;
-  yaml: string;
-  title: string;
-  readOnly?: boolean;
-  onSave?: (yaml: string) => Promise<void>;
+  open: boolean; onClose: () => void; yaml: string; title: string; readOnly?: boolean;
+  onSave?: (yaml: string) => Promise<void>; returnFocus?: () => void;
 }
-
-export default function YamlModal({
-  open,
-  onClose,
-  yaml,
-  title,
-  readOnly = true,
-  onSave,
-}: YamlModalProps) {
+export default function YamlModal({ open, onClose, yaml, title, readOnly = true, onSave, returnFocus }: YamlModalProps) {
   const [editing, setEditing] = useState(false);
   const [content, setContent] = useState(yaml);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
-
+  const [discard, setDiscard] = useState(false);
+  const generation = useRef(0);
+  const identity = useRef({ open, yaml, title, readOnly });
+  if (identity.current.open !== open || identity.current.yaml !== yaml || identity.current.title !== title || identity.current.readOnly !== readOnly)
+    identity.current = { open, yaml, title, readOnly };
+  useEffect(() => {
+    const owner = ++generation.current;
+    setEditing(false); setContent(yaml); setSaving(false); setError(""); setDiscard(false);
+    return () => { generation.current = owner + 1; };
+  }, [open, yaml, title, readOnly]);
+  const canEdit = !readOnly && !!onSave;
+  const editable = canEdit && editing;
+  const dirty = editable && content !== yaml;
+  const close = () => { if (saving) return; if (dirty) setDiscard(true); else onClose(); };
   if (!open) return null;
-
-  const handleSave = async () => {
-    if (!onSave) return;
-    setSaving(true);
-    setError("");
-    try {
-      await onSave(content);
-      setEditing(false);
-      onClose();
-    } catch (e: any) {
-      setError(e?.message || "Save failed");
-    } finally {
-      setSaving(false);
-    }
+  const save = async () => {
+    if (!canEdit || !onSave || !dirty || saving) return;
+    const owner = generation.current;
+    const rendered = identity.current;
+    const owns = () => generation.current === owner && identity.current === rendered;
+    setSaving(true); setError("");
+    try { await onSave(content); if (owns()) onClose(); }
+    catch (failure) { if (owns()) setError(failure instanceof Error ? failure.message : "Save failed"); }
+    finally { if (owns()) setSaving(false); }
   };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/50" onClick={onClose} />
-      <div className="glass-card relative w-full max-w-4xl max-h-[85vh] flex flex-col mx-4">
-        <div className="flex items-center justify-between p-4 border-b border-zinc-800">
-          <h2 className="text-lg font-semibold text-zinc-100">{title}</h2>
-          <div className="flex items-center gap-2">
-            {!readOnly && !editing && (
-              <button
-                onClick={() => {
-                  setEditing(true);
-                  setContent(yaml);
-                }}
-                className="px-3 py-1 text-sm rounded-md bg-zinc-700 hover:bg-zinc-600 text-zinc-200"
-              >
-                Edit
-              </button>
-            )}
-            {editing && (
-              <button
-                onClick={handleSave}
-                disabled={saving}
-                className="flex items-center gap-1 px-3 py-1 text-sm rounded-md bg-blue-600 hover:bg-blue-500 text-white disabled:opacity-50"
-              >
-                <Save className="w-4 h-4" />
-                {saving ? "Saving..." : "Save"}
-              </button>
-            )}
-            <button
-              onClick={onClose}
-              className="p-1 rounded-md hover:bg-zinc-700 text-zinc-400"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-        {error && (
-          <div className="mx-4 mt-3 px-3 py-2 rounded-md bg-red-900/30 border border-red-800 text-red-300 text-sm">
-            {error}
-          </div>
-        )}
-        <div className="flex-1 overflow-auto">
-          {editing ? (
-            <textarea
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="w-full h-full min-h-[50vh] bg-zinc-900 text-zinc-100 font-mono text-sm p-4 border border-zinc-700 outline-none focus:border-blue-500 resize-none"
-              spellCheck={false}
-            />
-          ) : (
-            <div className="overflow-hidden">
-              <SyntaxHighlighter
-                language="yaml"
-                style={oneDark}
-                customStyle={{
-                  margin: 0,
-                  padding: "1rem",
-                  fontSize: "0.8125rem",
-                  lineHeight: "1.6",
-                  borderRadius: 0,
-                }}
-                showLineNumbers={false}
-              >
-                {yaml}
-              </SyntaxHighlighter>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+  return <Modal open={open} onClose={close} title={title} returnFocus={returnFocus}
+    description={canEdit ? "Replacement requires the displayed resourceVersion. Refresh after a conflict." : "Read-only YAML."}
+    actions={<>{canEdit && !editing && <button onClick={() => setEditing(true)} className="rounded bg-zinc-700 px-3 py-1">Edit</button>}
+      {editable && <button onClick={save} disabled={saving || !dirty} className="rounded bg-indigo-600 px-3 py-1 disabled:opacity-50">{saving ? "Saving…" : "Save"}</button>}</>}>
+    {error && <p role="alert" className="mb-3 text-red-300">{error}</p>}
+    {discard && <div role="alert" className="mb-3 rounded border border-amber-700 p-3 text-sm">
+      <p>Discard unsaved YAML changes?</p>
+      <button onClick={() => setDiscard(false)} className="mr-4 underline">Keep editing</button>
+      <button onClick={onClose} className="underline text-red-300">Discard changes</button>
+    </div>}
+    {editable ? <textarea aria-label="YAML content" value={content} onChange={e => setContent(e.target.value)} disabled={saving}
+      className="min-h-[50dvh] w-full resize-y rounded border border-zinc-700 bg-zinc-950 p-3 font-mono text-sm" spellCheck={false} />
+      : <pre tabIndex={0} className="overflow-auto whitespace-pre font-mono text-sm">{yaml}</pre>}
+  </Modal>;
 }

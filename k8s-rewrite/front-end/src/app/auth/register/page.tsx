@@ -14,15 +14,22 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [locked, setLocked] = useState(false);
   const [checking, setChecking] = useState(true);
+  const [availabilityError, setAvailabilityError] = useState(false);
 
   // Check if registration is available
   useEffect(() => {
     fetch("/api/auth/session")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("Registration availability request failed");
+        return r.json();
+      })
       .then((data) => {
+        if (!data || typeof data !== "object" || Array.isArray(data) || typeof data.registrationOpen !== "boolean") {
+          throw new Error("Invalid registration availability response");
+        }
         if (!data.registrationOpen) setLocked(true);
       })
-      .catch(() => {})
+      .catch(() => setAvailabilityError(true))
       .finally(() => setChecking(false));
   }, []);
 
@@ -50,9 +57,10 @@ export default function RegisterPage() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        setError(data.error ?? "Registration failed");
         if (res.status === 403) setLocked(true);
+        const data: unknown = await res.json().catch(() => null);
+        setError(data && typeof data === "object" && !Array.isArray(data) && "error" in data && typeof data.error === "string"
+          ? data.error : "Registration failed");
         return;
       }
 
@@ -66,8 +74,25 @@ export default function RegisterPage() {
 
   if (checking) {
     return (
-      <div className="glass-card rounded-2xl p-6 sm:p-8 flex items-center justify-center py-12">
+      <div role="status" aria-label="Checking registration availability" className="glass-card rounded-2xl p-6 sm:p-8 flex items-center justify-center py-12">
         <Loader2 className="w-6 h-6 animate-spin text-zinc-500" />
+      </div>
+    );
+  }
+
+  if (availabilityError) {
+    return (
+      <div className="glass-card rounded-2xl p-6 sm:p-8">
+        <h1 className="text-lg font-bold text-zinc-100 mb-2">Registration availability unknown</h1>
+        <p role="alert" className="text-sm text-zinc-400 mb-6">
+          Unable to check registration availability. Reload this page to try again.
+        </p>
+        <Link
+          href="/auth/login"
+          className="block w-full py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-center transition-colors"
+        >
+          Go to sign in
+        </Link>
       </div>
     );
   }
@@ -79,7 +104,7 @@ export default function RegisterPage() {
           <div className="w-11 h-11 rounded-xl bg-amber-500/10 flex items-center justify-center flex-shrink-0">
             <ShieldAlert className="w-6 h-6 text-amber-400" />
           </div>
-          <div>
+          <div role="alert">
             <h1 className="text-lg font-bold text-zinc-100">Registration Locked</h1>
             <p className="text-sm text-zinc-400">Account creation has been disabled by the administrator.</p>
           </div>
@@ -103,19 +128,20 @@ export default function RegisterPage() {
         </div>
         <div>
           <h1 className="text-lg font-bold text-zinc-100">Create your account</h1>
-          <p className="text-sm text-zinc-400">Set up your Botrus administrator account</p>
+          <p className="text-sm text-zinc-400">Set up your Botrus account</p>
         </div>
       </div>
 
       {/* Error */}
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
+        <div role="alert" className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-sm">
           {error}
         </div>
       )}
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-3">
+      <p role="status" className="sr-only">{loading ? "Creating account…" : ""}</p>
+      <form onSubmit={handleSubmit} aria-busy={loading} className="space-y-3">
         <div>
           <label htmlFor="username" className="block text-sm font-medium text-zinc-300 mb-1.5">
             Username
@@ -174,7 +200,7 @@ export default function RegisterPage() {
           disabled={loading}
           className="w-full py-2.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium transition-colors flex items-center justify-center gap-2"
         >
-          {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+          {loading && <Loader2 aria-hidden="true" className="w-4 h-4 animate-spin" />}
           Create account
         </button>
       </form>

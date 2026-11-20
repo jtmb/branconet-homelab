@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/db";
+import { accounts, accountFailure } from "@/lib/accounts";
 import { signJWT, AUTH_COOKIE } from "@/lib/auth";
 import { ensureJwtSecret } from "@/lib/auth-server";
 import bcrypt from "bcryptjs";
-import { z } from "zod";
+import { z } from "zod/v3";
 
 const registerSchema = z.object({
   username: z
@@ -20,19 +20,7 @@ export async function POST(req: Request) {
 
     // First-user-only gate unless ALLOW_REGISTRATION is explicitly "true"
     // or the DB setting allow_registration is "true"
-    const userCount = await prisma.user.count();
-    let allowRegistration = userCount === 0 || process.env.ALLOW_REGISTRATION === "true";
-
-    if (!allowRegistration) {
-      const dbSetting = await prisma.appSetting.findUnique({
-        where: { key: "allow_registration" },
-      });
-      if (dbSetting?.value === "true") {
-        allowRegistration = true;
-      }
-    }
-
-    if (!allowRegistration) {
+    if (!await accounts.registrationOpen()) {
       return NextResponse.json(
         { error: "Registration is locked. Set ALLOW_REGISTRATION=true to enable." },
         { status: 403 }
@@ -50,25 +38,9 @@ export async function POST(req: Request) {
 
     const { username, password } = parsed.data;
 
-    // Check uniqueness
-    const existing = await prisma.user.findUnique({ where: { username } });
-    if (existing) {
-      return NextResponse.json(
-        { error: "Username already taken" },
-        { status: 409 }
-      );
-    }
-
-    // First user gets write access; subsequent users are readonly by default
-    const role = userCount === 0 ? "write" : "readonly";
-
     const passwordHash = await bcrypt.hash(password, 12);
-
-    const user = await prisma.user.create({
-      data: { username, passwordHash, role },
-    });
-
-    const token = await signJWT({ sub: user.id, username: user.username });
+    const user = await accounts.register({ username, passwordHash });
+    const token = await signJWT({ sub: user.id, username: user.username, sessionVersion: user.sessionVersion });
 
     const response = NextResponse.json(
       { id: user.id, username: user.username },
@@ -85,7 +57,6 @@ export async function POST(req: Request) {
 
     return response;
   } catch (err) {
-    console.error("Register error:", err);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return accountFailure(err);
   }
 }
