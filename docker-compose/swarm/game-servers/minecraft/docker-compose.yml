@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  minecraft-paper:
+    image: "itzg/minecraft-server"
+    restart: always
+    hostname: "mc.branconet.lan"
+    networks:
+      - container-swarm-network
+    environment:
+      TZ: "America/Toronto"
+      PORT: "25565"
+      TYPE: "PAPER"
+      MEMORY: "2G"
+      MAX_MEMORY: "4G"
+      INIT_MEMORY: "2G"
+      MOTD: "Defeating a sandwich only makes it tastier."
+      ENABLE_RCON: "TRUE"
+      RCON_PASSWORD: "${ADMIN_PASS}"
+      EXEC_DIRECTLY: "TRUE"
+      CPUS: "2"
+      EULA: "TRUE"
+      TUNE_VIRTUALIZED: "TRUE"
+      TUNE_NURSERY_SIZES: "TRUE"
+    volumes:
+      - '${nfs_volumes_location}/mc-server:/data'
+    ports:
+      - 25565:25565/tcp
+      - 8123:8100 # if using dynmap plugin
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3100/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+
+  mc-exporter:
+    image: "ghcr.io/dirien/minecraft-exporter"
+    depends_on:
+      - minecraft-paper
+    restart: always
+    volumes:
+      - '${nfs_volumes_location}/mc-server/world:/minecraft/world'
+    ports:
+      - 9150:9150
+    networks:
+      - container-swarm-network
+    deploy:
+      replicas: 1
+      placement:
+        max_replicas_per_node: 1
+networks:
+  container-swarm-network:
+    external: true

@@ -1,0 +1,46 @@
+- name: Append line to /etc/fstab
+  lineinfile:
+    path: /etc/fstab
+    line: 'localhost:/staging-gfs {{container_volumes_location}} glusterfs defaults,_netdev,backupvolfile-server=localhost 0 0'
+    create: yes
+  tags: glusterfs
+
+- name: Create systemd mount unit file for GlusterFS
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/mnt-container-program-files.mount
+    content: |
+      [Unit]
+      Description=Mount GlusterFS Volume
+      After=glusterfs-server.service
+      Requires=glusterfs-server.service
+
+      [Mount]
+      What=localhost:/staging-gfs
+      Where=/mnt/container-program-files
+      Type=glusterfs
+      Options=_netdev
+
+      [Install]
+      WantedBy=multi-user.target
+    mode: '0644'
+  tags: glusterfs
+    
+- name: Reload systemd to apply changes
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  tags: glusterfs
+
+- name: Mount GlusterFS volume
+  command: mount.glusterfs localhost:/staging-gfs {{container_volumes_location}}
+  ignore_errors: true
+  tags: glusterfs
+
+# - name: Set ownership of {{container_volumes_location}} to root:docker
+#   file:
+#     path: "{{container_volumes_location}}"
+#     state: directory
+#     owner: root
+#     group: docker
+#     recurse: yes
+#   tags: glusterfs
+

@@ -1,0 +1,20 @@
+- name: Remove homepage settings
+  file:
+    path: "{{ container_volumes_location }}/homepage/app/config/{{ item }}"
+    state: absent
+  with_items:
+    - settings.yaml
+    - docker.yaml
+    - bookmarks.yaml
+    - services.yaml
+
+# - name: Copy homepage settings
+#   copy:
+#     remote_src: False
+#     src: "..config/{{ item }}"
+#     dest: "{{ container_volumes_location }}/homepage/app/config/{{ item }}"
+#   with_items:
+#     - settings.yaml
+#     - services.yaml
+#     - docker.yaml
+#     - bookmarks.yaml

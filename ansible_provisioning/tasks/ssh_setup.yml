@@ -1,0 +1,45 @@
+- name: "Set SSH Enviorment to alternate port"
+  shell: "ufw allow ssh && \
+            ufw allow {{ssh_port}}/tcp"
+
+- name: Creates SSH hidden directory
+  file:
+      path: "/home/{{ssh_user}}/.ssh"
+      state: directory
+
+- name: Regex replace ssh port
+  replace:
+    path: "/etc/ssh/sshd_config"
+    regexp: '#Port 22'
+    replace: "Port {{ssh_port}}"
+
+- name: Regex replace pubkey auth
+  replace:
+    path: "/etc/ssh/sshd_config"
+    regexp: '#PubkeyAuthentication yes'
+    replace: "PubkeyAuthentication yes"
+
+- name: Regex replace pass auth
+  replace:
+    path: "/etc/ssh/sshd_config"
+    regexp: '#PasswordAuthentication yes'
+    replace: "PasswordAuthentication no"
+
+- name: Add ChallengeResponseAuthentication to config
+  lineinfile: 
+    dest: "/etc/ssh/sshd_config"
+    line: 'ChallengeResponseAuthentication no'
+    
+- name: Regex replace dissable SSH default and only use sshd (Ubuntu 22.04 +)
+  replace:
+    path: "/etc/ssh/sshd_config"
+    regexp: 'Include /etc/ssh/sshd_config.d/*.conf'
+    replace: "#Include /etc/ssh/sshd_config.d/*.conf"
+
+- name: "Restart SSH Service"
+  shell: "systemctl restart sshd"
+  when: ubuntu_version_number | float < 24.04
+
+- name: "Restart SSH Service 24.04 LTS"
+  shell: "systemctl restart ssh"
+  when: ubuntu_version_number | float > 22.04

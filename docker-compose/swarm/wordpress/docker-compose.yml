@@ -1,0 +1,111 @@
+---
+
+services:
+
+  wp-app:
+    image: wordpress
+    deploy:
+      labels:
+        - homepage.group=WP
+        - homepage.name=wordpress
+        - homepage.icon=https://upload.wikimedia.org/wikipedia/commons/9/93/Wordpress_Blue_logo.png
+        - homepage.href=http://${master_node}:8085/
+        - homepage.description=Wordpress app
+        - "traefik.enable=true"
+        - "traefik.http.routers.wordpress.rule=Host(`${domain_name}`,`${env}.${domain_name}`)"
+        - "traefik.http.services.wordpress.loadbalancer.server.port=80" #uses internal docker port
+        - "traefik.http.routers.wordpress.entrypoints=websecure"
+        - "traefik.http.routers.wordpress.tls=true"
+        - "traefik.http.routers.wordpress.tls.certresolver=myresolver"
+        - "traefik.http.routers.wordpress.tls.domains[0].main=${domain_name}"
+        - "traefik.http.routers.wordpress.tls.domains[0].sans=${env}.${domain_name}"
+    restart: always
+    ports:
+      - 8085:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: db_user
+      WORDPRESS_DB_PASSWORD: ${database_password}
+      WORDPRESS_DB_NAME: wp_db
+      PUID: 1000
+      PGID: 1000
+    volumes:
+      - ${container_volumes_location}/wordpress/wp-app:/var/www/html
+    networks:
+      - container-swarm-network
+      - db-network
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3003/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+
+  db:
+    image: mysql:5.7
+    restart: always
+    deploy:
+      labels:
+        - homepage.group=WP
+        - homepage.name=db
+        - homepage.icon=https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Database-mysql.svg/1448px-Database-mysql.svg.png
+        - homepage.description=MYSQL DB
+    environment:
+      MYSQL_DATABASE: wp_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: ${database_password}
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - ${container_volumes_location}/wordpress/mysql-db:/var/lib/mysql
+    networks:
+      - db-network
+      - container-swarm-network
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3003/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+
+  redis-db:
+      image: 'redis:alpine'
+      ports:
+        - '6379:6379'
+      restart: always
+      expose:
+        - '6379'
+      networks:
+        - db-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    deploy:
+      labels:
+        - homepage.group=WP
+        - homepage.name=phpmyadmin
+        - homepage.icon=https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/PhpMyAdmin_logo.svg/2560px-PhpMyAdmin_logo.svg.png
+        - homepage.href=http://${master_node}:8086/
+        - homepage.description=DB Table browser
+    links:
+      - db
+    environment:
+      PMA_HOST: mysql-db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8086:80
+    networks:
+      - db-network
+    logging:
+      driver: loki
+      options:
+        loki-url: "http://localhost:3003/loki/api/v1/push"
+        loki-retries: "5"
+        loki-batch-size: "400"
+
+networks:
+  db-network:
+    external: true
+  container-swarm-network:
+    external: true

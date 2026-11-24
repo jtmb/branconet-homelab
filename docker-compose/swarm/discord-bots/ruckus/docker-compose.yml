@@ -1,0 +1,67 @@
+---
+services:
+  ruckus-db:
+    image: mysql:5.7.41
+    networks:
+      - container-swarm-network
+      - db-network
+    ports:
+      - "3306:3306"
+    volumes:
+      - ${nfs_volumes_location}/bot_ruckus/mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=db
+      - MYSQL_USER=bot
+      - MYSQL_PASSWORD=${ADMIN_PASS}
+      - MYSQL_RANDOM_ROOT_PASSWORD=1
+
+  # phpmyadmin:
+  #   image: phpmyadmin
+  #   restart: always
+  #   ports:
+  #     - 8013:80
+  #   environment:
+  #     - PMA_HOST=ruckus-db
+  #     - PMA_PORT=3306
+  #     - PMA_ARBITRARY=1
+  #     - PMA_USER=bot
+  #     - PMA_PASSWORD=${ADMIN_PASS}
+
+  ruckus:
+    image: jtmb92/ruckus-bot:latest
+    networks:
+      - container-swarm-network
+      - db-network
+    environment:
+      - MYSQL_HOST=ruckus-db
+      - MYSQL_PORT=3306
+      - MYSQL_USER=bot
+      - MYSQL_PASSWORD=${ADMIN_PASS}
+      - MYSQL_DATABASE=db
+      - BOT_TOKEN=${RUCKUS_BOT_TOKEN}
+      # - REACT_APP_API_URL=http://api.branconet.lan:3003
+    ports:
+      - "8088:8080"
+      - "3003:3003"
+    deploy:
+      labels:
+        #homepage
+        - homepage.group=Apps
+        - homepage.name=Ruckus Bot
+        - homepage.icon=https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png
+        - 'homepage.href=http://ruckus.${lan_domain_name}/'
+        - homepage.description=A discord bot
+        #traefik
+        #BOT
+        - "traefik.enable=true"
+        - "traefik.http.routers.ruckus.rule=Host(`ruckus.${lan_domain_name}`)"
+        - "traefik.http.services.ruckus.loadbalancer.server.port=8080" #uses internal docker port
+        - "traefik.http.routers.ruckus.entrypoints=websecure"
+        - "traefik.http.routers.ruckus.tls=true"
+        - "traefik.http.routers.ruckus.tls.certresolver=myresolver"
+        - "traefik.http.routers.ruckus.tls.domains[0].main=ruckus.${lan_domain_name}"
+networks:
+  container-swarm-network:
+    external: true
+  db-network:
+    external: true

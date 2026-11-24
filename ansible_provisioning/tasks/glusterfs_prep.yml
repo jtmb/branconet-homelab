@@ -1,0 +1,40 @@
+- name: Add entries to /etc/hosts
+  lineinfile:
+    path: /etc/hosts
+    line: "{{ item.ip }}  {{ item.hostname }}"
+    state: present
+    create: yes
+    validate: 'cat %s'
+  loop:
+    - { ip: "{{master_node}}", hostname: "masternode" }
+    - { ip: "{{worker_node_1}}", hostname: "workernode1" }
+    - { ip: "{{worker_node_2}}", hostname: "workernode2" }
+  tags: glusterfs
+
+- name: Add the GlusterFS repository
+  apt_repository:
+    repo: ppa:gluster/glusterfs-10
+  tags: glusterfs
+
+- name: Update the repositories
+  apt:
+    update_cache: yes
+  tags: glusterfs
+
+- name: Install GlusterFS
+  apt:
+    name: glusterfs-server
+    state: present
+  tags: glusterfs
+  
+- name: Start the GlusterFS service
+  service:
+    name: glusterd
+    state: started
+  tags: glusterfs
+
+- name: Enable the GlusterFS service
+  service:
+    name: glusterd
+    enabled: yes
+  tags: glusterfs
