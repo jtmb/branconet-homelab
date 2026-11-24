@@ -1,0 +1,8 @@
+# Plex Media Server
+# Converts from Docker Swarm docker-compose.yml to Kubernetes
+# Note: This deployment requires a node with NVIDIA GPU support for hardware transcoding
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: plex

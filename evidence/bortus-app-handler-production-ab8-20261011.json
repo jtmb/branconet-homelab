@@ -1,0 +1,81 @@
+{
+  "scope": "Independent exact be8/ab8 build, original HTTP and affected handler source/artifact/closure review; no image or performance acceptance",
+  "handoff_sha256": "9724e233f8e9f0d0950c5174fabd549491a5236e54dbde93638e937807ea11ce",
+  "source_commit": "ab8d450790ed8970c25ccfec78fa924c8f08ff6a",
+  "publication_commit": "be8e891358551964c1f60adc1f1e6148d39ee76a",
+  "raw_git_mode_blob_bindings": 23,
+  "raw_frontend_test_bindings": 333,
+  "unchanged_original_test_files": 67,
+  "published_original_artifacts": 15,
+  "all_linux_original_artifacts": 11,
+  "zip_members_including_added_complete_proof": 12,
+  "fresh_linux_closure": {
+    "source_files": 333,
+    "compiled_files": 4262,
+    "owned_supervisor_absent": true,
+    "owned_containers_absent": true,
+    "original_record_unchanged": true
+  },
+  "actual_build_exit": 0,
+  "original_strict_http_passed": 4,
+  "supplemental_handler_checks": 13,
+  "default_production_scan": {
+    "scannerVersion": "8.30.1",
+    "scannerSHA256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "actualExit": 0,
+    "findings": 0,
+    "rawGitFiles": 265,
+    "manifestPath": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\raw-production-complete-scan-manifest.json",
+    "manifestSHA256": "6d04d58ac6410c076b280d5dd11447046ea6b44e91662cd2b7baea34b80d9bff",
+    "reportPath": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-freshness-20261010-205744-da6552cf\\functional-ab8d450-20261011-125210-2d8f04-preparation\\raw-production-complete-scan.json",
+    "reportSHA256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "scope": "Exactproductionexportonly; no dependency/image/fullrepository claim",
+    "firstPartialInputUnqualified": true
+  },
+  "publication_scan": {
+    "scope": "23 COMPLETE exact committed raw-Git docs/evidence files atbe8e891",
+    "scannerVersion": "8.30.1",
+    "scannerSHA256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "defaultRules": true,
+    "actualExit": 1,
+    "findings": 1,
+    "individuallyVerified": 1,
+    "untriagedSelected": 0,
+    "suppressions": 0,
+    "legacyFullSourcePending": 2,
+    "reportSHA256": "ddab1d479c38985da6a04a260a77d2c957571c29125344e68ed179c22cc87296",
+    "terminalSHA256": "9c37f9f258bbb9e55ae79388f1710b88a71f09ac77bb5a0ffc2094eb9a5710bb",
+    "reviews": [
+      {
+        "rule": "generic-api-key",
+        "file": "docs/BORTUS-IMPLEMENTATION.md",
+        "line": 41,
+        "columns": [
+          669,
+          702
+        ],
+        "columnUnit": "1-based UTF8bytes inclusive",
+        "whitespaceWords": 3,
+        "spanSHA256": "6d55e097f1c50b3fef8a222bfd51b9ab2a6ff357a5c0687abe0732669acaab84",
+        "classification": "Exact public historical prose, not a credential",
+        "proofCommit": "55fdb44e5cc1f93db8f4bc821ad97f8c3a233ec8",
+        "proofPath": "docs/BORTUS-IMPLEMENTATION.md",
+        "proofLine": 39
+      }
+    ],
+    "supersedesUnqualifiedPartialFinalInput": true
+  },
+  "retained_failures": [
+    "Expected exporter SHA literal was mistyped before any export/dispatch; first harness source retained",
+    "Windows invocation of unchanged exporter failed WinError193 on Linux scanner before archive; exact stderr retained; corrected wsl --exec uses same exporter/source/scanner",
+    "First private scan extraction refused Windows canonical longpath prefix mismatch; partialinput scan is unqualified; complete265canonical-contained input separately scanned",
+    "Finalpublication longpath copy failed; subsequentpartialscanUNQUALIFIED; complete23committedrawGit scan independently rerun with same default rules"
+  ],
+  "source_tree_unchanged_between_source_and_publication": true,
+  "image_qualified": false,
+  "performance_accepted": false,
+  "live_release_accepted": false,
+  "verified_at_utc": "2026-10-11T13:21:11.572025+00:00",
+  "protected_root_verification_sha256": "9be66c5bf93645cd13e1eeda8f2319778b491b0be89a1395488107df12e4cb6b",
+  "current_coordinator_frontend_not_replaced": true
+}

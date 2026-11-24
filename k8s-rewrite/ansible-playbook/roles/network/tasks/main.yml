@@ -1,0 +1,33 @@
+---
+- name: Download pinned Calico manifest
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/projectcalico/calico/{{ calico_version }}/manifests/calico.yaml"
+    dest: /etc/kubernetes/calico-upstream.yaml
+    mode: '0644'
+
+- name: Render the explicit pod CIDR and IP-in-IP network
+  ansible.builtin.shell: |
+    python3 - <<'PY'
+    import pathlib
+    s=pathlib.Path('/etc/kubernetes/calico-upstream.yaml').read_text()
+    s=s.replace('# - name: CALICO_IPV4POOL_CIDR\n            #   value: "192.168.0.0/16"','- name: CALICO_IPV4POOL_CIDR\n              value: "{{ pod_network_cidr }}"')
+    if 'value: "{{ pod_network_cidr }}"' not in s: raise SystemExit('Calico CIDR manifest shape changed')
+    needle='- name: IP\n              value: "autodetect"'
+    if needle not in s: raise SystemExit('Calico autodetection manifest shape changed')
+    s=s.replace(needle,needle+'\n            - name: IP_AUTODETECTION_METHOD\n              value: "can-reach={{ ansible_host }}"')
+    pathlib.Path('/etc/kubernetes/calico.yaml').write_text(s)
+    PY
+  changed_when: true
+
+- name: Apply Calico using the checked LAN-compatible pod CIDR
+  ansible.builtin.command: kubectl apply -f /etc/kubernetes/calico.yaml
+  register: calico_apply
+  changed_when: "'created' in calico_apply.stdout or 'configured' in calico_apply.stdout"
+
+- name: Require Calico readiness on every node
+  ansible.builtin.command: kubectl -n kube-system rollout status daemonset/calico-node --timeout=600s
+  changed_when: false
+
+- name: Require all three expected nodes to be Ready
+  ansible.builtin.command: kubectl wait node/masternode node/workernode1 node/workernode2 --for=condition=Ready --timeout=300s
+  changed_when: false

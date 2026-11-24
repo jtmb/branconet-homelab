@@ -1,0 +1,177 @@
+{
+  "scope": "Actual legacy writer schema metadata; no admission, independent restore or final app adoption acceptance",
+  "actual_exit": 0,
+  "live": {
+    "actual_exit": 0,
+    "run": "/home/brajam/.local/share/branconet-migration/schema-current-writer-66f5c84fa205",
+    "producer_source_sha256": "34a2eab9d450aac0fef3f2d32345172e3cf1abf1cfc6e4c7ee153c6e3173196f",
+    "path": "/home/brajam/.local/share/branconet-migration/schema-current-writer-66f5c84fa205/schema-metadata-def482cdd566.json",
+    "sha256": "df7cac7bb5fa89f7a1f1e7cb238af51e2a84785c7230441bd95aade94c5ad0a7",
+    "receipt": {
+      "abi": 1,
+      "scope": "actual-current-writer-schema-metadata-only",
+      "writer": {
+        "name": "bortus-5c55f6d5b5-67mnk",
+        "namespace": "bortus",
+        "uid": "5347ff1f-679c-45ee-b008-8132af41014a",
+        "resourceVersion": "1126479",
+        "image": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879"
+      },
+      "migration_count": 7,
+      "unfinished_migration_count": 0,
+      "rolled_back_migration_count": 0,
+      "historical_migrations_match": true,
+      "topology_match": true,
+      "writer_unchanged": true,
+      "collector_source_sha256": "89bbb896513122baac84ac8051d30c5a8c7ff90c2b8ecad64414cfb0527d4212",
+      "migration_manifest_sha256": "ce535e9fc40e692a5badf673aa965cf37d9447a410ed6579feb253c2434f25f7",
+      "observed_monotonic_ns": 228086061440410,
+      "metadata_only": true
+    },
+    "values_read": false,
+    "application_entrypoint_run": false,
+    "separate_reads_and_exec_atomic": false
+  },
+  "raw_qualified_source": [
+    {
+      "path": "scripts/migration/schema-current-writer-v1/current-schema-producer.py",
+      "bytes": 13293,
+      "sha256": "34a2eab9d450aac0fef3f2d32345172e3cf1abf1cfc6e4c7ee153c6e3173196f"
+    },
+    {
+      "path": "scripts/migration/schema-current-writer-v1/test-current-schema-producer.py",
+      "bytes": 10081,
+      "sha256": "c8f762863c7808a8da7e4924d9a2e7bf5bced2d9eca8b033dd2edfe2a6e32b2b"
+    },
+    {
+      "path": "scripts/migration/schema-current-writer-v1/schema-reader.cjs",
+      "bytes": 6105,
+      "sha256": "89bbb896513122baac84ac8051d30c5a8c7ff90c2b8ecad64414cfb0527d4212"
+    },
+    {
+      "path": "scripts/migration/schema-current-writer-v1/migration-manifest.json",
+      "bytes": 5924,
+      "sha256": "ce535e9fc40e692a5badf673aa965cf37d9447a410ed6579feb253c2434f25f7"
+    }
+  ],
+  "fresh_linux_exact_inputs": {
+    "current-schema-producer.py": {
+      "sha256": "34a2eab9d450aac0fef3f2d32345172e3cf1abf1cfc6e4c7ee153c6e3173196f",
+      "mode": "0600"
+    },
+    "schema-reader.cjs": {
+      "sha256": "89bbb896513122baac84ac8051d30c5a8c7ff90c2b8ecad64414cfb0527d4212",
+      "mode": "0600"
+    },
+    "migration-manifest.json": {
+      "sha256": "ce535e9fc40e692a5badf673aa965cf37d9447a410ed6579feb253c2434f25f7",
+      "mode": "0600"
+    },
+    "schema-metadata-def482cdd566.json": {
+      "sha256": "df7cac7bb5fa89f7a1f1e7cb238af51e2a84785c7230441bd95aade94c5ad0a7",
+      "mode": "0600"
+    }
+  },
+  "producer_public_fixture": {
+    "actual_exit": 0,
+    "cases": 16,
+    "source_hashes": {
+      "current-schema-producer.py": "34a2eab9d450aac0fef3f2d32345172e3cf1abf1cfc6e4c7ee153c6e3173196f",
+      "test-current-schema-producer.py": "c8f762863c7808a8da7e4924d9a2e7bf5bced2d9eca8b033dd2edfe2a6e32b2b",
+      "schema-reader.cjs": "89bbb896513122baac84ac8051d30c5a8c7ff90c2b8ecad64414cfb0527d4212",
+      "migration-manifest.json": "ce535e9fc40e692a5badf673aa965cf37d9447a410ed6579feb253c2434f25f7"
+    },
+    "terminal_sha256": "1fc65574593c76d7695526f888ec46d42b1e5c90155199697f795379048e39fc",
+    "child_absent": true
+  },
+  "node_public_fixture": {
+    "linux_run": "/home/brajam/.local/share/branconet-migration/bortus-schema-public-46f50319dff0",
+    "actual_exit": 0,
+    "public_fixture_cases": 6,
+    "readonly_write_refusal": true,
+    "reader_sha256": "89bbb896513122baac84ac8051d30c5a8c7ff90c2b8ecad64414cfb0527d4212",
+    "migration_manifest_sha256": "ce535e9fc40e692a5badf673aa965cf37d9447a410ed6579feb253c2434f25f7",
+    "owned_docker_process_absent": true,
+    "owned_container_absent": true,
+    "reader_program_qualified_on_public_fixture": true,
+    "live_schema_read_done": false,
+    "production_database_or_secret_values_used": false,
+    "terminal_sha256": "a4d8f88008797f1064890a24bf876e407b8f9d251dac38629d9c8cf640778dd8"
+  },
+  "migration_file_relations": [
+    {
+      "actual_image_sql_sha256": "e5e1bfb905136aea6af2215fd857f21ea23f9a3f7210bdbf1174a86c6347c738",
+      "name": "20260614204135_init",
+      "raw_git_sha256": "a3038f518902e6dcd2a6fa6a3dfadf536bed536487015517b380241efba9f90d",
+      "relation": "literalLFtoCRLF"
+    },
+    {
+      "actual_image_sql_sha256": "a777cde17840d49c862ec131a965a627316ea37d10eaa58247fc8ed17f678839",
+      "name": "20260615042521_add_gitrepos",
+      "raw_git_sha256": "39ca2d40aa429d7668c559d8c05056a909a261cb1c4909b905f464b8c519a457",
+      "relation": "literalLFtoCRLF"
+    },
+    {
+      "actual_image_sql_sha256": "4dacb580beee560d505597d295a3405798c57703d72270312e8a42865873d3ab",
+      "name": "20260615170328_add_namespace_to_gitrepos",
+      "raw_git_sha256": "e5f57ec33813ea47d8e82c63a0fc39526298e58188254a8e5ebad08e2f4927d0",
+      "relation": "literalLFtoCRLF"
+    },
+    {
+      "actual_image_sql_sha256": "88c05375c7ebd2912dd85c8a7eee53c8c88b02a6618bc903e37691646f957211",
+      "name": "20260616050858_add_user_model",
+      "raw_git_sha256": "6457847e80514a46d025f2cf77ad177163a5fa5b459446d7690eecde229d4671",
+      "relation": "literalLFtoCRLF"
+    },
+    {
+      "actual_image_sql_sha256": "9c6aa6f2bef70e2b4e37e64cca2cb37b11070df4c0ab651dc193eaa6849cc40e",
+      "name": "20260616130024_add_app_settings",
+      "raw_git_sha256": "45b166e19315914fe099a077ea9a4e9d92ccdc2b7ca42c73410b3523de89e990",
+      "relation": "literalLFtoCRLF"
+    },
+    {
+      "actual_image_sql_sha256": "cea3951ba12bdcb5ecaaed1f1ac5742fa5879e5ada8ecd9cc41d8e95a0be23a9",
+      "name": "20260616132006_add_user_role",
+      "raw_git_sha256": "1c674838ea7ea71867e0e9ceb94320da482616f71e2e0bc5ad9854296015e353",
+      "relation": "literalLFtoCRLF"
+    },
+    {
+      "actual_image_sql_sha256": "274aa4b2dd3c90c7222971d138a9c83632ef56e4c2b285890c34f5472a129157",
+      "name": "20261009150000_native_secret_references",
+      "raw_git_sha256": "274aa4b2dd3c90c7222971d138a9c83632ef56e4c2b285890c34f5472a129157",
+      "relation": "identity"
+    }
+  ],
+  "retained_failures": [
+    {
+      "stage": "Original Windows raw reader bytes differed from executed LF reader",
+      "actual_exit": 1,
+      "receipt_sha256": "3a34a4293a7d9f1c09c13fa0c8fbc3ec16f61df0377ff12e2a76c33d18a68d46",
+      "negative_cases_not_causally_accepted": true
+    },
+    {
+      "stage": "First actual legacy schema checksum expectation used raw Git SQL bytes",
+      "actual_exit": 1,
+      "receipt_sha256": "140296f5bec43403626c947f770ab48bdce71630277004a8c37e25d290a7b325",
+      "no_success_receipt": true
+    }
+  ],
+  "diagnosis": {
+    "metadata_only": true,
+    "migration_names_match": true,
+    "complete": true,
+    "tables_match": true,
+    "actual_ledger_matches_actual_image_sql": true,
+    "actual_image_sql_bytes": "six exact Git LF-to-CRLF conversions and one exact Git LF file",
+    "diagnostic_sha256": "0bb81edeb07399bc74311cea71b63ac80614c53fd3fac79808b10ff340ac320d"
+  },
+  "limits": [
+    "Only migration ledger and schema metadata are read; no application or credential rows.",
+    "Name-based exec and separate API reads are non-atomic.",
+    "This one observed receipt cannot be reused as fresh callback evidence; execute the qualified producer during each invocation.",
+    "Native schema reader uses an explicit read-only SQLite connection, not the application entrypoint.",
+    "No admission policy or independent restore was created in this run."
+  ],
+  "overall_goal_complete": false,
+  "verified_at_utc": "2026-10-11T14:30:55.011412+00:00"
+}

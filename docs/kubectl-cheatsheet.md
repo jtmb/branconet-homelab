@@ -1,44 +1,279 @@
-# kubectl checks for BORTUS
+# kubectl Cheat Sheet — Branconet Homelab (K8s)
 
-Run these against the intended operator context. Substitute the actual namespace and resource names; the application does not impose a namespace-per-repository convention.
+## Cluster Info
 
 ```bash
-kubectl config current-context
+# Where am I?
 kubectl cluster-info
+
+# All nodes
 kubectl get nodes -o wide
+
+# Node details
+kubectl describe node <node-name>
+
+# Top nodes (if metrics-server is running)
+kubectl top nodes
+```
+
+## Namespace Convention
+
+The single active `branconet-charts` Flux source manages multiple namespaces.
+Use each HelmRelease's actual targetNamespace/storageNamespace; several media
+charts share `plex`. Packages are in the separate charts repository at `charts/<name>/`.
+
+```bash
+kubectl get ns
+
+kubectl get all -n plex
+kubectl get all -n traefik
+kubectl get all -n whoami
+kubectl get all -n http-echo
+kubectl get all -n longhorn-system
+kubectl get all -n flux-system
+kubectl get all -n istio-system   # Istio ambient: istiod, istio-cni-node, ztunnel
+kubectl get all -n mesh-pilot     # mesh regression canary
+```
+
+## Workload mesh (Istio ambient)
+
+```bash
+kubectl get ns -l istio.io/dataplane-mode=ambient
+kubectl get authorizationpolicy,peerauthentication -A
+# Which pods are redirected through ztunnel
+kubectl get pods -A -o custom-columns=NS:.metadata.namespace,POD:.metadata.name,MESH:.metadata.annotations.ambient\.istio\.io/redirection
+# Per-connection identities and policy denials (look for src.identity / "policy rejection")
+kubectl -n istio-system logs ds/ztunnel --since=10m
+# Approve a node's kubelet-serving CSR after validation (see docs/CLUSTER-TLS.md)
+python3 -B scripts/migration/approve-kubelet-serving-csr.py --node node01
+```
+
+## Switching Context
+
+```bash
+# Set default namespace for a session
+kubectl config set-context --current --namespace=plex
+
+# Run one command in a namespace
+kubectl -n plex get pods
+```
+
+## Workloads (Deployments / Pods)
+
+```bash
+# All pods across all namespaces
 kubectl get pods -A
-kubectl get deployments,services,ingresses -A
+
+# Pods in one namespace with IPs and node placement
+kubectl get pods -n plex -o wide
+
+# Describe a pod (events at the bottom — look for ImagePullBackOff, CrashLoopBackOff)
+kubectl describe pod <pod-name> -n plex
+
+# Pod logs
+kubectl logs <pod-name> -n plex
+
+# Follow logs (tail -f)
+kubectl logs -f <pod-name> -n plex
+
+# Previous crashed container logs
+kubectl logs <pod-name> -n plex --previous
+
+# Multi-container pod — specify container
+kubectl logs <pod-name> -c <container-name> -n plex
+
+# Exec into a pod
+kubectl exec -it <pod-name> -n plex -- /bin/sh
+
+# Delete a pod (Deployment will recreate it)
+kubectl delete pod <pod-name> -n plex
+
+# Restart a deployment (rolling restart)
+kubectl rollout restart deployment <name> -n plex
+
+# Scale a deployment
+kubectl scale deployment <name> --replicas=0 -n plex   # stop
+kubectl scale deployment <name> --replicas=1 -n plex   # start
+```
+
+## Services & Networking
+
+```bash
+# Services in a namespace
+kubectl get svc -n plex
+
+# Endpoints (check if service can reach pods)
+kubectl get endpoints -n plex
+
+# Port-forward to local machine
+kubectl port-forward svc/<service-name> 8080:80 -n plex
+# Then open http://localhost:8080
+
+# Ingresses
+kubectl get ingress -A
+kubectl describe ingress <name> -n plex
+```
+
+## Storage (CSI SMB Driver)
+
+```bash
+# PersistentVolumeClaims
 kubectl get pvc -A
-kubectl get storageclasses
+
+# PersistentVolumes
+kubectl get pv
+
+# StorageClasses
+kubectl get sc
+# Expected: `smb` — CSI SMB driver, source: //192.168.0.8/k8s-share
+
+# Describe a PVC to see bound PV and mount details
+kubectl describe pvc <pvc-name> -n plex
+
+# SMB credentials — managed by Secrets Engine, per-namespace
+kubectl get secret smb-creds -n plex -o yaml
+# Native Secret values are authoritative; BORTUS reads them directly.
+
+# Check CSI driver health
+kubectl get pods -n kube-system | grep smb
+kubectl logs -n kube-system daemonset/csi-smb-node -c smb
+```
+
+## Native Secrets
+
+```bash
+# All secrets in a namespace
+kubectl get secrets -n plex
+
+# Inspect a secret (decodes base64)
+kubectl get secret smb-creds -n plex -o jsonpath='{.data.username}' | base64 -d
+kubectl get secret smb-creds -n plex -o jsonpath='{.data.password}' | base64 -d
+
+# Keep value-bearing Secret manifests outside Git/Flux.
+kubectl get secret <name> -n <ns> -o jsonpath='{.metadata.annotations}'
+```
+
+## FluxCD
+
+```bash
+# Flux resources (always in flux-system namespace)
+kubectl get gitrepositories -n flux-system
+kubectl get kustomizations -n flux-system
+
+# Check Flux health
+kubectl describe gitrepository branconet-charts -n flux-system
+kubectl describe kustomization migration-releases -n flux-system
+kubectl get helmreleases -n flux-system
+
+# Manually trigger a Flux reconciliation
+flux reconcile kustomization migration-releases -n flux-system --with-source
+
+# Suspend / resume Flux for a repo (stops auto-sync)
+kubectl patch kustomization <name> -n flux-system -p '{"spec":{"suspend":true}}' --type=merge
+kubectl patch kustomization <name> -n flux-system -p '{"spec":{"suspend":false}}' --type=merge
+
+# Check what Flux applied (all resources in target namespace)
+kubectl get all -n plex
+```
+
+## Events & Troubleshooting
+
+```bash
+# All cluster events (recent first)
 kubectl get events -A --sort-by='.lastTimestamp'
+
+# Events in a namespace
+kubectl get events -n plex --sort-by='.lastTimestamp'
+
+# Watch events live
+kubectl get events -n plex -w
+
+# Describe anything for deep status
+kubectl describe <resource> <name> -n <ns>
+
+# Check why a pod won't start (Conditions + Events at bottom)
+kubectl describe pod <pod-name> -n plex | tail -40
+
+# Resource usage (if metrics-server running)
+kubectl top pods -n plex
+kubectl top nodes
 ```
 
-For a selected workload:
+## Nuke & Restore
 
 ```bash
-kubectl describe pod <pod-name> -n <namespace>
-kubectl logs <pod-name> -n <namespace> --tail=100
-kubectl logs <pod-name> -n <namespace> --previous
-kubectl describe pvc <pvc-name> -n <namespace>
+# Delete entire namespace (cascading — removes EVERYTHING)
+kubectl delete namespace plex
+
+# Delete ALL resources in a namespace but keep the namespace
+kubectl delete all --all -n plex
+
+# Force-delete a stuck namespace (if finalizers hang)
+kubectl get namespace plex -o json | \
+  jq '.spec.finalizers = []' | \
+  kubectl replace --raw "/api/v1/namespaces/plex/finalize" -f -
+
+# Resync from Flux after a manual nuke
+kubectl annotate gitrepository plex -n flux-system \
+  reconcile.fluxcd.io/requestedAt="$(date -Iseconds)" --overwrite
 ```
 
-For the BORTUS ServiceAccount, check each allowed Secret namespace independently:
+## Ansible (kubeconfig path)
 
 ```bash
-kubectl auth can-i list secrets -n <allowed-namespace> --as=system:serviceaccount:bortus:bortus
-kubectl auth can-i create secrets -n <allowed-namespace> --as=system:serviceaccount:bortus:bortus
-kubectl auth can-i update secrets -n <allowed-namespace> --as=system:serviceaccount:bortus:bortus
-kubectl get secrets -n <allowed-namespace>
+# Local (laptop)
+kubectl --kubeconfig ~/.kube/config get nodes
+
+# On master node
+sudo kubectl --kubeconfig=/etc/kubernetes/admin.conf get nodes
 ```
 
-Adjust the ServiceAccount namespace/name if your deployment differs. Impersonation checks require an operator permitted to impersonate that account. Native key deletion uses update and keeps empty objects; whole-Secret delete permission is not required.
+## Quick Aliases
 
-For Flux:
+Add to `~/.bashrc`:
 
 ```bash
-kubectl get gitrepositories,kustomizations -n flux-system
-kubectl describe gitrepository <name> -n flux-system
-kubectl describe kustomization <name> -n flux-system
+alias k='kubectl'
+alias kgp='kubectl get pods'
+alias kgpa='kubectl get pods -A'
+alias kgs='kubectl get svc'
+alias kgn='kubectl get nodes'
+alias kga='kubectl get all'
+alias kd='kubectl describe'
+alias kl='kubectl logs'
+alias klf='kubectl logs -f'
+alias ke='kubectl exec -it'
+alias kns='kubectl config set-context --current --namespace'
+
+# Namespace shortcuts
+alias kplex='kubectl -n plex'
+alias ktraef='kubectl -n traefik'
+alias kflux='kubectl -n flux-system'
+alias klong='kubectl -n longhorn-system'
 ```
 
-Do not include Secret data, decoded credentials, kubeconfig contents or credential-bearing application logs in reports. See [connection guide](CONNECTING-TO-A-CLUSTER.md) and [deployment contract](BORTUS-DEPLOYMENT.md).
+## Common Patterns
+
+```bash
+# Restart all pods in a namespace
+kubectl rollout restart deployment -n plex
+
+# Check if a pod can reach the SMB server
+kubectl exec -it <pod-name> -n plex -- sh -c 'ping -c 2 192.168.0.8'
+
+# Test SMB mount from inside a pod
+kubectl exec -it <pod-name> -n plex -- sh -c 'ls /mnt/media'
+
+# Watch Flux reconcile after git push
+kubectl get kustomization plex -n flux-system -w
+
+# Find pods with restarts
+kubectl get pods -A | awk '$5 > 0'
+
+# Disk usage on nodes
+kubectl get nodes -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.allocatable.ephemeral-storage}{"\n"}{end}'
+
+# Delete all completed/failed jobs
+kubectl delete pods -A --field-selector=status.phase=Failed
+kubectl delete pods -A --field-selector=status.phase=Succeeded
+```

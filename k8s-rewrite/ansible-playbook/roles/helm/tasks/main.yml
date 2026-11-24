@@ -1,0 +1,20 @@
+---
+- name: Download checksum-verified Helm CLI
+  ansible.builtin.get_url:
+    url: "https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz"
+    checksum: "sha256:{{ helm_sha256 }}"
+    dest: /var/cache/branconet-migration/helm.tar.gz
+    mode: '0644'
+
+- name: Extract Helm CLI
+  ansible.builtin.unarchive:
+    src: /var/cache/branconet-migration/helm.tar.gz
+    dest: /var/cache/branconet-migration
+    remote_src: true
+
+- name: Install Helm CLI
+  ansible.builtin.copy:
+    src: /var/cache/branconet-migration/linux-amd64/helm
+    dest: /usr/local/bin/helm
+    remote_src: true
+    mode: '0755'

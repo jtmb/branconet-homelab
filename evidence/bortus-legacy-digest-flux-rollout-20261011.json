@@ -1,0 +1,519 @@
+{
+  "scope": "Actual accepted legacy digest maintenance via exact reviewed PR, main validation/promotion and fresh verifiedTLS CI\u2192Flux writer/storage metadata; no new KV schema or guard adoption",
+  "chart_pr": {
+    "headRefOid": "f15f1e03eb99b24bed182e84f3330413aa1641d4",
+    "mergeCommit": {
+      "oid": "182eafd4da4cda56b2a846d0c5f067e527eb79c4"
+    },
+    "mergedAt": "2026-10-11T13:43:08Z",
+    "state": "MERGED",
+    "url": "https://github.com/jtmb/branconet-charts/pull/2"
+  },
+  "chart_merge_commit": "182eafd4da4cda56b2a846d0c5f067e527eb79c4",
+  "reviewed_head": "f15f1e03eb99b24bed182e84f3330413aa1641d4",
+  "merge_tree": "1af61843b0a55f8d6a657e88c257c460145bdd54",
+  "merge_parents": [
+    "564fbc56894cca4d6b7934bff9c46311306cdc08",
+    "f15f1e03eb99b24bed182e84f3330413aa1641d4"
+  ],
+  "main_ci": {
+    "run": 38144292988,
+    "url": "https://github.com/jtmb/branconet-charts/actions/runs/38144292988",
+    "head_sha": "182eafd4da4cda56b2a846d0c5f067e527eb79c4",
+    "status": "completed",
+    "conclusion": "success",
+    "event": "push",
+    "updated_at": "2026-10-11T13:43:44Z",
+    "jobs": [
+      {
+        "name": "validate",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T13:43:13Z",
+        "completedAt": "2026-10-11T13:43:35Z",
+        "databaseId": 114484301672
+      },
+      {
+        "name": "promote",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T13:43:37Z",
+        "completedAt": "2026-10-11T13:43:43Z",
+        "databaseId": 114484379029
+      }
+    ]
+  },
+  "validated_ref": "182eafd4da4cda56b2a846d0c5f067e527eb79c4",
+  "root_review_sha256": "478dc27fe0585d6256316557f12d0cdac57696f59fede645d94980bd1ba78e98",
+  "merge_owner_sha256": "b5593f86ae79c08841192255a8036d7d07fd0e64e5bd5db25b4896d11ec72fb6",
+  "merge_terminal_sha256": "2b71a754ce5cc46c7346cc5f5874d2412dae3549e729f38051fc5ab0fa614a4e",
+  "merge_actual_exit": 0,
+  "fresh_before_sha256": "57fdde28640a75c175a097a56c7b80a40053593f0a8e8ab1bc81cb676a0a0fcd",
+  "actual_after_sha256": "8f4a2b427630b50f796c1382eb04d46a9adefc756784b8980607e3953e840bcc",
+  "live_observation": {
+    "checks": {
+      "same_source_owner_hr_deployment_storage_principal_uids": true,
+      "source_validated_ready": true,
+      "owner_applied_ready": true,
+      "hr_resumed_digest_ready": true,
+      "deployment_single_ready_digest": true,
+      "sole_new_ready_literal_digest_writer": true,
+      "old_writer_name_uid_absent": true,
+      "same_bound_retain_longhorn_storage": true,
+      "longhorn_encrypted_healthy_two_running_replicas": true,
+      "credential_refs_legacy_principal_preserved": true,
+      "external_principal_still_grantfree": true,
+      "guards_absent": true,
+      "three_nodes_ready": true,
+      "all_other_33_releases_ready": true
+    },
+    "all_checks_pass": true,
+    "source": {
+      "name": "branconet-charts",
+      "uid": "eddfd69a-9fdf-407d-abb4-d89fdae4359a",
+      "resourceVersion": "1125690"
+    },
+    "source_revision": "validated@sha1:182eafd4da4cda56b2a846d0c5f067e527eb79c4",
+    "source_observed_generation": 1,
+    "owner": {
+      "name": "migration-releases",
+      "uid": "f3757d64-04bd-46db-8b40-ae666999449c",
+      "resourceVersion": "1127701"
+    },
+    "owner_revision": "validated@sha1:182eafd4da4cda56b2a846d0c5f067e527eb79c4",
+    "helmrelease": {
+      "name": "bortus",
+      "uid": "bed3008a-474f-411e-9956-1248e3718220",
+      "resourceVersion": "1126512"
+    },
+    "hr_observed_generation": 9,
+    "hr_generation": 9,
+    "hr_last_attempted_revision": "0.1.0+182eafd4da4c",
+    "hr_conditions": [
+      {
+        "type": "Ready",
+        "status": "True",
+        "reason": "UpgradeSucceeded",
+        "observedGeneration": 9
+      },
+      {
+        "type": "Released",
+        "status": "True",
+        "reason": "UpgradeSucceeded",
+        "observedGeneration": 9
+      }
+    ],
+    "deployment": {
+      "name": "bortus",
+      "uid": "4deedc67-038a-4f82-a2d4-a83af316f2f6",
+      "resourceVersion": "1126483"
+    },
+    "writers": [
+      {
+        "name": "bortus-5c55f6d5b5-67mnk",
+        "uid": "5347ff1f-679c-45ee-b008-8132af41014a",
+        "resourceVersion": "1126479",
+        "phase": "Running",
+        "ready": true,
+        "node": "workernode2",
+        "images": [
+          "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879"
+        ],
+        "statuses": [
+          {
+            "name": "bortus",
+            "imageID": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+            "ready": true,
+            "restartCount": 0
+          }
+        ],
+        "owner": [
+          {
+            "apiVersion": "apps/v1",
+            "kind": "ReplicaSet",
+            "name": "bortus-5c55f6d5b5",
+            "uid": "d6eada7c-eb76-401d-9799-56d82549fb2d",
+            "controller": true,
+            "blockOwnerDeletion": true
+          }
+        ]
+      }
+    ],
+    "replicasets": [
+      {
+        "name": "bortus-58d4d5df66",
+        "uid": "0ec78524-b11f-47d4-94f7-56b47fdaf29b",
+        "resourceVersion": "27367",
+        "desired": 0,
+        "ready": 0,
+        "images": [
+          "bortus:migration-1438b27"
+        ]
+      },
+      {
+        "name": "bortus-5c55f6d5b5",
+        "uid": "d6eada7c-eb76-401d-9799-56d82549fb2d",
+        "resourceVersion": "1126482",
+        "desired": 1,
+        "ready": 1,
+        "images": [
+          "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879"
+        ]
+      },
+      {
+        "name": "bortus-966b9644d",
+        "uid": "d8e4bd34-3d74-49ca-88e1-4a011b4c5303",
+        "resourceVersion": "11692",
+        "desired": 0,
+        "ready": 0,
+        "images": [
+          "bortus:migration-1438b27"
+        ]
+      },
+      {
+        "name": "bortus-d69b559bb",
+        "uid": "eed90242-aa20-4690-84d4-9e932032eb93",
+        "resourceVersion": "1126347",
+        "desired": 0,
+        "ready": 0,
+        "images": [
+          "bortus:migration-1438b27"
+        ]
+      }
+    ],
+    "pvc": {
+      "name": "bortus-data",
+      "uid": "19cc4b60-4536-4d80-8789-e27b5ad48b79",
+      "resourceVersion": "1126355"
+    },
+    "pv": {
+      "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+      "uid": "89b8b6ec-c932-4686-9890-26df90a5c799",
+      "resourceVersion": "10369"
+    },
+    "longhorn": {
+      "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+      "uid": "74acb150-7031-4fab-9868-86f3f3a30e16",
+      "resourceVersion": "1126504",
+      "encrypted": true,
+      "replicas": 2,
+      "robustness": "healthy",
+      "state": "attached"
+    },
+    "longhorn_replicas": [
+      {
+        "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79-r-1dfe104d",
+        "uid": "3357a7be-8f50-4bf1-8ac3-e3e31a22cd50",
+        "resourceVersion": "1051908",
+        "node": "workernode2",
+        "state": "running"
+      },
+      {
+        "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79-r-3aeec2c8",
+        "uid": "8e0b55e2-06d8-449e-8923-ba3cb1278957",
+        "resourceVersion": "1051906",
+        "node": "workernode1",
+        "state": "running"
+      }
+    ],
+    "releases": [
+      {
+        "name": "aplb",
+        "uid": "3c88e364-76d4-4aa0-a0ff-1ed1059fb172",
+        "resourceVersion": "1126064",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "bazarr",
+        "uid": "fc21743f-4473-4ac2-9cd6-be84edf2a4f4",
+        "resourceVersion": "1125912",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "bortus",
+        "uid": "bed3008a-474f-411e-9956-1248e3718220",
+        "resourceVersion": "1126512",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "cert-manager",
+        "uid": "54258039-dbb8-4d38-8457-5a803c46d5a9",
+        "resourceVersion": "1123114",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "flaresolverr",
+        "uid": "b556d097-1352-49b5-9253-d70657d70330",
+        "resourceVersion": "1126182",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "gluetun",
+        "uid": "492ca06d-c2a5-4491-8f89-a21caa75b8e9",
+        "resourceVersion": "1126311",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "homepage",
+        "uid": "0abccce8-85f7-49df-baea-7825262a258e",
+        "resourceVersion": "1125958",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "http-echo",
+        "uid": "7cd0399f-8856-422d-9b02-4a14264a65c7",
+        "resourceVersion": "1126055",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "jackett",
+        "uid": "cc166e8b-d45a-4e77-bdfe-e874240cfb4d",
+        "resourceVersion": "1125895",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "jtmb-dev",
+        "uid": "3f6f742e-c029-4d67-99b0-927f9dc62b6f",
+        "resourceVersion": "1125865",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "lucinda-art-gallery",
+        "uid": "84aefe63-0ed2-49e7-a8d7-7d407f9c54f1",
+        "resourceVersion": "1126053",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "mealie",
+        "uid": "2d878107-ff9f-46f6-9260-2e8f3a94e38c",
+        "resourceVersion": "1126023",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "minecraft-website",
+        "uid": "b06660bd-608a-42af-b7f0-1fdc6553935f",
+        "resourceVersion": "1126322",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "overseerr",
+        "uid": "7a9394f8-4cc1-491c-8733-6164e5626541",
+        "resourceVersion": "1126200",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "phpmyadmin",
+        "uid": "4a16e98d-f473-4cfd-ac34-934aee36588e",
+        "resourceVersion": "1126225",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "pihole",
+        "uid": "db6aabc6-dd2c-46c3-bbfd-b35ddf453078",
+        "resourceVersion": "1126109",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "pihole-exporter",
+        "uid": "d6d48443-fc2b-466e-aa12-40866581e419",
+        "resourceVersion": "1126191",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "plex",
+        "uid": "66bf6326-157d-4875-b4c5-1a4d03636f5e",
+        "resourceVersion": "1126128",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "qbit-monitor",
+        "uid": "09945782-cfa0-4dee-ba5f-19b5788d947c",
+        "resourceVersion": "1126041",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "qbittorrent",
+        "uid": "d5fd0644-d2b2-4fe0-925f-9ed9a27a83da",
+        "resourceVersion": "1125945",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "radarr",
+        "uid": "bbd87da8-8746-4e3e-8c11-d8ae3a5d1504",
+        "resourceVersion": "1125974",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "ruckus-bot",
+        "uid": "790c3088-67d8-47cf-ac00-9d2e1f8c6937",
+        "resourceVersion": "1126184",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "ruckus-db",
+        "uid": "ea951a7f-02cf-47ba-afb9-44e915c6b8f0",
+        "resourceVersion": "1126090",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "santos-web",
+        "uid": "804ad19a-c3c2-4554-8cf4-f57c8817a0a3",
+        "resourceVersion": "1126142",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "sonarr",
+        "uid": "8568f6b9-f6a8-4ed2-9720-ce84c3a592e0",
+        "resourceVersion": "1126117",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "tautulli",
+        "uid": "e5aa088f-22a3-4f47-b7c4-094be5354bf4",
+        "resourceVersion": "1125934",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "unpackerr",
+        "uid": "c7af079e-7de5-4e8d-a4ca-1c7d763e023b",
+        "resourceVersion": "1126260",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "vaultwarden",
+        "uid": "3022a586-c52e-4dcd-850b-149f6b38b603",
+        "resourceVersion": "1126255",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "whoami",
+        "uid": "5290f1de-a621-47f9-8c98-673dcb0ed1d5",
+        "resourceVersion": "1125971",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "wordpress",
+        "uid": "65ca0d62-fc47-4063-81a5-4ed59767e907",
+        "resourceVersion": "1126283",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "wordpress-db",
+        "uid": "2b1cc6fa-fba1-4347-a285-d008df6e1e59",
+        "resourceVersion": "1125983",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "wordpress-redis",
+        "uid": "7ecea459-5e34-499f-8ab3-c073bc050ae0",
+        "resourceVersion": "1125901",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "xteve",
+        "uid": "ace99a34-343b-40cd-b1b3-6ef2f324a8b0",
+        "resourceVersion": "1126297",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      },
+      {
+        "name": "ytdl",
+        "uid": "148ed5ff-acfb-4660-80d7-0d57eaa0c0d9",
+        "resourceVersion": "1126269",
+        "namespace": "flux-system",
+        "ready": true,
+        "observed_generation": true
+      }
+    ],
+    "external_principal": {
+      "name": "bortus-kv",
+      "uid": "5601533e-1d91-4e8c-989c-000cb95d5484",
+      "resourceVersion": "1077918"
+    },
+    "scoped_principal_grants": [],
+    "active_guards": [],
+    "credential_reference_contract": {
+      "BOTRUS_JWT_SECRET": {
+        "name": "bortus-runtime",
+        "key": "jwt-secret"
+      },
+      "BOTRUS_SECRETS_KEY": {
+        "name": "bortus-runtime",
+        "key": "lookup-token"
+      }
+    },
+    "native_secret_values_read": false,
+    "production_schema_read": false,
+    "verified_at_utc": "2026-10-11T13:48:54.387717+00:00"
+  },
+  "manual_flux_reconcile": false,
+  "production_secret_or_database_values_read": false,
+  "production_schema_forward_done": false,
+  "active_admission_done": false,
+  "actual_independent_full_row_restore_accepted": false,
+  "latest_app_image_or_security_or_performance_accepted": false,
+  "final_kv_live_accepted": false
+}

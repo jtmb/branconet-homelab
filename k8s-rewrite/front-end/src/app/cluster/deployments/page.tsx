@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import ViewportWrapper from "@/app/(dashboard)/viewport-wrapper";
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { SortHeader, useSort } from "@/components/ui/sortable-header";
+import { sortLegacyClusterRows } from "@/lib/legacy-cluster-sort";
 
 interface DeploymentData {
   name: string;
@@ -16,6 +17,7 @@ interface DeploymentData {
   available: number;
   restarts: number;
   age: string;
+  created: string | null;
   health: string;
 }
 
@@ -48,11 +50,7 @@ export default function DeploymentsPage() {
         (d) => d.name.toLowerCase().includes(q) || d.namespace.toLowerCase().includes(q)
       );
     }
-    return [...result].sort((a, b) => {
-      const va = String((a as any)[sortKey] ?? "").toLowerCase();
-      const vb = String((b as any)[sortKey] ?? "").toLowerCase();
-      return sortDir === "asc" ? va.localeCompare(vb) : vb.localeCompare(va);
-    });
+    return sortLegacyClusterRows(result, "deployments", sortKey, sortDir);
   }, [deployments, search, sortKey, sortDir]);
 
   useEffect(() => {

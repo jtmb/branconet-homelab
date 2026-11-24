@@ -1,0 +1,15 @@
+# cert-manager ClusterIssuer for website-stack TLS certificates
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-website-stack
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: james.branco@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt-website-stack
+    solvers:
+      - http01:
+          ingress:
+            class: traefik

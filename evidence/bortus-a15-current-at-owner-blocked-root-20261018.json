@@ -1,0 +1,243 @@
+{
+  "status": "ACTUAL_AT_ATTEMPT_BLOCKED_SUPPORTED_OWNER_RECOVERY_EXHAUSTED",
+  "reviewedUTC": "2026-10-18T14:52:07.381899+00:00",
+  "source": "9cb81363f33333ea00d6f5d7f71036c780d88e1c",
+  "frontendTree": "5fcbfdda41d1e0c6d5200824dde51731fa91ccfe",
+  "compiledSource": "d901ccdd77d73981ca55708e124ab9699c8d79b4",
+  "bootID": "6f0249c6-a446-44f3-a9ba-6b368b297b4e",
+  "handoffSHA256": "40a6dfddb0472726885ee7bcc36c09e6757c603a4dc080e61688224d77ff0ad8",
+  "intentSHA256": "9ba4556040875ffe83e7aa1270e2de824e9946591d9ec4df01caa84807214184",
+  "reasonForChangedEnvironmentAttempt": "New WSL boot and updated official helper; generic Chrome probe state/keyboard works, which did not establish ChromeTesting fixture access",
+  "actualNativeExit": 1,
+  "actualWindowsExit": 1,
+  "headedReady": {
+    "scope": "Headed synthetic fixture for separately observed actual reader announcements",
+    "chromePid": 36428,
+    "startedUtc": "2026-10-18T14:47:34.822Z",
+    "actualExit": 1,
+    "screenReaderAccepted": false,
+    "performanceAccepted": false,
+    "productionChanged": false,
+    "browserVersion": "149.0.7827.55",
+    "url": "http://127.0.0.1:33361/configuration",
+    "title": "BORTUS K8s"
+  },
+  "headedTerminalPresent": false,
+  "windowBinding": {
+    "observedUTC": "2026-10-18T14:50:46.374725+00:00",
+    "source": "Actual official sky calls via node_repl; not independently inferred from fixture records",
+    "officialPlugin": "computer-use/26.1013.40934",
+    "freshUniqueCandidates": [
+      {
+        "app": "Chrome",
+        "id": 17370190,
+        "title": "BORTUS K8s - Google Chrome for Testing"
+      }
+    ],
+    "calls": [
+      {
+        "method": "get_window",
+        "args": {
+          "id": 17370190
+        },
+        "result": {
+          "app": "Chrome",
+          "id": 17370190,
+          "title": "BORTUS K8s - Google Chrome for Testing"
+        },
+        "strictIdentityEqual": true
+      },
+      {
+        "method": "get_window_state",
+        "args": {
+          "window": {
+            "app": "Chrome",
+            "id": 17370190,
+            "title": "BORTUS K8s - Google Chrome for Testing"
+          },
+          "include_screenshot": true,
+          "include_text": true
+        },
+        "error": "window id 17370190 no longer belongs to Chrome; current owner is Chrome"
+      },
+      {
+        "method": "list_windows",
+        "resultSelection": [
+          {
+            "app": "Chrome",
+            "id": 17370190,
+            "title": "BORTUS K8s - Google Chrome for Testing"
+          }
+        ]
+      },
+      {
+        "method": "get_window",
+        "args": {
+          "id": 17370190,
+          "app": "Chrome"
+        },
+        "error": "window id 17370190 no longer belongs to Chrome; current owner is Chrome"
+      }
+    ],
+    "supportedStateCaptured": false,
+    "bindingAcceptedForInput": false,
+    "readerGateCreated": false,
+    "nativeInputPerformed": false,
+    "retryLimitReached": true,
+    "actualATQualified": false
+  },
+  "stop": {
+    "cause": "root-aborted-supported-helper-owner-error",
+    "utc": 1792334889.3689537
+  },
+  "missingRecords": [
+    "START-READER",
+    "reader-started.json",
+    "nvda.private.log",
+    "headed-terminal.json"
+  ],
+  "manualCasesCompleted": 0,
+  "readerStarted": false,
+  "announcementsObserved": false,
+  "actualATQualified": false,
+  "nativeClosure": {
+    "CLIChildren": 65,
+    "allCLIReapedAndAbsent": true,
+    "containerID": "b8866c18ce8b4b0b761175ec6497d60fc5739ef07053be64643e2b736e3ce1f0",
+    "containerName": "bortus-a15-current-actual-at-20261018-v1-administration",
+    "closureVerified": true,
+    "observedContainerIdentitiesAbsent": true,
+    "namedContainersRemaining": [],
+    "supervisorReaped": true,
+    "supervisorAbsent": true,
+    "sourceInputsCompiledDependenciesUnchanged": true,
+    "fixtureChild": {
+      "status": 0,
+      "signal": null,
+      "errorCode": null,
+      "fixtureReady": true,
+      "namespaceIdentity": {
+        "pid": 13,
+        "startTicks": "17418986"
+      },
+      "namespaceIdentityAbsent": true,
+      "hostProcIdentityClaimed": false
+    }
+  },
+  "windowsClosure": {
+    "capturedBirths": 17,
+    "allRecordedBirthsNonLive": true,
+    "allBirthsAbsentClaimed": false,
+    "remainingLive": [],
+    "jobEmptyAndHandlesClosed": true,
+    "scope": "Original completed OwnedJob records; two signaled Chrome process objects remain queryable; no physical audibility claim"
+  },
+  "rootPreparationRefusals": [
+    "Read READY before file available",
+    "Assumed wrong READY URL key names; corrected to actual writerUrl/readerUrl/scopedUrl schema, then three GET200",
+    "Read nonexistent stage-spec.json; corrected to frozen runtime-stage-spec.json before staging"
+  ],
+  "rootTools": {
+    "sourceAndNativePreflightAndScan": "534078/0",
+    "prepare": "1a6ded/0",
+    "ready": "119d0d/0",
+    "native": "3dd817/session89029",
+    "nativeCompletion": "7f70cb/1",
+    "windows": "a079a1/session72989",
+    "windowsCompletion": "2f6ffc/1",
+    "bindingRecord": "adca9f/0"
+  },
+  "records": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-current-actual-at-20261018-v1\\terminal.json",
+      "bytes": 59562,
+      "sha256": "484de5511572fc2304f34d4d12c3fb3cabc0bc2b42b832f25627b546deffb21a"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-current-actual-at-20261018-v1\\dispatch-owned.json",
+      "bytes": 719,
+      "sha256": "56e7bc387f105a5c32b30e25acf73ead39dd00d8142d50dff35dd7bd31199a8b"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-current-actual-at-20261018-v1\\runtime-record.json",
+      "bytes": 59562,
+      "sha256": "484de5511572fc2304f34d4d12c3fb3cabc0bc2b42b832f25627b546deffb21a"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-current-actual-at-20261018-v1\\output\\administration\\administration-child-outcome.json",
+      "bytes": 226,
+      "sha256": "09e6f22843d722aaced9738cd8051285991aca0b4e3123584d0d6388ccb96166"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-current-actual-at-20261018-v1\\output\\administration\\a15-stage-refusal.json",
+      "bytes": 60,
+      "sha256": "769e39c564c13e84f851acb1ca15f507006eb165165f59bf095b93b31341431e"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-current-actual-at-20261018-v1\\output\\administration\\actual-at\\terminal.json",
+      "bytes": 242,
+      "sha256": "40c3e7d0f4e1ad1e0ac2479eb3bcda454d4115f87909021d3a0b9f8456080dcd"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-current-actual-at-20261018-v1\\output\\administration\\actual-at\\job.json",
+      "bytes": 10042,
+      "sha256": "b6a5253eef94a588cef05b898bcbf701ae1a3f5a86ba0003c3859f8bdc7badde"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-current-actual-at-20261018-v1\\output\\administration\\actual-at\\STOP",
+      "bytes": 83,
+      "sha256": "8a36b6ecf9d5d2ce02a46a22eb11d36ec44b21a320eb949f500d62db314c5fa5"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a15-current-window-binding-20261018-v1.json",
+      "bytes": 1679,
+      "sha256": "c1b6c0fdc69422f64958d19ff8d33625fcc527d4d6cf7ed1d2e4968c828e0e84"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-current-actual-at-20261018-v1\\output\\administration\\actual-at\\headed-ready.json",
+      "bytes": 385,
+      "sha256": "5bc0d1958003df742b055579a8d8434cf24d32a2acde14e3ec857b5a8361c2dd"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-current-actual-at-20261018-v1\\output\\administration\\actual-at\\foreign-reader-before-headed.json",
+      "bytes": 131,
+      "sha256": "927901d4baa84dcd9498db7553173f5af634ed9913e7f6d883cf232f5321e445"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-current-actual-at-20261018-v1\\output\\administration\\actual-at\\actor.stderr",
+      "bytes": 377,
+      "sha256": "78d959de7adb2e6b0391379e3ba17c3c74576b961df791b4f7eb830d7c7f01b2"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a15-current-actual-at-preparation-20261018-v1\\handoff.json",
+      "bytes": 14431,
+      "sha256": "40a6dfddb0472726885ee7bcc36c09e6757c603a4dc080e61688224d77ff0ad8"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a15-current-actual-at-preparation-20261018-v1\\build-intent.json",
+      "bytes": 335797,
+      "sha256": "9ba4556040875ffe83e7aa1270e2de824e9946591d9ec4df01caa84807214184"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a15-current-actual-at-preparation-20261018-v1\\headed-at-browser.mjs",
+      "bytes": 3189,
+      "sha256": "0862b28d35f9964da66cbab6c06077bf4699ba55c0adfbdae06e15794fdabeba"
+    }
+  ],
+  "independentReview": {
+    "packetFiles": 30,
+    "nativePayloads": 14,
+    "windowsInputs": 18,
+    "CLIOutputHashes": 65,
+    "peerTools": [
+      "b78b66",
+      "932efc"
+    ],
+    "rootFinitePins": 15,
+    "noNewProcessGraphOrContainerQuery": true
+  },
+  "futureATStatus": "Blocked on official ChromeTesting owner/state binding; no unchanged retry scheduled",
+  "productionChanged": false,
+  "originalDataUnchanged": true,
+  "originalValidationAndLedgersChanged": false
+}

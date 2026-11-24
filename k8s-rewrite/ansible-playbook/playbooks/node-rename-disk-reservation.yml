@@ -1,0 +1,24 @@
+---
+- name: Qualify Worker 2 Longhorn reservation for the master rename
+  hosts: master
+  gather_facts: false
+  become: false
+  any_errors_fatal: true
+  vars:
+    rename_reservation_action: plan
+  tasks:
+    - name: Plan or apply the exact per-disk reservation
+      ansible.builtin.command:
+        argv:
+          - python3
+          - -B
+          - -c
+          - "{{ lookup('ansible.builtin.file', 'files/node-rename-disk-reservation.py') }}"
+          - "{{ rename_reservation_action }}"
+          - "{{ lookup('ansible.builtin.file', 'files/node-rename-capacity.py') }}"
+      register: rename_reservation
+      changed_when: "'RESULT_CHANGED=true' in rename_reservation.stdout"
+
+    - name: Report the protected capacity check
+      ansible.builtin.debug:
+        var: rename_reservation.stdout_lines

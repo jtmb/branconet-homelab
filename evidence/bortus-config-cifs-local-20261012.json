@@ -1,0 +1,67 @@
+{
+  "scope": "Ciphertext-only configuration NAS publication policy for the verified existing CIFS mount; fresh successful live run pending",
+  "sources": [
+    {
+      "path": "scripts/migration/capture-kubernetes-recovery-config.py",
+      "sha256": "85f4ea076fdd466c01df419869b20e3a95ee2ce844f59131338ee3a58ab13edb",
+      "bytes": 13938
+    },
+    {
+      "path": "scripts/migration/tests/test_kubernetes_recovery_config.py",
+      "sha256": "aa8096170672fdf96b9cd8b4ebfe81a362f0a2477968b9c79a75077e2b847010",
+      "bytes": 11466
+    }
+  ],
+  "local_controls": {
+    "actual_exit_code": 0,
+    "tests": 12,
+    "skips": 0,
+    "source_files": 164,
+    "sources_unchanged": true,
+    "wall_seconds": 1.6215621719602495,
+    "child_pid": 2216431,
+    "child_start_ticks": "28950929",
+    "reaped": true,
+    "live_calls": false,
+    "added_cases": [
+      "mode0755 authenticated ciphertext accepted only on exact pinned CIFS mount",
+      "mode0755 on non-CIFS refused",
+      "world-writable cipher on CIFS refused"
+    ],
+    "filesystem_forcing_mocked": true,
+    "real_age_and_cipher_file_operations": true
+  },
+  "retained_first_actual_run": {
+    "actual_launcher_exit_code": 1,
+    "captured_files": 32,
+    "operator_archive_authenticated": true,
+    "encrypted_bytes": 83615,
+    "ciphertext_sha256": "3a29ecb2b1936ad632ce9e15f871be5573067e1e08d3eedeb26ee1429ae187e6",
+    "nas_hash_equal_readonly": true,
+    "nas_filesystem": "cifs",
+    "nas_mode": "0755",
+    "operator_mode": "0600",
+    "phase": "refused",
+    "publication_state": "pending",
+    "all_observed_children_absent": true,
+    "accepted": false,
+    "replayed_or_adopted": false
+  },
+  "contract": {
+    "operator_files": "pinned0600 under0700",
+    "nas_file": "O_EXCL requested0600; CIFS-forced0755 admitted only for authenticated ciphertext on exact /mnt/container-backups mount",
+    "remote_mount_identity": "rechecked across write/fsync/reopen/hash readback",
+    "other_filesystems_require0600": true,
+    "group_world_writable_modes_refused": true,
+    "plaintext_to_nas": false,
+    "shared_sqlite_etcd_writer_unchanged": true
+  },
+  "acceptance": {
+    "local_scoped_configuration_writer": true,
+    "successful_production_configuration_capture": false,
+    "etcd_restore": false,
+    "api_decryption_restore": false,
+    "longhorn_restore": false,
+    "final_release": false
+  }
+}

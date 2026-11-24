@@ -1,0 +1,84 @@
+{
+  "scope": "Dated read-only metadata snapshot; no rollout, disaster-recovery or candidate acceptance",
+  "actualToolExit": 0,
+  "observedUtc": "2026-10-14T18:19:03.390525+00:00",
+  "readOnly": true,
+  "secretPayloadsRequested": false,
+  "nodes": 3,
+  "nodesReady": 3,
+  "pods": 97,
+  "pvcs": 54,
+  "pvcsBound": 54,
+  "activeHelmReleases": 33,
+  "activeHelmReleasesReady": 33,
+  "bortus": [
+    {
+      "namespace": "bortus",
+      "name": "bortus-5c55f6d5b5-67mnk",
+      "phase": "Running",
+      "node": "workernode2",
+      "ready": 1,
+      "containers": 1,
+      "restarts": 0,
+      "images": [
+        "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879"
+      ],
+      "waitingReasons": []
+    }
+  ],
+  "bortusHelmReleaseSuspended": true,
+  "longhornVolumes": 40,
+  "longhornStates": {
+    "attached/healthy": 30,
+    "detached/unknown": 10
+  },
+  "allLonghornEncryptedTwoReplicas": true,
+  "gitSources": [
+    {
+      "namespace": "flux-system",
+      "name": "branconet-charts",
+      "generation": 1,
+      "observedGeneration": 1,
+      "conditions": {
+        "Ready": "True"
+      },
+      "revision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621"
+    },
+    {
+      "namespace": "flux-system",
+      "name": "migration-validated",
+      "generation": 3,
+      "observedGeneration": 3,
+      "conditions": {
+        "Ready": "True"
+      },
+      "revision": "codex/kubernetes-validated@sha1:373a1e513e1bfb8b13ed5212ccc1b0f57a5ff301"
+    }
+  ],
+  "kustomizations": [
+    {
+      "namespace": "flux-system",
+      "name": "migration-releases",
+      "generation": 14,
+      "observedGeneration": 14,
+      "conditions": {
+        "Ready": "True"
+      },
+      "revision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621"
+    }
+  ],
+  "rawSHA256": "150228264e9202a2ea3b8c2ebdf86f4dd0efed9056a5d7f6878221374055dd70",
+  "acceptanceScope": "metadata snapshot only; no rollout, DR or adoption claim",
+  "records": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-live-metadata-refresh-current-20261014-181900-summary.json",
+      "bytes": 1924,
+      "sha256": "9c07daf001ac433a1db788d27e072af9ae8a3b8a941b157008fc6141a2626ed2"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-live-metadata-refresh-current-20261014-181900.json",
+      "bytes": 42007,
+      "sha256": "150228264e9202a2ea3b8c2ebdf86f4dd0efed9056a5d7f6878221374055dd70"
+    }
+  ]
+}

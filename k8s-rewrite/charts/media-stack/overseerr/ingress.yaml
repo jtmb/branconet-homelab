@@ -1,0 +1,18 @@
+# Overseerr Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: overseerr-ingress
+  namespace: plex
+spec:
+  rules:
+  - host: overseerr.branconet.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: overseerr
+            port:
+              number: 5055

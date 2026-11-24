@@ -1,0 +1,90 @@
+---
+# Reversibly toggle the managed CSR controller between observe and approve.
+# Approve mode is only valid because signer-scoped approval RBAC is published.
+- name: Toggle unattended kubelet CSR approval
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    csr_approval_action: status
+    csr_dropin_dir: /etc/systemd/system/bortus-csr-controller.service.d
+    csr_dropin: /etc/systemd/system/bortus-csr-controller.service.d/10-approval.conf
+  tasks:
+    - name: Require a reviewed bounded action
+      ansible.builtin.assert:
+        that:
+          - csr_approval_action in ['status', 'enable', 'disable']
+          - kubernetes_node_name == 'node02'
+
+    - name: Show current controller mode
+      when: csr_approval_action == 'status'
+      ansible.builtin.command:
+        argv: [systemctl, show, bortus-csr-controller.service, --property=ExecStart, --value]
+      changed_when: false
+
+    - name: Enable unattended approval
+      when: csr_approval_action == 'enable'
+      block:
+        # The controller's own token must NOT be able to read ClusterRoles, so the
+        # RBAC precondition is verified from the operator side and passed in.
+        - name: Require operator-verified signer-scoped approval RBAC
+          ansible.builtin.assert:
+            that:
+              - csr_approval_rbac_verified | default(false) | bool
+            fail_msg: "Approval RBAC must be verified from the operator before enabling approve mode"
+
+        - name: Create drop-in directory
+          ansible.builtin.file:
+            path: "{{ csr_dropin_dir }}"
+            state: directory
+            owner: root
+            group: root
+            mode: "0755"
+
+        - name: Install approve-mode drop-in
+          ansible.builtin.copy:
+            content: |
+              [Unit]
+              Description=BORTUS kubelet-serving CSR controller (unattended approval, kubelet-serving signer only)
+
+              [Service]
+              ExecStart=
+              ExecStart=/usr/bin/python3 -B /usr/local/libexec/bortus-csr-controller/run-kubelet-csr-controller.py --managed-host --state-dir /var/lib/bortus-csr-controller --enrollment-file /etc/bortus-csr-controller/enrollment.json --mode approve --approval-enabled --loop --interval 60
+            dest: "{{ csr_dropin }}"
+            owner: root
+            group: root
+            mode: "0644"
+
+        - name: Reload and restart the controller
+          ansible.builtin.systemd_service:
+            name: bortus-csr-controller.service
+            daemon_reload: true
+            state: restarted
+
+    - name: Disable unattended approval
+      when: csr_approval_action == 'disable'
+      block:
+        - name: Remove the drop-in
+          ansible.builtin.file:
+            path: "{{ csr_dropin }}"
+            state: absent
+
+        - name: Reload and restart the controller in observe mode
+          ansible.builtin.systemd_service:
+            name: bortus-csr-controller.service
+            daemon_reload: true
+            state: restarted
+
+    - name: Report the effective mode
+      when: csr_approval_action != 'status'
+      ansible.builtin.command:
+        argv: [systemctl, show, bortus-csr-controller.service, --property=ExecStart, --value]
+      changed_when: false
+      register: csr_mode_after
+
+    - name: Print effective mode
+      when: csr_approval_action != 'status'
+      ansible.builtin.debug:
+        msg: "{{ csr_mode_after.stdout }}"

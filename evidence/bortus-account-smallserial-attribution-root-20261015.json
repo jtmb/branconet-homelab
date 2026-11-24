@@ -1,0 +1,28 @@
+{
+  "scope": "Source and retained timing review only; no benchmark replay or product fix",
+  "sourceReviewSHA256": "912b089f55be8a625f61b6f29a19d55ad4f96ded8e3cafa9c32d47500ff5e44c",
+  "serverTickRateHz": 100,
+  "coarseServerPhaseCPUms": {
+    "baseline": [
+      50,
+      70,
+      60
+    ],
+    "candidate": [
+      60,
+      60,
+      60
+    ],
+    "baselineMedian": 60,
+    "candidateMedian": 60
+  },
+  "higherCgroupPhaseCPUProvesServerCPURegression": false,
+  "cgroupIncludesDriverOracleAndSampling": true,
+  "requestTimerStopsAfterBodyBeforeJSONParse": true,
+  "cachedProjectionAndSerializationAlreadyPresent": true,
+  "repeatedStartupCauseEstablished": false,
+  "originalWarmRegressions": 2,
+  "performanceAccepted": false,
+  "nextWork": "Reviewed bounded causal profiling with actual server thread CPU, exact request spans and numeric profile partitions; helper and adapter controls before observations",
+  "productionChanged": false
+}

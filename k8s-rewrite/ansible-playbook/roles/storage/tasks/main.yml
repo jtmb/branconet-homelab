@@ -1,0 +1,70 @@
+# Storage Role Tasks
+# Installs Rancher local-path-provisioner (lightweight, works on 1GB RAM)
+# Longhorn would require 2GB+ RAM per node
+
+---
+# =============================================================================
+# TASK 0: Remove control-plane taint for single-node cluster (master only)
+# =============================================================================
+- name: Remove control-plane taint for single-node cluster (master only)
+  ansible.builtin.shell: |
+    kubectl taint nodes --all node-role.kubernetes.io/control-plane- 2>/dev/null || true
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: untaint_output
+  changed_when: "'tainted' in untaint_output.stdout or 'removed' in untaint_output.stdout"
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 1: Create local-path-storage namespace (master only)
+# =============================================================================
+- name: Create local-path-storage namespace (master only)
+  ansible.builtin.shell: |
+    kubectl create namespace local-path-storage --dry-run=client -o yaml | kubectl apply -f -
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: ns_output
+  changed_when: false
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 2: Apply local-path-provisioner (master only)
+# =============================================================================
+- name: Apply local-path-provisioner manifest (master only)
+  ansible.builtin.command: kubectl apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.28/deploy/local-path-storage.yaml
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: lpp_apply
+  changed_when: true
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 3: Wait for local-path-provisioner to be ready (master only)
+# =============================================================================
+- name: Wait for local-path-provisioner to be ready (master only)
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf get deployment/local-path-provisioner -n local-path-storage -o jsonpath='{.status.availableReplicas}' 2>/dev/null
+  register: lpp_ready
+  changed_when: false
+  until: lpp_ready.stdout == "1"
+  retries: 15
+  delay: 10
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 4: Set as default storage class (master only)
+# =============================================================================
+- name: Set local-path as default StorageClass (master only)
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf patch storageclass local-path -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+  register: sc_default
+  changed_when: true
+  when: inventory_hostname in groups['master']
+
+- name: Verify storage class (master only)
+  ansible.builtin.command: kubectl get storageclass
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  register: sc_status
+  changed_when: false
+  when: inventory_hostname in groups['master']

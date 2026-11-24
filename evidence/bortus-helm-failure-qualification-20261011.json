@@ -1,0 +1,82 @@
+{
+  "observed_at_utc": "2026-10-11T03:11:52.1509146Z",
+  "scope": "Locally prepared explicit Helm failure contract and unchanged default credential scanning; no publication or deployment",
+  "repository": "jtmb/branconet-charts",
+  "branch": "codex/bortus-release-coordinator",
+  "qualified_source_commit": "710e5ecd9434fc869eac12b497e326a21752c55e",
+  "tracked_checkout_clean": true,
+  "change_commits": {
+    "helm_contract": "6c26ee69c56d50bdb3544b73dd718a1609ad0257",
+    "ci_bytecode_prevention": "710e5ecd9434fc869eac12b497e326a21752c55e"
+  },
+  "failure_contract": {
+    "release_namespace": "flux-system",
+    "release_name": "bortus",
+    "target_namespace": "bortus",
+    "storage_namespace": "bortus",
+    "install_and_upgrade": {
+      "strategy_name": "RemediateOnFailure",
+      "remediation_retries": 0,
+      "remediate_last_failure": false,
+      "disable_wait": false,
+      "disable_wait_for_jobs": false
+    },
+    "upgrade_cleanup_on_fail": false,
+    "ci_rejects_implicit_or_false_like_values": true,
+    "unrelated_release_settings_unchanged": true
+  },
+  "original_failed_validation": {
+    "source_commit": "6c26ee69c56d50bdb3544b73dd718a1609ad0257",
+    "exit_code": 1,
+    "console_record": "71e883",
+    "stage": "Default Gitleaks credential scan",
+    "redacted_findings": 1,
+    "rule": "private-key",
+    "generated_file": "scripts/__pycache__/export_bortus_source.cpython-314.pyc",
+    "compiled_exact_inert_placeholder_verified": true,
+    "preserved_cache_sha256": "4cb1c75994ec1b0629baddb59dbbe8da2a372b58240d207b9713196e4f12f764",
+    "preserved_redacted_report_sha256": "2bda5960ac8147a252b365f763b91bba3408b196791930439c963c7a8d7fa872",
+    "preservation_directory": "C:\\Users\\james\\AppData\\Local\\BORTUS\\qa-tools\\chart-validation-20261011-0310",
+    "fix": "Disable Python bytecode generation in CI and use -B locally; preserve generated cache outside the checkout",
+    "scanner_rules_changed": false,
+    "scanner_suppression_added": false
+  },
+  "guard_tests": {
+    "command": "python3 -B -m unittest discover -s scripts -p 'test_*.py'",
+    "runtime": "Python 3.14.4 on Ubuntu WSL",
+    "exit_code": 0,
+    "count": 22,
+    "elapsed_seconds": 2.661,
+    "console_record": "46ae0b",
+    "ci_bytecode_environment_verified": true,
+    "generated_exporter_cache_not_recreated": true
+  },
+  "full_validation": {
+    "command": "python3 -B scripts/validate.py",
+    "exit_code": 0,
+    "terminal_console_record": "945798",
+    "report_bytes_identical_to": "bortus-chart-validation-20261011.json",
+    "report_sha256": "ef2291e3b7bc67ac81d89b4564a0b010b4400a1956e72067f5afa743be080e29",
+    "credential_scan_passed": true,
+    "effective_rendering_passed": true,
+    "charts": 33,
+    "helmreleases": 34,
+    "composition_resources": 64,
+    "original_render_equivalence_requested": false
+  },
+  "live_schema_support": {
+    "read_only": true,
+    "console_record": "8da139",
+    "crd_uid": "4b236214-c636-4d58-9c14-35124e58ac1e",
+    "crd_resource_version": "2786",
+    "served_version": "v2",
+    "all_11_strategy_wait_remediation_cleanup_fields_supported": true,
+    "mutations": 0
+  },
+  "limitations": [
+    "The local test runtime is Python 3.14.4; the configured GitHub CI Python 3.12 run is still pending.",
+    "No remote branch or validated source update, actual Helm failure, schema migration, application rollout or live recovery test occurred.",
+    "The final guarded image, RBAC, admission and adoption changes are not yet integrated into this chart commit.",
+    "Passing rendering does not establish final application, accessibility, performance or native KV live acceptance."
+  ]
+}

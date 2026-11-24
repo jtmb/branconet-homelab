@@ -1,0 +1,108 @@
+{
+  "abi": 1,
+  "scope": "Etcd ciphertext NAS consumer reuses root closed config|etcd factory",
+  "controls": 51,
+  "actual_exit_code": 0,
+  "seconds": 8.026,
+  "executable_source_unchanged": true,
+  "factory_dependency": {
+    "path": "scripts/migration/capture-kubernetes-recovery-config.py",
+    "sha256": "e21099b63fdbbd64202dc3762079c4078c4aecc2e6d380cc7465b79bf638d37a",
+    "not_selected_for_native_commit": true
+  },
+  "source_sha256": "51475f6020747323047e33446a909c3f4669c7c9e4401e7f00f7d7bb9da2597d",
+  "transport_tests_unchanged_sha256": "6aaccb7e2f9be8726b5df1412c1941ad65cc419e95216b85ce1b3027105f6533",
+  "q_NAS_PROGRAM_unchanged": true,
+  "size_limit_unchanged": 536870912,
+  "cipher_headroom_unchanged": 1048576,
+  "preserved_six_reply_fields": [
+    "bytes",
+    "sha256",
+    "fsynced",
+    "same_inode_readback",
+    "cipher_mode",
+    "cifs_mount"
+  ],
+  "before_dispatch_bindings": [
+    "prefix",
+    "writer_sha256",
+    "factory_source_sha256",
+    "base_program_sha256"
+  ],
+  "owned_PID_start_identities_absent": 97,
+  "no_live_calls_or_operator_credentials": true,
+  "CIFS_mount_and_modes_are_controlled_fixtures": true,
+  "originals": [
+    {
+      "path": "originals/handle.json",
+      "bytes": 43,
+      "sha256": "457dc538e91148d83fa3c1df5827d3cb0e972d0b7681f7b8659df845004d91ac"
+    },
+    {
+      "path": "originals/process-review.json",
+      "bytes": 10300,
+      "sha256": "4d53fc2b5660060e6c465b33dbcab21a63b4ba4f8b59ec21f3e231d37bcd7654"
+    },
+    {
+      "path": "originals/stderr.log",
+      "bytes": 8208,
+      "sha256": "a4606f1c249fa764b6e40ce787283fb8a6cc2f4ca22868b79bb5cd80780e4861"
+    },
+    {
+      "path": "originals/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "originals/terminal.json",
+      "bytes": 213,
+      "sha256": "40537dac3449210f7e228a2ab79fa45852646379572a2aa10cfe7f76b10c9342"
+    },
+    {
+      "path": "originals/executed-source/scripts/migration/backup-etcd.py",
+      "bytes": 48700,
+      "sha256": "51475f6020747323047e33446a909c3f4669c7c9e4401e7f00f7d7bb9da2597d"
+    },
+    {
+      "path": "originals/executed-source/scripts/migration/capture-kubernetes-recovery-config.py",
+      "bytes": 14030,
+      "sha256": "e21099b63fdbbd64202dc3762079c4078c4aecc2e6d380cc7465b79bf638d37a"
+    },
+    {
+      "path": "originals/executed-source/scripts/migration/tests/test_etcd_checkpoint.py",
+      "bytes": 26726,
+      "sha256": "8474bbbfe232e1c6793f4fef1dc67f0264bc09bf3d6ca4b6882928e4de0062cb"
+    },
+    {
+      "path": "originals/executed-source/scripts/migration/tests/test_etcd_transport.py",
+      "bytes": 15903,
+      "sha256": "6aaccb7e2f9be8726b5df1412c1941ad65cc419e95216b85ce1b3027105f6533"
+    },
+    {
+      "path": "v14-source-manifest.json",
+      "bytes": 22132,
+      "sha256": "9fc6c6c593c737f1e8e26d943d48db14bb974c5c753df33c4167a4051edfd21c"
+    },
+    {
+      "path": "v14-windows-handle.json",
+      "bytes": 64,
+      "sha256": "0a9307118c7c16b5aea9c005903a0701ea4a814692efa0a86902aa6836fb74ca"
+    },
+    {
+      "path": "v14-windows-terminal.json",
+      "bytes": 47,
+      "sha256": "e80e470c0939f1728abeccb358676b32dc77ac9abbb6ba6d20be22e9e2bb17a3"
+    },
+    {
+      "path": "v14.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "v14.stdout",
+      "bytes": 8512,
+      "sha256": "4d92737d5131a4d87e5f2a9640a73f9692badf6424aeaea968fcd215c0ecc710"
+    }
+  ],
+  "real_etcd_NAS_or_recovery_acceptance": false
+}

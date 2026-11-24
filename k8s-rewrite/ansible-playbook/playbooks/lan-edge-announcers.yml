@@ -1,0 +1,72 @@
+---
+- name: Mark the existing MetalLB edge announcers
+  hosts: master
+  become: false
+  gather_facts: false
+  any_errors_fatal: true
+
+  tasks:
+    - name: Confirm the exact existing edge topology
+      ansible.builtin.assert:
+        that:
+          - edge_announcer_labels_apply | default(false) | bool
+          - groups['master'] == ['masternode']
+          - groups['worker'] | sort == ['workernode1', 'workernode2']
+
+    - name: Read each worker's current labels
+      ansible.builtin.command:
+        argv: [kubectl, get, node, "{{ hostvars[item].kubernetes_node_name | default(item) }}", -o, "jsonpath={.metadata.labels}"]
+      loop: "{{ groups['worker'] }}"
+      register: edge_nodes
+      changed_when: false
+
+    - name: Reject a conflicting label or an ineligible worker
+      ansible.builtin.assert:
+        that:
+          - (item.stdout | from_json).get('branconet.lan/edge-announcer', 'true') == 'true'
+          - "'node.kubernetes.io/exclude-from-external-load-balancers' not in (item.stdout | from_json)"
+      loop: "{{ edge_nodes.results }}"
+      loop_control:
+        label: "{{ item.item }}"
+
+    - name: Mark only the current edge workers
+      ansible.builtin.command:
+        argv:
+          - kubectl
+          - label
+          - node
+          - "{{ hostvars[item.item].kubernetes_node_name | default(item.item) }}"
+          - branconet.lan/edge-announcer=true
+      loop: "{{ edge_nodes.results }}"
+      loop_control:
+        label: "{{ item.item }}"
+      when: "'branconet.lan/edge-announcer' not in (item.stdout | from_json)"
+
+    - name: Confirm the existing floating services are pinned before enabling DNS on the master
+      when: dns_master_announcer_enable | default(false) | bool
+      block:
+        - name: Read live MetalLB advertisements
+          ansible.builtin.command: kubectl -n metallb-system get l2advertisements -o json
+          register: live_advertisements
+          changed_when: false
+
+        - name: Require the exact existing edge pin on both advertisements
+          ansible.builtin.assert:
+            that:
+              - (live_advertisements.stdout | from_json)['items'] | map(attribute='metadata.name') | sort == ['lan-ingress', 'plex']
+              - (live_advertisements.stdout | from_json)['items'] | map(attribute='spec.nodeSelectors') | list == [expected_edge_selector, expected_edge_selector]
+          vars:
+            expected_edge_selector:
+              - matchLabels:
+                  branconet.lan/edge-announcer: "true"
+
+        - name: Remove the master exclusion for the new DNS advertisement
+          ansible.builtin.command:
+            argv:
+              - kubectl
+              - label
+              - node
+              - "{{ kubernetes_node_name | default(inventory_hostname) }}"
+              - node.kubernetes.io/exclude-from-external-load-balancers-
+          register: master_label_result
+          changed_when: "' unlabeled' in master_label_result.stdout"

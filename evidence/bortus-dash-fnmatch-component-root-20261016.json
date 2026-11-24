@@ -1,0 +1,140 @@
+{
+  "status": "ISOLATED_CUSTOM_DASH_COMPONENT_QUALIFIED_NO_IMAGE_OR_SECURITY_ACCEPTANCE",
+  "sourceVersion": "0.5.12-6ubuntu5",
+  "change": "--enable-fnmatch; all13 authenticated Debian patches retained",
+  "componentSHA256": "02ca0e8ad86ffbfdf5eb791ba6369f86ac4f8a7fee637ec3c6f85daceca06500",
+  "componentBytes": 534704,
+  "buildPacketHandoffSHA256": "46426272da06330ec8bda2eb2fc24efe1d9b0105f88595456153b1998d61a3d1",
+  "postPacketHandoffSHA256": "fa413ef7082a6271a4d6ac485d68c5f79f69ade4776287fcd29153c0a32b349c",
+  "actualOutcomes": [
+    {
+      "owner": "root-dash-fnmatch-component-20261016-v1-3",
+      "tool": "3b5b4d",
+      "actualExit": 0,
+      "terminalSHA256": "5217312f9818b7652ed385a97592b298bbce8b10be62e3deee63fd4a9a8c242d"
+    },
+    {
+      "owner": "root-dash-fnmatch-component-post-20261016-v1-1",
+      "tool": "5a0bb9",
+      "actualExit": 1,
+      "terminalSHA256": "ae38aaccad65522f7660753b285d9c7c577a868f5072edb77e8053a9caa02d7d"
+    },
+    {
+      "owner": "root-dash-fnmatch-component-post-20261016-v1-2",
+      "tool": "0d17e4",
+      "actualExit": 0,
+      "terminalSHA256": "16c05b65416d2817f55d0b24aaa4e5eb516a90d363a14e480f36075e2d96da08"
+    },
+    {
+      "owner": "root-dash-fnmatch-component-fresh-20261016-v1-2",
+      "tool": "8effe5",
+      "actualExit": 0,
+      "terminalSHA256": "7fbf08d6241e9f6df4d8c8732507e8ab88c2d1e8bee758f26539df29ed907ba5"
+    },
+    {
+      "owner": "root-dash-fnmatch-component-final-20261016-v1-2",
+      "tool": "34fc9c",
+      "actualExit": 0,
+      "terminalSHA256": "64f380330be4bc1d8654311c5f5e6f090920ed62ec3d8e19cfd553dbcbc98c3a"
+    }
+  ],
+  "qualifiedComponentChecks": {
+    "CVEFixClaim": false,
+    "NobleBinaryEquivalent": false,
+    "UTF8Qualified": false,
+    "all13PatchAndInverseCommandsChecked": true,
+    "configHAndActualPreprocessingChecked": true,
+    "customComponentOnly": true,
+    "entrypointPrismaCompatibilityQualified": false,
+    "helperCommandsRechecked": 80,
+    "imageQualified": false,
+    "ordinaryMismatches": 0,
+    "ordinarySupportedGroups": 15,
+    "ordinaryUnsupportedGroups": [
+      10
+    ],
+    "securityAccepted": false,
+    "sevenPhaseActualExits": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "sourceInverseBytesAndModesEqual": true,
+    "targetNobleStaticSymbolVersionClosureReparsed": true
+  },
+  "finiteFinal": {
+    "records": 810,
+    "birthsAbsent": 20,
+    "retainedCIDNameQueries": 2,
+    "newGraphOrQueries": false,
+    "resultSHA256": "9cdded6d7599cc9e208603caae23e739ac53587419bbf18e10ef2a63ad1164aa",
+    "terminalReturnedAndReaped": true
+  },
+  "retainedReaderFailure": {
+    "tool": "5a0bb9",
+    "exit": 1,
+    "stage": 1,
+    "type": 5,
+    "historicalExactLineRecorded": false,
+    "deterministicDiscrepancy": "All788 expected modes were Windows UNC synthesized0666, incompatible with required nonwritable/exact-mode predicates.",
+    "correction": "Only native expected modes plus exclusive reader coordinates/binding hashes changed; every function and limit unchanged.",
+    "nativeWitnessTool": "89ed5e",
+    "nativeWitnessSHA256": "202f6337a7d20a8a7dc1d046b70e8d7eb03c61cb1cd0cee625690c09324df54d",
+    "nativeModes": {
+      "0600": 408,
+      "0644": 350,
+      "0755": 30
+    }
+  },
+  "sourceScans": [
+    {
+      "tool": "004c7c",
+      "exit": 0,
+      "findings": 0,
+      "files": 41
+    },
+    {
+      "tool": "e59a24",
+      "exit": 0,
+      "findings": 0,
+      "files": 8
+    },
+    {
+      "tool": "86a7cd",
+      "exit": 0,
+      "findings": 0,
+      "files": 12
+    }
+  ],
+  "resources": {
+    "wholeSeconds": 900,
+    "closureReserveSeconds": 60,
+    "cpus": 2,
+    "memoryGiB": 4,
+    "noSwap": true,
+    "pids": 256,
+    "network": "none",
+    "readonly": true,
+    "uid": 1000,
+    "exactReaderSeconds": 60,
+    "exactReserve": 10,
+    "freshFinalSecondsEach": 30
+  },
+  "acceptance": {
+    "customComponent": true,
+    "entrypointPrismaRuntime": false,
+    "UTF8": false,
+    "NobleBinaryEquivalence": false,
+    "fullImage": false,
+    "CVEFixedPackageClaim": false,
+    "security": false,
+    "productionAdoption": false,
+    "overall": false
+  },
+  "originalDataAndProductionUnchanged": true,
+  "acceptanceContractSHA256": "e07e4f238df8a4962927991c5057e445d86a4e00623e4b1e3396f8c26fe0f040"
+}

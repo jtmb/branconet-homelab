@@ -1,0 +1,277 @@
+{
+  "scope": "Original unchanged three-pair evaluation of combined parent-stat/A15 source; not a stats-only causal experiment",
+  "candidate": "6b254b2c042d86177ab64686623f23a3077532f0",
+  "frontendTree": "7a0b7142ef5f437502bc992ce199598648974751",
+  "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "actualOuterExit": 0,
+  "actorCompletionTool": "751fe1",
+  "summaryTool": "993ae9",
+  "exactTool": "a8f54c",
+  "freshTool": "9596d7",
+  "finalTool": "055ecd",
+  "observations": 6,
+  "profilesPerObservation": 6,
+  "alternatingPairs": 3,
+  "frozenInputs": 66,
+  "exportedSources": 452,
+  "sourceSelection": {
+    "baseline": 157,
+    "candidate": 295
+  },
+  "currentPublicRecords": 57,
+  "originalAndPostBirthsAbsent": 20,
+  "exactNameQueries": 8,
+  "retainedCIDQueries": 0,
+  "dispatcherPIDOnlyScope": true,
+  "noGraphRewalkByFinal": true,
+  "noNewQueriesByFinal": true,
+  "extraOwnAbsenceClaim": false,
+  "independentOriginalSummaryRecomputed": true,
+  "comparableWarmCases": 10,
+  "warmCasesLowerMedianP95": 8,
+  "warmCasesRegressed": 2,
+  "warmComparisons": [
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-12",
+      "baselineP95MS": {
+        "median": 22.16030499999988,
+        "min": 15.30957699999999,
+        "max": 23.77750500000002
+      },
+      "candidateP95MS": {
+        "median": 16.03272199999992,
+        "min": 11.861092999999528,
+        "max": 19.097539000000324
+      },
+      "regresses": false
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95MS": {
+        "median": 58.41135399999985,
+        "min": 47.398895000000266,
+        "max": 63.59640799999943
+      },
+      "candidateP95MS": {
+        "median": 56.18368499999997,
+        "min": 52.9355659999992,
+        "max": 68.23783000000003
+      },
+      "regresses": false
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "warm-pods-12",
+      "baselineP95MS": {
+        "median": 8.420899000000645,
+        "min": 7.76758399999926,
+        "max": 12.308852000000115
+      },
+      "candidateP95MS": {
+        "median": 7.77494299999853,
+        "min": 7.144947000000684,
+        "max": 14.436220999999932
+      },
+      "regresses": false
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95MS": {
+        "median": 62.520393000000695,
+        "min": 55.774115999998685,
+        "max": 96.87254799999937
+      },
+      "candidateP95MS": {
+        "median": 58.11525400000028,
+        "min": 54.88262699999905,
+        "max": 115.92045700000017
+      },
+      "regresses": false
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "warm-pods-12",
+      "baselineP95MS": {
+        "median": 11.014027000001079,
+        "min": 10.062450000001263,
+        "max": 14.696998999999778
+      },
+      "candidateP95MS": {
+        "median": 8.88199700000041,
+        "min": 7.970832999999402,
+        "max": 8.903197999999975
+      },
+      "regresses": false
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95MS": {
+        "median": 88.8433270000005,
+        "min": 83.40556300000026,
+        "max": 92.95891599999959
+      },
+      "candidateP95MS": {
+        "median": 80.75542599999972,
+        "min": 73.80511300000035,
+        "max": 113.43391899999915
+      },
+      "regresses": false
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "warm-pods-12",
+      "baselineP95MS": {
+        "median": 7.260446000000229,
+        "min": 7.170983999996679,
+        "max": 8.30837899999824
+      },
+      "candidateP95MS": {
+        "median": 8.204971999999543,
+        "min": 6.753305999998702,
+        "max": 9.30162399999972
+      },
+      "regresses": true
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95MS": {
+        "median": 53.85156499999721,
+        "min": 49.75809200000003,
+        "max": 62.704062000000704
+      },
+      "candidateP95MS": {
+        "median": 52.21602100000018,
+        "min": 49.77197199999864,
+        "max": 61.04323700000168
+      },
+      "regresses": false
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "warm-pods-12",
+      "baselineP95MS": {
+        "median": 8.519379000001209,
+        "min": 6.228375999999116,
+        "max": 8.542528999998467
+      },
+      "candidateP95MS": {
+        "median": 7.076676000000589,
+        "min": 6.243549000002531,
+        "max": 9.588512000002083
+      },
+      "regresses": false
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95MS": {
+        "median": 52.339898999998695,
+        "min": 50.95449699999881,
+        "max": 54.55225199999768
+      },
+      "candidateP95MS": {
+        "median": 52.860837000000174,
+        "min": 45.06996599999911,
+        "max": 66.81940699999905
+      },
+      "regresses": true
+    }
+  ],
+  "excludedNonEquivalentWarm": [],
+  "wholeFixture": {
+    "baseline": {
+      "cgroup_peak_mib": {
+        "median": 361.74609375,
+        "min": 358.18359375,
+        "max": 365.14453125
+      },
+      "cgroup_cpu_seconds": {
+        "median": 39.291919,
+        "min": 36.108924,
+        "max": 39.867537
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 1.324
+      },
+      "oom_observed": false
+    },
+    "candidate": {
+      "cgroup_peak_mib": {
+        "median": 435.23828125,
+        "min": 430.28515625,
+        "max": 439.4296875
+      },
+      "cgroup_cpu_seconds": {
+        "median": 32.651419,
+        "min": 30.309582,
+        "max": 34.97386
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    }
+  },
+  "quietWindow": {
+    "heavyNodeBuildActive": false,
+    "otherBrowserActorsDuringMeasurements": false,
+    "briefPriorFinalCheckCompletedBeforeFirstMeasuredObservation": true,
+    "firstProfileUnix": 1792118645.7482872,
+    "priorFinalCompletedFileMtimeUnix": 1792118589.2011251
+  },
+  "sourceScanLiteralExit": 1,
+  "sourceScanFindings": 2,
+  "sourceScanClassification": "Two exact public Git source/tree identifiers; types and source-to-tree relationship verified; no suppression or rescan",
+  "originalPreStageScanRefusalPreserved": true,
+  "performanceAcceptance": false,
+  "decision": "FAIL original no-warm-regression clause; no tolerance, trimming, replay, adoption or deployment",
+  "adoption": false,
+  "deployment": false,
+  "originalDataRetired": false,
+  "records": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\paired-parent-stat-a15-20261016-v1\\raw-report.json",
+      "bytes": 860824,
+      "sha256": "68b642101d5409e34f1a240a6ccc0a9ea92ebe0ad2325e871723bb5036f4850f"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\paired-parent-stat-a15-20261016-v1\\summary.json",
+      "bytes": 222312,
+      "sha256": "415dc5db8ccf220f16ae90c44b5c219337acb21be50dddeb43fee274c9e4ae2f"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\paired-parent-stat-a15-20261016-v1\\terminal.json",
+      "bytes": 2991,
+      "sha256": "ff36079e01904c4f027297961d1385261fb5d2496ed9858f50ae3761df0733bd"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-parent-stat-a15-paired-postcheck-20261016-v1\\paired-review-result.json",
+      "bytes": 1003,
+      "sha256": "ece90b229e7c5864a7307ddbe2632915fd6df2b906e5ad0ab6b33a9e476bc244"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-parent-stat-a15-paired-postcheck-20261016-v1\\fresh-result.json",
+      "bytes": 4834,
+      "sha256": "9709fa54f998b525412f13261ff875ed2aee4927bf861129570b8bcca433b387"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-parent-stat-a15-paired-final-own-20261016-v1.json",
+      "bytes": 23923,
+      "sha256": "a8a815e3cc913078dd11d375a6292f28b5cb8c0516d5bb954948fa3f1402253f"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-parent-stat-a15-paired-final-classification-20261016-v1.json",
+      "bytes": 330,
+      "sha256": "a4b5cd1e9297f64dc6a2a487110c07e8f830faf594a9f58b372bac802c546960"
+    }
+  ]
+}

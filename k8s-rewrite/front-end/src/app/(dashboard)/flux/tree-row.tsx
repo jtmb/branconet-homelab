@@ -17,6 +17,7 @@ interface FluxTreeRowProps {
   onDelete?: (id: string, name: string) => void;
   syncingId?: string | null;
   deletingId?: string | null;
+  disabled?: boolean;
 }
 
 export default function FluxTreeRow({
@@ -25,6 +26,7 @@ export default function FluxTreeRow({
   onDelete,
   syncingId,
   deletingId,
+  disabled = false,
 }: FluxTreeRowProps) {
 
   function statusDot() {
@@ -57,9 +59,9 @@ export default function FluxTreeRow({
   }
 
   return (
-    <Link
-      href={`/flux/${encodeURIComponent(node.name)}`}
-      className="group flex items-center gap-2 py-2.5 px-3 rounded-lg hover:bg-zinc-800/30 transition-colors whitespace-nowrap cursor-pointer"
+    <div
+      data-flux-repository={node.name}
+      className="group flex items-center gap-2 py-2.5 px-3 rounded-lg hover:bg-zinc-800/30 transition-colors whitespace-nowrap"
     >
       {/* Kind icon */}
       <GitBranch className="w-4 h-4 text-emerald-400 flex-shrink-0" />
@@ -67,26 +69,26 @@ export default function FluxTreeRow({
       {/* Name + info */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span className="text-sm font-medium text-zinc-200 truncate group-hover:text-indigo-400 transition-colors">
+          <Link prefetch={false} href={`/flux/${encodeURIComponent(node.name)}`} className="min-w-0 flex-1 text-sm font-medium text-zinc-200 truncate hover:text-indigo-400 focus-visible:outline focus-visible:outline-indigo-400 transition-colors">
             {node.name}
-          </span>
-          <span className="text-[10px] px-1.5 py-px rounded border font-medium bg-emerald-500/10 text-emerald-400 border-emerald-500/20 flex-shrink-0">
+          </Link>
+          <span className="hidden sm:inline text-[10px] px-1.5 py-px rounded border font-medium bg-emerald-500/10 text-emerald-400 border-emerald-500/20 flex-shrink-0">
             GitRepository
           </span>
         </div>
         {node.url && (
-          <div className="flex items-center gap-2 text-[11px] text-zinc-500 mt-0.5 min-w-0">
-            <span className="truncate max-w-[300px]">{node.url}</span>
+          <div className="flex items-center gap-2 text-[11px] text-zinc-400 mt-0.5 min-w-0">
+            <span className="min-w-0 truncate max-w-[300px]">{node.url}</span>
             {node.branch && node.branch !== "main" && (
               <>
                 <span className="flex-shrink-0">·</span>
-                <span className="font-mono flex-shrink-0">{node.branch}</span>
+                <span className="min-w-0 truncate font-mono">{node.branch}</span>
               </>
             )}
             {node.path && (
               <>
                 <span className="flex-shrink-0">·</span>
-                <span className="font-mono flex-shrink-0">{node.path}</span>
+                <span className="min-w-0 truncate font-mono">{node.path}</span>
               </>
             )}
           </div>
@@ -96,37 +98,37 @@ export default function FluxTreeRow({
       {/* Status + revision */}
       <div className="flex items-center gap-4 flex-shrink-0">
         <span className="w-4 flex items-center justify-center flex-shrink-0">{statusDot()}</span>
-        <span className="text-[10px] text-zinc-600 w-12 text-right hidden sm:inline flex-shrink-0 truncate">
+        <span className="text-[10px] text-zinc-400 w-12 text-right hidden sm:inline flex-shrink-0 truncate">
           {shortRevision(node.revision) || "—"}
         </span>
-        <span className="text-[10px] text-zinc-600 w-28 text-right hidden md:inline flex-shrink-0 truncate">
+        <span className="text-[10px] text-zinc-400 w-28 text-right hidden md:inline flex-shrink-0 truncate">
           {formatTime(node.lastSync)}
         </span>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center gap-1 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
-        <button
+      <div className="flex items-center gap-1 flex-shrink-0">
+        {onSync && <button
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); onSync?.(node.id, node.name); }}
-          disabled={syncingId === node.id}
-          className="p-1 rounded hover:bg-indigo-500/10 text-zinc-500 hover:text-indigo-400 transition-colors disabled:opacity-50"
-          title="Sync"
+          disabled={disabled || syncingId === node.id}
+          className="p-1 rounded hover:bg-indigo-500/10 text-zinc-400 hover:text-indigo-400 transition-colors disabled:opacity-50"
+          aria-label={`Sync ${node.name}`}
         >
           <RefreshCw className={`w-3.5 h-3.5 ${syncingId === node.id ? "animate-spin" : ""}`} />
-        </button>
-        <button
+        </button>}
+        {onDelete && <button
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); onDelete?.(node.id, node.name); }}
-          disabled={deletingId === node.id}
-          className="p-1 rounded hover:bg-red-500/10 text-zinc-500 hover:text-red-400 transition-colors disabled:opacity-50"
-          title="Delete"
+          disabled={disabled || deletingId === node.id}
+          className="p-1 rounded hover:bg-red-500/10 text-zinc-400 hover:text-red-400 transition-colors disabled:opacity-50"
+          aria-label={`Remove ${node.name}`}
         >
           {deletingId === node.id ? (
             <Loader2 className="w-3.5 h-3.5 animate-spin" />
           ) : (
             <Trash2 className="w-3.5 h-3.5" />
           )}
-        </button>
+        </button>}
       </div>
-    </Link>
+    </div>
   );
 }

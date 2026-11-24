@@ -1,0 +1,84 @@
+---
+# Reviewed, hash-guarded update of TWO monitor modules so kubeadm/kubelet
+# serving-certificate alerts (tls-endpoint) actually reach the ntfy topic.
+# The monitor already queues those rows; the sender's event validator rejected
+# the resource, so every alert stayed pending behind its retry backoff.
+# Only the sender service is restarted; the monitor's behavior is unchanged.
+- name: Deliver tls-endpoint certificate alerts through the sender
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    monitor_code: /usr/local/libexec/bortus-certificate-monitor
+    # before = installed checkpoint (verified 2026-11-18); after = this change.
+    files:
+      - name: certificate_monitor.py
+        before: f55cba8615f5d072a5e93cd0b14708cceaf1fdd51c440ce58d98b93e2008d80a
+      - name: certificate_monitor_notifications.py
+        before: 49265308686aff52228380fc599f5ddb894e7c90f5a8f7c386a9e3292aa2bc04
+  tasks:
+    - name: Require the documented host
+      ansible.builtin.assert:
+        that:
+          - kubernetes_node_name == 'node02'
+
+    - name: Record installed hashes (sha256, not stat's sha1 default)
+      ansible.builtin.stat:
+        path: "{{ monitor_code }}/{{ item.name }}"
+        checksum_algorithm: sha256
+      loop: "{{ files }}"
+      loop_control: { label: "{{ item.name }}" }
+      register: installed
+
+    - name: Refuse to replace unexpected installed content
+      ansible.builtin.assert:
+        that:
+          - item.stat.exists
+          - item.stat.checksum == item.item.before
+        fail_msg: "{{ item.item.name }} does not match the reviewed checkpoint"
+      loop: "{{ installed.results }}"
+      loop_control: { label: "{{ item.item.name }}" }
+
+    - name: Install the reviewed modules
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../scripts/migration/{{ item.name }}"
+        dest: "{{ monitor_code }}/{{ item.name }}"
+        owner: root
+        group: root
+        mode: "0644"
+      loop: "{{ files }}"
+      loop_control: { label: "{{ item.name }}" }
+
+    - name: Require the tls-endpoint resource in the sender's validator
+      ansible.builtin.command:
+        argv: [grep, -c, "TLS_ENDPOINT_RESOURCE", "{{ monitor_code }}/certificate_monitor_notifications.py"]
+      changed_when: false
+      register: marker
+
+    - name: Refuse an install without the fix
+      ansible.builtin.assert:
+        that:
+          - marker.stdout | trim | int >= 1
+
+    - name: Compile both modules as the service account would load them
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, -B, -c, "import ast,sys;ast.parse(open(sys.argv[1]).read())", "{{ monitor_code }}/{{ item.name }}"]
+      changed_when: false
+      loop: "{{ files }}"
+      loop_control: { label: "{{ item.name }}" }
+
+    - name: Restart the sender onto the reviewed module
+      ansible.builtin.systemd_service:
+        name: bortus-certificate-notifications.service
+        state: restarted
+
+    - name: Confirm the sender returned active
+      ansible.builtin.command:
+        argv: [systemctl, is-active, bortus-certificate-notifications.service]
+      changed_when: false
+      register: sender_state
+      retries: 6
+      delay: 5
+      until: sender_state.stdout | trim == 'active'

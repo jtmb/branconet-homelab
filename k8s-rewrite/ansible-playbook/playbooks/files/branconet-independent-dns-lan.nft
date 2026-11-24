@@ -1,0 +1,8 @@
+create table ip branconet_independent_dns { comment "branconet independent dns lan v1"; }
+add chain ip branconet_independent_dns prerouting { type nat hook prerouting priority -90; policy accept; }
+add rule ip branconet_independent_dns prerouting iifname "enp3s0" ip saddr 192.168.0.0/24 ip daddr 192.168.0.5 tcp dport 53 counter dnat to 192.168.0.5:10554 comment "dns53-tcp"
+add rule ip branconet_independent_dns prerouting iifname "enp3s0" ip saddr 192.168.0.0/24 ip daddr 192.168.0.5 udp dport 53 counter dnat to 192.168.0.5:10554 comment "dns53-udp"
+add chain ip branconet_independent_dns input { type filter hook input priority -5; policy accept; }
+add rule ip branconet_independent_dns input ip daddr 192.168.0.5 meta l4proto { tcp, udp } th dport 10554 iifname "lo" ip saddr 192.168.0.5 return
+add rule ip branconet_independent_dns input ip daddr 192.168.0.5 meta l4proto { tcp, udp } th dport 10554 iifname "enp3s0" ip saddr 192.168.0.0/24 ct status dnat ct original ip daddr 192.168.0.5 ct original proto-dst 53 return
+add rule ip branconet_independent_dns input ip daddr 192.168.0.5 meta l4proto { tcp, udp } th dport 10554 counter reject

@@ -1,0 +1,46 @@
+{
+  "scope": "Owned runtime anchor compatibility; focused local POSIX tests only",
+  "parent_commit": "ea4e702d12cc7ea45668f8a3c9219800cf32ba20",
+  "source_sha256": {
+    "scripts/migration/checkpoint-bortus-volume.py": "a1fcf24da9b01da1174ad311bcd2ba2138a18181d2c78abc56c043a3c8d1888b",
+    "scripts/migration/tests/test_bortus_cold_checkpoint.py": "c5193b13b44a0635a8aaeb34c17ab206886a433ca7524b267f177f3be27b0130",
+    "scripts/migration/tests/test_bortus_cold_journal.py": "a1cfa8ebac5ee32c21b3bda2a87601048f0ddac05f761486c5883348532d07dc"
+  },
+  "artifacts": {
+    "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-cold-journal-20261011\\anchor-focused-terminal.json": "19567e8c4fbe3d10b5ef6e73664d7006678b5bd6d921846f4b35686a93bd44f1",
+    "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-cold-journal-20261011\\anchor-focused-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-cold-journal-20261011\\anchor-focused-stderr.log": "40cc97f1106795243670e4708b6e5bd27313a3c279ab885ef994dd63a22cbac5"
+  },
+  "actual_test_exit_code": 0,
+  "tests": 23,
+  "reported_seconds": 0.048,
+  "wrapper_assertion_exit_code": 1,
+  "wrapper_limitation": "Wrapper expected 22 tests; actual retained unittest result is 23 passing. No test rerun or fabricated result.",
+  "previous_full_suite": {
+    "commit": "ea4e702d12cc7ea45668f8a3c9219800cf32ba20",
+    "tests": 110,
+    "new_source_full_suite_run": false
+  },
+  "behavior": [
+    "Accept operator-owned runtime anchor without group/world write permission; preserve existing0755 mode",
+    "Recovery and checkpoint directories remain owned0700 with no-follow checks and directory flushes",
+    "Refuse775/757 anchor before child creation"
+  ],
+  "production_mutations": 0,
+  "production_data_reads": 0,
+  "live_acceptance": false,
+  "docs_checked_before_evidence": {
+    "docs/ANSIBLE-2-API-INTERACTION.md": "d161d3821709befb6a55b5aafefd4395765a7b2895d099d048e85a8bdd39c5b7",
+    "docs/API-USAGE.md": "7a99b284806bc5b19f815e9e74fb2bb8124be167e62104b566bcb5af8da3b83e",
+    "docs/BORTUS-DEPLOYMENT.md": "535734601e1a191ec7b1aa7296a88d9572fa9074a47640fbd0f964294288f74c",
+    "docs/BORTUS-RESTORE-COMPLETION.md": "dc0a5e33ac19a8da2a46d7a62614b5d1682791c125e5449c3e792d2e69d875b2",
+    "docs/BOTRUS-WORKFLOW.md": "aa0f673c68f4806521d2666c93330c77025d4034414c4808f731adaa1744a0ca",
+    "docs/CONNECTING-TO-A-CLUSTER.md": "53b1a4878c66750a9399d3a3d19b2b4e8ee2654b92235191f14efddc5453f8e4",
+    "docs/FLUX-GITOPS.md": "a8b07073f9893f24b3f993a129d9a6303b96e82a2e41ebad39dd9840435746b5",
+    "docs/kubectl-cheatsheet.md": "fab19db188ba6b8189dab2d5449bde7e594194849dad20cadecf96309c6ce06a",
+    "docs/MIGRATION-OPERATIONS.md": "ae3e38904683f1e062476b72e740df56e677713cf3822f423cc851328f23909c",
+    "docs/SECRETS-ENGINE.md": "187a69bf8b5b9e397d7824925372f13b4bcc41dab088350d24dfdf747508f004",
+    "docs/TECH-STACK.md": "031060c25de9a9177664fd58659758fda71eceb1dc54674e56b73354386666b4",
+    "docs/USER-PERMS.md": "ac7b52960426f91dbc914bca41883d2b05bafea64bf407b1ceaab6f9750e48c5"
+  }
+}

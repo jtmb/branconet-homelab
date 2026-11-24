@@ -1,0 +1,58 @@
+{
+  "completed_at": "2026-10-09T20:59:34.084723+00:00",
+  "checks": [
+    {
+      "application": "sonarr",
+      "root_folders": [
+        {
+          "path": "/media/tv",
+          "accessible": true,
+          "free_space_reported": true
+        }
+      ],
+      "health_types": [
+        {
+          "type": "warning",
+          "source": "UpdateCheck"
+        }
+      ],
+      "download_clients": [
+        {
+          "implementation": "QBittorrent",
+          "enabled": true
+        }
+      ],
+      "queue_records": 13
+    },
+    {
+      "application": "radarr",
+      "root_folders": [
+        {
+          "path": "/media/movies",
+          "accessible": true,
+          "free_space_reported": true
+        }
+      ],
+      "health_types": [
+        {
+          "type": "warning",
+          "source": "UpdateCheck"
+        },
+        {
+          "type": "warning",
+          "source": "IndexerLongTermStatusCheck"
+        }
+      ],
+      "download_clients": [
+        {
+          "implementation": "QBittorrent",
+          "enabled": true
+        }
+      ],
+      "queue_records": 0
+    }
+  ],
+  "libraries_or_configuration_changed": false,
+  "actual_download_import_tested": false,
+  "values_reported": false
+}

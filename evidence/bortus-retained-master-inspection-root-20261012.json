@@ -1,0 +1,93 @@
+{
+  "abi": 1,
+  "observed_utc": "2026-10-12T20:30:25.472771+00:00",
+  "scope": "current master retained c29 tar stat inspection and independent journal/owner closure; no full archive verification/import",
+  "qualified_caller_handoff_sha256": "4c5c2ecd64b5592bd1072778ba131eadd6957ac2b280a7db3c1c74ca08be5031",
+  "qualified_public_controls": {
+    "tests": 9,
+    "loader_tests": 1,
+    "actual_exit": 0,
+    "original_default_scan_exit": 1,
+    "finding": "one public dependency path/SHA provenance context, raw capture remains redacted"
+  },
+  "actual_run_id": "7c0a8c1cded6",
+  "actual_outer_tool_exit": 0,
+  "actual_caller_exit": 0,
+  "actual_caller_seconds": 43.14728259196272,
+  "original_lease_seconds": 600,
+  "independent_echo_disabled_before_input": true,
+  "inspection": {
+    "abi": 1,
+    "archive_bytes": 1150326784,
+    "archive_fingerprint": [
+      64768,
+      1965001,
+      1000,
+      33152,
+      1,
+      1150326784,
+      1791722022615740793,
+      1791722022615740793
+    ],
+    "config_image_id": "sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c",
+    "expected_archive_sha256": "c5a0cf4cd665128ac7e3ea00b657f8efd03fe62392e9c881519717ae20279ff2",
+    "full_archive_verified": false,
+    "old_record_fingerprint": [
+      64768,
+      1965083,
+      1000,
+      33152,
+      1,
+      3656,
+      1791722108272943204,
+      1791722108276943260
+    ],
+    "old_record_sha256": "31c185c25620a07691d0629ccfb6a73aca6a11187ff8771fd7b40179dfbb64b4",
+    "preload_receipt_sha256": "03304f08d7261cd6e76a4e1858109f41eeea3d67e3712482f44f8e55edee1b46",
+    "source_commit": "c29fc8c44847172e040e83df11c51ad42f1da51e"
+  },
+  "inspection_record_sha256": "46eae11b7d9c2a9bac78024cd3fc143633a3c0fb58babb8aa5075f830125deda",
+  "independent_first_owner_absence": [
+    {
+      "role": "wrapper",
+      "pid": 2699935,
+      "start_ticks": 1814440690,
+      "uid": 1000,
+      "same_identity_absent": true,
+      "pid_reused": false
+    },
+    {
+      "role": "helper",
+      "pid": 2699945,
+      "start_ticks": 1814440707,
+      "uid": 0,
+      "same_identity_absent": true,
+      "pid_reused": false
+    }
+  ],
+  "independent_reader_owner_absence": [
+    {
+      "role": "wrapper",
+      "pid": 2700014,
+      "start_ticks": 1814440748,
+      "uid": 1000,
+      "same_identity_absent": true,
+      "pid_reused": false
+    },
+    {
+      "role": "helper",
+      "pid": 2700016,
+      "start_ticks": 1814440759,
+      "uid": 0,
+      "same_identity_absent": true,
+      "pid_reused": false
+    }
+  ],
+  "original_public_files": 23,
+  "original_manifest_sha256": "828a9baf2443767a7b61788e581475a75bee3cf10e3e126588388b5bf753dd41",
+  "root_metadata_observer_failure": "external tcgetpgrp returned ENOTTY before input; fixed independent /proc pgrp/tpgid + termios ECHO observer succeeded; no inspection replay",
+  "full_archive_verified": false,
+  "import_or_alias_dispatched": false,
+  "live_resources_or_writer_changed": false,
+  "overall_acceptance": false
+}

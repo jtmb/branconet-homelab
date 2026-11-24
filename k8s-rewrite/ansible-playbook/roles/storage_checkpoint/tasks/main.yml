@@ -1,0 +1,89 @@
+---
+- name: Require an explicit fresh bounded checkpoint identity
+  ansible.builtin.assert:
+    that:
+      - storage_checkpoint_apply | bool
+      - storage_checkpoint_prefix is match('^[a-z][a-z0-9-]{5,39}$')
+      - storage_checkpoint_receipt_path is match('^/[^\n]+$')
+      - storage_checkpoint_backup_target == 'default'
+    fail_msg: Choose a new unique checkpoint prefix and an absolute protected controller receipt path.
+
+- name: Refuse to overwrite an existing controller receipt
+  ansible.builtin.stat:
+    path: "{{ storage_checkpoint_receipt_path }}"
+  delegate_to: localhost
+  register: checkpoint_receipt_before
+
+- name: Require a fresh receipt destination
+  ansible.builtin.assert:
+    that: [not checkpoint_receipt_before.stat.exists]
+
+- name: Read live Longhorn volume inventory
+  ansible.builtin.command:
+    argv: [kubectl, -n, longhorn-system, get, volumes.longhorn.io, -o, json]
+  register: checkpoint_volumes
+  changed_when: false
+  check_mode: false
+
+- name: Freeze only attached healthy volumes for this serial checkpoint
+  ansible.builtin.set_fact:
+    checkpoint_attached: "{{ (checkpoint_volumes.stdout | from_json)['items'] | selectattr('status.state', 'equalto', 'attached') | list }}"
+    checkpoint_detached: "{{ (checkpoint_volumes.stdout | from_json)['items'] | rejectattr('status.state', 'equalto', 'attached') | map(attribute='metadata.name') | list }}"
+    checkpoint_results: []
+
+- name: Require attached volumes to be healthy with configured redundancy
+  ansible.builtin.assert:
+    that:
+      - checkpoint_attached | length > 0
+      - item.status.robustness == 'healthy'
+      - item.spec.numberOfReplicas | int >= 2
+  loop: "{{ checkpoint_attached }}"
+  loop_control:
+    label: "{{ item.metadata.name }}"
+
+- name: Read the existing off-node backup target without exposing its URL
+  ansible.builtin.command:
+    argv: [kubectl, -n, longhorn-system, get, backuptargets.longhorn.io, "{{ storage_checkpoint_backup_target }}", -o, json]
+  register: checkpoint_target
+  changed_when: false
+  check_mode: false
+  no_log: true
+
+- name: Require the configured NAS target available and unchanged
+  ansible.builtin.assert:
+    that:
+      - (checkpoint_target.stdout | from_json).status.available | bool
+      - (checkpoint_target.stdout | from_json).spec.backupTargetURL == longhorn_backup_target
+    fail_msg: Existing off-node Longhorn target is unavailable or differs from the reviewed NAS configuration.
+  no_log: true
+
+- name: Refuse any prior resource using this checkpoint identity
+  ansible.builtin.command:
+    argv: [kubectl, -n, longhorn-system, get, 'snapshots.longhorn.io,backups.longhorn.io', -l, "security-maintenance-checkpoint={{ storage_checkpoint_prefix }}", -o, json]
+  register: checkpoint_existing
+  changed_when: false
+  check_mode: false
+  no_log: true
+
+- name: Require a new prefix instead of replaying partial work
+  ansible.builtin.assert:
+    that:
+      - (checkpoint_existing.stdout | from_json)['items'] | length == 0
+    fail_msg: Checkpoint prefix already exists. Retain prior resources and review the outcome before using a new prefix.
+
+- name: Snapshot and incrementally back up one attached volume at a time
+  ansible.builtin.include_tasks: volume.yml
+  loop: "{{ checkpoint_attached }}"
+  loop_control:
+    loop_var: checkpoint_volume
+    label: "{{ checkpoint_volume.metadata.name }}"
+  when: not ansible_check_mode
+
+- name: Save metadata-only checkpoint receipt on the protected controller
+  ansible.builtin.copy:
+    dest: "{{ storage_checkpoint_receipt_path }}"
+    mode: '0600'
+    force: false
+    content: "{{ {'status': 'completed', 'completed_at': now(utc=true, fmt='%Y-%m-%dT%H:%M:%SZ'), 'checkpoint_prefix': storage_checkpoint_prefix, 'consistency': 'crash-consistent-online', 'backup_target_name': storage_checkpoint_backup_target, 'volumes': checkpoint_results, 'excluded_unattached_volumes': checkpoint_detached, 'application_cold_backup': false, 'restore_verified': false} | to_nice_json }}\n"
+  delegate_to: localhost
+  when: not ansible_check_mode

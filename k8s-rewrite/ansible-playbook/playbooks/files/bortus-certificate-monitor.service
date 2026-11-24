@@ -1,0 +1,66 @@
+[Unit]
+Description=BORTUS certificate metadata monitor (no approval or host maintenance)
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=bortus-certificate-monitor
+Group=bortus-certificate-monitor
+StateDirectory=bortus-certificate-monitor
+StateDirectoryMode=0700
+WorkingDirectory=/var/lib/bortus-certificate-monitor
+Environment=KUBECONFIG=/etc/bortus-certificate-monitor/kubeconfig.json
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=GOMAXPROCS=1
+RuntimeDirectory=bortus-certificate-monitor-cache
+RuntimeDirectoryMode=0700
+Environment=HOME=/run/bortus-certificate-monitor-cache
+Environment=XDG_CACHE_HOME=/run/bortus-certificate-monitor-cache
+UnsetEnvironment=HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy
+ExecStart=/usr/bin/python3 -B /usr/local/libexec/bortus-certificate-monitor/run-certificate-monitor.py --managed-host --state-dir /var/lib/bortus-certificate-monitor --loop --control-plane
+Restart=always
+RestartSec=10
+TimeoutStopSec=35
+KillMode=control-group
+UMask=0077
+MemoryMax=256M
+MemorySwapMax=0
+CPUQuota=10%
+TasksMax=64
+MemoryAccounting=yes
+TasksAccounting=yes
+CPUAccounting=yes
+LimitCORE=0
+LimitFSIZE=20M
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+ProtectKernelLogs=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictRealtime=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadOnlyPaths=-/etc/bortus-certificate-monitor -/run/bortus-certificate-monitor
+InaccessiblePaths=-/etc/kubernetes
+IPAddressDeny=any
+# 192.168.0.251 is the floating Kubernetes API VIP (kubectl hot path).
+# 192.168.0.4/.5/.6 are node01/node02/node03 themselves, added 2026-11-17 for
+# scan_tls_endpoints(): a live TLS handshake to each node's own :6443/:10250
+# to watch kubeadm/kubelet serving certificate expiry. No other egress.
+IPAddressAllow=192.168.0.251 192.168.0.4 192.168.0.5 192.168.0.6
+LogRateLimitIntervalSec=60s
+LogRateLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target

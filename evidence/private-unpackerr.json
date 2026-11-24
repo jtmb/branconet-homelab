@@ -1,0 +1,39 @@
+{
+  "completed_at": "2026-10-09T19:38:43.215668+00:00",
+  "configured_api_credentials_and_queues_accessible": true,
+  "checks": [
+    {
+      "application": "sonarr",
+      "checks": [
+        {
+          "path": "/api/v3/system/status",
+          "status": 200,
+          "valid_json": true
+        },
+        {
+          "path": "/api/v3/queue",
+          "status": 200,
+          "valid_json": true
+        }
+      ]
+    },
+    {
+      "application": "radarr",
+      "checks": [
+        {
+          "path": "/api/v3/system/status",
+          "status": 200,
+          "valid_json": true
+        },
+        {
+          "path": "/api/v3/queue",
+          "status": 200,
+          "valid_json": true
+        }
+      ]
+    }
+  ],
+  "actual_process_restart_passed": true,
+  "originals_and_native_data_claim_retained": true,
+  "actual_download_extraction_tested": false
+}

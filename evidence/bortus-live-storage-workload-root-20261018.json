@@ -1,0 +1,51 @@
+{
+  "observedUTC": "2026-10-18T14:31:38.651142+00:00",
+  "bootID": "6f0249c6-a446-44f3-a9ba-6b368b297b4e",
+  "resources": [
+    {
+      "kind": "pods",
+      "exit": 0,
+      "total": 97,
+      "metadataSHA256": "aedc1ee099540056a2c110a40408aada2fbf243b9a07177c0c140099befb39f5",
+      "phases": {
+        "Running": 91,
+        "Succeeded": 6
+      },
+      "unhealthy": []
+    },
+    {
+      "kind": "volumes.longhorn.io",
+      "exit": 0,
+      "total": 40,
+      "metadataSHA256": "ae87a7bf3b1193a9457e3a54a21b745c99f9316e3f70993924df37723da14ce2",
+      "states": {
+        "attached": 30,
+        "detached": 10
+      },
+      "robustness": {
+        "healthy": 30,
+        "unknown": 10
+      },
+      "nonHealthyAttached": []
+    },
+    {
+      "kind": "deployments",
+      "exit": 0,
+      "total": 1,
+      "metadataSHA256": "f1c6ae98a63ed913883cc02a537f40de2f789a6232894b7c9a7edd0045a11d9d",
+      "bortus": [
+        [
+          "bortus",
+          "bortus",
+          "1",
+          "1",
+          "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879,"
+        ]
+      ]
+    }
+  ],
+  "readOnly": true,
+  "secretAPIOrValueOutput": false,
+  "productionChanged": false,
+  "restoreOrDataIntegrityProved": false
+}

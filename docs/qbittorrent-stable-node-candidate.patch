@@ -1,0 +1,12 @@
+diff --git a/charts/qbittorrent/values.yaml b/charts/qbittorrent/values.yaml
+--- a/charts/qbittorrent/values.yaml
++++ b/charts/qbittorrent/values.yaml
+@@ -178,7 +178,7 @@
+           - name: ndots
+             value: '1'
+         nodeSelector:
+-          kubernetes.io/hostname: masternode
++          branconet.lan/node-id: node01
+ - apiVersion: v1
+   kind: PersistentVolumeClaim
+   metadata:

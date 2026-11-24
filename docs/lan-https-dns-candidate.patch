@@ -1,0 +1,100 @@
+diff --git a/flux/releases/foundation/lan-dns-records-v3.yaml b/flux/releases/foundation/lan-dns-records-v3.yaml
+new file mode 100644
+--- /dev/null
++++ b/flux/releases/foundation/lan-dns-records-v3.yaml
+@@ -0,0 +1,61 @@
++apiVersion: v1
++kind: ConfigMap
++metadata:
++  name: lan-dns-records-v3
++  namespace: pihole
++immutable: true
++data:
++  FTLCONF_dns_hosts: |-
++    192.168.0.4 branconet.lan
++    192.168.0.5 branconet.lan
++    192.168.0.6 branconet.lan
++    192.168.0.8 truenas.local
++    192.168.0.4 masternode.local
++    192.168.0.6 workernode1.local
++    192.168.0.5 workernode2.local
++    192.168.0.1 gateway.local
++    192.168.0.25 branconet.local
++    192.168.0.26 branconet.local
++    192.168.0.27 branconet.local
++    192.168.0.252 bortus.branconet.lan
++    192.168.0.252 http-echo.branconet.local
++    192.168.0.4 echo.branconet.local
++    192.168.0.252 jtmb-dev.branconet.local
++    192.168.0.252 qbittorrent.branconet.local
++    192.168.0.252 ingenium.branconet.lan
++    192.168.0.251 k8s-api.branconet.lan
++    192.168.0.4 node01.branconet.lan
++    192.168.0.6 node02.branconet.lan
++    192.168.0.5 node03.branconet.lan
++    192.168.0.252 ingress.branconet.lan
++    192.168.0.253 dns.branconet.lan
++    192.168.0.254 plex.branconet.lan
++  FTLCONF_dns_cnameRecords: |-
++    pi.branconet.lan,ingress.branconet.lan
++    overseerr.branconet.lan,ingress.branconet.lan
++    radarr.branconet.lan,ingress.branconet.lan
++    sonarr.branconet.lan,ingress.branconet.lan
++    bazarr.branconet.lan,ingress.branconet.lan
++    tautulli.branconet.lan,ingress.branconet.lan
++    portainer.branconet.lan,branconet.lan
++    vault.branconet.lan,ingress.branconet.lan
++    vault.cicd.branconet.lan,branconet.lan
++    aplb.branconet.lan,ingress.branconet.lan
++    santos.branconet.lan,ingress.branconet.lan
++    lucinda.branconet.lan,ingress.branconet.lan
++    mealie.branconet.lan,ingress.branconet.lan
++    xteve.branconet.lan,branconet.lan
++    spiderfoot.branconet.lan,branconet.lan
++    qbittorrent.branconet.lan,masternode.local
++    uptime.branconet.lan,branconet.lan
++    homepage.branconet.lan,ingress.branconet.lan
++    ytdl.branconet.lan,ingress.branconet.lan
++    ruckus.branconet.lan,ingress.branconet.lan
++    proxy.branconet.lan,branconet.lan
++    plex.branconet.local,branconet.local
++    whoami,branconet.local
++    nginx-hello,branconet.local
++    http-echo,branconet.local
++    mc.branconet.lan,ingress.branconet.lan
++    jackett.branconet.lan,ingress.branconet.lan
++    whoami.branconet.lan,ingress.branconet.lan
+diff --git a/flux/releases/foundation/kustomization.yaml b/flux/releases/foundation/kustomization.yaml
+--- a/flux/releases/foundation/kustomization.yaml
++++ b/flux/releases/foundation/kustomization.yaml
+@@ -16,5 +16,6 @@
+ - lan-dns.yaml
+ - lan-dns-records-v1.yaml
+ - lan-dns-records-v2.yaml
++- lan-dns-records-v3.yaml
+ - traefik-lan-ban-state.yaml
+ - traefik-lan-ban-bridges.yaml
+diff --git a/flux/releases/foundation/pihole-secondary.yaml b/flux/releases/foundation/pihole-secondary.yaml
+--- a/flux/releases/foundation/pihole-secondary.yaml
++++ b/flux/releases/foundation/pihole-secondary.yaml
+@@ -22,7 +22,7 @@
+         - secretRef:
+             name: pihole-runtime
+         - configMapRef:
+-            name: lan-dns-records-v2
++            name: lan-dns-records-v3
+         image: docker.io/pihole/pihole:2026.10.0@sha256:d34134716fc32038b052a8674c7c6879e0ff21f0e6d8af345166fffa2c27c113
+         imagePullPolicy: IfNotPresent
+         name: pihole
+diff --git a/charts/pihole/values.yaml b/charts/pihole/values.yaml
+--- a/charts/pihole/values.yaml
++++ b/charts/pihole/values.yaml
+@@ -81,7 +81,7 @@
+           - secretRef:
+               name: '{{ .Values.environmentSecret }}'
+           - configMapRef:
+-              name: lan-dns-records-v2
++              name: lan-dns-records-v3
+           ports:
+           - name: p53-tcp
+             containerPort: 53

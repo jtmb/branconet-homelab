@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430" role="img" aria-labelledby="title desc">
+  <title id="title">BORTUS MCP trust boundaries</title>
+  <desc id="desc">Every managed repo uses the same MCP. Inventory uses a separate list-only identity. The local runner checks the caller and sends only approved Secret keys to a reviewed Docker image. Only a fixed result reaches the agent.</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0 0v6l7-3z" fill="#304d76"/></marker></defs>
+  <rect width="900" height="430" fill="#f4f7fc"/>
+  <g font-family="system-ui,sans-serif" fill="#192d48">
+    <text x="30" y="42" font-size="28" font-weight="700">One shared BORTUS MCP</text>
+    <text x="30" y="71" font-size="16">The agent requests a run. Kubernetes values stay on the trusted side.</text>
+    <rect x="30" y="100" width="245" height="95" rx="12" fill="#e1edff"/>
+    <rect x="331" y="100" width="245" height="95" rx="12" fill="#e1edff"/>
+    <rect x="630" y="100" width="240" height="95" rx="12" fill="#e1edff"/>
+    <rect x="303" y="250" width="567" height="152" rx="14" fill="#e1f1e9"/>
+    <g font-size="18" font-weight="700">
+      <text x="48" y="133">Any managed repo</text>
+      <text x="349" y="133">bortus MCP</text>
+      <text x="648" y="133">Pinned inventory</text>
+      <text x="326" y="292">Private local runner</text>
+      <text x="643" y="319">Private Docker</text>
+    </g>
+    <g font-size="15">
+      <text x="48" y="162">Agent never receives values</text>
+      <text x="349" y="162">secrets_run(profile)</text>
+      <text x="648" y="162">Kubernetes list only</text>
+      <text x="326" y="319">Checks UID and expiring grant</text>
+      <text x="326" y="346">Fetches exact Kubernetes Secret</text>
+      <text x="326" y="372">Selects approved keys</text>
+      <text x="643" y="346">Reviewed image + check</text>
+      <text x="643" y="372">Removes run on exit</text>
+      <text x="474" y="227">Unix socket · fixed result only</text>
+    </g>
+  </g>
+  <g fill="none" stroke="#304d76" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M279 147H326"/>
+    <path d="M580 147H625"/>
+    <path d="M452 199V246"/>
+    <path d="M574 346H631"/>
+  </g>
+</svg>

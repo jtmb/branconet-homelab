@@ -1,0 +1,15 @@
+# Traefik IngressRoute for http-echo
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: http-echo-ingress
+  namespace: http-echo
+spec:
+  entryPoints:
+  - web
+  routes:
+  - match: Host(`echo.branconet.local`)
+    kind: Rule
+    services:
+    - name: http-echo
+      port: 80

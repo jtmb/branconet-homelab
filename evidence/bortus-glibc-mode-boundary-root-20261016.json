@@ -1,0 +1,89 @@
+{
+  "status": "BOUNDED_NATIVE_INPUT_REVIEW_NSCD_SCOPED_RESIDUAL_FOPEN_UNRESOLVED",
+  "reviewedUTC": "2026-10-16T11:16:26.111173+00:00",
+  "imageID": "sha256:cec6dc57da1bd65ce4f38ed5f7846b6c3228fe1d41090f05b64d2931898c3028",
+  "sourceCommit": "9cb81363f33333ea00d6f5d7f71036c780d88e1c",
+  "compiledSource": "d901ccdd77d73981ca55708e124ab9699c8d79b4",
+  "independentReview": {
+    "actualExit": 0,
+    "manifestSHA256": "7b284e0aeb969708145ba763bcf5e7edcdd026597467790c3d2a6a0cc6a1a1df",
+    "boundarySHA256": "f6c33e7d500d694c22c54ced0bf158bf8956ca395c5abc9b1070e9aa74b6c534",
+    "selectedSourceFilesCurrent": 32,
+    "sourceLineExcerptsExactWithNoTerminalLFPresentation": 38,
+    "byteSpanExcerptsExact": 7,
+    "nativeRowsMetadataBoundNotRehashed": 7,
+    "fullFSRecordSHA256": "f347778914b9b65b9603beaa16ed99948fd69b2c50cd4b200a44ce805cc0cc61",
+    "nscdPaths": 0,
+    "firstCheckerRefusal": {
+      "tool": "4b7d69",
+      "exit": 1,
+      "reason": "Line excerpt omits its last LF; original selected-file bytes/hash passed. Only excerpt presentation comparison corrected.",
+      "diagnostic": "069f10"
+    },
+    "binarySourceEquivalenceOrWholeExposureProved": false,
+    "noTargetOrTestOrDownload": true,
+    "securityAccepted": false
+  },
+  "independentReviewPin": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-glibc-mode-boundary-review-20261016-v1-1.json",
+    "bytes": 855,
+    "sha256": "c19ee869f705e580734a1ded32c001f433dee2a9d22b8fbeda88131c431dd10f"
+  },
+  "boundaryPacket": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\glibc-deployed-mode-boundary-20261016-v1\\BOUNDARY.json",
+    "bytes": 32410,
+    "sha256": "f6c33e7d500d694c22c54ced0bf158bf8956ca395c5abc9b1070e9aa74b6c534"
+  },
+  "sourceExcerpts": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\glibc-deployed-mode-boundary-20261016-v1\\selected-excerpts.json",
+    "bytes": 42072,
+    "sha256": "ecbe10e07b9ba78fb5b8ed1354df807b79c81601dfa41933a070cac382759e40"
+  },
+  "boundedFindings": {
+    "Node": "Reviewed fs.open path converts JS flags to an integer, passes integer permissions/flags to uv_fs_open, then libuv uses POSIX open(req->path, flags, mode). JS fs mode is permission bits, not the C fopen MODE string. This selected path does not expose a ccs suffix. Other Node/native/OpenSSL stdio paths not exhaustively traced.",
+    "Prisma": "Prisma/client/engines6.19.3 package files match exact image rows. Generated client declares engine c2990dca591cba766e3b7ef5d9e8a84796e47ab7, sqlite provider and operator DATABASE_URL; runtime loads the exact library through process.dlopen. Login username and configuration values become Prisma query fields. Direct account reader binds user ID to a fixed statement and opens operator-resolved file with node:sqlite readOnly/allowExtension:false. Neither selected app call supplies a C MODE string. Rust engine/SQLite and migration engine internals are opaque: package/engine labels are not a source-equivalence or fopen-mode proof.",
+    "SWC": "Exact installed SWC native SHA is bound to package15.5.27; loader resolves @next/swc platform package and exposes transform source/options. Fixed server isDev:false and reads inline standalone config, so TypeScript config transpilation is bypassed at this entry. No application SWC-transform endpoint was identified in the selected route review. Optional framework/native paths remain untraced; installed or build-only-looking package presence does not prove runtime unreachability.",
+    "libvips": "Middleware explicitly exempts /_next/image. Fixed inline image config enables default optimizer, remotePatterns/domains are empty, localPatterns not restricted by a declared list. Next validates url/w/q, fetches permitted internal bytes and calls sharp(buffer, fixed decode options), then resize/format/toBuffer. Sharp descriptor treats strings as file names and Buffer as bytes; this path is Buffer. Exact sharp0.35.5 and libvips8.18.7 native rows are pinned. No externally supplied C MODE/ccs option was identified in these JS boundaries, but native codecs/format metadata and transitive open-mode construction are not proved safe by these wrappers. No image request was executed."
+  },
+  "nscdResidual": {
+    "status": "ROOT_ACCEPTED_SCOPED_RESIDUAL_FOR_EXACT_ISOLATED_IMAGE_FIXTURE",
+    "CVE": "CVE-2026-89092",
+    "package": "libc6 2.39-0ubuntu8.9",
+    "affectedSource": "nscd/aicache.c and nscd/hstcache.c; daemon-only modules per authenticated nscd/Makefile34-47; separate libc nscd-client routines25-28",
+    "scope": "Exact fixed image and qualified fixed fixture only",
+    "rationale": "Qualified complete image inventory has no nscd daemon path; fixed entrypoint starts Prisma/Node; fixture mounts only readonly control CJS and owned output plus /data,/tmp,/home/node tmpfs, no nscd/socket/host-run mount. DNS/getaddrinfo use alone does not instantiate the affected daemon. This is a specific missing-server-precondition rationale, not universal deployment unreachability.",
+    "proposedExpiry": "2026-10-22T23:59:59Z",
+    "reReviewEarlier": [
+      "fixed Noble package/advisory change",
+      "any image/entrypoint/provider or daemon/socket/run-mount change",
+      "nscd service integration or changed DNS boundary"
+    ],
+    "acceptanceOwner": "ROOT",
+    "expiresUTC": "2026-10-22T23:59:59Z",
+    "productionAuthorization": false,
+    "scopeCannotTransferToNewImage": true
+  },
+  "fopenUnresolved": {
+    "CVE": "CVE-2026-18374",
+    "package": "libc6 2.39-0ubuntu8.9",
+    "condition": "Untrusted effective-empty character set in C fopen MODE, not mere filename control",
+    "boundedResult": "No demonstrated MODE construction from exposed fields in selected app/Node/Next wrappers. Actual untrusted inputs do reach native Prisma queries and potentially local-image decoder bytes; native mode construction is not established.",
+    "preciseGaps": [
+      "Exact Prisma Rust/native and bundled SQLite file-open MODE behavior for these artifact bytes",
+      "Exact SWC and libvips/codec transitive fopen MODE construction for reachable methods",
+      "Other invoked Node/OpenSSL/native stdio boundaries outside selected fs.open path",
+      "Whether any local BORTUS response or deployment-writable image can supply attacker-controlled image bytes to optimizer; empty remotePatterns does not prove no image input"
+    ],
+    "recommendation": "Do not claim whole-image unreachability or fixed status. ROOT may assess an explicitly expiring unresolved residual with these gaps recorded; do not rebuild libc solely to force scanner zero. Prefer maintained fixed Noble package when available. No residual accepted here."
+  },
+  "interpretation": "Original A20 allows precise reachability rationale and expiry. Only the absent nscd daemon prerequisite supports this scoped residual. Other native fopen MODE construction remains unproved; whole-image security is not accepted.",
+  "sourceEdited": false,
+  "newTargetOrTestOrImage": false,
+  "newScan": false,
+  "scannerLiteralExitUnchanged": 1,
+  "scannerMediumRowsUnchanged": 12,
+  "scannerRowsSuppressed": 0,
+  "securityAccepted": false,
+  "performanceOrProductionAdoption": false,
+  "originalDataUnchanged": true
+}

@@ -1,0 +1,76 @@
+# Separate, unbuilt candidate. The existing OS-only Dockerfile remains unchanged.
+FROM docker.io/linuxserver/jackett@sha256:cdea5d3209a6ab1fb8eb954ec0b8169b7d54274617f42bf5c74f22a92075755f AS patched-os
+RUN set -eu; set -o pipefail; \
+    case "$(cat /etc/alpine-release)" in 3.22.*) ;; *) exit 1 ;; esac; \
+    awk '/^[[:space:]]*($|#)/ { next } { active++; if ($0 !~ /\/v3[.]22\/(main|community)\/?$/) bad=1 } END { exit (bad || !active) }' /etc/apk/repositories; \
+    mkdir -p /usr/share/branconet-security/jackett-runtime; \
+    apk info -v | LC_ALL=C sort > /usr/share/branconet-security/jackett-runtime/packages-before.txt; \
+    apk upgrade --no-cache; \
+    apk info -v | LC_ALL=C sort > /usr/share/branconet-security/jackett-runtime/packages-after.txt
+
+FROM patched-os AS build
+# SDK tools stay in this discarded build stage, never in the application image.
+RUN apk add --no-cache ca-certificates bash icu-libs libgcc libintl libstdc++ libssl3 tzdata zlib python3
+ADD https://builds.dotnet.microsoft.com/dotnet/Sdk/9.0.319/dotnet-sdk-9.0.319-linux-musl-x64.tar.gz /tmp/dotnet-sdk.tar.gz
+RUN printf '%s  %s\n' \
+    '8aadbc27b93742becf767d3bdf46c17a3609b47880f3b9137af3420cae38d02d59798099873d004c7a73a3281ecb5f90d51624758577e7df7aebfa7bff4332ea' \
+    '/tmp/dotnet-sdk.tar.gz' | sha512sum -c - \
+    && mkdir -p /opt/dotnet /src /out/server /out/updater /provenance \
+    && tar xzf /tmp/dotnet-sdk.tar.gz -C /opt/dotnet \
+    && rm /tmp/dotnet-sdk.tar.gz
+ENV TMPDIR=/tmp TMP=/tmp TEMP=/tmp \
+    DOTNET_ROOT=/opt/dotnet \
+    PATH=/opt/dotnet:$PATH \
+    DOTNET_CLI_TELEMETRY_OPTOUT=1 \
+    DOTNET_NOLOGO=1 \
+    DOTNET_PROCESSOR_COUNT=1 \
+    DOTNET_CLI_HOME=/tmp/dotnet-home \
+    NUGET_PACKAGES=/tmp/nuget-packages
+RUN test "$(dotnet --version)" = '9.0.319' \
+    && dotnet --list-runtimes | grep -Fx 'Microsoft.NETCore.App 9.0.21 [/opt/dotnet/shared/Microsoft.NETCore.App]' \
+    && dotnet --list-runtimes | grep -Fx 'Microsoft.AspNetCore.App 9.0.21 [/opt/dotnet/shared/Microsoft.AspNetCore.App]'
+ADD --checksum=sha256:c2072bb363a1b16efb7fbd9d12fa03705cd1ab63b9e10db169d643113301e2b8 https://codeload.github.com/Jackett/Jackett/tar.gz/141e2013ecc872a51365db8491ea2728ebbbc763 /tmp/source.tar.gz
+RUN tar xzf /tmp/source.tar.gz --strip-components=1 -C /src && rm /tmp/source.tar.gz
+COPY prepare-runtime-candidate.py /tmp/prepare-runtime-candidate.py
+RUN python3 /tmp/prepare-runtime-candidate.py prepare /src /provenance
+WORKDIR /src
+# Restore records complete locks. Each publish uses that resolved graph with
+# --no-restore. A future rebuild must review/export these locks before adoption.
+RUN set -eu; \
+    for project in Jackett.Server Jackett.Updater; do \
+      dotnet restore "src/$project/$project.csproj" --configfile /src/NuGet.runtime.config \
+        --runtime linux-musl-x64 --disable-parallel --use-lock-file \
+        -p:TargetFrameworks=net9.0 -p:RuntimeFrameworkVersion=9.0.21 \
+        -p:TargetLatestRuntimePatch=true -p:SelfContained=true; \
+    done; \
+    dotnet publish src/Jackett.Server/Jackett.Server.csproj --configuration Release \
+      --framework net9.0 --runtime linux-musl-x64 --self-contained true \
+      --no-restore --output /out/server -m:1 \
+      -p:TargetFrameworks=net9.0 -p:RuntimeFrameworkVersion=9.0.21 \
+      -p:TargetLatestRuntimePatch=true -p:AssemblyVersion=0.24.1440 \
+      -p:FileVersion=0.24.1440 -p:InformationalVersion=0.24.1440 -p:Version=0.24.1440; \
+    dotnet publish src/Jackett.Updater/Jackett.Updater.csproj --configuration Release \
+      --framework net9.0 --runtime linux-musl-x64 --self-contained true \
+      --no-restore --output /out/updater -m:1 \
+      -p:TargetFrameworks=net9.0 -p:RuntimeFrameworkVersion=9.0.21 \
+      -p:TargetLatestRuntimePatch=true -p:AssemblyVersion=0.24.1440 \
+      -p:FileVersion=0.24.1440 -p:InformationalVersion=0.24.1440 -p:Version=0.24.1440; \
+    cp /out/updater/JackettUpdater* /out/server/; \
+    cp /src/install_service_systemd.sh /src/jackett_launcher.sh /out/server/; \
+    find /out/server -type d -exec chmod 0755 {} +; \
+    find /out/server -type f -exec chmod 0644 {} +; \
+    chmod 0755 /out/server/jackett /out/server/JackettUpdater /out/server/install_service_systemd.sh /out/server/jackett_launcher.sh; \
+    python3 /tmp/prepare-runtime-candidate.py verify /out/server /provenance; \
+    python3 /tmp/prepare-runtime-candidate.py locks /src /provenance
+
+FROM patched-os AS runtime
+# Remove the entire old app bundle before copying the genuinely rebuilt output.
+# This touches only image-layer application files; /config is never mounted.
+RUN rm -rf /app/Jackett && mkdir -p /app/Jackett
+COPY --from=build --chown=root:root /out/server/ /app/Jackett/
+COPY --from=build /provenance/ /usr/share/branconet-security/jackett-runtime/
+LABEL org.opencontainers.image.title="Jackett 0.24.1440 rebuilt with .NET 9.0.21 security patches" \
+      org.opencontainers.image.source="https://github.com/Jackett/Jackett" \
+      org.opencontainers.image.revision="141e2013ecc872a51365db8491ea2728ebbbc763" \
+      org.opencontainers.image.version="0.24.1440-branconet-dotnet9.0.21"
+# Inherit /init, /config, networking, identity remapping and LSIO service scripts.

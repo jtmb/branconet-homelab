@@ -1,0 +1,36 @@
+{
+  "source": "https://webtorrent.io/torrents/Big%20Buck%20Bunny/Big%20Buck%20Bunny.mp4",
+  "sample_checks": [
+    {
+      "piece_index": 1,
+      "requested_start": 262004,
+      "content_range": "bytes 262004-524147/276134947",
+      "bytes_read": 262144,
+      "expected_bytes": 262144,
+      "torrent_piece_hash_equal": true
+    },
+    {
+      "piece_index": 300,
+      "requested_start": 78643060,
+      "content_range": "bytes 78643060-78905203/276134947",
+      "bytes_read": 262144,
+      "expected_bytes": 262144,
+      "torrent_piece_hash_equal": true
+    },
+    {
+      "piece_index": 600,
+      "requested_start": 157286260,
+      "content_range": "bytes 157286260-157548403/276134947",
+      "bytes_read": 262144,
+      "expected_bytes": 262144,
+      "torrent_piece_hash_equal": true
+    }
+  ],
+  "failure": {
+    "source": "Owned qBittorrent log event 634",
+    "classification": "URL seed connection failed: peer banned",
+    "partial_retries_retained": true
+  },
+  "scope": "Selected ranges match torrent SHA1 pieces; this does not prove the full downloaded file or completed import.",
+  "recorded_at": "2026-10-09T23:00:25.091Z"
+}

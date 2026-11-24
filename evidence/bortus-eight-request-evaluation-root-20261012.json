@@ -1,0 +1,127 @@
+{
+  "scope": "Outside-production indexed flat summary and explicitly approved8 request/socket/namespace-worker evaluation; one diagnostic, not acceptance/adoption",
+  "productionCommit": "4ae9f5c28dcf64ebda019bc40f7b27b3524e61db",
+  "productionSourceUnchanged": true,
+  "actualExit": 0,
+  "completedUtc": "2026-10-12T08:55:51.980835+00:00",
+  "sourceFiles": 344,
+  "compiledFiles": 4262,
+  "driverSha256": "ee7d4f9efcbc88e08999a72feafe0099add8c1c1124362f1d839fab2746ebd2b",
+  "runtime": {
+    "node": "v22.23.3",
+    "v8": "12.4.254.21-node.57",
+    "nodeOpenSSL": "3.5.8",
+    "nodeExecutableSha256": "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48",
+    "opensslExit": 0,
+    "opensslVersion": "OpenSSL 3.0.22 25 Aug 2026 (Library: OpenSSL 3.0.22 25 Aug 2026)",
+    "observerSyntaxExit": 0
+  },
+  "sourceSha256": "f910bcd91d9f451b08662c7fb97625985c40724e50a1abc2d6c9c037e50e2f42",
+  "elfSha256": "a40e24cd0abac6a2355da6ba9aeac99e9e014f0f377216ece02150e2d57e3286",
+  "mappingSha256": "cc2289cd4892d0206da7ed95a7c5da390079cb2c76bb6faa81a915f0709cf5dd",
+  "controls": {
+    "newSections": 7,
+    "originalGenericTests": 8,
+    "flatDifferentialCases": 3674,
+    "complementaryCases": 54,
+    "indexedOwnPropertyCausalCases": 39,
+    "indexedHandoffSha256": "fe37d5e984e6605e1fd3b9dfde26bbb5111a7d29bdf3ed9a6f4f381539ff800c"
+  },
+  "bounds": {
+    "requestsAndSocketsAndWorkers": 8,
+    "queued": 64,
+    "bodyBytes": 4194304,
+    "aggregateBytes": 33554432,
+    "items": 10000,
+    "globalListMs": 15000,
+    "requestMs": 8000,
+    "chunks": 16384,
+    "depth": 32,
+    "initialPage": 200,
+    "writeBytes": 921600,
+    "runtimeCPUs": 2,
+    "runtimeMemoryBytes": 1073741824
+  },
+  "rows": [
+    {
+      "fixture": "audit-small",
+      "nativeWallMs": 76.53069300000016,
+      "comparisonsMs": {
+        "matchedBaseline": 71.70760399999972,
+        "originalJS4": 100.30823099999998,
+        "flat4V1": 99.41299100000015
+      },
+      "requestCount": 18,
+      "tlsConnectionsTotalIncludingRetryReplacement": 8,
+      "parseSumMs": 1.836
+    },
+    {
+      "fixture": "metadata-200",
+      "nativeWallMs": 72.02644999999939,
+      "comparisonsMs": {
+        "matchedBaseline": 63.649868999998944,
+        "originalJS4": 94.72839799999929,
+        "flat4V1": 91.05685199999971
+      },
+      "requestCount": 18,
+      "tlsConnectionsTotalIncludingRetryReplacement": 8,
+      "parseSumMs": 1.728
+    },
+    {
+      "fixture": "metadata-1000",
+      "nativeWallMs": 76.31134699999893,
+      "comparisonsMs": {
+        "matchedBaseline": 80.81374599999981,
+        "originalJS4": 103.87673100000029,
+        "flat4V1": 96.87111100000038
+      },
+      "requestCount": 18,
+      "tlsConnectionsTotalIncludingRetryReplacement": 8,
+      "parseSumMs": 4.736
+    },
+    {
+      "fixture": "metadata-10000",
+      "nativeWallMs": 182.97552499999983,
+      "comparisonsMs": {
+        "matchedBaseline": 264.32754999999815,
+        "originalJS4": 275.78512200000114,
+        "flat4V1": 248.18819399999848
+      },
+      "requestCount": 54,
+      "tlsConnectionsTotalIncludingRetryReplacement": 8,
+      "parseSumMs": 41.075
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "nativeWallMs": 237.75387899999987,
+      "comparisonsMs": {
+        "matchedBaseline": 187.79171999999744,
+        "originalJS4": 263.01664900000105,
+        "flat4V1": 239.1678350000002
+      },
+      "requestCount": 21,
+      "tlsConnectionsTotalIncludingRetryReplacement": 9,
+      "parseSumMs": 7.13
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "nativeWallMs": 161.62943900000027,
+      "comparisonsMs": {
+        "matchedBaseline": 156.3787200000006,
+        "originalJS4": 211.44423800000004,
+        "flat4V1": 148.184068999999
+      },
+      "requestCount": 20,
+      "tlsConnectionsTotalIncludingRetryReplacement": 8,
+      "parseSumMs": 3.271
+    }
+  ],
+  "performanceAcceptance": false,
+  "productionAdopted": false,
+  "handoff_sha256": "78688c4b4a169e038c925c7bb2547a2e0e6e02dba50f90a2bf8cc101116f5b50",
+  "root_verified_originals": 56,
+  "linux_zip_crc_valid": true,
+  "windows_zip_crc_valid": true,
+  "fixture_startup_failure_retained": true,
+  "all_six_original_driver_assertions_passed": true
+}

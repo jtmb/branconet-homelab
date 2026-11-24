@@ -1,0 +1,583 @@
+{
+  "observedUTC": "2026-10-19T17:39:48.157663+00:00",
+  "scope": "Bounded automation-identity editor source correction and actual-source metadata-only regression; separate authorized automatic synthetic hosted CI",
+  "applicationBase": "0cb1f24c91ac231480d1542404f19a3681340f35",
+  "applicationCommit": "b2ab7bc44726c26ff80edfba86d114d48cfb96d6",
+  "frontendTree": "1c59936fa59b3cbba808a20e1aa872f8695927ae",
+  "chartsCommit": "835dabebd97a7691311b2c6748fd3cfa4db17f44",
+  "finding": "Identity list supplied no authorization-loss reset; operation reset cleared only credential display/issued ID. Captured revocation, entered draft and prior success could remain until shared session polling; no server bypass is claimed.",
+  "correction": "One full identity clearAuthorization callback shared by existing usePage and useTask; no model/server/transport/body/revision/generation or identity CAS changes",
+  "focus": {
+    "finalTestSHA256": "741cf062a70670eabfd679209bd161bf69f98bafae30a393355edf7af3f33c2c",
+    "sameFinalTestBytesBaselineChangedBuild": true,
+    "baseline": {
+      "result": "baseline2-final-result.json",
+      "exit": 1,
+      "tests": 25,
+      "pass": 5,
+      "fail": 20,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "changed": {
+      "result": "changed-final-result.json",
+      "exit": 0,
+      "tests": 25,
+      "pass": 25,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0
+    },
+    "failedFirstBaseline": {
+      "result": "baseline-final-result.json",
+      "tests": 25,
+      "pass": 5,
+      "fail": 20,
+      "exit": 1,
+      "durationMilliseconds": 45802.995056,
+      "fixtureLifecycle": "Baseline pagehide assertion prevented deferred fetch release, retaining original45s timer; final test uses finally release/settle. No timeout/resource change."
+    }
+  },
+  "testModel": {
+    "actualFunctions": [
+      "useTask",
+      "usePage",
+      "Identities",
+      "AdministrationClient via unchanged model import"
+    ],
+    "adaptation": "Only final return is wrapped in state/handler receiver retaining actual JSX; custom hooks and scoped JSX receiver, not React DOM",
+    "data": "Synthetic unchanged shared administrator, list metadata and revoke result only; fetch doubles refuse any issuance POST; NONCREDENTIAL-LOCAL-STATE-SENTINEL is seeded local state only",
+    "cases": "401/403 at preflight/operation/postflight for independent list and revoke; malformed/stalled denial bodies; prior revoke success reset; semantic pre/post fresh admin loss; exact captured ID/owner/expiry refusal; pending freeze and one DELETE/no body/no retry; success clears selected and refreshes metadata;409/503 retain draft/selection; cancel; pagehide discards late reply",
+    "limits": "No issuance route/token generator/reveal, React DOM/browser/AT, backend/native/API/server/database/operator/recovery execution, or full cross-client pending concurrency matrix"
+  },
+  "build": {
+    "buildPassed": true,
+    "exit": 0,
+    "sourceFiles": 299,
+    "sourceManifestSHA256": "deb167779d41dbf2a1809199f832678d28f1b35125151b29310eb81056186edf",
+    "dependencyRecords": 37428,
+    "graphRecords": 41723,
+    "graphSHA256": "76c48835210364298d214fe23faeb20878ed26147c384c6fa920b820dd99930f",
+    "buildId": "XuHhJsK8v4tM3t4Dw_MKf",
+    "buildLogSHA256": "3dc2b7dc30c9ff718ec4d2db4b5bd08e9908da5265aaed2f23834e9ef207b5f4",
+    "noPrismaCLI": true,
+    "limits": {
+      "cpu": 4,
+      "memory": 4294967296,
+      "memorySwap": 4294967296,
+      "pids": 256,
+      "deadlineSeconds": 900,
+      "network": "none",
+      "readOnlyRoot": true
+    }
+  },
+  "bindings": {
+    "all299CurrentWorkingInputsEqualRetainedBuild": true,
+    "rawGitRelations": "15 exact and 284 explicit working CRLF-to-Git LF relations",
+    "rootSelectedCompiledNativeWorker": 20,
+    "independentFull41723GraphRehash": true,
+    "sameFinalTestInBaselineChangedAndBuild": true,
+    "all299AreProductionFiles": false
+  },
+  "closure": {
+    "ownerValidPositiveRootBirthsAbsent": 34,
+    "independentOriginalAndClosureDispatcherAndQueryBirthsAbsent": 48,
+    "exactContainerIdNamePairsAbsent": 6,
+    "initialPidZeroObservationsExcluded": true,
+    "WindowsHelperBirthsRecorded": false,
+    "universalAbsenceClaim": false
+  },
+  "documentation": {
+    "applicationMarkdownInventory": 22,
+    "applicationAffectedDocs": 3,
+    "rootDocsBeforeInventory": 63,
+    "scope": "Bytes/hash/headings and selected relevant semantic reads; not a complete historical corpus semantic review",
+    "sevenPriorRootWorkingBodiesPreservedExactly": true
+  },
+  "hostedCI": {
+    "observedUTC": "2026-10-19T17:39:05.099833+00:00",
+    "head": "b2ab7bc44726c26ff80edfba86d114d48cfb96d6",
+    "runs": [
+      {
+        "id": 39295155987,
+        "event": "push",
+        "head": "b2ab7bc44726c26ff80edfba86d114d48cfb96d6",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jtmb/branconet-homelab/actions/runs/39295155987",
+        "job": 118205623106,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Locked install and native/standalone build in pinned compiler image",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Original lint, type and unit checks with isolated runtime network",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Separate-process SQL writer-lock regression sensitivity",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Original strict integration and process controls",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Acquire locked browser CI tools (no app dependency change)",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Finite compiled Pods browser smoke",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ],
+        "rawLogBytes": 323442,
+        "rawLogSHA256": "53b4db57e8880354534581dcd31ff0dad813a8190490ef89bd2d0a5e442b2cd5",
+        "numericTestSummaries": {
+          "tests": [
+            "506",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "5",
+            "5",
+            "11",
+            "11",
+            "1",
+            "1",
+            "8"
+          ],
+          "pass": [
+            "506",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "5",
+            "3",
+            "11",
+            "4",
+            "1",
+            "0",
+            "8"
+          ],
+          "fail": [
+            "0",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "2",
+            "0",
+            "7",
+            "0",
+            "1",
+            "0"
+          ],
+          "cancelled": [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ],
+          "skipped": [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "allStepsSuccessful": true,
+        "unitTests": 506,
+        "unitPass": 506,
+        "unitFail": 0,
+        "originalSensitivityPairs": [
+          "A04-name-admission",
+          "A05-failed-stdout",
+          "A06-outage-empty",
+          "deployment-action-coercion",
+          "private-kv-cache-admission",
+          "A02-deleted-account",
+          "A03-bootstrap-writer",
+          "A01-SQL-writer-lock"
+        ],
+        "integrationTests": 8,
+        "integrationPass": 8,
+        "integrationFail": 0,
+        "browserSmoke": {
+          "browserSmoke": "passed",
+          "realPodGETStatus": 200,
+          "wireRows": 208,
+          "initialPageRows": 100,
+          "filteredRows": 3,
+          "nonAgeColumnsVerified": 8,
+          "exactLinks": 3,
+          "noMutationsAttempted": true,
+          "ATQualified": false,
+          "performanceQualified": false
+        },
+        "rawLogParsed": true
+      },
+      {
+        "id": 39295172569,
+        "event": "pull_request",
+        "head": "b2ab7bc44726c26ff80edfba86d114d48cfb96d6",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/jtmb/branconet-homelab/actions/runs/39295172569",
+        "job": 118205680209,
+        "steps": [
+          {
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Locked install and native/standalone build in pinned compiler image",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Original lint, type and unit checks with isolated runtime network",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Separate-process SQL writer-lock regression sensitivity",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Original strict integration and process controls",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Acquire locked browser CI tools (no app dependency change)",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Finite compiled Pods browser smoke",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "status": "completed",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success"
+          }
+        ],
+        "rawLogBytes": 324418,
+        "rawLogSHA256": "fda5ca1b65660b7b76aef0ab8fd2a6feaca806ebe21152dfab5fcd71c8db96aa",
+        "numericTestSummaries": {
+          "tests": [
+            "506",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "1",
+            "5",
+            "5",
+            "11",
+            "11",
+            "1",
+            "1",
+            "8"
+          ],
+          "pass": [
+            "506",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "5",
+            "3",
+            "11",
+            "4",
+            "1",
+            "0",
+            "8"
+          ],
+          "fail": [
+            "0",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "1",
+            "0",
+            "2",
+            "0",
+            "7",
+            "0",
+            "1",
+            "0"
+          ],
+          "cancelled": [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ],
+          "skipped": [
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0",
+            "0"
+          ]
+        },
+        "allStepsSuccessful": true,
+        "unitTests": 506,
+        "unitPass": 506,
+        "unitFail": 0,
+        "originalSensitivityPairs": [
+          "A04-name-admission",
+          "A05-failed-stdout",
+          "A06-outage-empty",
+          "deployment-action-coercion",
+          "private-kv-cache-admission",
+          "A02-deleted-account",
+          "A03-bootstrap-writer",
+          "A01-SQL-writer-lock"
+        ],
+        "integrationTests": 8,
+        "integrationPass": 8,
+        "integrationFail": 0,
+        "browserSmoke": {
+          "browserSmoke": "passed",
+          "realPodGETStatus": 200,
+          "wireRows": 208,
+          "initialPageRows": 100,
+          "filteredRows": 3,
+          "nonAgeColumnsVerified": 8,
+          "exactLinks": 3,
+          "noMutationsAttempted": true,
+          "ATQualified": false,
+          "performanceQualified": false
+        },
+        "rawLogParsed": true
+      }
+    ],
+    "allSuccessful": true,
+    "manualDispatch": false,
+    "replay": false,
+    "existingWorkflowUnchanged": true,
+    "retainedReaderErrors": [
+      "First WSL wrapper captured no usable stdout; explicit --exec GET corrected metadata reading only.",
+      "Initial Windows text read used default cp1252 and refused UTF-8 byte; explicit strict UTF-8 read succeeded, no CI replay."
+    ]
+  },
+  "applicationDefaultPublicationPacket": {
+    "files": 5,
+    "exit": 0,
+    "findings": 0,
+    "suppression": false,
+    "disposition": false,
+    "securityAcceptance": false
+  },
+  "rootPublication": {
+    "localOnly": true,
+    "newScan": false,
+    "newPush": false,
+    "remoteRetained": "412e563086d80ec2b03c6dea219655a967766e8d",
+    "fourNewFindings": "UNRESOLVED",
+    "prior32AndEarlierOne": "UNRESOLVED",
+    "noInspectionClassificationDiagnosisRescanSuppressionDispositionOrAcceptance": true
+  },
+  "retainedErrors": [
+    "Oversized all-domain/source reads truncated; replaced with selected bounded current sections and explicit inventory scope.",
+    "PowerShell Get-Content guessed slash UNC resolved as C:/wsl.localhost and failed; corrected to WSL commands/actual backslash UNC.",
+    "First lint container failed before Node because absent /app/node_modules mountpoint could not be created under readonly bind; empty staging mountpoint added. Original lint1 result/log retained.",
+    "Partial-context focused lint-final exit0 emitted Pages directory advisory; final full current production tree focused lint/Next lint passed without that missing-context limit.",
+    "Initial process observer included containerPid0 as ancestry root after closure and recorded unrelated observed PID metadata: initial lint1/lint-final/baseline-final rows are NOT owned-process evidence; no process terminated from them. Final positive-root observer corrected, original retained.",
+    "First baseline45s mock-lifecycle delay retained separately; final identical baseline2/changed/build test uses finally release/settle.",
+    "First closure reader exit1 expected case-sensitive No such object; actual Docker error is lowercase no such object. Original reader/error retained; only closure reader comparison corrected, no business replay.",
+    "Root oversized reads truncated and guessed A07/workflow paths corrected before bounded conclusions.",
+    "Root initial raw-Git-equality assertion refused at .dockerignore; actual working/build equality and explicit CRLF relation then checked across all299 without replay.",
+    "Initial WSL gh query wrapper returned no captured stdout; null projections were not zero-run evidence and no JSON file was created. Explicit --exec GET with separate fields returned both actual automatic runs; no dispatch/replay.",
+    "Connector integration403 Resource not accessible by integration",
+    "gh2.46 pr edit failed deprecated projectCards query; direct REST read then body-only PATCH and GET verification succeeded"
+  ],
+  "privateEvidenceBindings": {
+    "identity-editor-owner-20261019.json": "59047607b0032379517b448483d57ea63d0d089524a6e9548376e59f9dc1f089",
+    "identity-editor-independent-source-20261019.json": "0ab088f1ac983f6f97cca35b490035d9ce2a4f92e7034b089ef85c520faa9c9e",
+    "identity-editor-independent-final-20261019.json": "c812b63734d19880b3da4fe3229b00d9600fb59dcbd2c3fa8dec67f94475c82e",
+    "identity-editor-root-source-bindings-20261019.json": "fe5f9667ce7b6ac72d5ac3b76bd4188de58009b0f44b659ad63e87ed65091851",
+    "identity-editor-root-extra-source-20261019.json": "c008eed87c326dea406768c6b3a795fa2784c9bae1b17067daed745a05bf3909",
+    "identity-editor-root-build-bindings-20261019.json": "1bceb65341c4650e63e24987b439e8bc267d60aad5d33db8aefe22ad5c2150c6"
+  },
+  "sourceAcceptanceOnly": true,
+  "localTokenIssuance": false,
+  "localDatabaseOrBackendOperations": false,
+  "browserOrAT": false,
+  "nativeOrRecoveryOrLive": false,
+  "all44OriginalClausesFrozenFixturesAndFailuresPreserved": true,
+  "A07FiveOfTenWarmFailuresRemain": true,
+  "overallAcceptance": false,
+  "fullGoalRemainsActive": true,
+  "finalDeliveryPhase": "Deploy BORTUS to PRD and verify actual deployment only after all original preceding security/performance/actualAT/compatible independent recovery/freshbackup/quiescence/schema/effectiveRBAC/admission/data gates pass",
+  "nextFeature": "Bounded integrated compiled identity-editor presentation review of captured exact revoke confirmation, pending/error settlement and direct operation/list authorization-loss cleanup using intercepted synthetic metadata only; no issuance, tokens, native handlers, recovery or live work.",
+  "existingDraftPR": {
+    "url": "https://github.com/jtmb/branconet-homelab/pull/28",
+    "head": "b2ab7bc44726c26ff80edfba86d114d48cfb96d6",
+    "draft": true,
+    "merged": false,
+    "bodySHA256": "0cbbc144b49ede7e70daa634df62ed0d5045114563283e8bd71b1219f3aac1a3",
+    "updated": true,
+    "retainedFailures": [
+      "Connector integration403 Resource not accessible by integration",
+      "gh2.46 pr edit failed deprecated projectCards query; direct REST read then body-only PATCH and GET verification succeeded"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+# FlareSolverr Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: flaresolverr-ingress
+  namespace: plex
+spec:
+  rules:
+  - host: flaresolverr.branconet.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: flaresolverr
+            port:
+              number: 8191

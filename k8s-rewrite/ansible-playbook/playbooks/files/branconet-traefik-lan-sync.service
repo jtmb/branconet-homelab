@@ -1,0 +1,14 @@
+[Unit]
+Description=Apply the current timed Traefik LAN bans
+After=systemd-tmpfiles-setup.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/libexec/branconet-traefik-ban sync-shared --socket /run/branconet-traefik-ban/reader/bridge.sock
+TimeoutStartSec=12s
+NoNewPrivileges=yes
+CapabilityBoundingSet=CAP_NET_ADMIN
+RestrictAddressFamilies=AF_UNIX AF_NETLINK
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes

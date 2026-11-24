@@ -1,0 +1,30 @@
+---
+- name: Make the shared API hostname independent of cluster DNS on nodes
+  hosts: all
+  become: true
+  serial: 1
+  any_errors_fatal: true
+  tasks:
+    - name: Check for an existing files-based answer
+      ansible.builtin.command: getent -s files ahostsv4 k8s-api.branconet.lan
+      register: api_hosts_existing
+      changed_when: false
+      failed_when: api_hosts_existing.rc not in [0, 2]
+
+    - name: Refuse conflicting host entries
+      ansible.builtin.assert:
+        that:
+          - api_hosts_existing.rc == 2 or (api_hosts_existing.stdout_lines | map('regex_replace', '\s+.*$', '') | unique | list == ['192.168.0.251'])
+
+    - name: Add a persistent fallback for the verified API endpoint
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        line: "192.168.0.251 k8s-api.branconet.lan"
+        backup: true
+      when: api_hosts_existing.rc == 2
+
+    - name: Verify the answer from the files resolver
+      ansible.builtin.command: getent -s files ahostsv4 k8s-api.branconet.lan
+      register: api_hosts_result
+      changed_when: false
+      failed_when: api_hosts_result.rc != 0 or (api_hosts_result.stdout_lines | map('regex_replace', '\s+.*$', '') | unique | list != ['192.168.0.251'])

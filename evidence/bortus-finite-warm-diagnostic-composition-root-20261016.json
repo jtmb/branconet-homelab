@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "scope": "Finite diagnostic completeness composed from50 retained joins and22 new joins with declared changed instrumentation",
+  "baselineCommit": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "candidateCommit": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+  "retainedOriginal": {
+    "actorLiteralExit": 1,
+    "functionalBodyChecks": 72,
+    "acceptedStageJoins": 50,
+    "receipt": "evidence/bortus-finite-warm-diagnostic-partial-root-20261016.json",
+    "final": {
+      "path": "/home/brajam/.local/share/branconet-migration/root-finite-warm-diagnostic-final-current-20261016-v1.json",
+      "bytes": 76021,
+      "sha256": "99b3050a4069c7b08d77c6811bfa400f0aa8a64d13a126499b5ebe999dcaca7f"
+    }
+  },
+  "secondAttempt": {
+    "actorLiteralExit": 1,
+    "clientLiteralExit": 0,
+    "functionalBodyChecks": 22,
+    "acceptedStageJoins": 0,
+    "mainRecordPublished": false,
+    "final": {
+      "path": "/home/brajam/.local/share/branconet-migration/root-remaining-concurrent22-final-current-20261016-v1.json",
+      "bytes": 50602,
+      "sha256": "40a3f4c510c33ab2e315c6a32040622e1d9be16d6b9008345bf4f0e839af050b"
+    }
+  },
+  "newAttempt": {
+    "actorLiteralExit": 0,
+    "clientLiteralExit": 0,
+    "functionalBodyChecks": 22,
+    "warmRequests": 20,
+    "acceptedStageJoins": 22,
+    "recordCount": 2,
+    "actualWorkerOperations": 22,
+    "actualYields": 44,
+    "sourceHooks": [
+      3,
+      2,
+      1
+    ],
+    "allOriginalJoinAssertionsAccepted": true,
+    "final": {
+      "path": "/home/brajam/.local/share/branconet-migration/root-remaining-concurrent22-final-current-20261016-v2.json",
+      "bytes": 56748,
+      "sha256": "b7f95e54172954a06e80567b3214fc2caa83bbb1492ec7cc590c2b59d7c0be17"
+    },
+    "tools": {
+      "actor": "c274be->203150/0",
+      "matchedPost": "6e89bc->314983/0",
+      "oneFiniteFinal": "e97a3b/0"
+    }
+  },
+  "composition": {
+    "retainedJoinedHTTP": 50,
+    "newJoinedHTTP": 22,
+    "totalJoinedHTTP": 72,
+    "allFourLanesCovered": true,
+    "old50Replayed": false,
+    "original72ActorChangedToZero": false,
+    "second22ActorChangedToZero": false,
+    "instrumentationChanged": true,
+    "changes": [
+      "Admission origin captured in both reachable middleware andchunk432 definitions.",
+      "Bounded numeric exit-seal refusal recorder; original error/step order retained."
+    ],
+    "historicalFailureCauseProven": false,
+    "noPooledTimingComparison": true
+  },
+  "closure": {
+    "actualExit": 0,
+    "currentPublicRecords": 135,
+    "originalAndPostBirthsAbsent": 24,
+    "exactCIDNameQueriesRetained": 2,
+    "noNewDockerQueries": true,
+    "graphsRewalkedHere": false,
+    "noWindowsJob": true
+  },
+  "descriptiveNewWarmOnly": {
+    "clientFullBodyUs": {
+      "n": 20,
+      "minimum": 44029,
+      "median": 99157.5,
+      "maximum": 120384,
+      "untrimmed": [
+        44029,
+        48752,
+        51703,
+        55908,
+        70602,
+        71287,
+        85614,
+        85866,
+        97339,
+        98073,
+        100242,
+        103654,
+        107141,
+        108786,
+        110540,
+        112225,
+        113974,
+        115846,
+        118712,
+        120384
+      ]
+    },
+    "serverUs": {
+      "n": 20,
+      "minimum": 30046,
+      "median": 69189.5,
+      "maximum": 85332,
+      "untrimmed": [
+        30046,
+        32096,
+        34122,
+        32280,
+        33567,
+        37787,
+        55702,
+        57505,
+        67214,
+        68436,
+        69943,
+        72425,
+        75455,
+        76769,
+        77879,
+        79198,
+        80470,
+        81802,
+        83198,
+        85332
+      ]
+    },
+    "middlewareSpanUs": {
+      "n": 20,
+      "minimum": 24896,
+      "median": 66239.0,
+      "maximum": 82394,
+      "untrimmed": [
+        24896,
+        27842,
+        30823,
+        27143,
+        30913,
+        32761,
+        46616,
+        54661,
+        63571,
+        65013,
+        67465,
+        70042,
+        71767,
+        74545,
+        75891,
+        77120,
+        78434,
+        79692,
+        81065,
+        82394
+      ]
+    },
+    "routeSpanUs": {
+      "n": 20,
+      "minimum": 148,
+      "median": 202.0,
+      "maximum": 491,
+      "untrimmed": [
+        290,
+        265,
+        202,
+        280,
+        198,
+        428,
+        370,
+        491,
+        290,
+        236,
+        202,
+        188,
+        161,
+        156,
+        148,
+        149,
+        156,
+        176,
+        261,
+        164
+      ]
+    },
+    "middlewareStartToWorkerPostUs": {
+      "n": 20,
+      "minimum": 461,
+      "median": 63449.0,
+      "maximum": 80192,
+      "untrimmed": [
+        461,
+        22406,
+        25634,
+        23092,
+        25779,
+        29454,
+        31400,
+        45494,
+        52511,
+        62672,
+        64226,
+        66752,
+        69278,
+        70863,
+        73874,
+        75211,
+        76418,
+        77739,
+        78993,
+        80192
+      ]
+    },
+    "workerPostToParentReceiveUs": {
+      "n": 20,
+      "minimum": 1775,
+      "median": 3019.0,
+      "maximum": 23505,
+      "untrimmed": [
+        23505,
+        4677,
+        3924,
+        3486,
+        4758,
+        2954,
+        14819,
+        8954,
+        10836,
+        2193,
+        3084,
+        2153,
+        2262,
+        3541,
+        1851,
+        1775,
+        1860,
+        1795,
+        1866,
+        2006
+      ]
+    },
+    "workerOperationUs": {
+      "n": 20,
+      "minimum": 266,
+      "median": 359.0,
+      "maximum": 2365,
+      "untrimmed": [
+        676,
+        465,
+        493,
+        356,
+        327,
+        2365,
+        651,
+        382,
+        406,
+        362,
+        286,
+        316,
+        284,
+        266,
+        345,
+        308,
+        307,
+        406,
+        493,
+        333
+      ]
+    }
+  },
+  "sourceAnalysisSHA256": "3bec9648e1f5ffb32652137456fe4117b8708004eeca68aade4d02cf2a471b85",
+  "limits": [
+    "Diagnostic instrumentation changed;new20 warm observations are not pooled into an unchanged benchmark or compared as source performance evidence.",
+    "Nested asynchronous spans andCPU counters overlap;no exclusiveCPU share claim.",
+    "Actual observed hook order does not establish historical load order or explain earlier missing-main failures.",
+    "No future30f source substitution or productsource change."
+  ],
+  "CPUShareClaim": false,
+  "originalBenchmarkVerdictChanged": false,
+  "performanceAcceptance": false,
+  "productionAdoption": false
+}

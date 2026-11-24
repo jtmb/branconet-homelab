@@ -1,0 +1,24 @@
+[Unit]
+Description=Branconet independent Pi-hole LAN resolver
+Requires=containerd-k8s.service
+After=containerd-k8s.service network-online.target ufw.service
+Wants=network-online.target
+
+[Service]
+Type=exec
+RuntimeDirectory=branconet-independent-dns-lan
+RuntimeDirectoryMode=0700
+UMask=0077
+ExecStartPre=/usr/bin/timeout 25s /bin/sh -c 'until /opt/containerd-k8s/bin/ctr --address /run/containerd-k8s/containerd.sock version >/dev/null 2>&1; do /usr/bin/sleep 1; done'
+ExecStartPre=/usr/local/libexec/branconet-independent-dns-lan firewall-start
+ExecStart=/usr/local/libexec/branconet-independent-dns-lan start lan
+ExecStartPost=/usr/local/libexec/branconet-independent-dns-lan lan-check
+ExecStop=/usr/local/libexec/branconet-independent-dns-lan stop lan
+ExecStopPost=/usr/local/libexec/branconet-independent-dns-lan lan-cleanup
+TimeoutStartSec=40s
+TimeoutStopSec=25s
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

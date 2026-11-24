@@ -1,0 +1,57 @@
+[Unit]
+Description=BORTUS kubelet-serving CSR observation controller (no approval)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=bortus-csr-controller
+Group=bortus-csr-controller
+StateDirectory=bortus-csr-controller
+StateDirectoryMode=0700
+WorkingDirectory=/var/lib/bortus-csr-controller
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=GOMAXPROCS=1
+RuntimeDirectory=bortus-csr-controller-cache
+RuntimeDirectoryMode=0700
+Environment=HOME=/run/bortus-csr-controller-cache
+Environment=XDG_CACHE_HOME=/run/bortus-csr-controller-cache
+UnsetEnvironment=KUBECONFIG HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy
+ExecStart=/usr/bin/python3 -B /usr/local/libexec/bortus-csr-controller/run-kubelet-csr-controller.py --managed-host --state-dir /var/lib/bortus-csr-controller --enrollment-file /etc/bortus-csr-controller/enrollment.json --mode observe --loop --interval 60
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=35
+KillMode=control-group
+UMask=0077
+MemoryMax=128M
+MemorySwapMax=0
+CPUQuota=5%
+TasksMax=32
+LimitCORE=0
+LimitFSIZE=20M
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictRealtime=yes
+RestrictAddressFamilies=AF_UNIX AF_INET
+ReadWritePaths=/var/lib/bortus-csr-controller
+ReadOnlyPaths=-/etc/bortus-csr-controller -/run/bortus-csr-controller
+InaccessiblePaths=-/etc/kubernetes
+IPAddressDeny=any
+IPAddressAllow=192.168.0.251
+LogRateLimitIntervalSec=60s
+LogRateLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,67 @@
+{
+  "actualExit": 0,
+  "sourceCommit": "4ae9f5c28dcf64ebda019bc40f7b27b3524e61db",
+  "contextSha256": "1fe1e070f215b5bf79f0923b7aa0c7cd9319f334d3a60d15691baee8c1966540",
+  "filesIndependentlyMatchedToNativeRawGitReceipt": 267,
+  "rawModesAndBlobHashesVerified": true,
+  "migrations": 11,
+  "productionImageBuilt": false,
+  "clusterMutations": 0,
+  "defaultProductionSourceScan": {
+    "actualExit": 0,
+    "findings": 0,
+    "scopeFiles": 267,
+    "scannerSha256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "noSuppression": true,
+    "historicalProvenanceFindingsResolved": false
+  },
+  "scope": "Immutable raw-Git production context only; no functional, performance, image or live release acceptance",
+  "rawContextReceiptSha256": "4f62f8cc9a99d6ed9871cb0a77743bc3eece8138be54de0a1ec07eee9dd27c24",
+  "retainedVerifierSha256": "d1133fe1a5c12c8bc9143fbc7503e7d91bf9115ee078a79df869423cffda6515",
+  "migrationScripts": [
+    {
+      "path": "prisma/migrations/20260614204135_init/migration.sql",
+      "sha256": "a3038f518902e6dcd2a6fa6a3dfadf536bed536487015517b380241efba9f90d"
+    },
+    {
+      "path": "prisma/migrations/20260615042521_add_gitrepos/migration.sql",
+      "sha256": "39ca2d40aa429d7668c559d8c05056a909a261cb1c4909b905f464b8c519a457"
+    },
+    {
+      "path": "prisma/migrations/20260615170328_add_namespace_to_gitrepos/migration.sql",
+      "sha256": "e5f57ec33813ea47d8e82c63a0fc39526298e58188254a8e5ebad08e2f4927d0"
+    },
+    {
+      "path": "prisma/migrations/20260616050858_add_user_model/migration.sql",
+      "sha256": "6457847e80514a46d025f2cf77ad177163a5fa5b459446d7690eecde229d4671"
+    },
+    {
+      "path": "prisma/migrations/20260616130024_add_app_settings/migration.sql",
+      "sha256": "45b166e19315914fe099a077ea9a4e9d92ccdc2b7ca42c73410b3523de89e990"
+    },
+    {
+      "path": "prisma/migrations/20260616132006_add_user_role/migration.sql",
+      "sha256": "1c674838ea7ea71867e0e9ceb94320da482616f71e2e0bc5ad9854296015e353"
+    },
+    {
+      "path": "prisma/migrations/20261009150000_native_secret_references/migration.sql",
+      "sha256": "274aa4b2dd3c90c7222971d138a9c83632ef56e4c2b285890c34f5472a129157"
+    },
+    {
+      "path": "prisma/migrations/20261010160000_account_invariants/migration.sql",
+      "sha256": "ff958b6affffc291ea8a79c81d02fa3d254e2cb60eb48e5085568b691468809a"
+    },
+    {
+      "path": "prisma/migrations/20261010210000_kv_metadata/migration.sql",
+      "sha256": "355511fb7ad0a1cc27da19cf6cbc97d64cf15d09c815f78dbc1ad694ac5a2bd3"
+    },
+    {
+      "path": "prisma/migrations/20261010220000_rotation_consumer_identity/migration.sql",
+      "sha256": "a3c698ee1a5e00c365a592910d37d763c6d7a72f8863512251b0c377ef83a099"
+    },
+    {
+      "path": "prisma/migrations/20261010230000_legacy_access_audit/migration.sql",
+      "sha256": "770556733c0b165a97ceb42790abd703b5d4bdd4572e9a06234252fd0dc77ff1"
+    }
+  ]
+}

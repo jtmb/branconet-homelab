@@ -1,0 +1,271 @@
+- name: Require an explicit read-only scan and the protected task output directory
+  ansible.builtin.assert:
+    that:
+      - antivirus_scan_apply | bool
+      - antivirus_scan_run_id is match('^[0-9]{8}T[0-9]{6}Z-[0-9a-f]{8}$')
+      - antivirus_scan_output_dir == '/mnt/d/Codex/plex-antivirus-20261107/receipts'
+
+- name: Check ClamAV engine version and signature database freshness
+  ansible.builtin.command:
+    argv: [clamscan, --version]
+  register: antivirus_version
+  changed_when: false
+
+- name: Check the signature updater service
+  ansible.builtin.command:
+    argv: [systemctl, is-active, clamav-freshclam.service]
+  register: antivirus_freshclam
+  changed_when: false
+  failed_when: false
+
+- name: Inspect the current ClamAV signature database files
+  ansible.builtin.stat:
+    path: "/var/lib/clamav/{{ item }}"
+    get_checksum: false
+  loop:
+    - main.cvd
+    - main.cld
+    - daily.cvd
+    - daily.cld
+    - bytecode.cvd
+    - bytecode.cld
+  register: antivirus_databases
+  changed_when: false
+
+- name: Require an installed scanner with a recent database and running updater
+  ansible.builtin.assert:
+    that:
+      - antivirus_version.rc == 0
+      - antivirus_version.stdout is search('^ClamAV 1\\.')
+      - antivirus_freshclam.stdout == 'active'
+      - (antivirus_databases.results | selectattr('stat.exists', 'equalto', true) | list | length) >= 2
+      - ansible_date_time.epoch | int - (antivirus_databases.results | selectattr('stat.exists', 'equalto', true) | map(attribute='stat.mtime') | map('float') | max | int) <= 259200
+    fail_msg: ClamAV is unavailable, its updater is stopped, or its signature database is older than 72 hours; no scan is claimed.
+
+- name: Enumerate mounted container overlay roots
+  ansible.builtin.command:
+    argv: [findmnt, --raw, --noheadings, --types, overlay, --output, TARGET]
+  register: antivirus_overlay_mounts
+  changed_when: false
+  failed_when: antivirus_overlay_mounts.rc not in [0, 1]
+
+- name: Keep only exact active containerd rootfs mounts
+  ansible.builtin.set_fact:
+    antivirus_overlay_targets: "{{ antivirus_overlay_mounts.stdout_lines | default([]) | reject('equalto', '') | list }}"
+    antivirus_overlay_roots: "{{ antivirus_overlay_mounts.stdout_lines | default([]) | select('match', '^/run/containerd-k8s/io\\.containerd\\.runtime\\.v2\\.task/k8s\\.io/[0-9a-f]{64}/rootfs$') | list }}"
+
+- name: Refuse an unrecognized overlay mount rather than silently omit a container
+  ansible.builtin.assert:
+    that:
+      - antivirus_overlay_targets | length == antivirus_overlay_roots | length
+    fail_msg: An overlay mount is outside the reviewed containerd rootfs path; inspect it before claiming container coverage.
+
+- name: Run the read-only scan of the node root filesystem
+  ansible.builtin.command:
+    argv:
+      - nice
+      - -n
+      - '19'
+      - ionice
+      - -c
+      - '3'
+      - clamscan
+      - --recursive
+      - --infected
+      - --alert-exceeds-max=yes
+      - --cross-fs=no
+      - --max-filesize=4G
+      - --max-scansize=16G
+      - --max-files=2000000
+      - --max-recursion=32
+      - /
+  register: antivirus_root_scan
+  changed_when: false
+  failed_when: false
+  no_log: true
+
+- name: Run the read-only scan of each mounted container root filesystem
+  ansible.builtin.command:
+    argv:
+      - nice
+      - -n
+      - '19'
+      - ionice
+      - -c
+      - '3'
+      - clamscan
+      - --recursive
+      - --infected
+      - --alert-exceeds-max=yes
+      - --cross-fs=no
+      - --max-filesize=4G
+      - --max-scansize=16G
+      - --max-files=2000000
+      - --max-recursion=32
+      - "{{ item }}"
+  loop: "{{ antivirus_overlay_roots }}"
+  loop_control:
+    label: active-container-rootfs
+  register: antivirus_overlay_scans
+  changed_when: false
+  failed_when: false
+  no_log: true
+
+- name: Read the current Plex Pod metadata for its persistent config scan
+  ansible.builtin.command:
+    argv: [kubectl, -n, plex, get, pods, -l, app=plex, -o, json]
+  become: false
+  delegate_to: "{{ groups['master'][0] }}"
+  register: antivirus_plex_pods
+  changed_when: false
+  no_log: true
+  when: inventory_hostname == 'workernode2'
+
+- name: Require one current Plex Pod on the inventoried worker
+  ansible.builtin.assert:
+    that:
+      - (antivirus_plex_pods.stdout | from_json).items | length == 1
+      - (antivirus_plex_pods.stdout | from_json).items[0].status.phase == 'Running'
+      - (antivirus_plex_pods.stdout | from_json).items[0].spec.nodeName == inventory_hostname
+      - (antivirus_plex_pods.stdout | from_json).items[0].metadata.uid is match('^[0-9a-f-]{36}$')
+  when: inventory_hostname == 'workernode2'
+
+- name: Read Plex config claim metadata without Secret values
+  ansible.builtin.command:
+    argv: [kubectl, -n, plex, get, pvc, plex-data-0, -o, json]
+  become: false
+  delegate_to: "{{ groups['master'][0] }}"
+  register: antivirus_plex_pvc
+  changed_when: false
+  no_log: true
+  when: inventory_hostname == 'workernode2'
+
+- name: Read the Plex config backing volume metadata
+  ansible.builtin.command:
+    argv:
+      - kubectl
+      - get
+      - pv
+      - "{{ (antivirus_plex_pvc.stdout | from_json).spec.volumeName }}"
+      - -o
+      - json
+  become: false
+  delegate_to: "{{ groups['master'][0] }}"
+  register: antivirus_plex_pv
+  changed_when: false
+  no_log: true
+  when: inventory_hostname == 'workernode2'
+
+- name: Record the exact mounted Plex config volume path
+  ansible.builtin.set_fact:
+    antivirus_plex_storage_baseline:
+      pod_uid: "{{ (antivirus_plex_pods.stdout | from_json).items[0].metadata.uid }}"
+      node: "{{ inventory_hostname }}"
+      claim_name: plex-data-0
+      claim_uid: "{{ (antivirus_plex_pvc.stdout | from_json).metadata.uid }}"
+      pv_name: "{{ (antivirus_plex_pvc.stdout | from_json).spec.volumeName }}"
+      pv_uid: "{{ (antivirus_plex_pv.stdout | from_json).metadata.uid }}"
+      pv_reclaim_policy: "{{ (antivirus_plex_pv.stdout | from_json).spec.persistentVolumeReclaimPolicy }}"
+      image: "{{ (antivirus_plex_pods.stdout | from_json).items[0].spec.containers | selectattr('name', 'equalto', 'plex') | map(attribute='image') | first }}"
+      image_version: "{{ ((antivirus_plex_pods.stdout | from_json).items[0].spec.containers | selectattr('name', 'equalto', 'plex') | map(attribute='image') | first) | regex_replace('^.*:([0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+)-.*$', '\\1') }}"
+      mount_path: "/var/lib/kubelet/pods/{{ (antivirus_plex_pods.stdout | from_json).items[0].metadata.uid }}/volumes/kubernetes.io~csi/{{ (antivirus_plex_pvc.stdout | from_json).spec.volumeName }}/mount"
+  when: inventory_hostname == 'workernode2'
+
+- name: Require the pinned Plex image tag to contain a server release version
+  ansible.builtin.assert:
+    that:
+      - antivirus_plex_storage_baseline.image_version is match('^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$')
+    fail_msg: The Plex Pod image tag does not expose a parseable release version; do not treat the Plex identity API schema field as the server release.
+  when: inventory_hostname == 'workernode2'
+- name: Save the minimal protected Plex storage baseline receipt
+  ansible.builtin.copy:
+    content: "{{ {'schema_version': 1, 'run_id': antivirus_scan_run_id, 'plex_storage_baseline': antivirus_plex_storage_baseline} | to_nice_json }}\n"
+    dest: "{{ antivirus_scan_output_dir }}/{{ antivirus_scan_run_id }}-plex-baseline.json"
+    mode: '0600'
+  become: false
+  delegate_to: localhost
+  no_log: true
+  when: inventory_hostname == 'workernode2'
+
+- name: Verify the Plex config mount exists as a mounted directory
+  ansible.builtin.command:
+    argv:
+      - findmnt
+      - --raw
+      - --noheadings
+      - --mountpoint
+      - "{{ antivirus_plex_storage_baseline.mount_path }}"
+      - --output
+      - FSTYPE
+  register: antivirus_plex_mount
+  changed_when: false
+  failed_when: false
+  when: inventory_hostname == 'workernode2'
+
+- name: Require the Plex persistent config volume is mounted before scanning
+  ansible.builtin.assert:
+    that:
+      - antivirus_plex_mount.rc == 0
+      - antivirus_plex_mount.stdout == 'ext4'
+      - (antivirus_plex_pv.stdout | from_json).spec.persistentVolumeReclaimPolicy == 'Retain'
+  when: inventory_hostname == 'workernode2'
+
+- name: Run the read-only scan of the complete Plex config volume
+  ansible.builtin.command:
+    argv:
+      - nice
+      - -n
+      - '19'
+      - ionice
+      - -c
+      - '3'
+      - clamscan
+      - --recursive
+      - --infected
+      - --alert-exceeds-max=yes
+      - --cross-fs=no
+      - --max-filesize=4G
+      - --max-scansize=16G
+      - --max-files=2000000
+      - --max-recursion=32
+      - "{{ antivirus_plex_storage_baseline.mount_path }}"
+  register: antivirus_plex_config_scan
+  changed_when: false
+  failed_when: false
+  no_log: true
+  when: inventory_hostname == 'workernode2'
+
+- name: Save the private per-node scan result and Plex storage identity baseline
+  ansible.builtin.copy:
+    content: >-
+      {{ {
+        'schema_version': 1,
+        'run_id': antivirus_scan_run_id,
+        'node': inventory_hostname,
+        'captured_at_utc': now(utc=true, fmt='%Y-%m-%dT%H:%M:%SZ'),
+        'clamav_version': antivirus_version.stdout,
+        'freshclam_state': antivirus_freshclam.stdout,
+        'root_filesystem_scan': {'rc': antivirus_root_scan.rc, 'stdout': antivirus_root_scan.stdout, 'stderr': antivirus_root_scan.stderr},
+        'overlay_targets': antivirus_overlay_roots,
+        'overlay_scans': antivirus_overlay_scans.results | default([]),
+        'plex_storage_baseline': antivirus_plex_storage_baseline | default(none),
+        'plex_config_scan': ({'rc': antivirus_plex_config_scan.rc, 'stdout': antivirus_plex_config_scan.stdout, 'stderr': antivirus_plex_config_scan.stderr} if antivirus_plex_config_scan is defined and not (antivirus_plex_config_scan.skipped | default(false)) else none)
+      } | to_nice_json }}
+    dest: "{{ antivirus_scan_output_dir }}/{{ antivirus_scan_run_id }}-{{ inventory_hostname }}.json"
+    mode: '0600'
+  become: false
+  delegate_to: localhost
+  no_log: true
+
+- name: Report sanitized scan counts only
+  ansible.builtin.debug:
+    msg:
+      node: "{{ inventory_hostname }}"
+      signature_database: "{{ antivirus_version.stdout }}"
+      active_container_roots: "{{ antivirus_overlay_roots | length }}"
+      root_scan_exit_code: "{{ antivirus_root_scan.rc }}"
+      root_detection_lines: "{{ antivirus_root_scan.stdout_lines | default([]) | select('search', ' FOUND$') | list | length }}"
+      root_limit_alerts: "{{ antivirus_root_scan.stdout_lines | default([]) | select('search', 'Heuristics\\.Limits\\.Exceeded') | list | length }}"
+      overlay_scan_exit_codes: "{{ antivirus_overlay_scans.results | default([]) | map(attribute='rc') | list }}"
+      plex_config_scan_exit_code: "{{ antivirus_plex_config_scan.rc | default('not-on-this-node') }}"
+  no_log: false

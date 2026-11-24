@@ -1,0 +1,31 @@
+# APLB — Air Pollution Lookup Board
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aplb
+  namespace: website-stack
+  labels:
+    app: aplb
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: aplb
+  template:
+    metadata:
+      labels:
+        app: aplb
+        branconet.io/type: app
+    spec:
+      containers:
+        - name: aplb
+          image: jtmb92/aplb:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi

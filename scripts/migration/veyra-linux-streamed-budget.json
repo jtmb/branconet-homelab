@@ -1,0 +1,162 @@
+{
+  "proposalOnly": true,
+  "executionAuthorized": false,
+  "combinedTaskCeilingBytes": 24696061952,
+  "minimumFreeBytes": 16106127360,
+  "taskCeilingAuthorization": {
+    "temporary": true,
+    "previousCombinedTaskCeilingBytes": 21474836480,
+    "scope": "Existing paired Veyra Native and WSL roots for the current approved plan; no other task or root is amended.",
+    "humanStatement": "I approve the temporary 23 GiB ceiling. Keep the 15 GiB reserve, resume the goal, and finish the entire plan.",
+    "requiresFreshFullAdmissionAndCoordinatorGo": true
+  },
+  "notAnIrreducibleMinimum": true,
+  "basisRevision": "45b1278d826e9c1e44cededf15d33c0fd75618cf",
+  "sourceSha256": "332da4ac2f32b2f2015139c762f1743afd523f5e44decefdb263333cef7d5fb8",
+  "reviewedDriverSha256": "766b0a668e8a0a3256a5b56d78f9aeaa7424508db15d58dbdb49abb442dc9ced",
+  "growthPhases": {
+    "tools": {
+      "tools": 230686720,
+      "context": 0,
+      "preservedExports": 0,
+      "contentAndSnapshots": 0,
+      "compilerWorkingSets": 0,
+      "outputCoexistence": 0,
+      "margin": 33554432
+    },
+    "budget": {
+      "tools": 14680064,
+      "context": 67108864,
+      "preservedExports": 0,
+      "contentAndSnapshots": 1786515456,
+      "compilerWorkingSets": 0,
+      "outputCoexistence": 603979776,
+      "margin": 134217728
+    },
+    "swarm": {
+      "tools": 14680064,
+      "context": 67108864,
+      "preservedExports": 612368384,
+      "contentAndSnapshots": 1344180224,
+      "compilerWorkingSets": 805306368,
+      "outputCoexistence": 134217728,
+      "margin": 134217728
+    },
+    "rust": {
+      "tools": 14680064,
+      "context": 67108864,
+      "preservedExports": 738197504,
+      "contentAndSnapshots": 1235128320,
+      "compilerWorkingSets": 536870912,
+      "outputCoexistence": 67108864,
+      "margin": 134217728
+    },
+    "node": {
+      "tools": 14680064,
+      "context": 67108864,
+      "preservedExports": 201326592,
+      "contentAndSnapshots": 1830567840,
+      "compilerWorkingSets": 0,
+      "outputCoexistence": 805306368,
+      "margin": 134217728
+    },
+    "image": {
+      "tools": 14680064,
+      "context": 67108864,
+      "preservedExports": 0,
+      "contentAndSnapshots": 2559279561,
+      "compilerWorkingSets": 0,
+      "outputCoexistence": 1610612736,
+      "margin": 134217728
+    }
+  },
+  "phaseTotals": {
+    "tools": 264241152,
+    "budget": 2606501888,
+    "swarm": 3112079360,
+    "rust": 2793312256,
+    "node": 3053207456,
+    "image": 4385898953
+  },
+  "growthBytes": 4385898953,
+  "streamedLimits": {
+    "nodeDependenciesArchiveBytes": 536870912,
+    "nodeBinaryArchiveBytes": 67108864,
+    "nodeExportArchiveBytes": 805306368,
+    "imageArchiveBytes": 1610612736,
+    "imageChunkBytes": 67108864
+  },
+  "observedFacts": {
+    "nodeBaseRoundedDataBytes": 242036736,
+    "rustBaseRoundedDataBytes": 924749824,
+    "npmPathWeightedRoundedDataBytes": 1240391680,
+    "npmUniqueCompressedBytes": 262651928,
+    "lockedBrowserLogicalBytes": 685019718,
+    "lockedBrowserLargeSingletonCandidateBytes": 530561927,
+    "sourceBytes": 46149536,
+    "builderNpmBundledVersion": "10.9.9",
+    "lockedBrowserSelectedLogicalBytes": 411743908,
+    "lockedBrowserSelectedLargeSingletonCandidateBytes": 333557303,
+    "enforcedNodeExportAllocatedBytes": 1073741824,
+    "enforcedNodeLargestRegularFileBytes": 134217728,
+    "nondevNpmRoundedBeforeDashboardPruneBytes": 1038688256,
+    "dashboardNextSwcRoundedBytes": 415637504
+  },
+  "allowanceBasis": {
+    "tools": "Original full admit acquisition allowance remains unchanged; later phases reserve only the retained pinned runc plus small tooling overhead. Existing baseline is not subtracted or redefined.",
+    "budget": "Actual4a source splits locked ignore-scripts CI from signed compiler APT/native rebuild. Explicit point maxima count CI cache only before APT/hooks, full tools only during hooks, and seed512MiB+Node archive64MiB only after tools purge. No cache/tool overlap invented.576MiB output reserve satisfies original seed/archive admission; residual content normalizes the explicit maximum point, not a claim all content is always live. Hook scratch/OS/seed allowances remain unmeasured.",
+    "swarm": "Preserves512MiB dependency seed+64MiB Node archive+8MiB budget. Rust SDK rounded measured;384MiB registry compressed/unpacked allowance and768MiB target/compiler allowance are unmeasured.128MiB finished outputs/notice allowance remains live.",
+    "rust": "Preserves512MiB dependency seed+64MiB Node archive+128MiB actual Swarm output bound.288MiB registry/cache,512MiB compiler target and64MiB finished output are unmeasured allowances.",
+    "node": "After actual source-declared compiler purge,96MiB builder OS and128MiB retained postinstall allowance remain.768MiB output envelope is MAX(Next/TypeScript/cache/dist growth, post-producer768MiB compressed recovery coexistence); it is not a claim that compiler scratch is zero. Original21 builder+2 extractor outputs remain required. Actual9a source prunes only graph-proven Dashboard-exclusive full Next/SWC after successful fullbuild/prune, retains actualtrace SDK/licenses; the full-compiler working peak gets NO pruning savings. Driver bounds the complete original Node export to1024MiB and each Node regular file to128MiB only after original full validation.",
+    "image": "Actual766b source9a selects pinned fullChromium+ffmpeg only (411743908logical bytes;416MiB rounded envelope), retains all3 original browser pins and verifies selected2. No headless-shell payload charged. Full actual Node handoff is bounded1024MiB and largestNodefile128MiB. Original23COPY consumers finish and ONEcompressed768MiB Node transport is retired BEFORE browser installation; its bytes are charged only in pre-browser point. All runtime payloads are still fully counted, including actualtraced Next SDK/licenses. Archive uses actual largest-singleton retirement; only authenticated selected-browser333557303B credit, not unknown CLI/npm/OS credit. First remaining group conservatively allows the entire512MiB runtimeOS allowance; archive-end remainder+full1536MiB OCI bound is the largest point. No old whole-root+whole-archive assumption."
+  },
+  "imageOverlapPoints": {
+    "beforeLastCopyNoBrowsersCompressedTransportStillLive": 3261935616,
+    "afterLastCopyTransportRetiredBrowserDownloadLive": 3161272320,
+    "archiveAfterKnownBrowserRetirement": 4169892297,
+    "firstLargestRemainingGroupConservativeOsEnvelope": 3431804928,
+    "runtimePayloadEnvelopeBytes": 2892836864
+  },
+  "requiredActualChecks": [
+    "Fresh original full admit with final source, native max(logical,allocated), root allocation and both floors.",
+    "Actual generated handoff allocations must remain within the stated1024/128/64MiB bounds before runtime; the driver currently needs these explicit upcoming-phase checks.",
+    "Actual Node seed/archive and whole OCI size limits must stay enforced.",
+    "Before each phase, account actual retained exports plus the complete upcoming working/coexistence peak; current actual-only guard is not an upcoming-peak forecast.",
+    "Actual browser nlink/content/metadata qualification must establish the credited singleton subset before archive retirement; a refusal stops and retains the exact target.",
+    "Actual complete Node export<=1024MiB and each Node file<=128MiB must pass; failure preserves full required output, never removes paths or reuses an older producer."
+  ],
+  "unmeasured": [
+    "Signed builder/runtime/browser APT closure and peak lists/downloads",
+    "npm postinstall/fallback native compilation/Node headers",
+    "Cargo registry and target output sizes",
+    "Next cache/standalone and every generated export size",
+    "Final runtime CLI sizes and archive compression ratio"
+  ],
+  "noSavingsCredited": [
+    "Actual766b compressed Node COPY and last-COPY-before-browser retirement are credited only at their real consumer boundary. No second recovery archive or plain Node handoff exists during runtime.",
+    "No lower cap/floor, drive or filesystem change.",
+    "No removal of protected data, unique evidence or refused targets.",
+    "No assumption of whole Node recovery archive retirement before its actual last consumer."
+  ],
+  "requiredRetainedPairedBaselineAtMostBytes": 20310162999,
+  "imageComponentNormalization": "Originaladmit requires the full1536MiB archive bound in outputCoexistence. Residualcontent is the explicit worst overlap total minus that same bound; complete runtime payload and every temporal point remain explicitly recorded. This normalization does not claim all runtime content was already retired before firstchunk.",
+  "previousProposal": {
+    "revision": "9a4b5711176a7f36dab067d36220e19974c73e0e",
+    "driverSha256": "766b0a668e8a0a3256a5b56d78f9aeaa7424508db15d58dbdb49abb442dc9ced",
+    "growthBytes": 4385898953,
+    "sourceFileSha256": "5d827def8c6e018ce6e36947e66b69a6a49834048d2df71890c940c03106f577"
+  },
+  "budgetOverlapPoints": {
+    "lockedExtractionNoCompilerTools": 2047070232,
+    "nativeHooksAfterCompletedCacheRetirement": 2371620864,
+    "seedAfterCompilerPurge": 2606501888
+  },
+  "compressedNodeTransport": {
+    "plainRetiredBeforeRuntime": true,
+    "secondRecoveryArchive": false,
+    "archiveRetiredAfterRuntimeStage": false,
+    "nodeModulesCopyPrecedesBrowserInstallAndLaterCopies": true,
+    "lateMaterializedPayloadPlusCompressedArchiveStillCounted": true,
+    "archiveRetiredImmediatelyAfterLastCopyBeforeBrowserInstall": true
+  }
+}

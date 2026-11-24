@@ -1,0 +1,93 @@
+---
+- name: Stage the existing encryption provider for a worker control-plane join
+  hosts: worker
+  become: true
+  serial: 1
+  gather_facts: false
+  any_errors_fatal: true
+  vars_files:
+    - ../group_vars/all.yml
+  vars:
+    api_encryption_provider: /etc/kubernetes/encryption-config.json
+
+  tasks:
+    - name: Confirm exact source and destination
+      ansible.builtin.assert:
+        that:
+          - api_encryption_stage | default(false) | bool
+          - inventory_hostname == (api_encryption_target | default(''))
+          - (inventory_hostname == 'workernode2' and ansible_host == '192.168.0.5') or (inventory_hostname == 'workernode1' and ansible_host == '192.168.0.6')
+          - groups['master'] == ['masternode']
+          - hostvars['masternode'].ansible_host == '192.168.0.4'
+
+    - name: Verify the active provider is a protected regular file
+      ansible.builtin.stat:
+        path: "{{ api_encryption_provider }}"
+        follow: false
+        get_checksum: false
+      delegate_to: masternode
+      register: api_encryption_source
+      failed_when: >-
+        not (api_encryption_source.stat.isreg | default(false))
+        or api_encryption_source.stat.uid != 0
+        or api_encryption_source.stat.gid != 0
+        or api_encryption_source.stat.mode != '0600'
+
+    - name: Read the active provider into controller memory
+      ansible.builtin.slurp:
+        src: "{{ api_encryption_provider }}"
+      delegate_to: masternode
+      register: api_encryption_content
+      no_log: true
+
+    - name: Check for a conflicting destination without following links
+      ansible.builtin.stat:
+        path: "{{ api_encryption_provider }}"
+        follow: false
+        checksum_algorithm: sha256
+      register: api_encryption_destination
+      no_log: true
+      failed_when: >-
+        api_encryption_destination.stat.exists and
+        (not api_encryption_destination.stat.isreg
+        or api_encryption_destination.stat.checksum !=
+        (api_encryption_content.content | b64decode | hash('sha256')))
+
+    - name: Install the identical provider with root-only access
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -c
+          - |
+            import os
+            import pathlib
+            import sys
+            import tempfile
+
+            path = pathlib.Path(sys.argv[1])
+            with tempfile.NamedTemporaryFile(dir=path.parent, prefix=".encryption-stage-") as pending:
+                pending.write(sys.stdin.buffer.read())
+                pending.flush()
+                os.fsync(pending.fileno())
+                os.link(pending.name, path)
+          - "{{ api_encryption_provider }}"
+        stdin: "{{ api_encryption_content.content | b64decode }}"
+        stdin_add_newline: false
+      when: not api_encryption_destination.stat.exists
+      no_log: true
+      changed_when: true
+
+    - name: Verify the installed provider and permissions
+      ansible.builtin.stat:
+        path: "{{ api_encryption_provider }}"
+        follow: false
+        checksum_algorithm: sha256
+      register: api_encryption_installed
+      no_log: true
+      failed_when: >-
+        not (api_encryption_installed.stat.isreg | default(false))
+        or api_encryption_installed.stat.uid != 0
+        or api_encryption_installed.stat.gid != 0
+        or api_encryption_installed.stat.mode != '0600'
+        or api_encryption_installed.stat.checksum !=
+        (api_encryption_content.content | b64decode | hash('sha256'))

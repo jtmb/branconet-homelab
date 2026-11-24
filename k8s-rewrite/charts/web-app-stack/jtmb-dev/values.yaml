@@ -1,0 +1,109 @@
+enabled: false
+replicaCount: 0
+image: jtmb92/jtmb-dev@sha256:d46e9aeb8222d60b6778b6aa2202359b0982da76a69b2d4f01a5d58bc5a309a2
+environmentSecret: jtmb-dev-runtime
+migration:
+  verified: false
+  state: private-accepted-production-reconciled
+  sources:
+  - repository/web-app-stack/jtmb-dev
+  requiredEnvironmentKeys: []
+  storageSizingVerified: true
+  nativeSecretsImported: true
+  applicationChecksPassed: true
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: jtmb-dev
+    namespace: website-stack
+    labels:
+      app: jtmb-dev
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: jtmb-dev
+    template:
+      metadata:
+        labels:
+          app: jtmb-dev
+          branconet.io/type: app
+      spec:
+        containers:
+        - name: jtmb-dev
+          image: '{{ .Values.image }}'
+          ports:
+          - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi
+          imagePullPolicy: IfNotPresent
+    strategy:
+      type: Recreate
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: jtmb-dev-ingress
+    namespace: website-stack
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+  spec:
+    rules:
+    - host: jtmb-dev.branconet.local
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: jtmb-dev
+              port:
+                number: 80
+    ingressClassName: traefik
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: jtmb-dev
+    namespace: website-stack
+  spec:
+    type: ClusterIP
+    ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: http
+    selector:
+      app: jtmb-dev
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: jtmb-dev-https
+    namespace: website-stack
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+      meta.helm.sh/release-name: jtmb-dev
+      meta.helm.sh/release-namespace: website-stack
+    labels:
+      app.kubernetes.io/managed-by: Helm
+  spec:
+    rules:
+    - host: jtmb-dev.branconet.local
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: jtmb-dev
+              port:
+                number: 80
+    ingressClassName: traefik
+    tls:
+    - hosts:
+      - jtmb-dev.branconet.local

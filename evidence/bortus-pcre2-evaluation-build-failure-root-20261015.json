@@ -1,0 +1,167 @@
+{
+  "scope": "Isolated PCRE2 evaluation build returns1 after five successful commands; failure retained",
+  "initialTool": "c1274f",
+  "finalTool": "402e45",
+  "actualToolExit": 1,
+  "hostPrimary": {
+    "stage": 4,
+    "type": 5
+  },
+  "hostFinalizers": [],
+  "workerFailure": {
+    "stage": 6,
+    "type": 1
+  },
+  "workerResultPresent": false,
+  "originalWholeSeconds": 900,
+  "closureReserveSeconds": 60,
+  "CPU": 2,
+  "memoryBytes": 4294967296,
+  "network": "none",
+  "sourceScanTool": "741ccf",
+  "sourceScanExit": 0,
+  "sourceScanFindings": 0,
+  "commands": [
+    {
+      "role": "regenerate",
+      "actualExit": 0,
+      "reaped": true
+    },
+    {
+      "role": "configure",
+      "actualExit": 0,
+      "reaped": true
+    },
+    {
+      "role": "build",
+      "actualExit": 0,
+      "reaped": true
+    },
+    {
+      "role": "upstream-check",
+      "actualExit": 0,
+      "reaped": true
+    },
+    {
+      "role": "staged-install",
+      "actualExit": 0,
+      "reaped": true
+    }
+  ],
+  "originalUpstreamTestSummary": {
+    "total": 4,
+    "pass": 4,
+    "skip": 0,
+    "fail": 0,
+    "error": 0
+  },
+  "POSIXMacroRedefinitionWarningsRetained": true,
+  "stagedManifestPresent": true,
+  "buildResultPresent": false,
+  "firstExceptionRecorded": false,
+  "exactCauseEstablished": false,
+  "originalSourceUnchangedReported": true,
+  "containerRemovedReported": true,
+  "independentClosurePending": false,
+  "NobleBinaryEquivalence": false,
+  "consumerABIQualified": false,
+  "imageOrSecurityAccepted": false,
+  "productionChanged": false,
+  "pins": [
+    {
+      "path": "root-pcre2-evaluation-build-20261015-v1-1/terminal.json",
+      "sha256": "a827f190cee0ea6799830a2359233170135ef29bd0964b4100e386dae3a66e7a"
+    },
+    {
+      "path": "root-pcre2-evaluation-build-20261015-v1-1/output/fixture-terminal.json",
+      "sha256": "8af3f83d84169ce140c05c54f08bd57b5dbf283d77cf4b0719fa123bf58c0c99"
+    },
+    {
+      "path": "root-pcre2-evaluation-build-20261015-v1-1/output/staged-manifest.json",
+      "sha256": "7d1a879bafe7e7d391852df445a17edd986079d3c113835bfb077adcf8afd3da"
+    }
+  ],
+  "independentTool": "c94006",
+  "independentExit": 0,
+  "laterTool": "badcf2",
+  "laterExit": 0,
+  "ownTool": "017fc0",
+  "own": {
+    "actualExit": 0,
+    "allFivePhaseCommandsLiteralExit0": true,
+    "boot_id": "7fbd3ead-db6c-4422-8cde-63afd93dabec",
+    "consumerABIOrImageOrSecurityAccepted": false,
+    "exactCIDNameAbsenceRetained": true,
+    "failedBuildTreeSnapshotAccepted": false,
+    "hostCoordinatesFreshAbsent": 18,
+    "laterActualExit": 0,
+    "laterActualTool": "badcf2",
+    "noChildOrAPI": true,
+    "originalActorLiteralExit": 1,
+    "originalCaptureDidNotRecordBoot": true,
+    "originalROOTPreflightBootMatchesCurrent": true,
+    "originalRecordsCurrent": 98,
+    "originalSourcesCurrent": 5,
+    "postRecordsCurrent": 11,
+    "postSourcesCurrent": 2,
+    "readerBirth": {
+      "pgrp": 2239504,
+      "pid": 2239504,
+      "ppid": 2239503,
+      "start_ticks": "8536840",
+      "state": "R",
+      "uid": 1000
+    },
+    "readerRecordedBirthAbsent": true
+  },
+  "currentPredicateWitnessTool": "01fda2",
+  "currentPredicateWitnessExit": 0,
+  "currentPredicateWitnessOwnTool": "763164",
+  "currentPredicateWitnessOwn": {
+    "actualExit": 0,
+    "currentOutputRecords": 4,
+    "currentPredicateObservation": {
+      "current_build_snapshot_refused": true,
+      "first_false_source_lines": [
+        33,
+        22,
+        30,
+        4
+      ],
+      "historical_exception_proved": false,
+      "offending_link_fullFP": [
+        2096,
+        10263799,
+        1000,
+        41471,
+        1,
+        60,
+        1792042847843779975,
+        1792042847843779975
+      ],
+      "offending_link_target": "/output/pcre2-source/pcre2-10.42/src/pcre2_chartables.c.dist",
+      "offending_public_relative_path": "build/src/pcre2_chartables.c",
+      "outside_build_root": null
+    },
+    "currentWitnessSourceFiles": 2,
+    "historicalCauseProved": false,
+    "noChildOrAPI": true,
+    "originalActorActualExitPreserved": 1,
+    "witnessActualExit": 0,
+    "witnessActualTool": "01fda2",
+    "witnessReaderBirth": {
+      "pgrp": 2234004,
+      "pid": 2234004,
+      "ppid": 2234003,
+      "start_ticks": "8508217",
+      "state": "R",
+      "uid": 1000
+    },
+    "witnessReaderBirthAbsent": true
+  },
+  "sourceActualAbsoluteSymlinkWitness": true,
+  "originalUnrecordedExceptionProved": false,
+  "buildTreeInventoryQualified": false,
+  "alreadyStagedArtifactCompatibilityQualified": false,
+  "nextWork": "Review bounded qualification of already-staged artifacts and declared source/build link roots; retain original actor1 and do not replay unchanged build"
+}

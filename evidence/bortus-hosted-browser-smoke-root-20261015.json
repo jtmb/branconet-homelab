@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "status": "qualified finite hosted browser smoke plus unchanged seven regression controls",
+  "sourceCommit": "939648f500fb404a0907e1923d1ff05eded8b3b1",
+  "frontendTree": "407239c924ea650f00cefbd520995c129fe69864",
+  "workflowBlob": "b945ae89321d544a9a2de4ca7210c90aba6062bb",
+  "validationCommit": "e92cfcfdc2288d9167f923deff85743a75fec78b",
+  "validationTree": "892b22a000eaf7a328bf307d99bb7641522ba149",
+  "runURL": "https://github.com/jtmb/branconet-homelab/actions/runs/38783060622",
+  "hostedConclusion": "success",
+  "allStepsSucceeded": true,
+  "units": 342,
+  "integrations": 8,
+  "regressionControls": 7,
+  "sensitivityCases": [
+    "A04-name-admission",
+    "A05-failed-stdout",
+    "A06-outage-empty",
+    "deployment-action-coercion",
+    "private-kv-cache-admission",
+    "A02-deleted-account",
+    "A03-bootstrap-writer"
+  ],
+  "allSevenPristineMutantPairsExpectedExits": [
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1,
+    0,
+    1
+  ],
+  "allInputsRestored": true,
+  "allOriginalTAPCountsVerified": true,
+  "skippedOrCancelled": 0,
+  "browserObservations": [
+    {
+      "browserSmoke": "passed",
+      "realPodGETStatus": 200,
+      "wireRows": 208,
+      "initialPageRows": 100,
+      "filteredRows": 3,
+      "nonAgeColumnsVerified": 8,
+      "exactLinks": 3,
+      "noMutationsAttempted": true,
+      "ATQualified": false,
+      "performanceQualified": false
+    },
+    {
+      "fixtureExecutionDiagnostic": {
+        "tmpMountRecords": 1,
+        "tmpNoexec": false,
+        "fakeFileRegular": true,
+        "fakeFileExecutable": true,
+        "spawnObserved": true,
+        "actualExit": 0,
+        "spawnErrorClass": 0,
+        "errno": null,
+        "signalNumber": 0,
+        "stdoutBytes": 85803,
+        "stderrBytes": 0,
+        "diagnosticFailed": false
+      }
+    },
+    {
+      "browserFixtureClosed": true,
+      "orderlyStopRequested": true,
+      "fixtureStdoutBytes": 165,
+      "fixtureStderrBytes": 0
+    },
+    {
+      "browserCICleanupFailed": false,
+      "confirmedCIDCount": 2,
+      "exactNameQueryCount": 3,
+      "exactNamesAbsent": true,
+      "uncertainCreate": false
+    }
+  ],
+  "sourceDeltaFromPreviousValidation": [
+    "fixture app tmpfs adds exec",
+    "three Flux get-first argument corrections",
+    "three additive assertions in existing Flux test"
+  ],
+  "original44ValidationClausesUnchanged": true,
+  "sourceScanner": {
+    "actualExit": 0,
+    "findings": 0,
+    "files": 401
+  },
+  "logAndResultScanner": {
+    "actualExit": 0,
+    "findings": 0,
+    "files": 2
+  },
+  "retainedRawLog": {
+    "bytes": 498621,
+    "sha256": "ec2bc1987fd6e169a4c2fbc49dc33c50825a9de3e7c4acde8826a5bc7fc4ec3b",
+    "copiedIntoRepository": false
+  },
+  "earlierAttempts": [
+    {
+      "run": 38775576367,
+      "actualConclusion": "failure",
+      "causeEstablished": false,
+      "cleanupEstablished": false
+    },
+    {
+      "run": 38778394877,
+      "actualConclusion": "failure",
+      "podsHTTPStatus": 503,
+      "cleanupEstablished": true
+    },
+    {
+      "run": 38781205292,
+      "actualConclusion": "failure",
+      "podsHTTPStatus": 503,
+      "tmpNoexec": true,
+      "fakeKubectlSpawnErrno": -13,
+      "cleanupEstablished": true
+    }
+  ],
+  "runtimeHostPIDBirthClaim": false,
+  "crossProcessRegressionSensitivityQualified": false,
+  "wholeA19Accepted": false,
+  "ATQualified": false,
+  "performanceQualified": false,
+  "realClusterAcceptance": false,
+  "mainMerged": false,
+  "deployed": false
+}

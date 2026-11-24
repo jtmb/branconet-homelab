@@ -1,41 +1,370 @@
-# BORTUS workflow guide
+# BORTUS K8s — Workflow Guide
 
-The application lives at `k8s-rewrite/front-end/`; its documentation lives at repo-root `docs/`. This main-branch publication includes the dashboard and application runtime. Existing Swarm sources remain in place. Kubernetes charts, provisioning roles and Flux source changes are separate deployment work.
+## Certificates & Trust (working source; not yet deployed)
 
-## Local setup
+Open **Certificates & Trust** in the sidebar and use **Refresh inventory** to
+read visible cert-manager certificates and Kubernetes signing requests. Review
+source availability before interpreting an empty list. This initial UI is
+point-in-time for live inventory. Independent monitoring shows durable
+observations and run status when its fixed ConfigMaps are provisioned. Operators
+can save paused/monitor mode, scan interval and cert-manager warning thresholds;
+compare the requested revision with the runner's acknowledged revision and fresh
+heartbeat. A saved policy alone does not establish that monitoring is active.
+Heartbeat refreshes preserve unsaved policy fields when UID/revision is
+unchanged; a new policy revision refreshes the form from the current record.
+On narrow screens the certificate metadata table scrolls within its own named
+region. Tab to **Certificate metadata table**, then use horizontal arrow keys
+to reach its remaining columns; the focus outline identifies the scroll region.
+Long monitoring resource names wrap rather than widening the whole page.
+Notification status remains **delivery not configured** for the host outbox
+dispatcher: it is not yet connected to a live client subscription. The new
+ntfy server has qualified trusted serving and native machine receipts, but
+that does not prove a host monitoring alert or operator receipt. No UI action starts
+the independent monitor/notifier or bypasses their activation/recovery gates.
+This feature does not yet schedule host maintenance or approve requests.
+An issued CSR is not proof of an installed/served certificate.
+See `CLUSTER-TLS.md` and the follow-up roadmap in `MIGRATION-PLAN.md`.
+The notification hostname now resolves on both advertised DNS paths and normal
+client DNS; trusted HTTPS200 passed without an override. Host outbox delivery
+and attended subscriber receipt remain separate unfinished steps.
+The next host qualification uses paused-first startup and actual durable
+restart, then a clearly labelled diagnostic pending CSR to drive the real
+outbox and native host publisher. It neither approves the request nor tests
+production expiry/renewal. The current unreleased UI's delivery label remains
+static; do not treat host acceptance as UI delivery-status acceptance.
+Actual host qualification now completed its bounded alert path: one native
+subscriber message, delivered-row restart/no acknowledged replay, exact
+diagnostic CSR retirement and fresh healthy zero-CSR inventory. Normal monitor/
+sender/timer stay enabled. Delivery took66.2min with unresolved intermittent
+transport failures; human receipt, reboot/watchdog availability and UI status/
+release remain separate unfinished gates.
 
-1. Enter `k8s-rewrite/front-end` and run `npm ci`.
-2. Configure an untracked `.env` from `.env.example` using independently supplied signing/lookup credentials and a SQLite `DATABASE_URL`. Keep signing material stable across restarts.
-3. Supply operator `KUBECONFIG` or `~/.kube/config`, `BORTUS_SECRET_NAMESPACES` and optional metadata-only aliases via `BORTUS_SECRET_ALIASES_FILE`.
-4. Run `npm run db:deploy`, then `npm run dev`. Open `http://localhost:4000` and register the first user, which receives the `write` role.
-5. Check cluster resources and native Secret metadata. Import native values externally before enabling their consumers. See [deployment contract](BORTUS-DEPLOYMENT.md).
+## Current automatic feature handoff - 2026-10-23
 
-For an existing database, make a consistent backup and assess migration history before deployment. Never reset a production database to make migrations pass.
+The [current handoff policy](operations/handoffs/2026-10-23-bortus-autonomous-handoff-policy.md)
+implements the user's request to use Veyra's focused checkpoint and single-receipt
+transfer. It supersedes older recursive relay audits, shared-checkout identity
+requirements and startup/ack/release sequences. The successor verifies the owned
+feature branch/HEAD/remote in its existing isolated checkout, confirms its own
+actual full active goal, writes one ownership receipt and continues autonomously.
+The predecessor archives after matching that receipt. Historical evidence remains
+in place; all original product acceptance gates, frozen failures/workloads,
+application resource limits and PRD-last delivery boundaries remain unchanged.
+Root documentation and these workflow changes remain local.
 
-## Configuration and Secrets
+## KV cleanup summary compiled presentation - 2026-10-19 (Toronto)
 
-Use **Configuration** (`/configuration`) for nonsecret SQLite settings. Use **Secrets** (`/secrets`) for native Secret metadata and, as a write user, explicit reveal and key CRUD. Create refuses existing keys; update/delete require the current resourceVersion. Unrelated keys, type and metadata are preserved. Deleting the last Opaque key retains an empty Secret object.
+The [bounded presentation receipt](../evidence/bortus-kv-cleanup-presentation-root-20261019.json) reviews unchanged application `a912ab02` / frontend `91078cd2`, using BuildID `NXhSomXkQG0Ty4ZzFvFhX`. Root binds297 current raw Git/build inputs through actual WSL UNC reads, including one declared CRLF-to-LF relation. The initial prelaunch checks all41,723 compiled/dependency records plus native/worker bindings. After a readonly first-start refusal, the revised fixture reuses that graph check with no writer/source change and fresh source/native/worker checks. All297 inputs remain unchanged after runtime; no final graph walk, source patch, test or rebuild occurs.
 
-Register exact alias/namespace/name/key mappings using `/api/secret-references` or the alias JSON file. Underscores and path-style aliases are not parsed into destinations. Bearer lookup returns mapped native values or nonsecret configuration; legacy sensitive SQLite rows are excluded, including during outages.
+Integrated IAB records14 full sequential AX states, three read-only DOM projections and three inspected images. Exactly two intercepted synthetic destroy submissions display pending, complete and partial cleanup metadata. The first hold is file-released after20.140s. Each complete/partial paragraph has `role="status"`, zero table descendants and a separate sibling table: `deleted / 200`, then `conflict / 409`. Partial is a successful HTTP200 metadata response with a409 detail row, not an exercised error-response branch. Six explicit clears surround three text entries; closing administration returns entry focus, then the tab closes. No GC, recovery, identity or additional error interaction is attempted. These separate action/DOM/AX/image observations establish finite presentation only; actual AT remains open.
 
-See [API usage](API-USAGE.md), [Secrets engine](SECRETS-ENGINE.md) and [permissions](USER-PERMS.md). Protect browser and Bearer traffic with TLS outside loopback development.
+All browser APIs are intercepted:63 API events represent62 transactions (60GET +2POST; the first POST has held/settled events), zero API forwarding. A fresh tmpfs-only schema/account and server-memory synthetic human cookie enable the actual compiled protected page; no cookie is issued to the browser, no operator authentication/schema changes, values or KV-issued credentials occur. The fixture internally reads app liveness for startup. Original2CPU/1GiB/no-extra-swap/PID256/network-none/readonly/1800s/32-connection bounds hold. Exact v1/v2 container IDs/names, all three recorded v2 actor births and Linux/Windows4401 listeners are absent.
 
-## Provisioning integration
+The v1 Docker-start refusal is retained before READY/browser; discarded stderr leaves its exact cause unestablished. Absent standalone nested mountpoints are observed; v2 instead serves exact compiled static bytes with strict path/size checks. Initial CRLF readers, IAB initialization timeout, unused exact-argv reader and API event-count wording remain retained. Returned screenshots are JPEG1270×714 despite initial `.png` names; originals and identical `.jpg` aliases are preserved. IAB defaults were not overridden; CSS viewport dimensions were not separately measured. No actual AT, real native cleanup/history/CAS/rotation/recovery/rollback, performance, release-image, security or live-adoption gate closes. All44 original clauses and A07five-of-ten warm failures remain. Full delivery is incomplete; the next separate feature reviews immutable-image/guarded-adoption source wiring without publication or live action.
 
-Container provisioning is disabled. Provision or recover a cluster from an independent operator environment with independently available credentials. The optional local dashboard runner expects Ansible and a separately supplied sibling tree at `k8s-rewrite/ansible-playbook/`, including `playbooks/` and `inventory/production.ini`. That Kubernetes provisioning tree is not supplied by this application-only merge.
+## Overlapping welcome lookups - 2026-10-19 (Toronto)
 
-`POST /api/vars/sync` generates lookup expressions and inventory for that optional tree. It never generates Secret values. Local runner inputs are `ANSIBLE_BECOME_PASSWORD`, `ANSIBLE_PRIVATE_KEY_FILE`, `ANSIBLE_REMOTE_USER`, `BOTRUS_API_URL` and `BOTRUS_SECRETS_KEY`. Bootstrap must work while the target cluster is unavailable. Use sensitive task `no_log` handling in the external playbooks.
+The [bounded receipt](../evidence/bortus-welcome-overlap-root-20261019.json) reviews unchanged application `5d25f7ff` / frontend `60a7af22`, reusing BuildID `g9s2FM_HN2yKmoyUlr-nZ` only after current binding of296 raw production-export files and prelaunch verification of41,723 compiled/dependency records and native/worker bindings. No source patch, new source test or rebuild is warranted.
 
-## Cluster and Flux operations
+Exactly two explicit clicks on the same enabled header Get Started button produce two overlapping synthetic lookups. The second completes first: destination GET order is `/auth/login`, then `/auth/register`. GET destination responses are briefly held so the unchanged welcome page remains mounted. After the second lookup settles, its checking status remains populated and all3 buttons stay enabled/busy; after the final lookup settles, status empties and busy clears. Releasing navigation yields the actual registration page. Both arrival and post-hygiene observations have empty fields;3 explicit clears, zero form submissions or forwarded mutations, zero accounts. Seven sequential DOM/AX observations and4 inspected PNGs support this finite result. Images show visible page state; the status is visually hidden.
 
-The dashboard lists nodes, namespaces, pods, deployments, services, ingresses and storage using externally supplied Kubernetes credentials. Database node records describe inventory; creating a record does not provision a machine or join it to Kubernetes.
+Both lookup holds and both navigation holds are file-released. Navigation responses release registration then login; their close records do not prove cancellation. No visible first sign-in arrival is claimed. The180s fixture response hold is a ceiling subject to the unchanged60s relay inactivity bound; the global timer edit also covers unused auth holds. The third session request belongs to registration mount, not another welcome activation. Actions, DOM, AX and images are separate observations; actual AT remains unproved. AX captures01-05 are incremental/no-change outputs without a persisted full welcome base; no standalone full-AX reconstruction is claimed. Full DOM snapshots and read-only attribute projections support status/busy. Existing three-destination/fallback source and previous failures remain unchanged; other overlap combinations are not replayed.
 
-The **Flux** view reflects installed Flux resources. The production source is the separate private `jtmb/branconet-charts` repository: main pushes pass validation before CI promotes their exact SHA to validated. The existing migration-releases Kustomization uses source branconet-charts and path ./flux/releases. BORTUS's package is charts/bortus, with release overrides in flux/releases/bortus.yaml. Application source pushes do not rebuild or redeploy the running image. See [Flux guide](FLUX-GITOPS.md), its reviewed image-release procedure and [connection guide](CONNECTING-TO-A-CLUSTER.md).
+Unified launcher exits0; exact preview/build IDs and names, supervisor birth and Linux/Windows4401 listeners are absent. All296 raw sources remain unchanged; no final graph rewalk. Every existing root/app doc is checked, with current evidence updated in root status/operations/workflow/permissions only. All44 acceptance clauses, A07 five-of-ten warm failures, security/recovery restrictions and data protections remain. No live/authentication/security/performance/native-value/history/CAS/rotation/rollback/recovery/adoption gate closes. Full delivery remains incomplete. Next is a bounded source review of preserved A07 warm failures for one justified minimal candidate; no next test, patch, diagnostic or benchmark has begun.
 
-The write-role terminal executes shell commands with the application's operating-system permissions as well as its Kubernetes permissions. Treat write accounts as operators with application-host access.
+## Registration unavailable keyboard review - 2026-10-19 (Toronto)
 
-## Validation
+The [bounded receipt](../evidence/bortus-register-unavailable-keyboard-root-20261019.json) reviews unchanged application `5d25f7ff` / frontend `60a7af22`. Current raw Git binding covers all 296 production-export files; prelaunch checks all 41,723 compiled/dependency records and native/worker bindings before reusing BuildID `g9s2FM_HN2yKmoyUlr-nZ` under the original isolated preview bounds. No source patch, new source test or rebuild is warranted.
 
-Run `npm test`, `npm run typecheck`, `npm run build`, then `npm run test:integration`. The HTTP integration suite requires the production build and uses temporary SQLite, fake credentials and a loopback unavailable Kubernetes endpoint. It does not access the operator database or live cluster.
+Integrated IAB at default 1280x720 records 23 sequential states and five inspected, cleared-field PNGs. Held successful-response JSON exposes the existing named checking status with no form. Unknown HTTP500 availability and explicit closed availability leave body focus; Tab reaches the visibly focused sign-in link, reverse Tab leaves page content, and forward Tab returns. Enter reaches sign-in from both. One keyboard submit receives synthetic HTTP403 headers: form, three inputs and pending status disappear before the body, body becomes active, next Tab visibly reaches Go to sign in, and Enter reaches sign-in while that body is still held. All three sign-in arrivals have populated fields, cleared without submitting; exact values and cause remain unqualified. Nine explicit field clears cover the three arrivals and pre-input registration hygiene; the refusal withdraws the three synthetic inputs and navigation unmounts that page.
 
-Image and live-cluster evidence are separate from those local checks. See [recorded evidence and runtime contract](BORTUS-DEPLOYMENT.md).
+One intercepted POST/two auth events and three session requests/five session events remain synthetic, with no forwarded mutation or retained request body, zero accounts and no other mutation. Every hold is file-released. Initial capture01 was already unknown after HTTP500 headers, so its checking label is not checking evidence; checking is separately observed at07/08. A body-locator Tab call times out after reverse traversal without activation; fresh AX followed by documented IAB key input resumes navigation without resubmission. Initial Windows-to-WSL script-path absence is a preparation refusal before launch. Original records remain; DOM/AX/actions/images are sequential, not simultaneous. Exact password equality and actual AT remain unproved.
+
+The exact preview/build container ID/name, supervisor birth and Linux/Windows4401 listeners are absent; all296 raw sources remain unchanged, with no final graph rewalk. All51 existing docs/ Markdown documents, PLAN.md, MIGRATION_STATUS.md and22 app docs are checked; only root evidence/status/workflow documentation changes. No benchmark, release image, live authentication, security, native-value/history/CAS/rotation/rollback, recovery or adoption is qualified. Original44 clauses and A07 five-of-ten warm failures remain; full delivery is incomplete. The next bounded feature observes previously unexercised overlapping welcome lookups and completion-order navigation; no next interaction, test or patch has begun.
+
+## Authentication entry keyboard review - 2026-10-19 (Toronto)
+
+The [finite keyboard receipt](../evidence/bortus-auth-keyboard-root-20261019.json) reviews unchanged application `5d25f7ffc488dcf1d28209e196d171a8b3e907db` / frontend `60a7af22a37e8e584bed073be61534fcded282fd`. The existing compiled build is reused only after current raw Git binding of all296 production-export files and prelaunch verification of41723 compiled/dependency records, native/worker bindings and original readonly/network-none isolation. No source patch, new source test or rebuild is warranted by these observations.
+
+Integrated IAB at its default1280x720 records73 sequential states and11 visually inspected PNGs;8 cleared-field images are public. Forward/reverse traversal reaches welcome controls and both open forms with visible focus. Header Enter, hero Space and final-CTA Enter select sign-in, the synthetic root marker and registration using fresh synthetic session responses. Root is navigation-only, not authenticated-dashboard acceptance. Held welcome requests retain initiating-button focus. Empty form submission focuses Username through native validation; registration mismatch keeps Create account focus. Disabling a pending form submit leaves body active; next Tab reaches Back with visible focus and settlement retains Back. Later sign-in-link and registration arrivals leave body active, then first Tab reaches Username. The existing initial registration check already exposes its named status.
+
+Three welcome activations and five form-submit attempts produce two intercepted POSTs/four auth events; three validations send none. All session and authentication responses are synthetic; bodies are not retained, no mutation forwarded and zero accounts created. All held responses are file-released. Eighteen field-clear operations surround synthetic entry; a later populated sign-in arrival is cleared without submitting. The first welcome-to-sign-in focus was observed only after hygiene moved focus, so its natural arrival remains unqualified. Private value projections report lengths/equality differing from the inspected typed-username image; exact field content/password equality and the cause remain unqualified. Those original records stay private without resubmitting. DOM/AX/image captures are separate sequential observations.
+
+The exact preview container ID/name, supervisor birth and Linux/Windows4401 listeners are absent;296 raw sources are unchanged, with no final graph rewalk. All50 existing root Markdown docs and22 app docs are checked; only root evidence/operation docs change. Preparation refusals are retained separately. The finite review does not close actual AT, real authentication/bootstrap/outage, performance, image security, compatible independent recovery, native-value/history/CAS/rotation/rollback or live adoption. A07 still fails5/10 and all44 original acceptance clauses and protected files remain. No release/merge/deploy follows. The next bounded feature reviews keyboard access after registration unknown/closed availability or403 form replacement; no such next interaction/test/patch has begun. Full delivery remains incomplete.
+
+## Welcome pending session status - reviewed source and bounded UI
+
+Application `5d25f7ffc488dcf1d28209e196d171a8b3e907db` adds only an in-flight counter, one persistent sr-only `Checking session…` status outside the three Get Started buttons and their shared busy attributes. Buttons stay enabled; every explicit click obtains a fresh session. Existing guards, three destinations and all failure fallbacks remain unchanged. Removing eight lines restores the entire prior page. Same-final actual-source tests old5/41 then46/46 and lint0 pass; the earlier guessed-microtask observer failures remain retained after an explicit JSON-entry barrier correction.
+
+The [finite receipt](../evidence/bortus-welcome-pending-root-20261019.json) binds a fresh production build and synthetic IAB states. All7held states expose status/busy semantics; all3destinations, HTTP500, invalidJSON and malformed flags are observed. The root destination is a synthetic navigation marker. One destroyed-connection attempt unexpectedly reaches registration after two synthetic-safe responses; its timed-out sign-in wait and cleared-field image remain private, with no cause, browser-network-fallback pass or replay claimed. The source catch remains byte-identical and model-tested. Seven explicit Get Started clicks send zero form submissions; all16PNGs inspected,15public,fields cleared before captures,zeroaccounts. Captures are sequential and actual screen-reader announcements remain unproved. Build/preview/listeners are closed. No image or production operation follows.
+
+## Registration pending submission status - reviewed development source
+
+Application `170de4e5295b465d633e92c11ebd4c417ac5785d` adds an always-mounted, screen-reader-only `role="status"` outside the open registration form, loading-derived `aria-busy`, and `aria-hidden="true"` on its decorative spinner. The status contains `Creating account…` only while the existing loading state is true. Removing that paragraph and two attributes restores the entire prior page. Availability, validation, retained fields, disabled submit, explicit retry, feedback alerts, neutral wording, navigation and fresh server authority are unchanged. HTTP403 still replaces form and pending status with its lock alert before reading the body.
+
+The [finite receipt](../evidence/bortus-registration-pending-root-20261019.json) records same-final-tests old42pass/19fail then61/61,lint0,fresh compiled source,11 sequential synthetic IAB states and two successful source CI runs. Held fetch/500-body states expose busy/status semantics;settlement restores feedback;held403,closed and unknown retain no form/status. Four deliberate clicks produce3interceptedPOSTs;validation sends none,no bodies retained,zeroaccounts. Two early stale frames and a capture binding error remain private;current frames are captured without resubmitting. All11 selected screenshots are visually checked. Exact password equality and actual screen-reader announcements remain unproved. No release image or production operation follows.
+
+
+## Login pending submission status - reviewed development source
+
+Application `29036ff9548d67374354d40be2c042dc59a902ce` adds an always-mounted, screen-reader-only `role="status"` outside the login form, `aria-busy` from the existing loading state, and `aria-hidden="true"` on the decorative spinner. The status contains `Signing in…` only while loading, including reading an unsuccessful response body. Removing that paragraph and two attributes restores the entire prior page; handlers, fields, validation, feedback alerts, navigation and fresh server authority are unchanged.
+
+The [finite receipt](../evidence/bortus-login-pending-root-20261019.json) records same-final-tests old29pass/24fail then53/53, lint0, fresh compiled source and six sequential synthetic IAB states (five public images). Held-request and held-body states expose busy/status semantics; string and malformed-body settlements restore the form and existing alerts. An initial autofill race and a mismatched initial screenshot remain private; no browser-validation or simultaneous-initial-blank claim follows. All three attempts were intercepted, no bodies retained and zero accounts created. Exact password equality and actual screen-reader announcements remain unproved. Source CI passes; no release image or production operation follows.
+
+## Registration lock alerts - reviewed development source
+
+Application `ac15e9cdd537c0be2d92b418bc30c85e7371cb43` adds one `role="alert"` to the existing locked heading/explanation group. The sign-in link stays outside and no focus target/movement is added. Confirmed-closed availability and HTTP403 replace the form with this notice;403 still locks before body parsing. Availability, submission behavior and fresh server authority remain unchanged. The [finite receipt](../evidence/bortus-registration-lock-root-20261019.json) records same-tests old31pass/14fail then45/45, lint0, fresh compiled source, seven synthetic IAB states and exact-source pushCI success. Its separate PR registry502 failure/7validation skips remain preserved. Four lock states each expose one application alert;unknown/open/validation and sign-in navigation remain intact. Source/model/DOM observations do not establish actual screen-reader announcements or live acceptance. No new image or production action follows.
+
+
+## Authentication submission alerts - reviewed development source
+
+Application `7b852b021e604f3c1190dbfad8b1a58f3a906286` adds `role="alert"` to the two existing conditional login/registration error containers. Submission, validation, feedback strings, loading, fields, availability,403 lock, success navigation and fresh server authority remain unchanged. The [finite receipt](../evidence/bortus-auth-announcements-root-20261019.json) records same-test old15pass/26fail then41/41, lint0, fresh compiled source, eight synthetic IAB cases and exact-source CI. Seven feedback cases expose content-scoped alerts; the403 case preserves its existing lock screen. These source/DOM observations do not prove actual screen-reader announcements or live acceptance. Exact password equality is unobserved because DOM values are redacted; screenshots retain visible synthetic username and masked nonempty fields. No new image or production action follows.
+
+## Login refusal presentation - reviewed development source
+
+Application `0b9d244b6479dd559ebd1270af3e3c3e60569c20` renders only a string `error`
+from a nonarray JSON object after an unsuccessful login HTTP response. Unreadable
+or malformed bodies use `Login failed`; transport failures keep the network-error
+message. Loading recovery, entered fields, form behavior and successful `push("/")`
+remain unchanged. Fresh server authentication is unchanged. The same actual-page
+TSX/VM test passes 10/fails 6 on old source and passes all 16 on the correction;
+these are client-model results. See the [bounded evidence](../evidence/bortus-login-errors-root-20261019.json)
+for compiled/UI/CI evidence and its limits; no new release image or live acceptance
+follows from source qualification.
+
+## Welcome capability copy - 2026-10-18 (Toronto)
+
+Application source `b0802b9` describes native Secret management, external cluster access, configured Flux resources and independent provisioning. Packaged provisioning is disabled; an optional local runner needs separately supplied Ansible/playbooks. Sync explicitly writes lookup references/inventory rather than native Secret values. The page scopes shell access to permissions/runtime configuration and replaces unverified usage counts and license claims. Retained screenshots are illustrative. Session/navigation behavior and layout remain; the broken license target now links to project information. See [the source receipt](../evidence/bortus-truthful-welcome-root-20261019.json). Existing images and UI evidence retain their prior source identities until new packaging/qualification.
+
+End-to-end workflows for managing a Kubernetes cluster with the BORTUS dashboard.
+
+## Current migration bootstrap
+
+The approved migration uses `ansible-playbook/playbooks/site.yml` on james@192.168.0.4/.5/.6, SSH port 2002. Nonsecret initial settings live in `group_vars/all.yml`; sudo reaches Ansible through the migration runner's stdin. Initial provisioning is independent of BORTUS, and must not regenerate that bootstrap configuration from the application database. The sections below describe the existing dashboard workflow; native Secrets development is owned by the scoped application and native-transport sub-agents and remains an acceptance dependency. The former execution chats are archived. Follow [MIGRATION-OPERATIONS.md](MIGRATION-OPERATIONS.md) and [MIGRATION_STATUS.md](../MIGRATION_STATUS.md) for live migration progress and cutover gates.
+
+The revised foundation preserves Docker's runtime, resolver, Gluster and NAS data, installs `containerd-k8s`, enables Secrets encryption at rest and retained LUKS Longhorn volumes, and uses temporary ingress NodePorts 30080/30443. Flux retains source, Kustomize, Helm and notification controllers. Chart source activation waits for individual chart/value validation; runtime configuration generation in the legacy UI is not a prerequisite for this migration.
+
+Existing worker1 filesystem capacity recovery uses the separate
+`filesystem-growth.yml` playbook and protected stdin/environment launcher.
+Inspection is the default; actual online growth requires a reviewed, exact
+inspection receipt after any planned reboot. It changes only the pinned ext4
+filesystem within the existing LV. See the
+[Ansible execution contract](../k8s-rewrite/ansible-playbook/README.md#pinned-worker1-existing-lv-filesystem-growth);
+this is separate from dashboard provisioning and from application acceptance.
+
+Fresh worker1 image artifacts use the separate disabled-by-default offline
+`worker1-oci-scan.yml` path. Setup stages the retained verified scanner/DB; scan
+requires reviewed archive and OCI root hashes and preserves every finding under
+a bounded no-network unit. Neither phase runs or deploys the application. See
+the [exact OCI scan workflow](../k8s-rewrite/ansible-playbook/README.md#exact-offline-worker1-oci-vulnerability-scans).
+
+## Initial Setup
+
+### 1. Start the Dashboard
+
+```bash
+cd k8s-rewrite/front-end
+npm install
+npm run dev
+# Dashboard at http://localhost:4000
+```
+
+### 2. Initialize metadata/authentication
+
+Run npm run db:deploy; supply DATABASE_URL, stable BOTRUS_JWT_SECRET and BOTRUS_SECRETS_KEY independently. First registered user receives write role. Seed only nonsecret configuration through authenticated APIs; never SQLite passwords.
+
+### 3. Connect native Secrets
+
+Supply operator kubeconfig or service account, namespace allowlist and explicit aliases. Import values externally before consumers. Use /secrets for native CRUD and /configuration for nonsecret config. See [deployment](BORTUS-DEPLOYMENT.md).
+
+### 4. Verify Connectivity
+
+Open the dashboard at `http://localhost:4000` and check the **Nodes** page. If nodes show as `pending`, they haven't been provisioned yet.
+
+## Provisioning a Cluster
+
+### Option A: Full Provision (from scratch)
+
+1. In local operator mode, use **Configuration** for nonsecret variables. Container provisioning is disabled; bootstrap credentials are independent.
+2. Go to **Deploy** → select playbook `site.yml`
+3. Choose roles to run (or run all):
+   - `bootstrap` — SSH key distribution, base packages
+   - `network` — iptables, sysctl, kernel modules
+   - `kubernetes` — kubeadm init/join, kubelet, kubectl
+   - `storage` — Longhorn, NFS, SMB provisioners
+   - `ingress` — Traefik ingress controller
+   - `gitops` — FluxCD bootstrap
+   - `dns` — systemd-resolved configuration
+4. Click **Run** — watch live output
+
+For local Linux provisioning, set `BORTUS_PROVISIONING_LOCK_DIR` to an
+existing dedicated directory owned by the dashboard user, not writable by
+anyone else, on a supported local filesystem. Use the same directory for
+all dashboard processes using that operator database. The directory is
+locked without creating files; do not replace or modify it while
+provisioning is enabled. `/usr/bin/flock` is required.
+
+Restarting the dashboard does not stop an Ansible runner. A live runner
+keeps the lock and blocks a second run. After a confirmed local exit, the
+next operator history refresh marks a run that lacks a result as
+`interrupted` and keeps its saved log. Review partial effects on the
+target machines before retrying. A legacy running row, a different
+directory or boot, or unavailable lock evidence is not treated as proof
+of exit: new runs are refused until the operator resolves the unknown state.
+
+### Option B: Incremental (add a role)
+
+Same as above, but select only the role(s) you need. Example: add `storage` to an existing cluster (includes Longhorn).
+
+### Option C: CLI
+
+```bash
+cd k8s-rewrite/ansible-playbook
+
+# Full provision
+ansible-playbook playbooks/site.yml \
+  -i inventory/production.ini \
+  -u brajam \
+  --private-key ~/.ssh/id_ed25519 \
+  --become
+
+# Single role
+ansible-playbook playbooks/site.yml --tags kubernetes
+```
+
+## Deploying Applications (GitOps)
+
+Use the separate private `jtmb/branconet-charts` repository. Every application has its own `charts/<name>/` package and effective values in `flux/releases/<name>.yaml`. Change those files, validate the effective renders and push to `main`. Successful current-main chart CI promotes the exact tested SHA to `validated`; Flux's existing `branconet-charts` source and `migration-releases` Kustomization apply `./flux/releases`.
+
+Do not deploy the legacy raw `test-stack`/`media-stack` root or restore the retired migration publisher. Native Secret values stay outside Git. Preserve existing PVC identities and wait for the service's data/consumer gates before activation. New BORTUS source also requires a separately qualified immutable image and guarded release; an application source push alone does not change the running image.
+
+For status, inspect the `/flux` dashboard, `kubectl get helmreleases -n flux-system`, and source/applied revisions. Manual reconciliation of the existing owner is an operator mutation, not a CI bypass. See [FLUX-GITOPS.md](FLUX-GITOPS.md) for the current pipeline, commands and historical boundaries.
+
+The active deployment tree is `jtmb/branconet-charts`: `charts/<name>/`,
+`flux/releases/` and `flux/source.yaml`. The recovery GitOps role uses the same
+`validated` branch and independently restored native read-only source credential.
+See [charts separation](CHARTS-SEPARATION.md) for the historical cutover.
+
+## Managing Variables
+
+Nonsecret configuration lives in SQLite; native Secrets are authoritative for values.
+
+### View Variables
+
+Dashboard → **Configuration** tab, or:
+```bash
+curl http://localhost:4000/api/vars | jq .
+```
+
+### Update a Variable
+
+Dashboard → **Configuration** → edit a nonsecret field, or:
+```bash
+curl -X POST http://localhost:4000/api/vars \
+  -H "Content-Type: application/json" \
+  -d '{"id":"<variable-id>","value":"new-value"}'
+```
+
+### Sync to Ansible
+
+After changing variables, regenerate the Ansible vars file:
+```bash
+cd front-end
+npx tsx -e "import { syncVarsToYAML } from './src/lib/sync-vars'; syncVarsToYAML()"
+```
+
+This writes `ansible-playbook/group_vars/all.yml` with lookup refs — ready for the next playbook run.
+
+## Managing native Secrets
+
+Open /secrets, select namespace/name/key, reveal explicitly as a write user, and edit with current resourceVersion. Create refuses collisions; delete removes one key while preserving unrelated data/type/metadata. Readonly users see keys/metadata without values or mutations. Changes are immediate; no Ansible secrets role/sync is needed.
+
+Register legacy lookup aliases via /api/secret-references or ConfigMap JSON. Never split underscores to derive destinations. Native outage errors without DB fallback. Keep values out of Git, command arguments and reports.
+
+## Cluster Operations
+
+### Node Management
+
+Add a node:
+```bash
+curl -X POST -b /tmp/botrus-cookies http://localhost:4000/api/nodes \
+  -H "Content-Type: application/json" \
+  -d '{"name":"New Node","hostname":"u4","ipAddress":"192.168.0.28","role":"worker"}'
+```
+
+Then add node variables (`node_u4_hostname`, `node_u4_ip`, etc.) and run the `kubernetes` role with `--tags kubernetes` to join it to the cluster.
+
+### Troubleshooting
+
+See `kubectl-cheatsheet.md` for common diagnostic commands.
+
+Dashboard pages mirror kubectl output:
+- **Nodes** → `kubectl get nodes`
+- **Namespaces** → `kubectl get ns`
+- **Pods** → `kubectl get pods -A`
+- **Services** → `kubectl get svc -A`
+- **Ingresses** → `kubectl get ingress -A`
+- **Storage** → `kubectl get pvc -A`
+- **Flux** → `kubectl get gitrepositories,kustomizations -n flux-system`
+
+The **kubectl shell** (terminal icon in the top bar, write-only) provides a live
+kubectl prompt right in the dashboard. Type any kubectl command (with or without
+the `kubectl` prefix) and see output inline — no SSH needed.
+
+## Environment Variables Reference
+
+| Variable | Required | Purpose |
+|----------|----------|---------|
+| `BOTRUS_SECRETS_KEY` | Yes | Bearer token for `/api/vars/lookup` |
+| `BOTRUS_API_URL` | No | API base URL (default: `http://localhost:4000`) |
+| `DATABASE_URL` | Yes | Prisma SQLite path (auto-set by `.env`) |
+| `ANSIBLE_BECOME_PASSWORD` | Local provisioning | Independent operator environment |
+| `BORTUS_SECRET_NAMESPACES` | Production | Native Secret namespace allowlist |
+| `BOTRUS_JWT_SECRET` | Yes | Stable external signing material |
+| `BORTUS_SECRET_ALIASES_FILE` | Optional | Metadata-only JSON mapping file |
+
+## Directory Map
+
+```
+k8s-rewrite/
+├── PLAN.md                          # Architecture plan
+├── .gitignore                       # group_vars/all.yml gitignored
+├── docs/                            # ← Documentation
+│   ├── API-USAGE.md
+│   ├── SECRETS-ENGINE.md
+│   ├── ANSIBLE-2-API-INTERACTION.md
+│   ├── BORTRUS-WORKFLOW.md
+│   ├── CONNECTING-TO-A-CLUSTER.md
+│   └── kubectl-cheatsheet.md
+├── ansible-playbook/
+│   ├── ansible.cfg                  # lookup_plugins enabled
+│   ├── inventory/production.ini
+│   ├── group_vars/all.yml           # Auto-generated, gitignored
+│   ├── lookup_plugins/
+│   │   └── botrus_secret.py         # Ansible → API bridge
+│   ├── playbooks/site.yml
+│   └── roles/                       # bootstrap, kubernetes, storage, ingress, etc.
+├── front-end/
+│   ├── src/app/api/
+│   │   ├── vars/lookup/route.ts     # Secrets API endpoint
+│   │   ├── vars/route.ts            # CRUD for variables
+│   │   ├── cluster/                 # Cluster state endpoints
+│   │   └── flux/                    # FluxCD management
+│   ├── src/lib/
+│   │   ├── sync-vars.ts            # DB → all.yml generator
+│   │   ├── ansible.ts              # Ansible playbook spawner
+│   │   ├── k8s.ts                  # kubectl/SSH bridge
+│   │   ├── encryption.ts           # AES-256-GCM (lib/)
+│   │   └── db.ts                   # Prisma client
+│   ├── prisma/schema.prisma        # Variable, Node, Job models
+│   └── seed-db.sh                  # Retired helper; use authenticated configuration/Secrets UI
+└── charts/                          # Retained migration checkpoint; active charts moved
+```
+
+## 2026-10-14: remaining five-column sort attempt fails at fixture resource lookup
+
+The [literal A13 failure receipt](../evidence/bortus-a13-five-column-failure-root-20261014.json) retains server1/browser1. Deployments Restarts, Nodes Pods/Age and Namespaces Age complete eight directions with wire/display preconditions and unchanged complete row identity checks. Ingress stops at the six-row API length assertion; the failed body was not separately retained. Source and compiled command inspection identifies a fixture mismatch: it wrote `ingresses.json` while the app requests singular `ingress` and the fake CLI reads `ingress.json`. The whole five-column matrix remains unqualified; a separate source-only fixture correction keeps the browser and all ten expected observations byte-identical. Exact/Linux/Windows posts pass with374 source/39 inputs/5383 compiled/40635 dependency objects current,151 Linux births absent,10 Windows births with no live process and exact CID/name absent. Later reader/query checks pass. A root review-directory mode check failed after UNC creation; the exact reader inadvertently ran before root corrected0755/0644 to0700/0600 ahead of the fresh readers. This metadata error and the failed actor are retained. No application, benchmark, production image or cluster change follows.
+
+## 2026-10-14: remaining five sort columns qualify
+
+The [corrected five-column receipt](../evidence/bortus-a13-five-column-qualified-root-20261014.json) records server0/browser0, five columns/ten directions/five wire-display preconditions/eight successful page GETs. Only the fixture singular-ingress filename and comment change; browser and all ten expected observations are unchanged. Independent exact/Linux/Windows and later checks pass with374 sources/39 inputs/5383 compiled/40635 dependency objects current,33 Linux births absent,10 Windows births with no live recorded process and exact CID/name absent. Both default scans pass13 source and43 generated selections without findings. The prior failed attempt remains recorded. This closes these finite five columns, adding to the previously qualified count and raw-date subsets; it does not prove every UI route, assistive-technology, performance or delivered image.

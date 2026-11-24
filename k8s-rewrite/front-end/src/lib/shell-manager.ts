@@ -31,6 +31,8 @@ export interface ShellInstance {
 type Listener = () => void;
 
 const shells = new Map<string, ShellInstance>();
+// Element references are transient; never serialize them or terminal buffers.
+const origins = new Map<string, HTMLElement>();
 let listeners: Listener[] = [];
 const STORAGE_KEY = "botrus-shells";
 
@@ -85,9 +87,11 @@ export function getMaximized(): ShellInstance | null {
 export function openShell(
   type: ShellType,
   namespace?: string,
-  podName?: string
+  podName?: string,
+  returnFocus?: HTMLElement | null
 ): string {
   const id = type === "kubectl" ? "__kubectl__" : `exec:${namespace}:${podName}`;
+  if (returnFocus) origins.set(id, returnFocus);
 
   // Minimize all currently maximized shells
   for (const [key, s] of shells) {
@@ -108,7 +112,8 @@ export function openShell(
 }
 
 /** Close a shell. If another shell exists, auto-maximizes the first one. */
-export function closeShell(id: string): void {
+export function closeShell(id: string, returnFocus = false): void {
+  const origin = origins.get(id); origins.delete(id);
   shells.delete(id);
 
   // Auto-maximize the first remaining shell
@@ -118,6 +123,17 @@ export function closeShell(id: string): void {
   }
 
   notify();
+  if (returnFocus && remaining.length === 0 && origin?.isConnected && document.visibilityState !== "hidden") origin.focus();
+}
+
+/** Minimize a shell without closing it */
+export function closeAllShells(): void {
+  if (!shells.size) {
+    try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* unavailable */ }
+    return;
+  }
+  shells.clear(); origins.clear(); notify();
+  try { sessionStorage.removeItem(STORAGE_KEY); } catch { /* unavailable */ }
 }
 
 /** Minimize a shell without closing it */

@@ -1,0 +1,270 @@
+{
+  "scope": "Selected immutable image staging helper integration and local qualification; no actual export/import/runtime/data acceptance",
+  "native_commit": "15fb94bab6cc8126f789531246d19fa57ce21ee9",
+  "root_handoff_verification": {
+    "scope": "Independent selected export/preload handoff verification; no network/export/import/runtime",
+    "verified_at_utc": "2026-10-11T07:19:34.184522+00:00",
+    "source_commit": "15fb94bab6cc8126f789531246d19fa57ce21ee9",
+    "raw_files": [
+      {
+        "path": "docs/BORTUS-RELEASE-IMAGE.md",
+        "bytes": 5505,
+        "sha256": "c6bef853b17792edd455ecfec88fd63d5bf88aa882a4b1a4df35cdc8c76a5190",
+        "git_blob": "f6fafc1ce89717492113d5236c6136568954c7f3",
+        "git_mode": "100644"
+      },
+      {
+        "path": "docs/BORTUS-RELEASE-STAGING.md",
+        "bytes": 6102,
+        "sha256": "b8208afc28a22ad97119bc5072246d9668d99a87e7aeae32c2aa6959017bf50c",
+        "git_blob": "5fa5a0f2b392158a1fafb48c02209ac2c2a950c5",
+        "git_mode": "100644"
+      },
+      {
+        "path": "docs/implementation-evidence/bortus-release-staging/qualification.json",
+        "bytes": 11075,
+        "sha256": "86a552f32128aff62b7d9f98bbecc0eb30d1322888445a1487e8ae9c96443032",
+        "git_blob": "a8b86ff05422c30f98989cc73973e21e59ff2cd6",
+        "git_mode": "100644"
+      },
+      {
+        "path": "docs/implementation-evidence/bortus-release-staging/scan-review.json",
+        "bytes": 319,
+        "sha256": "9dc95f2f27b0a1e6b15fc02e312472cb45b36a62e52f1669c5cd4f1dc36244bd",
+        "git_blob": "3d9fa88322421b102c5124e4773a1bad8ee8fa33",
+        "git_mode": "100644"
+      },
+      {
+        "path": "scripts/migration/bortus-release-preload-node.py",
+        "bytes": 15672,
+        "sha256": "4279942f55e95692b58fa824ee60ce91f61a1baef7b67c62339c27900913b784",
+        "git_blob": "4255c5d40802e8e4db93ee0ad717ac28641c2acc",
+        "git_mode": "100644"
+      },
+      {
+        "path": "scripts/migration/stage-bortus-release-image.py",
+        "bytes": 22029,
+        "sha256": "c63fba13c2a4cf78813f3857e05b828b1f076e914d90573448b6cf79ad3dc680",
+        "git_blob": "a079753f3440b8b2e01d5176ef2afa3ee2b18928",
+        "git_mode": "100644"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_release_stage.py",
+        "bytes": 28670,
+        "sha256": "f535bb40abdc1d873a388ea2645ca1500dd377a1bbe2275d1d5fb5ae13e331dd",
+        "git_blob": "2e5928d0578d4de0e2a5ddce81be73bca3543a97",
+        "git_mode": "100644"
+      }
+    ],
+    "verified_original_artifacts": 86,
+    "exact_dependencies": [
+      {
+        "path": "scripts/migration/build-bortus-release-image.py",
+        "sha256": "9b7765fd6295eeb64bd0661a070fb9100fbaa58411916257f937e9068aa8f27f",
+        "git_blob": "d850f25ad5e01a9777b9f456f292cb95b0f0b7c8"
+      },
+      {
+        "path": "scripts/migration/prepare-bortus-release-context.py",
+        "sha256": "3b0c0c7b66468a78b91a001373675031b341ab804fa9b511029231e740f638db",
+        "git_blob": "113d10d1db4390ea30782ef52234f41c0ae682bb"
+      }
+    ],
+    "focused_tests": 26,
+    "combined_release_tests": 64,
+    "default_selected_scan_exit": 0,
+    "default_selected_scan_findings": 0,
+    "first_fixture_failure_retained": true,
+    "actual_export_import_runtime": false
+  },
+  "root_tests": {
+    "cases": 249,
+    "actual_exit_code": 0,
+    "skips": 0,
+    "terminal": {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--cd",
+        "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+        "--",
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/migration/tests",
+        "-p",
+        "test_bortus*.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-11T07:20:35.855735+00:00",
+      "completed_at_utc": "2026-10-11T07:20:50.112245+00:00",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "35e19090df7cd2ae66e5f63b76e51ed90e1a44badb53105aed1cb53ca63b5905",
+      "input_source_manifest_sha256": "aef6011430890dee32d2f5254dbc54b26b4ac7cd19b00b4dc031dc30860f52ea",
+      "input_source_unchanged": true,
+      "scope": "Pure/POSIX/local HTTPS/disposable local child fixtures; SSH/Docker/sudo/ctr mocked, no production calls"
+    }
+  },
+  "root_source_scan": {
+    "command": [
+      "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-native-window-tools-70320914\\bin\\gitleaks.exe",
+      "dir",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\scan-input",
+      "--redact",
+      "--no-banner",
+      "--report-format",
+      "json",
+      "--report-path",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\root-scan.json"
+    ],
+    "actual_exit_code": 0,
+    "started_at_utc": "2026-10-11T07:26:06.834577+00:00",
+    "completed_at_utc": "2026-10-11T07:26:07.258104+00:00",
+    "findings": 0,
+    "scope": "14 exact selected sources/tests/dependencies/docs/ledger; default rules, no exclusions; no full repository/image claim",
+    "inputs": [
+      {
+        "path": "docs/BORTUS-RELEASE-IMAGE.md",
+        "bytes": 5505,
+        "sha256": "c6bef853b17792edd455ecfec88fd63d5bf88aa882a4b1a4df35cdc8c76a5190"
+      },
+      {
+        "path": "docs/BORTUS-RELEASE-STAGING.md",
+        "bytes": 6635,
+        "sha256": "a154e9c1cc48507f56497aaf69b83bdfa32a4ba44c67453111cba0d42f542446"
+      },
+      {
+        "path": "docs/implementation-evidence/bortus-release-staging/qualification.json",
+        "bytes": 11075,
+        "sha256": "86a552f32128aff62b7d9f98bbecc0eb30d1322888445a1487e8ae9c96443032"
+      },
+      {
+        "path": "docs/implementation-evidence/bortus-release-staging/scan-review.json",
+        "bytes": 319,
+        "sha256": "9dc95f2f27b0a1e6b15fc02e312472cb45b36a62e52f1669c5cd4f1dc36244bd"
+      },
+      {
+        "path": "scripts/migration/bortus-release-preload-node.py",
+        "bytes": 15672,
+        "sha256": "4279942f55e95692b58fa824ee60ce91f61a1baef7b67c62339c27900913b784"
+      },
+      {
+        "path": "scripts/migration/stage-bortus-release-image.py",
+        "bytes": 22029,
+        "sha256": "c63fba13c2a4cf78813f3857e05b828b1f076e914d90573448b6cf79ad3dc680"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_release_stage.py",
+        "bytes": 28670,
+        "sha256": "f535bb40abdc1d873a388ea2645ca1500dd377a1bbe2275d1d5fb5ae13e331dd"
+      },
+      {
+        "path": "scripts/migration/build-bortus-release-image.py",
+        "bytes": 20225,
+        "sha256": "9b7765fd6295eeb64bd0661a070fb9100fbaa58411916257f937e9068aa8f27f"
+      },
+      {
+        "path": "scripts/migration/prepare-bortus-release-context.py",
+        "bytes": 7376,
+        "sha256": "3b0c0c7b66468a78b91a001373675031b341ab804fa9b511029231e740f638db"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_release_image.py",
+        "bytes": 24354,
+        "sha256": "0620c33f2d9588973391e814ee6c34216e8402f2a9f59f5947cdd07f71bf0d0b"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_release_context.py",
+        "bytes": 10353,
+        "sha256": "f99f1b2b08c54ad52c9ed2412e0dc1c743ff0a3e988168c15c13119bf7943d6e"
+      },
+      {
+        "path": "docs/BORTUS-DEPLOYMENT.md",
+        "bytes": 13423,
+        "sha256": "120d618e9e9c17731b5faed50dd85cd115bdc29d7a1ddaacad1c2f1e3100715d"
+      },
+      {
+        "path": "docs/MIGRATION-OPERATIONS.md",
+        "bytes": 92701,
+        "sha256": "ef21d8328567669120d5c9e0d52dddd24e4fb2520db5b3f8967d8e20e16ff5c7"
+      },
+      {
+        "path": "MIGRATION_STATUS.md",
+        "bytes": 82428,
+        "sha256": "3a2741ef7fcd82eb10f0a7117c329d7cae941cbbe4d8e547e75b7cf4ce554432"
+      }
+    ],
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "8971142d1758de27a2286a678386fe615ac76fe79888a52d01180f610d1c19cd",
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+  },
+  "documentation_checked": 17,
+  "protected_artifacts": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\verification.json",
+      "bytes": 2974,
+      "sha256": "7cc3d1254c764a13ac9e75e2028c42829ab2e305f1513f37982c66234fa21998"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\root-tests-source-manifest.json",
+      "bytes": 20542,
+      "sha256": "aef6011430890dee32d2f5254dbc54b26b4ac7cd19b00b4dc031dc30860f52ea"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\root-tests.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\root-tests.stderr",
+      "bytes": 41915,
+      "sha256": "35e19090df7cd2ae66e5f63b76e51ed90e1a44badb53105aed1cb53ca63b5905"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\root-tests.terminal.json",
+      "bytes": 914,
+      "sha256": "e50b518250100fc2bdb8557833ddad0606979b4232580beb4ed7ad2fcb9653e2"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\root-scan.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\root-scan.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\root-scan.stderr",
+      "bytes": 81,
+      "sha256": "8971142d1758de27a2286a678386fe615ac76fe79888a52d01180f610d1c19cd"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\root-scan.terminal.json",
+      "bytes": 3611,
+      "sha256": "be408e211e8be3052223e6db319d1380c77205b57ed0576a63fd8d3eee4e567a"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-staging-20261011\\docs-check.json",
+      "bytes": 4290,
+      "sha256": "2d4a919e29e3a9c2200d423697c7b9ab36390e6659082be4a44e5dc67b5e85e2"
+    }
+  ],
+  "not_proven": [
+    "Actual new release image build/credential review",
+    "Actual OCI/containerd digest preloads on all three nodes",
+    "Qualified release/recovery runtime and inert holder",
+    "Fresh consistent capture, independent restore and complete-row proof",
+    "Guarded schema/RBAC/admission migration",
+    "Full live KV/API/UI/persistence/recovery acceptance",
+    "Unchanged performance acceptance"
+  ],
+  "actual_cluster_changes": 0,
+  "operator_values_read": false
+}

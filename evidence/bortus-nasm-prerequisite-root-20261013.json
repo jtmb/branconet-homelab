@@ -1,0 +1,332 @@
+{
+  "acquisition": {
+    "NASM_downloaded": false,
+    "Node_build": false,
+    "acquired_public_artifacts": [
+      {
+        "bytes": 11861,
+        "canonical_url": "https://ftp-master.debian.org/keys/archive-key-12.asc",
+        "final_url_public": "https://ftp-master.debian.org/keys/archive-key-12.asc",
+        "role": "archive12",
+        "sha256": "c2a9a16fde95e037bafd0fa6b7e31f41b4ff1e85851de5558f19a2a2f0e955e2"
+      },
+      {
+        "bytes": 11861,
+        "canonical_url": "https://ftp-master.debian.org/keys/archive-key-13.asc",
+        "final_url_public": "https://ftp-master.debian.org/keys/archive-key-13.asc",
+        "role": "archive13",
+        "sha256": "6f1d277429dd7ffedcc6f8688a7ad9a458859b1139ffa026d1eeaadcbffb0da7"
+      },
+      {
+        "bytes": 8790396,
+        "canonical_url": "https://deb.debian.org/debian/dists/bookworm/main/binary-amd64/Packages.xz",
+        "final_url_public": "https://deb.debian.org/debian/dists/bookworm/main/binary-amd64/Packages.xz",
+        "role": "packages",
+        "sha256": "9e0b5aabb2465b3d2e7a7fe27f9913846277833f7a2826e7767acccff5b588c5"
+      },
+      {
+        "bytes": 151075,
+        "canonical_url": "https://deb.debian.org/debian/dists/bookworm/InRelease",
+        "final_url_public": "https://deb.debian.org/debian/dists/bookworm/InRelease",
+        "role": "release",
+        "sha256": "77737fa4b34f2693e982cc9ee35736816c35a7778fc2d326cc1bbf5b301fe1aa"
+      },
+      {
+        "bytes": 461,
+        "canonical_url": "https://ftp-master.debian.org/keys/release-12.asc",
+        "final_url_public": "https://ftp-master.debian.org/keys/release-12.asc",
+        "role": "release12",
+        "sha256": "521e9f6a9f9b92ee8d5ce74345e8cfd04028dae9db6f571259d584b293549824"
+      },
+      {
+        "bytes": 1384,
+        "canonical_url": "https://ftp-master.debian.org/keys/release-13.asc",
+        "final_url_public": "https://ftp-master.debian.org/keys/release-13.asc",
+        "role": "release13",
+        "sha256": "4d097bb93f83d731f475c5b92a0c2fcf108cfce1d4932792fca72d00b48d198b"
+      }
+    ],
+    "actor_tool": "cba8ec",
+    "actual_exit": 1,
+    "commands": [
+      {
+        "actual_exit": 0,
+        "path": "command-01-archive12",
+        "reaped": true,
+        "terminal_sha256": "b9db4cb72f5cb9b02ecb9a490f907e619ca9617e380c6ec60fe437d41115a41d"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-02-release12",
+        "reaped": true,
+        "terminal_sha256": "493d5cad1cf90e9ae67d9786fcc0f62d2116ed33657d0070eb9b6f5d4a631e3f"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-03-archive13",
+        "reaped": true,
+        "terminal_sha256": "8fb0e0dd4b5624f71bfd1c51b26a821fa729637b9ce3a2c5eb113e13fda85ef7"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-04-release13",
+        "reaped": true,
+        "terminal_sha256": "d6a432f210d9ffc4b7d05d51d8ec3e1abb769b4975c2f428d52642a06b5ed532"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-05-release",
+        "reaped": true,
+        "terminal_sha256": "b8b0a47e43c49479e646611f91f471fc5440e50009ea5b8e5e56b9126911b440"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-06-debian-release-signature",
+        "reaped": true,
+        "terminal_sha256": "65fb8a789b73ad0be688c9ce4176bc9e7781a775e0c6916a480cf1182642914f"
+      },
+      {
+        "actual_exit": 0,
+        "path": "command-07-packages",
+        "reaped": true,
+        "terminal_sha256": "05849410d54c76dae793fb6fd0e983483c4811fd0a878e5845715417f654cc20"
+      }
+    ],
+    "failure": {
+      "stage": 4,
+      "type": 4
+    },
+    "finalizers": [],
+    "overall_acceptance": false,
+    "source_generation": false,
+    "terminal_sha256": "ff659afeda7642e5f4ddc19c3bc5dc3701e0bc67a24d00d3db170f7017521a95",
+    "tool_executed": false,
+    "tool_tree_created": false
+  },
+  "builder_compatibility": {
+    "NASM_version": "2.16.01",
+    "actor_tool": "e11815",
+    "actual_exit": 0,
+    "build": false,
+    "commands": [
+      "readelf -dW",
+      "readelf --version-info -W",
+      "nasm -v"
+    ],
+    "container_namespace_coordinates_are_not_host_PIDs": true,
+    "container_namespace_jobs": 3,
+    "corrected_post_exact_LF_only": true,
+    "exact_CID_and_name_fresh_absent": true,
+    "finalizers": [],
+    "fixed_image": "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
+    "full_sysroot_manifest_qualified": false,
+    "generator_qualified": false,
+    "independent_post_tool": "79fc63",
+    "later_reader_and_query_births_absent": 5,
+    "original_acquisition_records_current": 6,
+    "original_host_births_absent": 18,
+    "prior_independent_post_actual_exit": 1,
+    "prior_post_reason": "exact absent formatted Docker inspect emits a single LF, not empty bytes",
+    "projected_tool_files_current": 2,
+    "required_GLIBC_versions": [
+      "GLIBC_2.14",
+      "GLIBC_2.2.5",
+      "GLIBC_2.3",
+      "GLIBC_2.3.4",
+      "GLIBC_2.33",
+      "GLIBC_2.34",
+      "GLIBC_2.4",
+      "GLIBC_2.7"
+    ],
+    "required_dynamic_libraries": [
+      "libc.so.6"
+    ],
+    "result_sha256": "fd2b8736906f0ecc3e9a1546f68b357c279e0aa412d289a5d7da7312a415a296",
+    "runtime_inclusion": false,
+    "source_files_current": 4,
+    "terminal_sha256": "be281cba292d24fdaf7815a244e438d1d55ad449ceb491dbf04c75d3e1c65476",
+    "three_actual_commands_exit_zero": true,
+    "workload_replayed_for_post_correction": false
+  },
+  "continuation_refusal": {
+    "actor_same_birth_absent": true,
+    "actor_tool": "19ff16",
+    "actual_exit": 1,
+    "current_all7_actual_exit_zero_reaped_no_refusal": true,
+    "current_all7_exact_birth_dictionary_predicates": false,
+    "current_all7_extra_annotation": true,
+    "current_all7_started_identity_fields_equal": true,
+    "current_only_terminal_extra_key": "same_identity_absent",
+    "current_original7_job_births_absent": true,
+    "current_witness_actual_exit": 0,
+    "current_witness_tool": "1cac44",
+    "failure": {
+      "stage": 1,
+      "type": 4
+    },
+    "finalizers": [],
+    "new_download_or_tool_tree": false,
+    "original_crypto_or_downloads_replayed": false,
+    "original_exception_retrospectively_attributed": false,
+    "original_records_current": 24,
+    "source_files_current": 2,
+    "terminal_sha256": "326725f724833766fa2b37eb372629876326565ab4cd13f88bc710d10c3d11c0"
+  },
+  "controls": {
+    "actor_tool": "559ff1",
+    "actual_exit": 0,
+    "current_source_files": 3,
+    "independent_post_tool": "562b7f",
+    "original_distinct_births_absent": 2,
+    "sparse_case_modeled_TarInfo_boundary": true,
+    "stderr_sha256": "17f5ddbb631b663b5ac470211bdf9a0de2783ed24eeccdb45be6e92aede4af29",
+    "structural_fixtures_not_actual_GPG_or_signed_index": true,
+    "suite_exit": 0,
+    "terminal_sha256": "cfbfdd816e5efe9dacf534d507d7a43f1a6018d44098dcb80994155292c2912b",
+    "tests": 8
+  },
+  "current_index_witness": {
+    "actual_exit": 0,
+    "all6_current_artifact_hashes_verified": true,
+    "all7_original_commands_actual_zero_and_birth_absent": true,
+    "compressed_and_complete_plain_index_hashes_verified": true,
+    "crypto_replayed": false,
+    "current_NASM_architecture": "amd64",
+    "current_NASM_package_bytes": 405156,
+    "current_NASM_package_sha256": "0180693ad5d2da8b36e7d73b9b596dc3e9f900238e3de699976c0576875b878f",
+    "current_NASM_version": "2.16.01-1",
+    "current_ValueError_frames": [
+      {
+        "function": "need",
+        "line": 5
+      },
+      {
+        "function": "fields",
+        "line": 292
+      },
+      {
+        "function": "selected_package",
+        "line": 303
+      }
+    ],
+    "current_selected_package_parser_returned": false,
+    "download_replayed": false,
+    "keyring_matches_current_four_pinned_public_keys": true,
+    "maximum_line_bytes": 75649,
+    "maximum_stanza_bytes": 76338,
+    "network": false,
+    "original_births_absent": 8,
+    "original_signature_command_actual_exit": 0,
+    "prior_generic_secondary_reader_failed_before_publication": true,
+    "scope": "new current witness, not retrospective original exception attribution",
+    "source_files_current": 1,
+    "tool": "b83201",
+    "tool_executed": false
+  },
+  "identity_annotation_controls": {
+    "actor_tool": "ad5de6",
+    "actual_exit": 0,
+    "independent_post_tool": "f0ed90",
+    "old_controls_replayed": false,
+    "only_extra_annotation_accepted": "same_identity_absent: true",
+    "original_distinct_births_absent": 2,
+    "six_original_identity_fields_exact": true,
+    "source_files_current": 3,
+    "suite_exit": 0,
+    "terminal_sha256": "3b2fb93ba57a3e13501b1362450bb9a6e160fae1b027ec78abf2a72706bdc517",
+    "tests": 2
+  },
+  "original_data_retired": false,
+  "production_adoption": false,
+  "production_deployment": false,
+  "remaining": [
+    "review needed authenticated OpenSSL distribution auxiliary inputs after actual generator missing test/build.info refusal",
+    "exact Node22 OpenSSL3.5.9 generation and build with upstream default tests",
+    "runtime ABI/Prisma/TLS/final-image and security qualification",
+    "original performance acceptance",
+    "private recovery and guarded live acceptance"
+  ],
+  "scope": "root NASM focused controls, retained signed authority continuation and fixed-builder loader/version qualification; prior refusals retained",
+  "scoped_index_controls": {
+    "Release_and_deb_control_line_bytes": 16384,
+    "actor_tool": "d42fa3",
+    "actual_exit": 0,
+    "current_source_files": 3,
+    "findings": 0,
+    "full_hash_size_uniqueness_package_guards_preserved": true,
+    "independent_post_tool": "005cd7",
+    "old8_tests_replayed": false,
+    "original_distinct_births_absent": 2,
+    "package_index_line_and_stanza_bytes": 131072,
+    "selected7_source_default_scan_actual_exit": 0,
+    "source_fresh_tool": "d42fa3",
+    "stderr_sha256": "09199b04c8f62eddd36d07accf2de4aaafe219c6982d6fc3b61d7d47c20e14ec",
+    "terminal_sha256": "44df016e7d686003a823af3e6a67eb48535a69d40776d60d09cc51db0946e665",
+    "tests": 2
+  },
+  "source_scan": {
+    "V2_all8_actual_exit": 1,
+    "V2_all8_findings": 2,
+    "V2_findings_only_historical_removed_public_fingerprints": true,
+    "all8_scan_pass_claimed": false,
+    "current3_findings": 0,
+    "current3_fresh_tool": "de0f83",
+    "current3_runtime_actual_exit": 0,
+    "original7_actual_exit": 1,
+    "original7_findings": 2,
+    "standalone_actual5_exit": 0,
+    "standalone_actual5_findings": 0,
+    "standalone_actual5_fresh_tool": "4ff310",
+    "suppression_or_filter": false
+  },
+  "successful_continuation": {
+    "Release_Valid_Until": null,
+    "Release_signature_date": "2026-07-11",
+    "actor_tool": "3a2a7a",
+    "actual_exit": 0,
+    "build": false,
+    "complete_plain_index_sha256": "515e692f2c4121c6fcec444ef100cc18f79a991910615f3a88c8b7becfc94d2f",
+    "complete_signed_index_selection_recomputed": true,
+    "disclosed_NASM_CVEs": [
+      "CVE-2026-6069",
+      "CVE-2026-6067",
+      "CVE-2025-8845"
+    ],
+    "finalizers": [],
+    "generation": false,
+    "host_install": false,
+    "independent_post_tool": "6bc16f",
+    "one_new_package_download": true,
+    "original_and_new_distinct_host_births_absent": 10,
+    "original_records_current": 24,
+    "original_signature_or_downloads_replayed": false,
+    "package": {
+      "Architecture": "amd64",
+      "Filename": "pool/main/n/nasm/nasm_2.16.01-1_amd64.deb",
+      "Package": "nasm",
+      "SHA256": "0180693ad5d2da8b36e7d73b9b596dc3e9f900238e3de699976c0576875b878f",
+      "Size": "405156",
+      "Version": "2.16.01-1"
+    },
+    "result_sha256": "8b16093687bfbad82b207ecded6e175fdfa2de8f205278e4d150cdbe7657383e",
+    "retained_artifacts_current": 6,
+    "runtime_image_inclusion": false,
+    "security_exception_accepted": false,
+    "source_files_current": 2,
+    "terminal_sha256": "f957d4942d868b7f199c9abf9953a79d846300a9033502eb85b6bc00468302bd",
+    "tools": [
+      {
+        "bytes": 1923760,
+        "mode": 365,
+        "path": "usr/bin/nasm",
+        "sha256": "09524fc8537260fed21b7d2f81115f5615d1ecc50be11ea92f30384845e57f76"
+      },
+      {
+        "bytes": 3046,
+        "mode": 256,
+        "path": "usr/share/doc/nasm/copyright",
+        "sha256": "cc42d1d93aedec675ce979cd2a7ae6ad280219be43f63683dfc96388b8c5cc81"
+      }
+    ]
+  }
+}

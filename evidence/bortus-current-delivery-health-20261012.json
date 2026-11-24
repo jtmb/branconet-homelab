@@ -1,0 +1,730 @@
+{
+  "scope": "Current read-only charts CI\u2192validated\u2192Flux delivery and existing cluster health; final BORTUS rollout remains suspended",
+  "github": {
+    "observedUTC": "2026-10-12T05:57:30.894832+00:00",
+    "main": {
+      "actualExit": 0,
+      "data": {
+        "name": "main",
+        "sha": "7828f5b5d219770077b72bd53d81fe745c61b621"
+      },
+      "failure": null
+    },
+    "validated": {
+      "actualExit": 0,
+      "data": {
+        "name": "validated",
+        "sha": "7828f5b5d219770077b72bd53d81fe745c61b621"
+      },
+      "failure": null
+    },
+    "runs": {
+      "actualExit": 0,
+      "data": [
+        {
+          "conclusion": "success",
+          "event": "push",
+          "head_sha": "7828f5b5d219770077b72bd53d81fe745c61b621",
+          "html_url": "https://github.com/jtmb/branconet-charts/actions/runs/38150613416",
+          "id": 38150613416,
+          "name": "Charts validation and Flux promotion",
+          "run_started_at": "2026-10-11T15:16:49Z",
+          "status": "completed",
+          "updated_at": "2026-10-11T15:17:20Z"
+        },
+        {
+          "conclusion": "success",
+          "event": "pull_request",
+          "head_sha": "880908eeb3bfff81d8c9eddedd1f6498c0ce81c6",
+          "html_url": "https://github.com/jtmb/branconet-charts/actions/runs/38150188609",
+          "id": 38150188609,
+          "name": "Charts validation and Flux promotion",
+          "run_started_at": "2026-10-11T15:10:43Z",
+          "status": "completed",
+          "updated_at": "2026-10-11T15:11:04Z"
+        },
+        {
+          "conclusion": "success",
+          "event": "push",
+          "head_sha": "182eafd4da4cda56b2a846d0c5f067e527eb79c4",
+          "html_url": "https://github.com/jtmb/branconet-charts/actions/runs/38144292988",
+          "id": 38144292988,
+          "name": "Charts validation and Flux promotion",
+          "run_started_at": "2026-10-11T13:43:10Z",
+          "status": "completed",
+          "updated_at": "2026-10-11T13:43:44Z"
+        }
+      ],
+      "failure": null
+    }
+  },
+  "cluster": {
+    "observedUTC": "2026-10-12T06:00:42.323820+00:00",
+    "nodes": [
+      {
+        "name": "masternode",
+        "uid": "f2df6169-4592-4544-b62c-74d89f598648",
+        "version": "v1.37.1",
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "KubeletReady",
+            "observedGeneration": null
+          }
+        ]
+      },
+      {
+        "name": "workernode1",
+        "uid": "e8d4555f-7cea-445f-b84f-6416964045a9",
+        "version": "v1.37.1",
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "KubeletReady",
+            "observedGeneration": null
+          }
+        ]
+      },
+      {
+        "name": "workernode2",
+        "uid": "eda66e65-f388-4b97-b64f-a709cda81894",
+        "version": "v1.37.1",
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "KubeletReady",
+            "observedGeneration": null
+          }
+        ]
+      }
+    ],
+    "helmReleases": [
+      {
+        "name": "aplb",
+        "namespace": "flux-system",
+        "uid": "3c88e364-76d4-4aa0-a0ff-1ed1059fb172",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "bazarr",
+        "namespace": "flux-system",
+        "uid": "fc21743f-4473-4ac2-9cd6-be84edf2a4f4",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "bortus",
+        "namespace": "flux-system",
+        "uid": "bed3008a-474f-411e-9956-1248e3718220",
+        "generation": 10,
+        "suspend": true,
+        "observedGeneration": 10,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 9
+          }
+        ]
+      },
+      {
+        "name": "cert-manager",
+        "namespace": "flux-system",
+        "uid": "54258039-dbb8-4d38-8457-5a803c46d5a9",
+        "generation": 4,
+        "suspend": false,
+        "observedGeneration": 4,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 4
+          }
+        ]
+      },
+      {
+        "name": "flaresolverr",
+        "namespace": "flux-system",
+        "uid": "b556d097-1352-49b5-9253-d70657d70330",
+        "generation": 7,
+        "suspend": false,
+        "observedGeneration": 7,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 7
+          }
+        ]
+      },
+      {
+        "name": "gluetun",
+        "namespace": "flux-system",
+        "uid": "492ca06d-c2a5-4491-8f89-a21caa75b8e9",
+        "generation": 3,
+        "suspend": false,
+        "observedGeneration": 3,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 3
+          }
+        ]
+      },
+      {
+        "name": "homepage",
+        "namespace": "flux-system",
+        "uid": "0abccce8-85f7-49df-baea-7825262a258e",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "http-echo",
+        "namespace": "flux-system",
+        "uid": "7cd0399f-8856-422d-9b02-4a14264a65c7",
+        "generation": 3,
+        "suspend": false,
+        "observedGeneration": 3,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 3
+          }
+        ]
+      },
+      {
+        "name": "jackett",
+        "namespace": "flux-system",
+        "uid": "cc166e8b-d45a-4e77-bdfe-e874240cfb4d",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "jtmb-dev",
+        "namespace": "flux-system",
+        "uid": "3f6f742e-c029-4d67-99b0-927f9dc62b6f",
+        "generation": 3,
+        "suspend": false,
+        "observedGeneration": 3,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 3
+          }
+        ]
+      },
+      {
+        "name": "lucinda-art-gallery",
+        "namespace": "flux-system",
+        "uid": "84aefe63-0ed2-49e7-a8d7-7d407f9c54f1",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "mealie",
+        "namespace": "flux-system",
+        "uid": "2d878107-ff9f-46f6-9260-2e8f3a94e38c",
+        "generation": 5,
+        "suspend": false,
+        "observedGeneration": 5,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 5
+          }
+        ]
+      },
+      {
+        "name": "minecraft-website",
+        "namespace": "flux-system",
+        "uid": "b06660bd-608a-42af-b7f0-1fdc6553935f",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "overseerr",
+        "namespace": "flux-system",
+        "uid": "7a9394f8-4cc1-491c-8733-6164e5626541",
+        "generation": 5,
+        "suspend": false,
+        "observedGeneration": 5,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 5
+          }
+        ]
+      },
+      {
+        "name": "phpmyadmin",
+        "namespace": "flux-system",
+        "uid": "4a16e98d-f473-4cfd-ac34-934aee36588e",
+        "generation": 7,
+        "suspend": false,
+        "observedGeneration": 7,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 7
+          }
+        ]
+      },
+      {
+        "name": "pihole",
+        "namespace": "flux-system",
+        "uid": "db6aabc6-dd2c-46c3-bbfd-b35ddf453078",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "pihole-exporter",
+        "namespace": "flux-system",
+        "uid": "d6d48443-fc2b-466e-aa12-40866581e419",
+        "generation": 7,
+        "suspend": false,
+        "observedGeneration": 7,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 7
+          }
+        ]
+      },
+      {
+        "name": "plex",
+        "namespace": "flux-system",
+        "uid": "66bf6326-157d-4875-b4c5-1a4d03636f5e",
+        "generation": 11,
+        "suspend": false,
+        "observedGeneration": 11,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 11
+          }
+        ]
+      },
+      {
+        "name": "qbit-monitor",
+        "namespace": "flux-system",
+        "uid": "09945782-cfa0-4dee-ba5f-19b5788d947c",
+        "generation": 3,
+        "suspend": false,
+        "observedGeneration": 3,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 3
+          }
+        ]
+      },
+      {
+        "name": "qbittorrent",
+        "namespace": "flux-system",
+        "uid": "d5fd0644-d2b2-4fe0-925f-9ed9a27a83da",
+        "generation": 11,
+        "suspend": false,
+        "observedGeneration": 11,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 11
+          }
+        ]
+      },
+      {
+        "name": "radarr",
+        "namespace": "flux-system",
+        "uid": "bbd87da8-8746-4e3e-8c11-d8ae3a5d1504",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "ruckus-bot",
+        "namespace": "flux-system",
+        "uid": "790c3088-67d8-47cf-ac00-9d2e1f8c6937",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "ruckus-db",
+        "namespace": "flux-system",
+        "uid": "ea951a7f-02cf-47ba-afb9-44e915c6b8f0",
+        "generation": 7,
+        "suspend": false,
+        "observedGeneration": 7,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 7
+          }
+        ]
+      },
+      {
+        "name": "santos-web",
+        "namespace": "flux-system",
+        "uid": "804ad19a-c3c2-4554-8cf4-f57c8817a0a3",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "sonarr",
+        "namespace": "flux-system",
+        "uid": "8568f6b9-f6a8-4ed2-9720-ce84c3a592e0",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "tautulli",
+        "namespace": "flux-system",
+        "uid": "e5aa088f-22a3-4f47-b7c4-094be5354bf4",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "unpackerr",
+        "namespace": "flux-system",
+        "uid": "c7af079e-7de5-4e8d-a4ca-1c7d763e023b",
+        "generation": 3,
+        "suspend": false,
+        "observedGeneration": 3,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 3
+          }
+        ]
+      },
+      {
+        "name": "vaultwarden",
+        "namespace": "flux-system",
+        "uid": "3022a586-c52e-4dcd-850b-149f6b38b603",
+        "generation": 5,
+        "suspend": false,
+        "observedGeneration": 5,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 5
+          }
+        ]
+      },
+      {
+        "name": "whoami",
+        "namespace": "flux-system",
+        "uid": "5290f1de-a621-47f9-8c98-673dcb0ed1d5",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "wordpress",
+        "namespace": "flux-system",
+        "uid": "65ca0d62-fc47-4063-81a5-4ed59767e907",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "wordpress-db",
+        "namespace": "flux-system",
+        "uid": "2b1cc6fa-fba1-4347-a285-d008df6e1e59",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      },
+      {
+        "name": "wordpress-redis",
+        "namespace": "flux-system",
+        "uid": "7ecea459-5e34-499f-8ab3-c073bc050ae0",
+        "generation": 7,
+        "suspend": false,
+        "observedGeneration": 7,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 7
+          }
+        ]
+      },
+      {
+        "name": "xteve",
+        "namespace": "flux-system",
+        "uid": "ace99a34-343b-40cd-b1b3-6ef2f324a8b0",
+        "generation": 8,
+        "suspend": false,
+        "observedGeneration": 8,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 8
+          }
+        ]
+      },
+      {
+        "name": "ytdl",
+        "namespace": "flux-system",
+        "uid": "148ed5ff-acfb-4660-80d7-0d57eaa0c0d9",
+        "generation": 6,
+        "suspend": false,
+        "observedGeneration": 6,
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "UpgradeSucceeded",
+            "observedGeneration": 6
+          }
+        ]
+      }
+    ],
+    "gitRepositories": [
+      {
+        "name": "branconet-charts",
+        "uid": "eddfd69a-9fdf-407d-abb4-d89fdae4359a",
+        "generation": 1,
+        "branch": "validated",
+        "artifactRevision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621",
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "Succeeded",
+            "observedGeneration": 1
+          }
+        ]
+      },
+      {
+        "name": "migration-validated",
+        "uid": "ec2163b1-17a5-440d-9877-b74bbf5fd1b5",
+        "generation": 3,
+        "branch": null,
+        "artifactRevision": "codex/kubernetes-validated@sha1:373a1e513e1bfb8b13ed5212ccc1b0f57a5ff301",
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "Succeeded",
+            "observedGeneration": 3
+          }
+        ]
+      }
+    ],
+    "kustomizations": [
+      {
+        "name": "migration-releases",
+        "uid": "f3757d64-04bd-46db-8b40-ae666999449c",
+        "generation": 14,
+        "suspend": false,
+        "lastAppliedRevision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621",
+        "conditions": [
+          {
+            "type": "Ready",
+            "status": "True",
+            "reason": "ReconciliationSucceeded",
+            "observedGeneration": 14
+          }
+        ]
+      }
+    ],
+    "bortusDeployment": {
+      "uid": "4deedc67-038a-4f82-a2d4-a83af316f2f6",
+      "generation": 8,
+      "desired": 1,
+      "ready": 1,
+      "serviceAccount": "bortus",
+      "images": [
+        "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879"
+      ]
+    },
+    "mutations": 0,
+    "credentialOrSecretValuesReported": false
+  },
+  "currentValidatedDeliveryConfirmed": true,
+  "otherCurrentReadyUnsuspendedReleases": 33,
+  "bortusCurrentHelmReadyNotClaimed": true,
+  "bortusRetainedReadyConditionObservedGeneration": 9,
+  "bortusDesiredAndStatusObservedGeneration": 10,
+  "bortusSuspended": true,
+  "existingWriterReady": true,
+  "finalBortusImageOrSchemaAcceptance": false,
+  "mutations": 0,
+  "credentialOrSecretValuesReported": false,
+  "privateObservationHashes": {
+    "current-chart-delivery.json": "584c16ff67cbc86a7a114348057c466998b7a436a748e61759bbb85e6af7e557",
+    "current-cluster-delivery.json": "c63ac014db370ee350817ff6a923dbd3e77e52e006910edf3ad91f06eb0d0039"
+  },
+  "retainedPreparationRefusals": [
+    "GitHub query wrapper syntax refused before API calls; corrected syntax used same read-only queries.",
+    "Initial cluster query assumed operator tool/config on compilation host; incomplete read refused. Current read uses independently verified WSL operator kubectl and protected unchanged config FD."
+  ]
+}

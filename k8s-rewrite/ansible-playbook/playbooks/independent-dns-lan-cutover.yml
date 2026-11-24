@@ -1,0 +1,144 @@
+---
+- name: Verify or operate the Worker 2 standalone LAN DNS handoff
+  hosts: workernode2
+  gather_facts: false
+  any_errors_fatal: true
+  vars:
+    dns_lan_action: preflight
+    dns_lan_unit: branconet-independent-dns-lan.service
+    dns_lan_worker: 192.168.0.5
+    dns_lan_control: "{{ groups['master'] | first }}"
+    dns_lan_launcher: /usr/local/libexec/branconet-independent-dns-lan
+    dns_lan_expected_ports:
+      - {name: p53-tcp, port: 53, targetPort: 53, protocol: TCP}
+      - {name: p53-udp, port: 53, targetPort: 53, protocol: UDP}
+      - {name: legacy-admin, port: 8079, targetPort: 80, protocol: TCP}
+  tasks:
+    - name: Require an explicit supported operation
+      ansible.builtin.assert:
+        that: dns_lan_action in ['preflight', 'start', 'confirm', 'verify', 'rollback']
+
+    - name: Read the existing Flux-managed DNS Service
+      ansible.builtin.command:
+        argv: [kubectl, -n, pihole, get, service, pihole-public, -o, json]
+      delegate_to: "{{ dns_lan_control }}"
+      become: false
+      register: dns_lan_service_read
+      changed_when: false
+
+    - name: Record the exact current DNS Service
+      ansible.builtin.set_fact:
+        dns_lan_service: "{{ dns_lan_service_read.stdout | from_json }}"
+
+    - name: Require the expected legacy or split DNS routing
+      ansible.builtin.assert:
+        that:
+          - dns_lan_service.spec.selector == dict(app="pihole")
+          - dns_lan_service.spec.ports == dns_lan_expected_ports
+          - >-
+            dns_lan_service.spec.externalIPs ==
+            (['192.168.0.4', '192.168.0.6'] if dns_lan_action in ['confirm', 'verify'] else
+             ['192.168.0.4', '192.168.0.5', '192.168.0.6'])
+
+    - name: Verify the split admin Service
+      when: dns_lan_action in ['confirm', 'verify']
+      block:
+        - name: Read the Worker 2 admin Service
+          ansible.builtin.command:
+            argv: [kubectl, -n, pihole, get, service, pihole-worker2-admin, -o, json]
+          delegate_to: "{{ dns_lan_control }}"
+          become: false
+          register: dns_lan_admin_read
+          changed_when: false
+
+        - name: Require the admin address, port, and backend
+          vars:
+            admin_service: "{{ (dns_lan_admin_read.stdout | from_json).spec }}"
+          ansible.builtin.assert:
+            that:
+              - admin_service.externalIPs == [dns_lan_worker]
+              - admin_service.selector == dns_lan_service.spec.selector
+              - admin_service.ports == [dns_lan_expected_ports[2]]
+
+        - name: Read both host DNS forwarding counters before probing
+          when: dns_lan_action == 'confirm'
+          ansible.builtin.command:
+            argv: ["{{ dns_lan_launcher }}", firewall-counters]
+          register: dns_lan_counter_before
+          changed_when: false
+
+    - name: Verify Worker 2 DNS from a separate node
+      ansible.builtin.command:
+        argv: [dig, "@{{ dns_lan_worker }}", k8s-api.branconet.lan, A,
+               '+short', '+time=2', '+tries=1', "{{ item }}"]
+      loop: ['+tcp', '+notcp']
+      delegate_to: "{{ dns_lan_control }}"
+      become: false
+      register: dns_lan_answers
+      failed_when: dns_lan_answers.rc != 0 or dns_lan_answers.stdout != '192.168.0.251'
+      changed_when: false
+
+    - name: Verify the Worker 2 admin redirect
+      ansible.builtin.command:
+        argv: [curl, --silent, --show-error, --max-time, '5', --output, /dev/null,
+               --write-out, '%{http_code}', 'http://192.168.0.5:8079/admin/']
+      delegate_to: "{{ dns_lan_control }}"
+      become: false
+      register: dns_lan_admin
+      failed_when: dns_lan_admin.rc != 0 or dns_lan_admin.stdout != '302'
+      changed_when: false
+
+    - name: Read standalone service runtime and boot status
+      when: dns_lan_action == 'verify'
+      ansible.builtin.command:
+        argv: [systemctl, "{{ item.command }}", "{{ dns_lan_unit }}"]
+      loop:
+        - {command: is-active, expected: active}
+        - {command: is-enabled, expected: enabled}
+      become: false
+      register: dns_lan_service_status
+      failed_when: dns_lan_service_status.rc != 0 or dns_lan_service_status.stdout != item.expected
+      changed_when: false
+
+    - name: Keep the local resolver image available across restarts
+      ansible.builtin.import_tasks: independent-dns-pin-image.tasks.yml
+      vars:
+        independent_dns_image: docker.io/pihole/pihole@sha256:d34134716fc32038b052a8674c7c6879e0ff21f0e6d8af345166fffa2c27c113
+      when: dns_lan_action == 'start'
+
+    - name: Start the staged resolver while the legacy mapping is present
+      ansible.builtin.systemd_service:
+        name: "{{ dns_lan_unit }}"
+        state: started
+      when: dns_lan_action == 'start'
+
+    - name: Confirm both protocols use the host before enabling at boot
+      when: dns_lan_action == 'confirm'
+      block:
+        - name: Read both host DNS forwarding counters after probing
+          ansible.builtin.command:
+            argv: ["{{ dns_lan_launcher }}", firewall-counters]
+          register: dns_lan_counter_after
+          changed_when: false
+
+        - name: Require host forwarding on both transports
+          vars:
+            before: "{{ dns_lan_counter_before.stdout | from_json }}"
+            after: "{{ dns_lan_counter_after.stdout | from_json }}"
+          ansible.builtin.assert:
+            that:
+              - after['dns53-tcp'] > before['dns53-tcp']
+              - after['dns53-udp'] > before['dns53-udp']
+
+        - name: Enable the verified host service at boot
+          ansible.builtin.systemd_service:
+            name: "{{ dns_lan_unit }}"
+            enabled: true
+            state: started
+
+    - name: Stop the host service after the original mapping responds
+      ansible.builtin.systemd_service:
+        name: "{{ dns_lan_unit }}"
+        enabled: false
+        state: stopped
+      when: dns_lan_action == 'rollback'

@@ -1,0 +1,21 @@
+{
+  "host": "192.168.0.4",
+  "source": "wordpress_redis-db",
+  "mounts": [],
+  "persistence_configuration": {
+    "dbfilename": "dump.rdb",
+    "dir": "/data",
+    "appendonly": "no",
+    "save": "3600 1 300 100 60 10000"
+  },
+  "current_key_count": 19,
+  "keyspace_metadata": [
+    "db0:keys=19,expires=8,avg_ttl=2686220,subexpiry=0"
+  ],
+  "wordpress_redis_plugins": [
+    "redis-cache"
+  ],
+  "wordpress_redis_config_present": true,
+  "historical_state_preserved": false,
+  "original_role_acceptance_pending": true
+}

@@ -1,0 +1,46 @@
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -463,6 +463,43 @@
+       org.opencontainers.image.source="${IMAGE_SOURCE}" \
+       org.ingenium.source.sha256="${IMAGE_SOURCE_SHA256}"
+
++# Exact current-source handoffs for the bounded serial operator build.
++# These targets export only actual producer outputs. Compatibility stays the
++# default final target; named contexts can supply these verified stage roots.
++FROM scratch AS veyra-budget-artifact
++COPY --from=swarm-budget-builder /tmp/veyra-build/swarm/ /tmp/veyra-build/swarm/
++
++FROM scratch AS veyra-swarm-artifact
++COPY --from=swarm-rust-builder /tmp/veyra-build/swarm/ /tmp/veyra-build/swarm/
++
++FROM scratch AS veyra-rust-artifact
++COPY --from=rust-api-builder /out/ /out/
++
++FROM scratch AS veyra-node-artifact
++COPY --from=builder /app/node_modules /app/node_modules
++COPY --from=builder /usr/local/share/veyra/builder-os-inputs.json /usr/local/share/veyra/builder-os-inputs.json
++COPY --from=builder /usr/local/share/veyra/source-inputs.json /usr/local/share/veyra/source-inputs.json
++COPY --from=builder /app/packages/ingenium-core/dist /app/packages/ingenium-core/dist
++COPY --from=builder /app/packages/ingenium-core/package.json /app/packages/ingenium-core/package.json
++COPY --from=builder /app/packages/veyra-contracts/ /app/packages/veyra-contracts/
++COPY --from=builder /app/packages/ingenium-email/dist /app/packages/ingenium-email/dist
++COPY --from=builder /app/packages/ingenium-email/package.json /app/packages/ingenium-email/package.json
++COPY --from=builder /app/services/ingenium-api/dist /app/services/ingenium-api/dist
++COPY --from=builder /app/services/ingenium-api/config/dashboard-safe-reads.json /app/services/ingenium-api/config/dashboard-safe-reads.json
++COPY --from=builder /app/services/ingenium-api/package.json /app/services/ingenium-api/package.json
++COPY --from=builder /app/services/ingenium-server/dist /app/services/ingenium-server/dist
++COPY --from=builder /app/services/ingenium-server/package.json /app/services/ingenium-server/package.json
++COPY --from=builder /app/services/ingenium-dashboard/.next/standalone /app/services/ingenium-dashboard/.next/standalone
++COPY --from=builder /app/services/ingenium-dashboard/public /app/services/ingenium-dashboard/public
++COPY --from=builder /app/services/ingenium-dashboard/.next/static /app/services/ingenium-dashboard/.next/static
++COPY --from=builder /app/packages/ingenium-extension/dist /app/packages/ingenium-extension/dist
++COPY --from=builder /app/packages/ingenium-extension/package.json /app/packages/ingenium-extension/package.json
++COPY --from=builder /tmp/ingenium-extension-plugin-sources /tmp/ingenium-extension-plugin-sources
++COPY --from=builder /tmp/ingenium-workspace-dependencies/ /tmp/ingenium-workspace-dependencies/
++COPY --from=builder /app/packages/ingenium-extension/scripts/smoke-opencode-plugin-load.mjs /app/packages/ingenium-extension/scripts/smoke-opencode-plugin-load.mjs
++COPY --from=vendor-security /vendor-security/ /vendor-security/
++COPY --from=computer-use /external/computer-use/ /external/computer-use/
++
+ FROM runtime-base AS user-runtime
+ USER appuser
+ HEALTHCHECK --interval=15s --timeout=5s --retries=5 --start-period=90s CMD ["/app/scripts/runtime-healthcheck.sh"]

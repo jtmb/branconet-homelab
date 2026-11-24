@@ -1,0 +1,135 @@
+{
+  "scope": "Pure validation guards only; no API/operator/Node/Docker/SSH/runtime/data acceptance",
+  "baseline": "912e97427782e6098231810f820de465854e262d",
+  "import_only": "021b97a325328a04fad22d60209aaa5ab3a3247d",
+  "reader_retained": "b6340aeb6ccbce8a166016d8d366d5dba1a72d3a",
+  "selected": [
+    {
+      "path": "docs/BORTUS-RESTORE-MUTATIONS.md",
+      "mode": "100644",
+      "blob": "9785535ddf42cedce2c4430fa7771f1b74b7de42",
+      "raw_sha256": "d27619f60ceee92101bf71e2215bb11cbc5d8b360b2ff21e83bac18f4d0b1d11",
+      "working_sha256": "43e7cb42bdf569017373792731e2c56d547d58a818802de492fd6f15e6ff9e3e",
+      "qualified_relation": "literal LF-to-CRLF"
+    },
+    {
+      "path": "docs/BORTUS-RESTORED-CONSUMER-FENCE.md",
+      "mode": "100644",
+      "blob": "d53057edf6dd5bed79b040c15e3999f1d848a808",
+      "raw_sha256": "d65bbf3e75ccd636ea639190a9278461090fce05f09fc6090e64e7176a497e29",
+      "working_sha256": "9d37db60d8c034b506d063d462cd9235d719cee1aa7b63940986c2313adbc32b",
+      "qualified_relation": "literal LF-to-CRLF"
+    },
+    {
+      "path": "docs/MIGRATION-OPERATIONS.md",
+      "mode": "100644",
+      "blob": "673c386bf19610bdb90990063638b1144c9b05a6",
+      "raw_sha256": "9fc21b4164b93e2b5755220ae744a82887efcf98c758e6597584083c0b38c043",
+      "working_sha256": "71e9d3cc82dbc7bbc5359ee64aa98c40aaf186211945d04c16c0a5d70c513791",
+      "qualified_relation": "literal LF-to-CRLF"
+    },
+    {
+      "path": "scripts/migration/bortus-restore-admitted.py",
+      "mode": "100644",
+      "blob": "b69b50be25dc2b1cec8889632fc9545064c51f0e",
+      "raw_sha256": "b31d9c8496d85fb4eed07f84b1d63c2a4d68857888fa13e69196347701969eee",
+      "working_sha256": "b54218c52d5b83302316c6bd294ebe9dc8cbc813e4bfa809e6f283378c4bfc30",
+      "qualified_relation": "literal LF-to-CRLF"
+    },
+    {
+      "path": "scripts/migration/bortus-restored-consumer-fence.py",
+      "mode": "100644",
+      "blob": "c663ab74ab8709c94366977045a07370cbc49d7d",
+      "raw_sha256": "ec82f0fde5c766719fcfffe5033dd81db7cd9ea1988746cd218d792117e09161",
+      "working_sha256": "f68a7c7db9798fb38bd1bc10f44122c77d5dae455137f22474302bcd4f7fef18",
+      "qualified_relation": "literal LF-to-CRLF"
+    },
+    {
+      "path": "scripts/migration/inspect-bortus-checkpoint.py",
+      "mode": "100644",
+      "blob": "c7b0b4608164487ec863b168b44608b5a027d2b4",
+      "raw_sha256": "51cd7d9f8aedf79270be68d95416bb107cc90bf1aa9748893175bcf79a8b297e",
+      "working_sha256": "51cd7d9f8aedf79270be68d95416bb107cc90bf1aa9748893175bcf79a8b297e",
+      "qualified_relation": "exact"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_independent_restore_preflight.py",
+      "mode": "100644",
+      "blob": "fed1e22b3ce26b928b19d6ff412975e6c3876793",
+      "raw_sha256": "4da2a19d3b827ae4daa51be89e0ed0534e7f452651fe11ae3ee8ce77bdbc1c87",
+      "working_sha256": "4da2a19d3b827ae4daa51be89e0ed0534e7f452651fe11ae3ee8ce77bdbc1c87",
+      "qualified_relation": "exact"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restore_admitted.py",
+      "mode": "100644",
+      "blob": "858fbc7fda5dfaf3fe6acdd880f8d0973bc8f72f",
+      "raw_sha256": "8815ee770e2620c998cfda0d0c70db5f29fbb8914ea14f1440b843dba5fc4a63",
+      "working_sha256": "29360a8e27b043d3ce68934cfe6c7798fd876e9fe568b0d659a32e5cd1d1e803",
+      "qualified_relation": "literal LF-to-CRLF"
+    }
+  ],
+  "actual_tests": {
+    "admitted": 15,
+    "restore_preflight": 11,
+    "consumer": 22,
+    "checkpoint_preflight": 9
+  },
+  "actual_exits": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "skips": 0,
+  "logs": {
+    "admitted.log": "a7ce159d1004f439d22b998ec5095c6ddd1ec9a889c4906e37ca2c9a9ac9989d",
+    "source-node.log": "bcf011990b6e533de2924799aec717f7ab4c98634f878755c14dd4a0c6f4bbda",
+    "consumer.log": "8bda16b5781b601927687822dcbf55fe984af7dc38e9ad1878492a3bec8395ad",
+    "checkpoint.log": "d9ed743d4a81869adffc2da090e618519204446a5c2891dbc5ff5a9f5b4c0be1",
+    "terminal.json": "7ef13d62fd89a7201632dcdd55add3e494e811c7b2c681c1e674eaf8f8e216dc"
+  },
+  "originals": [
+    "review-admitted-912e974-v1",
+    "validation-guards-v1",
+    "validation-guards-v2"
+  ],
+  "docs_checked": 47,
+  "docs_review_sha256": "90d1e21397c2f9949d1b76b37a94fa18d56817339d16bc6b79c32cb1a6d025f4",
+  "scope_limits": [
+    "Caller traceback frames remain caller responsibility",
+    "Metadata validation does not establish live or data acceptance"
+  ],
+  "unchanged_dependencies": [
+    {
+      "path": "scripts/migration/checkpoint-bortus-volume.py",
+      "raw_sha256": "cb7aef9bbf733fd762df062bec33266d28a27a669b7c5747d7550b32fe2e3a0a",
+      "working_sha256": "cb7aef9bbf733fd762df062bec33266d28a27a669b7c5747d7550b32fe2e3a0a",
+      "qualified_relation": "exact"
+    },
+    {
+      "path": "scripts/migration/inspect-bortus-independent-restore.py",
+      "raw_sha256": "01c5102e789d1eca00dac8543d4d4be4e47de03584092518d987ce1429cfdbe0",
+      "working_sha256": "01c5102e789d1eca00dac8543d4d4be4e47de03584092518d987ce1429cfdbe0",
+      "qualified_relation": "exact"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restored_consumer_fence.py",
+      "raw_sha256": "74c1d635162602a6fe91937a19e31c186c674f7aa8e22dba195a817d51968e0f",
+      "working_sha256": "74c1d635162602a6fe91937a19e31c186c674f7aa8e22dba195a817d51968e0f",
+      "qualified_relation": "exact"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_checkpoint_preflight.py",
+      "raw_sha256": "fa499a998cb439ed904c701375a990df47f37cd4e21fdd8301ab4d8436d4e062",
+      "working_sha256": "fa499a998cb439ed904c701375a990df47f37cd4e21fdd8301ab4d8436d4e062",
+      "qualified_relation": "exact"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_cold_checkpoint.py",
+      "raw_sha256": "b73876d68890598b876a7738a0bce31b16cb5b70779d7995d50d68e36a71af50",
+      "working_sha256": "b73876d68890598b876a7738a0bce31b16cb5b70779d7995d50d68e36a71af50",
+      "qualified_relation": "exact"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+# NFS Role Tasks
+# Installs NFS server + nfs-subdir-external-provisioner for dynamic PV provisioning
+#
+# After this role:
+#   - NFS server runs on master with exports restricted to pod CIDR
+#   - nfs-client StorageClass available for PVCs
+#   - Provisioner pod auto-creates subdirectories per PVC
+
+---
+# =============================================================================
+# TASK 1: Install NFS server packages (master only)
+# =============================================================================
+- name: Install NFS kernel server (master only)
+  ansible.builtin.apt:
+    name:
+      - nfs-kernel-server
+      - nfs-common
+    state: present
+    update_cache: true
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 2: Create NFS share directory (master only)
+# =============================================================================
+- name: Create NFS share directory (master only)
+  ansible.builtin.file:
+    path: "{{ nfs_server_path }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: '0777'
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 3: Configure /etc/exports (master only)
+# =============================================================================
+- name: Configure NFS exports (master only)
+  ansible.builtin.template:
+    src: exports.j2
+    dest: /etc/exports
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart nfs-server
+  when: inventory_hostname in groups['master']
+
+- name: Apply exports (master only)
+  ansible.builtin.command: exportfs -ra
+  changed_when: false
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 4: Deploy nfs-subdir-external-provisioner (master only)
+# =============================================================================
+- name: Create nfs-provisioner namespace (master only)
+  ansible.builtin.shell: |
+    kubectl create namespace nfs-provisioner --dry-run=client -o yaml | kubectl apply -f -
+  environment:
+    KUBECONFIG: /etc/kubernetes/admin.conf
+  changed_when: false
+  when: inventory_hostname in groups['master']
+
+- name: Deploy nfs-subdir-external-provisioner (master only)
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f - <<'YAML'
+    apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      name: nfs-client-provisioner
+      namespace: nfs-provisioner
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRole
+    metadata:
+      name: nfs-client-provisioner-runner
+    rules:
+      - apiGroups: [""]
+        resources: ["persistentvolumes"]
+        verbs: ["get", "list", "watch", "create", "delete"]
+      - apiGroups: [""]
+        resources: ["persistentvolumeclaims"]
+        verbs: ["get", "list", "watch", "update"]
+      - apiGroups: ["storage.k8s.io"]
+        resources: ["storageclasses"]
+        verbs: ["get", "list", "watch"]
+      - apiGroups: [""]
+        resources: ["events"]
+        verbs: ["create", "update", "patch"]
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRoleBinding
+    metadata:
+      name: run-nfs-client-provisioner
+    subjects:
+      - kind: ServiceAccount
+        name: nfs-client-provisioner
+        namespace: nfs-provisioner
+    roleRef:
+      kind: ClusterRole
+      name: nfs-client-provisioner-runner
+      apiGroup: rbac.authorization.k8s.io
+    ---
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: nfs-client-provisioner
+      namespace: nfs-provisioner
+    spec:
+      replicas: 1
+      strategy:
+        type: Recreate
+      selector:
+        matchLabels:
+          app: nfs-client-provisioner
+      template:
+        metadata:
+          labels:
+            app: nfs-client-provisioner
+            branconet.io/type: system
+        spec:
+          serviceAccountName: nfs-client-provisioner
+          containers:
+            - name: nfs-client-provisioner
+              image: registry.k8s.io/sig-storage/nfs-subdir-external-provisioner:{{ nfs_provisioner_version }}
+              volumeMounts:
+                - name: nfs-client-root
+                  mountPath: /persistentvolumes
+              env:
+                - name: PROVISIONER_NAME
+                  value: k8s-sigs.io/nfs-subdir-external-provisioner
+                - name: NFS_SERVER
+                  value: "{{ ansible_default_ipv4.address }}"
+                - name: NFS_PATH
+                  value: "{{ nfs_server_path }}"
+          volumes:
+            - name: nfs-client-root
+              nfs:
+                server: "{{ ansible_default_ipv4.address }}"
+                path: "{{ nfs_server_path }}"
+    YAML
+  register: nfs_provisioner_apply
+  changed_when: true
+  when: inventory_hostname in groups['master']
+
+# =============================================================================
+# TASK 5: Create nfs-client StorageClass (master only)
+# =============================================================================
+- name: Create nfs-client StorageClass (master only)
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf apply -f - <<'YAML'
+    apiVersion: storage.k8s.io/v1
+    kind: StorageClass
+    metadata:
+      name: nfs-client
+      annotations:
+        storageclass.kubernetes.io/is-default-class: "false"
+    provisioner: k8s-sigs.io/nfs-subdir-external-provisioner
+    parameters:
+      pathPattern: "${.PVC.namespace}/${.PVC.name}"
+      onDelete: retain
+      archiveOnDelete: "false"
+    YAML
+  register: sc_nfs
+  changed_when: true
+  when: inventory_hostname in groups['master']
+
+- name: Wait for nfs-provisioner to be ready (master only)
+  ansible.builtin.shell: |
+    kubectl --kubeconfig=/etc/kubernetes/admin.conf get deployment/nfs-client-provisioner -n nfs-provisioner -o jsonpath='{.status.availableReplicas}' 2>/dev/null
+  register: nfs_ready
+  changed_when: false
+  until: nfs_ready.stdout == "1"
+  retries: 15
+  delay: 10
+  when: inventory_hostname in groups['master']

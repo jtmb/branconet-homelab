@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "scope": "Queued-origin observer correction controls only",
+  "actorActualExit": 0,
+  "qualifiedControls": {
+    "actualExit": 0,
+    "controls": [
+      {
+        "id": "old-post-only",
+        "passed": true,
+        "actualWorkers": 1,
+        "actualReads": 2,
+        "actualRealYields": 4,
+        "actualDispatchAmbientOrdinals": [
+          1,
+          1
+        ],
+        "originalQueueAndFramesForwarded": true,
+        "sourceClassByteExactExceptDeclaredAdmissionHook": true,
+        "publicationRefused": true,
+        "originCallbackDescriptorRestored": true,
+        "existingHelperMethodIdentityRestored": true,
+        "harnessOwnDescriptorsRestored": true,
+        "broaderLegacyOwnDescriptorClaim": false,
+        "admissionRecorderFaults": 0
+      },
+      {
+        "id": "mapped-admission",
+        "passed": true,
+        "actualWorkers": 1,
+        "actualReads": 2,
+        "actualRealYields": 4,
+        "actualDispatchAmbientOrdinals": [
+          1,
+          1
+        ],
+        "originalQueueAndFramesForwarded": true,
+        "sourceClassByteExactExceptDeclaredAdmissionHook": true,
+        "publicationRefused": false,
+        "originCallbackDescriptorRestored": true,
+        "existingHelperMethodIdentityRestored": true,
+        "harnessOwnDescriptorsRestored": true,
+        "broaderLegacyOwnDescriptorClaim": false,
+        "admissionRecorderFaults": 0
+      },
+      {
+        "id": "admission-refusal-forwards",
+        "passed": true,
+        "actualWorkers": 1,
+        "actualReads": 2,
+        "actualRealYields": 4,
+        "actualDispatchAmbientOrdinals": [
+          1,
+          1
+        ],
+        "originalQueueAndFramesForwarded": true,
+        "sourceClassByteExactExceptDeclaredAdmissionHook": true,
+        "publicationRefused": true,
+        "originCallbackDescriptorRestored": true,
+        "existingHelperMethodIdentityRestored": true,
+        "harnessOwnDescriptorsRestored": true,
+        "broaderLegacyOwnDescriptorClaim": false,
+        "admissionRecorderFaults": 1
+      }
+    ],
+    "actualWorkers": 3,
+    "actualPublicReads": 6,
+    "actualRealYields": 12,
+    "actualCompiledQueueExecuted": true,
+    "actualNextOrSQLProof": false,
+    "oldFiveControlsReplayed": false,
+    "original72Replayed": false,
+    "performanceAcceptance": false
+  },
+  "qualification": {
+    "currentPublicRecords": 92,
+    "originalAndPostBirthsAbsent": 19,
+    "exactCIDNameQueriesRetained": 2,
+    "noNewDockerQueries": true,
+    "graphsRewalkedHere": false
+  },
+  "finalProof": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-queued-origin-controls-final-current-20261016-v1.json",
+    "bytes": 38526,
+    "sha256": "b084a4bdec2bdcf7e0a14286fc67407c9fee1c362693e32537bf1322b09ae126"
+  },
+  "tools": {
+    "actor": "d27654/0",
+    "exactAndFresh": "ce2a06/0",
+    "oneFiniteFinal": "2702c8/0"
+  },
+  "limits": "Actual compiled queue class and real transport Workers with public temporary files; no Next request or actual SQL claim. Original full diagnostic remains inconclusive.",
+  "performanceAcceptance": false,
+  "productionAdoption": false
+}

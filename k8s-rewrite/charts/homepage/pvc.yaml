@@ -1,0 +1,13 @@
+# Homepage Config PersistentVolumeClaim (Longhorn block storage)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homepage-config-pvc
+  namespace: homepage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn

@@ -1,0 +1,71 @@
+Implement the shared BORTUS MCP plan once implementation is authorized. Start
+with RULES.md, MEMORY.md, docs/planning/operations/00_START_HERE.md, then read
+the contracts, architecture, operating kit, security, roadmap and canonical
+records. Current source baseline for planning: homelab 560db763, Veyra
+3f2c11528, OpenCode v2.3.2; verify the actual revisions and unrelated work.
+
+STATE 2026-11-18: W1 and W2 are implemented and verified in this repository
+mcp-servers/bortus (29 tests, real Docker delivery, real socket run) and the
+server is registered globally as mcp.servers.bortus. Evidence:
+docs/planning/evidence/2026-11-18-bortus-mcp-implementation.md. Do not redo
+that work. W0 is partial (tool discovery and registration verified; the skill
+and nested-guidance rehearsal is not). W3 has not started and is blocked on
+operator inputs listed in the roadmap: a separate runner Unix identity, a
+private rootless Docker socket, an approved image digest and probe, exact
+resourceNames RBAC and one time-limited grant.
+
+Next task: obtain or record those operator inputs, then run W3 exactly as the
+roadmap describes, starting with a nonmutating test profile against a test
+destination. Never expose the run tool or read a real Secret before that
+boundary is proven. Do not change project rules, publish, or start other
+infrastructure to work around a missing input; report the exact gap.
+
+LATER STATE 2026-11-18 (second pass): W3's read path is now proven live. A
+ServiceAccount restricted to get on one Secret name read it over TLS,
+delivered it into a real alpine container as both an env value and a file,
+was denied every other name and verb, and left no container or staging
+directory behind. Three defects the fakes missed were fixed: staged files
+must be 0444 because CapDrop ALL removes CAP_DAC_OVERRIDE, container removal
+needs a bounded retry, and the operator command limit is 512 characters per
+part. The only open property is the runner's separate operating-system
+identity: this host has a single interactive account in docker and sudo, so
+the agent can always reach the runner. That is an access-model fact; closing
+it means reducing that account's access or moving the runner to a host the
+agent cannot administer. Do not pretend otherwise, and do not widen the
+runner to compensate.
+
+FINAL STATE 2026-11-18: W0-W2 passed; W3, R5 and R7 are accepted with
+residual X1 recorded in docs/planning/bortus-mcp/records.json and the
+tracker. X1: the runner shares this host's only interactive account, which
+is in docker and sudo, so on-host secrecy is not enforceable; every other
+control is implemented and tested. The bortus-local-test skill is installed
+in this repository at .opencode/skills/bortus-local-test and was verified to
+trigger in a fresh OpenCode session inside the repository, while staying
+absent outside it. Keep repository-specific skills in the repository, never
+in the global config. Do not
+reopen closed work. If X1 must be closed, reduce that account's access or
+move the runner to a host the agent cannot administer, then re-run G3.
+
+First task: W0. Inventory existing MCP registrations and active owners without
+reading credentials. Verify the operating kit and a secret-free discovery mock
+in an isolated OpenCode v2 context before application scaffolding. Do not
+change the live server name, RBAC or permissions as part of the planning turn.
+(W0 is now partially done: registration and tool discovery were verified;
+the skill rehearsal is still open.)
+
+The goal is one shared bortus MCP available to managed repos, preserving the
+three existing inventory tools and adding profile-based local Docker checks
+with Kubernetes Secret values delivered only inside the trusted runner. New
+profiles do not require app-specific MCPs. Never send plaintext or redeemable
+secret handles to an agent. Test edited code with synthetic fixtures; real keys
+require an approved immutable image, proven separate runtime, and an explicit
+grant read by the broker. No Kubernetes writes, deployment, GitHub Actions,
+new storage roots, or unapproved infrastructure. No subagents. Do not mix in
+the unrelated full-dashboard restart test or existing working-tree changes.
+
+Continue authorized work through G0–G3 with focused evidence and scope checks.
+Use the established private chart delivery process only if rollout is approved.
+Stop live activation if the actual agent can administer or inspect the runner;
+report exactly what is still missing. Preserve fallback inventory registration
+until migration is verified. Complete only when the real scoped path and
+fail-closed cases are verified; do not mistake artifact delivery for activation.

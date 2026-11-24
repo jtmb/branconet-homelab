@@ -1,0 +1,74 @@
+{
+  "scope": "Read-only BORTUS checkpoint prerequisites; no capture or recovery acceptance",
+  "identities": {
+    "claim": {
+      "name": "bortus-data",
+      "uid": "19cc4b60-4536-4d80-8789-e27b5ad48b79",
+      "resourceVersion": "43233",
+      "namespace": "bortus"
+    },
+    "pv": {
+      "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+      "uid": "89b8b6ec-c932-4686-9890-26df90a5c799",
+      "resourceVersion": "10369",
+      "namespace": null
+    },
+    "longhorn_volume": {
+      "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+      "uid": "74acb150-7031-4fab-9868-86f3f3a30e16",
+      "resourceVersion": "689326",
+      "namespace": "longhorn-system"
+    },
+    "deployment": {
+      "name": "bortus",
+      "uid": "4deedc67-038a-4f82-a2d4-a83af316f2f6",
+      "resourceVersion": "91492",
+      "namespace": "bortus"
+    },
+    "helmrelease": {
+      "name": "bortus",
+      "uid": "bed3008a-474f-411e-9956-1248e3718220",
+      "resourceVersion": "875398",
+      "namespace": "flux-system"
+    },
+    "kustomization": {
+      "name": "migration-releases",
+      "uid": "f3757d64-04bd-46db-8b40-ae666999449c",
+      "resourceVersion": "875770",
+      "namespace": "flux-system"
+    },
+    "backup_target": {
+      "name": "default",
+      "uid": "999fe7cd-e073-4a52-ba62-87db1857f876",
+      "resourceVersion": "875917",
+      "namespace": "longhorn-system"
+    },
+    "replica_set": {
+      "name": "bortus-d69b559bb",
+      "uid": "eed90242-aa20-4690-84d4-9e932032eb93",
+      "resourceVersion": "80503",
+      "namespace": "bortus"
+    }
+  },
+  "writer": {
+    "name": "bortus-d69b559bb-7rs2r",
+    "uid": "7b839282-19d0-40c0-a288-ec8aef68db1b",
+    "resourceVersion": "80498",
+    "namespace": "bortus",
+    "nodeName": "masternode"
+  },
+  "checks_passed": true,
+  "active_claim_consumers": 1,
+  "encrypted_replicas": 2,
+  "preserve_reconcile_state": {
+    "helmrelease_suspend": false,
+    "kustomization_suspend": false
+  },
+  "mutations": 0,
+  "database_or_secret_reads": 0,
+  "cold_capture_proven": false,
+  "independent_restore_proven": false,
+  "separate_resource_reads_are_atomic": false,
+  "collection_started_at_utc": "2026-10-11T03:22:21.490577+00:00",
+  "collection_completed_at_utc": "2026-10-11T03:22:23.327544+00:00"
+}

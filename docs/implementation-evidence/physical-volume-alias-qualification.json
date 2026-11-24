@@ -1,0 +1,84 @@
+{
+  "scope": "Pure synthetic physical Longhorn PV alias refusal; no live checkpoint/restore/performance acceptance",
+  "import_base": "4eaf6b5a4aca5fec841bc68ccf77ed62d1da8c6c",
+  "import_snapshot_commit": "a81bdc6069ba42824b31869271dd63195ebb0367",
+  "source": [
+    {
+      "path": "scripts/migration/inspect-bortus-checkpoint.py",
+      "sha256": "c77e26a60e9e7d5f2217ad04c4c0f1f33b58013e577476f1dfc0f3f0c10bbc9a",
+      "git_blob": "4537a230642b4cee5430cb2c0ff948422b5910e5"
+    },
+    {
+      "path": "scripts/migration/checkpoint-bortus-volume.py",
+      "sha256": "484ab66f9ab8677a703557595064c71fedc7adec3623cd9dd98767caf6e93c75",
+      "git_blob": "9648f149fee62ab06e3192bff52a9e2e94beaa58"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_checkpoint_preflight.py",
+      "sha256": "fa499a998cb439ed904c701375a990df47f37cd4e21fdd8301ab4d8436d4e062",
+      "git_blob": "b7f141ef1401ae9b9226cbaac31622edf09d7721"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_cold_checkpoint.py",
+      "sha256": "b73876d68890598b876a7738a0bce31b16cb5b70779d7995d50d68e36a71af50",
+      "git_blob": "7c6dcf14dbef9aa2c7ff0453beccc361df377c9d"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_physical_volume_fence.py",
+      "sha256": "ed3a3f80d1e227caf3694cd1903d661a9844d94bddd8b117c847b8358ed89172",
+      "git_blob": "43b9742dcbc223173d50364ff4254d82378dd319"
+    },
+    {
+      "path": "docs/BORTUS-PHYSICAL-VOLUME-FENCE.md",
+      "sha256": "7fe6573a87d02e81d5e21a2cb570b2dd0ceaf9d19ef0c420e675f325f764162e",
+      "git_blob": "d03e4bf32e2ed9396c5cd607dbd3e0a74c0e9e40"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-COMPLETION.md",
+      "sha256": "7a8d26694ac0cb88431f4a50bd5f6130d5b6ce986035b38a3c0c5e10e86a12e7",
+      "git_blob": "c25e7fddd1c45826956d9b4ad3e0965aeb6c70d3"
+    }
+  ],
+  "import_manifest_sha256": "940110db972081c750d4549c66ca2253c5b4e6272d3afdeca2c4bd38fdae51ad",
+  "actual_qualification": {
+    "terminal_sha256": "1531ed312e8b6af4ce214713c12248c730837085b62e33c1a273b8faef0fcd2a",
+    "log_sha256": "b83811262ad16e79b6598d0703276656c70625ef93abd10191112d0f821cb1fe",
+    "actual_exit_code": 0,
+    "platform": "WSL Ubuntu POSIX Python3",
+    "tests": 84,
+    "skips": 0,
+    "elapsed_seconds": 0.272
+  },
+  "retained_initial_failure": {
+    "reason": "Over-strict embedded TypeMeta presence on typed API collection items",
+    "terminal_sha256": "6d121b135a04fc5fc03d2c6e0c6129da956659733d28569e1ef68b8de3d3aa3b",
+    "actual_exit_code": 1
+  },
+  "checks": {
+    "new_alias_collection_tests": 11,
+    "existing_archive_helper_unchanged": true,
+    "existing_journal_unchanged": true,
+    "root_delete_holder_patch_not_overwritten": true,
+    "all_existing_docs_checked": 21,
+    "frozen_performance_files_unchanged": true
+  },
+  "source_gate_limits": {
+    "pv_count": 10000,
+    "output_bytes_post_capture": 8388608,
+    "api_request_seconds": 20,
+    "subprocess_seconds": 25,
+    "identity_driver_handle_chars": 253,
+    "resource_version_chars": 256,
+    "reads_atomic": false,
+    "api_calls": 0,
+    "database_or_secret_reads": 0,
+    "mutations": 0
+  },
+  "future_pending": [
+    "durable restore watch executor",
+    "actual independent authenticated data restore",
+    "admission/source/consumer coordination",
+    "live absence of physical aliases",
+    "performance acceptance"
+  ]
+}

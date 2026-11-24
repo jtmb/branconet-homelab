@@ -1,0 +1,9 @@
+# Read-only ClamAV scan of the three live Kubernetes nodes.
+- name: Scan node filesystems and active container roots serially
+  hosts: k8s_nodes
+  serial: 1
+  order: inventory
+  become: true
+  gather_facts: true
+  vars_files: [../group_vars/all.yml]
+  roles: [antivirus_scan]

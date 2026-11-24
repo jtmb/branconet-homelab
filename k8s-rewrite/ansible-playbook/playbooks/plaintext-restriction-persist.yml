@@ -1,0 +1,75 @@
+---
+# Install and enable boot persistence for the nine plaintext restriction tables.
+- name: Persist plaintext node-IP port restrictions across reboots
+  hosts: k8s_nodes
+  gather_facts: false
+  serial: 1
+  any_errors_fatal: true
+  become: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    restriction_runner: /usr/local/libexec/branconet-plaintext-restriction-all
+    restriction_helper: /usr/local/libexec/branconet-plaintext-restriction
+    restriction_unit: /etc/systemd/system/branconet-plaintext-restriction.service
+  tasks:
+    - name: Require the reviewed helper to be installed already
+      ansible.builtin.stat:
+        path: "{{ restriction_helper }}"
+      register: restriction_helper_stat
+
+    - name: Refuse to persist an unknown helper
+      ansible.builtin.assert:
+        that:
+          - restriction_helper_stat.stat.exists
+          - restriction_helper_stat.stat.pw_name == 'root'
+
+    - name: Install the all-profile runner
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../scripts/migration/apply-all-plaintext-restrictions.py"
+        dest: "{{ restriction_runner }}"
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Install the boot-persistence unit
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/files/branconet-plaintext-restriction.service"
+        dest: "{{ restriction_unit }}"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Enable the unit so it runs at boot
+      ansible.builtin.systemd_service:
+        name: branconet-plaintext-restriction.service
+        daemon_reload: true
+        enabled: true
+        state: started
+
+    - name: Read the resulting tables
+      ansible.builtin.command:
+        argv: [nft, -j, list, tables]
+      changed_when: false
+      register: restriction_tables
+
+    # Ansible conditionals must resolve to a boolean, so the count is computed
+    # here rather than letting a dict be tested for truthiness.
+    - name: Count the restriction tables present
+      ansible.builtin.set_fact:
+        restriction_table_names: "{{ (restriction_tables.stdout | from_json).nftables
+          | selectattr('table', 'defined') | map(attribute='table')
+          | map(attribute='name') | select('match', 'branconet_plaintext_restriction')
+          | list }}"
+
+    - name: Require all nine profiles present after the unit runs
+      ansible.builtin.assert:
+        that:
+          - restriction_table_names | length == 9
+          - (restriction_table_names | unique | length) == 9
+        fail_msg: >-
+          expected 9 plaintext restriction tables, found
+          {{ restriction_table_names | length }}: {{ restriction_table_names | join(', ') }}
+
+    - name: Report
+      ansible.builtin.debug:
+        msg: "boot persistence enabled on {{ inventory_hostname }}"

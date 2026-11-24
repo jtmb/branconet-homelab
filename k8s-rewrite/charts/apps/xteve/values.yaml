@@ -1,0 +1,293 @@
+enabled: false
+replicaCount: 0
+image: alturismo/xteve:latest@sha256:7885f2759c0da3c5f2c72b2e45ba4b602bdd7d6f04cc6abba201091f11c93a95
+environmentSecret: xteve-runtime
+migration:
+  hostNetworkingReviewed: false
+  verified: false
+  state: private-accepted-production-reconciled
+  sources:
+  - media_xteve
+  requiredEnvironmentKeys:
+  - PATH
+  - TZ
+  storageSizingVerified: true
+  nativeSecretsImported: true
+  applicationChecksPassed: true
+  dataCopies:
+  - sourceHost: 192.168.0.4
+    sourcePath: /mnt/nfs-container-volumes/xteve
+    destinationPVC: xteve-data-0
+    mountPath: /root/.xteve
+    measuredBytes: 138350448
+    allocatedGiB: 1
+    uid: 1000
+    gid: 65534
+  - sourceHost: 192.168.0.4
+    sourcePath: /mnt/nfs-container-volumes/xteve/config
+    destinationPVC: xteve-data-1
+    mountPath: /config
+    measuredBytes: 3269
+    allocatedGiB: 1
+    uid: 1000
+    gid: 65534
+  sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: xteve
+    namespace: plex
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: xteve
+    template:
+      metadata:
+        labels:
+          app: xteve
+        annotations: {}
+      spec:
+        containers:
+        - name: xteve
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p1900-tcp
+            containerPort: 1900
+            protocol: TCP
+          - name: p34400-tcp
+            containerPort: 34400
+            protocol: TCP
+          volumeMounts:
+          - name: data-0
+            mountPath: /root/.xteve
+            readOnly: false
+          - name: data-1
+            mountPath: /config
+            readOnly: false
+          - name: data-2
+            mountPath: /tmp/xteve
+            readOnly: false
+          - name: data-3
+            mountPath: /iptv
+            readOnly: false
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
+          imagePullPolicy: IfNotPresent
+        volumes:
+        - name: data-0
+          persistentVolumeClaim:
+            claimName: xteve-data-0
+        - name: data-1
+          persistentVolumeClaim:
+            claimName: xteve-data-1
+        - name: data-2
+          emptyDir:
+            medium: Memory
+        - name: data-3
+          persistentVolumeClaim:
+            claimName: xteve-data-3
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: xteve-data-0
+    namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: xteve-data-1
+    namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: plex-xteve-data-3
+    annotations:
+      helm.sh/resource-policy: keep
+  spec:
+    capacity:
+      storage: 1Gi
+    accessModes:
+    - ReadWriteMany
+    persistentVolumeReclaimPolicy: Retain
+    mountOptions:
+    - noserverino
+    - cache=none
+    - uid=1000
+    - gid=1000
+    - file_mode=0755
+    - dir_mode=0755
+    csi:
+      driver: smb.csi.k8s.io
+      volumeHandle: plex-xteve-data-3
+      volumeAttributes:
+        source: //192.168.0.8/plex_smb_share/iptv
+      nodeStageSecretRef:
+        name: smb-creds
+        namespace: plex
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: xteve-data-3
+    namespace: plex
+    annotations:
+      helm.sh/resource-policy: keep
+  spec:
+    storageClassName: ''
+    volumeName: plex-xteve-data-3
+    accessModes:
+    - ReadWriteMany
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: xteve
+    namespace: plex
+  spec:
+    selector:
+      app: xteve
+    ports:
+    - name: p1900-tcp
+      port: 1900
+      targetPort: 1900
+      protocol: TCP
+    - name: p34400-tcp
+      port: 34400
+      targetPort: 34400
+      protocol: TCP
+    type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: xteve-published
+    namespace: plex
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: xteve
+      meta.helm.sh/release-namespace: plex
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: xteve
+    ports:
+    - name: p1901-tcp
+      port: 1901
+      targetPort: 1900
+      protocol: TCP
+    - name: p34400-tcp
+      port: 34400
+      targetPort: 34400
+      protocol: TCP
+- apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: xteve-ssdp-gateway
+    namespace: plex
+  binaryData:
+    ssdp.py: '{{ .Files.Get "files/ssdp.py" | b64enc }}'
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: xteve-ssdp
+    namespace: plex
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: xteve-ssdp
+    template:
+      metadata:
+        labels:
+          app: xteve-ssdp
+      spec:
+        hostNetwork: true
+        automountServiceAccountToken: false
+        dnsPolicy: ClusterFirstWithHostNet
+        containers:
+        - name: ssdp
+          image: '{{ .Values.ssdpGatewayImage }}'
+          command:
+          - python3
+          - /gateway/ssdp.py
+          env:
+          - name: HOST_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: TUNER_LOCATION
+            value: http://192.168.0.4:34400/device.xml
+          - name: LAN_CIDR
+            value: 192.168.0.0/24
+          ports:
+          - name: ssdp
+            containerPort: 1900
+            hostPort: 1900
+            protocol: UDP
+          readinessProbe:
+            exec:
+              command:
+              - python3
+              - /gateway/ssdp.py
+              - --check
+            initialDelaySeconds: 3
+            periodSeconds: 10
+            timeoutSeconds: 6
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 64Mi
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+              - ALL
+          volumeMounts:
+          - name: gateway
+            mountPath: /gateway
+            readOnly: true
+        volumes:
+        - name: gateway
+          configMap:
+            name: xteve-ssdp-gateway
+ssdpGatewayImage: docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1

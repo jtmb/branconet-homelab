@@ -1,0 +1,52 @@
+---
+# Non-secret bootstrap configuration. Never regenerate this from application data.
+# Sudo is supplied in memory through the migration runner's stdin.
+cluster_name: branconet-k8s
+ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+k8s_version: v1.37.1
+calico_version: v3.33.0
+containerd_version: v2.4.2
+containerd_sha256: da656542e754c699a0f438eab925e6ffdbd6346a4428e659f83dc058f04dcffe
+# Legacy Docker/Swarm was retired on 2026-10-19; do not start it to provision K8s.
+migration_require_docker_coexistence: false
+runc_version: v1.5.2
+runc_sha256: 599f6f94ff8c5057241eff0d54c3c74f95c34935b6457b33fe545defc61e9488
+crictl_version: v1.37.0
+crictl_sha256: 67c983ee8a6bbce73d39a186e633c5fe4f8a70e62171ac3bd92a9c1b2c601670
+cni_version: v1.9.1
+cni_sha256: b98f74a0f8522f0a83867178729c1aa70f2158f90c45a2ca8fa791db1c76b303
+containerd_socket: unix:///run/containerd-k8s/containerd.sock
+pod_network_cidr: 10.244.0.0/16
+service_cidr: 10.96.0.0/12
+cluster_domain: cluster.local
+coredns_replicas: 2
+storage_class: longhorn
+longhorn_version: v1.12.1
+longhorn_replicas: 2
+snapshot_controller_version: v8.6.0
+longhorn_default_storage_class: longhorn
+longhorn_data_path: /var/lib/longhorn
+flux_version: v2.9.6
+flux_git_url: ssh://git@github.com/jtmb/branconet-charts.git
+flux_git_branch: validated
+flux_git_path: ./flux/releases
+flux_git_source_name: branconet-charts
+flux_git_secret_name: branconet-charts-readonly
+helm_version: v4.3.0
+helm_sha256: 86584a54def73570558f66f5111cc53dfed56689637ae32c1201205d494f54fb
+smb_csi_version: v1.20.3
+smb_media_source: //192.168.0.8/plex_smb_share
+traefik_version: v2.11@sha256:a6e718e8f84d4e45282a53a8e7338ab74372abac3ff78f9261a015bc8b45be95
+ingress_http_nodeport: 30080
+ingress_https_nodeport: 30443
+migration_network_cutover_complete: true
+migration_dashboard_enabled: true
+ingress_external_ips: [192.168.0.4, 192.168.0.5, 192.168.0.6]
+migration_native_dns_enabled: true
+cluster_upstream_dns: [1.1.1.1, 8.8.8.8]
+flux_activation_enabled: true
+longhorn_backup_target: cifs://192.168.0.8/container_backups/k8s-migration-20261009/longhorn?cifsOptions=vers=3.1.1,soft
+longhorn_backup_credential_secret: longhorn-backup-cifs
+nfs_enabled: false
+local_path_enabled: false
+kubeconfig_path: /home/james/.kube

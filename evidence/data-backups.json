@@ -1,0 +1,197 @@
+{
+  "started_at": "20261009T154856Z",
+  "source_replicas": {
+    "bot_ruckus": 1,
+    "bot_ruckus-db": 1,
+    "cicd_server-bootstrap": 1,
+    "cicd_vault": 1,
+    "gamesrv_mc-exporter": 1,
+    "mealie_mealie": 1,
+    "media_bazarr": 1,
+    "media_flaresolverr": 1,
+    "media_jackett": 1,
+    "media_overseerr": 1,
+    "media_radarr": 1,
+    "media_sonarr": 1,
+    "media_tautulli": 1,
+    "media_unpackerr": 1,
+    "media_xteve": 1,
+    "media_ytdl": 1,
+    "pi_exporter": 1,
+    "pi_pihole": 1,
+    "portainer_portainer": 1,
+    "proxy_traefik": 1,
+    "proxy_whoami": 1,
+    "vault_vaultwarden": 1,
+    "wordpress_db": 1,
+    "wordpress_phpmyadmin": 1,
+    "wordpress_redis-db": 1,
+    "wordpress_wp-app": 1,
+    "ws_aplb": 1,
+    "ws_homepage": 1,
+    "ws_lucinda": 1,
+    "ws_mcwebsite": 1,
+    "ws_santos": 1
+  },
+  "source_standalone": {
+    "192.168.0.4": [
+      "qbittorrent",
+      "GlueTun-proton",
+      "plex-plex-1"
+    ],
+    "192.168.0.5": [
+      "plex-plex-1"
+    ],
+    "192.168.0.6": [
+      "ets2-server",
+      "plex-plex-1"
+    ]
+  },
+  "archives": [
+    {
+      "ok": true,
+      "host": "192.168.0.5",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/cold-192.168.0.5-20261009T145609Z.tar.gz.age",
+      "source_paths": [
+        "/var/plex-stack"
+      ],
+      "encrypted_bytes": 12739987692,
+      "ciphertext_sha256": "ac635560eec19bbdd46255bed76e3f8f6df73818218361ead4e4f8bb4a76c3a0",
+      "elapsed_seconds": 835,
+      "authenticated_decryption_verified": true,
+      "tar_entries": 137413,
+      "uncompressed_file_bytes": 13797804114
+    },
+    {
+      "ok": true,
+      "host": "192.168.0.6",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/cold-192.168.0.6-20261009T145609Z.tar.gz.age",
+      "source_paths": [
+        "/mnt/plex_smb_share/shared-container-folder/ets2",
+        "/var/plex-stack"
+      ],
+      "encrypted_bytes": 12743380617,
+      "ciphertext_sha256": "456ebd1af43f9f857f720929f19e858320c07defa1e2937423d334a6efaf7249",
+      "elapsed_seconds": 878,
+      "authenticated_decryption_verified": true,
+      "tar_entries": 139345,
+      "uncompressed_file_bytes": 13995369528
+    },
+    {
+      "ok": true,
+      "host": "192.168.0.6",
+      "kind": "gluster-brick",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/gluster-brick-192.168.0.6-20261009T154856Z.tar.gz.age",
+      "source_paths": [
+        "/gluster/volumes"
+      ],
+      "excluded_paths": [],
+      "encrypted_bytes": 892992329,
+      "ciphertext_sha256": "d4f6471368728f8db57257b0e5002a3fd86fefcd4f3e38ae5228db20aff06383",
+      "elapsed_seconds": 97,
+      "authenticated_decryption_verified": true,
+      "tar_entries": 81535,
+      "uncompressed_file_bytes": 2076522362
+    },
+    {
+      "ok": true,
+      "host": "192.168.0.4",
+      "kind": "gluster-brick",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/gluster-brick-192.168.0.4-20261009T154856Z.tar.gz.age",
+      "source_paths": [
+        "/gluster/volumes"
+      ],
+      "excluded_paths": [],
+      "encrypted_bytes": 892801376,
+      "ciphertext_sha256": "7319ec525a53aebaf8c0fbd9f1ae03afd0c2033d8071b9b05dcf282e6c7df9eb",
+      "elapsed_seconds": 115,
+      "authenticated_decryption_verified": true,
+      "tar_entries": 81640,
+      "uncompressed_file_bytes": 2076525916
+    },
+    {
+      "ok": true,
+      "host": "192.168.0.5",
+      "kind": "gluster-brick",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/gluster-brick-192.168.0.5-20261009T154856Z.tar.gz.age",
+      "source_paths": [
+        "/gluster/volumes"
+      ],
+      "excluded_paths": [],
+      "encrypted_bytes": 893259290,
+      "ciphertext_sha256": "46eb2f73f819cb0bfbe7f4cdcdd8aa966fbe62babb283408bcd27e9727b0b60e",
+      "elapsed_seconds": 119,
+      "authenticated_decryption_verified": true,
+      "tar_entries": 81528,
+      "uncompressed_file_bytes": 2076644739
+    },
+    {
+      "ok": true,
+      "host": "192.168.0.5",
+      "kind": "gluster-logical",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/gluster-logical-192.168.0.5-20261009T154856Z.tar.gz.age",
+      "source_paths": [
+        "/mnt/container-program-files"
+      ],
+      "excluded_paths": [
+        "/mnt/container-program-files/plex/config/Library/Application Support/Plex Media Server/Logs"
+      ],
+      "encrypted_bytes": 881983711,
+      "ciphertext_sha256": "b8638309421dcacf934f9afaf4fc531690bc3d89d957848c865ae50dabdde3bc",
+      "elapsed_seconds": 97,
+      "authenticated_decryption_verified": true,
+      "tar_entries": 7823,
+      "uncompressed_file_bytes": 2051319142
+    },
+    {
+      "ok": true,
+      "host": "192.168.0.4",
+      "kind": "cold-primary",
+      "archive": "/mnt/container-backups/k8s-migration-20261009/cold-primary-192.168.0.4-20261009T154856Z.tar.gz.age",
+      "source_paths": [
+        "/mnt/nfs-container-volumes",
+        "/var/plex-stack"
+      ],
+      "excluded_paths": [],
+      "encrypted_bytes": 7326911541,
+      "ciphertext_sha256": "75d9548119b9b9030bd27aad6f3dd0aef3421fed4820892285a3d37c97dd3bf5",
+      "elapsed_seconds": 471,
+      "authenticated_decryption_verified": true,
+      "tar_entries": 74203,
+      "uncompressed_file_bytes": 8976092202
+    }
+  ],
+  "restoration": {
+    "standalone": {
+      "192.168.0.4": 0,
+      "192.168.0.5": 0,
+      "192.168.0.6": 0
+    },
+    "swarm": 0
+  },
+  "approved_disposable_runtime_paths": [
+    {
+      "host": "192.168.0.4",
+      "service": "media_flaresolverr",
+      "destination": "/config",
+      "original_path": "/var/lib/docker/volumes/3252f989eb179d2705a6cad5c3c5d0646e4ccb892b862fff8fa1fadca4c66737/_data",
+      "classification": "User-confirmed disposable runtime state"
+    },
+    {
+      "host": "192.168.0.6",
+      "service": "cicd_vault",
+      "destination": "/vault/logs",
+      "original_path": "/var/lib/docker/volumes/8b3c9df8cee4eeed273da7fb6b30396226430955bef8a861fdeec74dd230cb43/_data",
+      "classification": "User-confirmed disposable runtime state"
+    },
+    {
+      "host": "192.168.0.6",
+      "service": "cicd_vault",
+      "destination": "/vault/file",
+      "original_path": "/var/lib/docker/volumes/35b2b8e13b9432298ac2298a7ffb75134973d2047f61abdc44592efb5cc184fc/_data",
+      "classification": "User-confirmed disposable runtime state"
+    }
+  ],
+  "recovery_strategy": "Retain valid original cold archives; rearchive primary local/NFS state, preserve all three raw bricks, and archive worker2 logical Gluster excluding obsolete Plex Logs preserved in brick archives. Raw bricks are recovery originals, not application import sources.",
+  "completed_at": "2026-10-09T16:09:13.806384+00:00"
+}

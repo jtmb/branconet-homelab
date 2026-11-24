@@ -1,0 +1,331 @@
+{
+  "captured_at": "2026-10-09T20:20:25.170467+00:00",
+  "nodes": {
+    "192.168.0.4": {
+      "anonymous_source_paths": [
+        {
+          "path": "/var/lib/docker/volumes/3252f989eb179d2705a6cad5c3c5d0646e4ccb892b862fff8fa1fadca4c66737/_data",
+          "exists": false
+        }
+      ],
+      "heal staging-gfs info summary": {
+        "exit_code": 0,
+        "output": "Brick masternode:/gluster/volumes\nStatus: Connected\nTotal Number of entries: 5\nNumber of entries in heal pending: 5\nNumber of entries in split-brain: 0\nNumber of entries possibly healing: 0\n\nBrick workernode1:/gluster/volumes\nStatus: Connected\nTotal Number of entries: 3\nNumber of entries in heal pending: 3\nNumber of entries in split-brain: 0\nNumber of entries possibly healing: 0\n\nBrick workernode2:/gluster/volumes\nStatus: Connected\nTotal Number of entries: 2\nNumber of entries in heal pending: 2\nNumber of entries in split-brain: 0\nNumber of entries possibly healing: 0\n\n",
+        "diagnostic": ""
+      },
+      "heal staging-gfs info split-brain": {
+        "exit_code": 0,
+        "output": "Brick masternode:/gluster/volumes\nStatus: Connected\nNumber of entries in split-brain: 0\n\nBrick workernode1:/gluster/volumes\nStatus: Connected\nNumber of entries in split-brain: 0\n\nBrick workernode2:/gluster/volumes\nStatus: Connected\nNumber of entries in split-brain: 0\n\n",
+        "diagnostic": ""
+      },
+      "heal staging-gfs info": {
+        "exit_code": 0,
+        "output": "Brick masternode:/gluster/volumes\n/plex/config/Library/Application Support/Plex Media Server/Logs \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Analysis.log \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Transcoder Statistics.log \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Matcher.log \nStatus: Connected\nNumber of entries: 4\n\nBrick workernode1:/gluster/volumes\n/plex/config/Library/Application Support/Plex Media Server/Logs \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Transcoder Statistics.log \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Analysis.log \nStatus: Connected\nNumber of entries: 3\n\nBrick workernode2:/gluster/volumes\n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Matcher.log \n/plex/config/Library/Application Support/Plex Media Server/Logs \nStatus: Connected\nNumber of entries: 2\n\n",
+        "diagnostic": ""
+      },
+      "source_path_checks": [
+        {
+          "relative_path": "jackett/Jackett/Indexers/eztv.json",
+          "logical": {
+            "errno": 2,
+            "error": "FileNotFoundError"
+          },
+          "brick": {
+            "exists": true,
+            "size": 1002,
+            "mtime_ns": 1791560395412582864,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "jackett/Jackett/Indexers/1337x.json.bak",
+          "logical": {
+            "errno": 2,
+            "error": "FileNotFoundError"
+          },
+          "brick": {
+            "exists": true,
+            "size": 2367,
+            "mtime_ns": 1791560383528411245,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "plex/config/Library/Application Support/Plex Media Server/Logs",
+          "logical": {
+            "exists": true,
+            "size": 4096,
+            "mtime_ns": 1732561099649260404,
+            "is_directory": true
+          },
+          "brick": {
+            "exists": true,
+            "size": 4096,
+            "mtime_ns": 1732561099643326974,
+            "is_directory": true
+          }
+        },
+        {
+          "relative_path": "pihole/gravity.db",
+          "logical": {
+            "exists": true,
+            "size": 82644992,
+            "mtime_ns": 1791107533533118119,
+            "is_directory": false
+          },
+          "brick": {
+            "exists": true,
+            "size": 82644992,
+            "mtime_ns": 1791107533530762585,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "pihole/pihole-FTL.db",
+          "logical": {
+            "exists": true,
+            "size": 875638784,
+            "mtime_ns": 1791569786472403537,
+            "is_directory": false
+          },
+          "brick": {
+            "exists": true,
+            "size": 875638784,
+            "mtime_ns": 1791569786468551701,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "pihole/setupVars.conf",
+          "logical": {
+            "errno": 2,
+            "error": "FileNotFoundError"
+          },
+          "brick": {
+            "errno": 2,
+            "error": "FileNotFoundError"
+          }
+        }
+      ]
+    },
+    "192.168.0.5": {
+      "anonymous_source_paths": [],
+      "heal staging-gfs info summary": {
+        "exit_code": 0,
+        "output": "Brick masternode:/gluster/volumes\nStatus: Connected\nTotal Number of entries: 5\nNumber of entries in heal pending: 5\nNumber of entries in split-brain: 0\nNumber of entries possibly healing: 0\n\nBrick workernode1:/gluster/volumes\nStatus: Connected\nTotal Number of entries: 3\nNumber of entries in heal pending: 3\nNumber of entries in split-brain: 0\nNumber of entries possibly healing: 0\n\nBrick workernode2:/gluster/volumes\nStatus: Connected\nTotal Number of entries: 2\nNumber of entries in heal pending: 2\nNumber of entries in split-brain: 0\nNumber of entries possibly healing: 0\n\n",
+        "diagnostic": ""
+      },
+      "heal staging-gfs info split-brain": {
+        "exit_code": 0,
+        "output": "Brick masternode:/gluster/volumes\nStatus: Connected\nNumber of entries in split-brain: 0\n\nBrick workernode1:/gluster/volumes\nStatus: Connected\nNumber of entries in split-brain: 0\n\nBrick workernode2:/gluster/volumes\nStatus: Connected\nNumber of entries in split-brain: 0\n\n",
+        "diagnostic": ""
+      },
+      "heal staging-gfs info": {
+        "exit_code": 0,
+        "output": "Brick masternode:/gluster/volumes\n/plex/config/Library/Application Support/Plex Media Server/Logs \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Analysis.log \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Transcoder Statistics.log \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Matcher.log \nStatus: Connected\nNumber of entries: 4\n\nBrick workernode1:/gluster/volumes\n/plex/config/Library/Application Support/Plex Media Server/Logs \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Transcoder Statistics.log \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Analysis.log \nStatus: Connected\nNumber of entries: 3\n\nBrick workernode2:/gluster/volumes\n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Matcher.log \n/plex/config/Library/Application Support/Plex Media Server/Logs \nStatus: Connected\nNumber of entries: 2\n\n",
+        "diagnostic": ""
+      },
+      "source_path_checks": [
+        {
+          "relative_path": "jackett/Jackett/Indexers/eztv.json",
+          "logical": {
+            "exists": true,
+            "size": 1002,
+            "mtime_ns": 1791560395398969914,
+            "is_directory": false
+          },
+          "brick": {
+            "exists": true,
+            "size": 1002,
+            "mtime_ns": 1791560395408345826,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "jackett/Jackett/Indexers/1337x.json.bak",
+          "logical": {
+            "exists": true,
+            "size": 2367,
+            "mtime_ns": 1791560383522216606,
+            "is_directory": false
+          },
+          "brick": {
+            "exists": true,
+            "size": 2367,
+            "mtime_ns": 1791560383528409014,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "plex/config/Library/Application Support/Plex Media Server/Logs",
+          "logical": {
+            "exists": true,
+            "size": 4096,
+            "mtime_ns": 1732561099649260404,
+            "is_directory": true
+          },
+          "brick": {
+            "exists": true,
+            "size": 4096,
+            "mtime_ns": 1732561099645893414,
+            "is_directory": true
+          }
+        },
+        {
+          "relative_path": "pihole/gravity.db",
+          "logical": {
+            "exists": true,
+            "size": 82644992,
+            "mtime_ns": 1791107533533118119,
+            "is_directory": false
+          },
+          "brick": {
+            "exists": true,
+            "size": 82644992,
+            "mtime_ns": 1791107533529623226,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "pihole/pihole-FTL.db",
+          "logical": {
+            "exists": true,
+            "size": 875638784,
+            "mtime_ns": 1791569786472403537,
+            "is_directory": false
+          },
+          "brick": {
+            "exists": true,
+            "size": 875638784,
+            "mtime_ns": 1791569786468431424,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "pihole/setupVars.conf",
+          "logical": {
+            "errno": 2,
+            "error": "FileNotFoundError"
+          },
+          "brick": {
+            "errno": 2,
+            "error": "FileNotFoundError"
+          }
+        }
+      ]
+    },
+    "192.168.0.6": {
+      "anonymous_source_paths": [
+        {
+          "path": "/var/lib/docker/volumes/35b2b8e13b9432298ac2298a7ffb75134973d2047f61abdc44592efb5cc184fc/_data",
+          "exists": false
+        },
+        {
+          "path": "/var/lib/docker/volumes/8b3c9df8cee4eeed273da7fb6b30396226430955bef8a861fdeec74dd230cb43/_data",
+          "exists": false
+        }
+      ],
+      "heal staging-gfs info summary": {
+        "exit_code": 0,
+        "output": "Brick masternode:/gluster/volumes\nStatus: Connected\nTotal Number of entries: 5\nNumber of entries in heal pending: 5\nNumber of entries in split-brain: 0\nNumber of entries possibly healing: 0\n\nBrick workernode1:/gluster/volumes\nStatus: Connected\nTotal Number of entries: 3\nNumber of entries in heal pending: 3\nNumber of entries in split-brain: 0\nNumber of entries possibly healing: 0\n\nBrick workernode2:/gluster/volumes\nStatus: Connected\nTotal Number of entries: 2\nNumber of entries in heal pending: 2\nNumber of entries in split-brain: 0\nNumber of entries possibly healing: 0\n\n",
+        "diagnostic": ""
+      },
+      "heal staging-gfs info split-brain": {
+        "exit_code": 0,
+        "output": "Brick masternode:/gluster/volumes\nStatus: Connected\nNumber of entries in split-brain: 0\n\nBrick workernode1:/gluster/volumes\nStatus: Connected\nNumber of entries in split-brain: 0\n\nBrick workernode2:/gluster/volumes\nStatus: Connected\nNumber of entries in split-brain: 0\n\n",
+        "diagnostic": ""
+      },
+      "heal staging-gfs info": {
+        "exit_code": 0,
+        "output": "Brick masternode:/gluster/volumes\n/plex/config/Library/Application Support/Plex Media Server/Logs \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Analysis.log \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Transcoder Statistics.log \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Matcher.log \nStatus: Connected\nNumber of entries: 4\n\nBrick workernode1:/gluster/volumes\n/plex/config/Library/Application Support/Plex Media Server/Logs \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Transcoder Statistics.log \n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Analysis.log \nStatus: Connected\nNumber of entries: 3\n\nBrick workernode2:/gluster/volumes\n/plex/config/Library/Application Support/Plex Media Server/Logs/Plex Media Scanner Matcher.log \n/plex/config/Library/Application Support/Plex Media Server/Logs \nStatus: Connected\nNumber of entries: 2\n\n",
+        "diagnostic": ""
+      },
+      "source_path_checks": [
+        {
+          "relative_path": "jackett/Jackett/Indexers/eztv.json",
+          "logical": {
+            "exists": true,
+            "size": 1002,
+            "mtime_ns": 1791560395398969914,
+            "is_directory": false
+          },
+          "brick": {
+            "exists": true,
+            "size": 1002,
+            "mtime_ns": 1791560395402876244,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "jackett/Jackett/Indexers/1337x.json.bak",
+          "logical": {
+            "exists": true,
+            "size": 2367,
+            "mtime_ns": 1791560383522216606,
+            "is_directory": false
+          },
+          "brick": {
+            "exists": true,
+            "size": 2367,
+            "mtime_ns": 1791560383522788148,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "plex/config/Library/Application Support/Plex Media Server/Logs",
+          "logical": {
+            "exists": true,
+            "size": 4096,
+            "mtime_ns": 1732561099649260404,
+            "is_directory": true
+          },
+          "brick": {
+            "exists": true,
+            "size": 4096,
+            "mtime_ns": 1732561099646248571,
+            "is_directory": true
+          }
+        },
+        {
+          "relative_path": "pihole/gravity.db",
+          "logical": {
+            "errno": 2,
+            "error": "FileNotFoundError"
+          },
+          "brick": {
+            "exists": true,
+            "size": 82644992,
+            "mtime_ns": 1791107533532908873,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "pihole/pihole-FTL.db",
+          "logical": {
+            "exists": true,
+            "size": 875638784,
+            "mtime_ns": 1791569786472403537,
+            "is_directory": false
+          },
+          "brick": {
+            "exists": true,
+            "size": 875638784,
+            "mtime_ns": 1791569786469513983,
+            "is_directory": false
+          }
+        },
+        {
+          "relative_path": "pihole/setupVars.conf",
+          "logical": {
+            "errno": 2,
+            "error": "FileNotFoundError"
+          },
+          "brick": {
+            "errno": 2,
+            "error": "FileNotFoundError"
+          }
+        }
+      ]
+    }
+  }
+}

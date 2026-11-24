@@ -1,0 +1,98 @@
+---
+- name: Require an explicit controller context directory
+  ansible.builtin.assert:
+    that:
+      - ytptube_build_context_dir is match('^/[^\n]+$')
+
+- name: Hash the exact controller binaries and reviewed context files
+  ansible.builtin.stat:
+    path: "{{ item.path }}"
+    checksum_algorithm: sha256
+  delegate_to: localhost
+  become: false
+  register: ytptube_build_inputs
+  loop:
+    - {path: "{{ ytptube_build_bin_dir }}/buildkitd", relative: bin/buildkitd}
+    - {path: "{{ ytptube_build_bin_dir }}/buildctl", relative: bin/buildctl}
+    - {path: "{{ ytptube_build_bin_dir }}/buildkit-runc", relative: bin/buildkit-runc}
+    - {path: "{{ ytptube_build_context_dir }}/Dockerfile", relative: context/Dockerfile}
+    - {path: "{{ ytptube_build_context_dir }}/patch-provider.py", relative: context/patch-provider.py}
+    - {path: "{{ ytptube_build_context_dir }}/verify-python.py", relative: context/verify-python.py}
+    - {path: "{{ role_path }}/files/build_phase.py", relative: build_phase.py}
+
+- name: Require all reviewed inputs to be regular files
+  ansible.builtin.assert:
+    that:
+      - item.stat.isreg | default(false)
+      - not (item.stat.islnk | default(false))
+  loop: "{{ ytptube_build_inputs.results }}"
+  loop_control:
+    label: "{{ item.item.relative }}"
+
+- name: Initialize the exact input manifest
+  ansible.builtin.set_fact:
+    ytptube_build_manifest: {}
+
+- name: Bind each copied input to its controller SHA-256
+  ansible.builtin.set_fact:
+    ytptube_build_manifest: "{{ ytptube_build_manifest | combine({item.item.relative: item.stat.checksum}) }}"
+  loop: "{{ ytptube_build_inputs.results }}"
+  loop_control:
+    label: "{{ item.item.relative }}"
+
+- name: Inspect any existing staging directory
+  ansible.builtin.stat:
+    path: "{{ ytptube_build_root }}"
+  register: ytptube_build_directory
+
+- name: Preserve incomplete prior setup instead of overwriting it
+  ansible.builtin.assert:
+    that: [not ytptube_build_directory.stat.exists or ytptube_build_seal.stat.exists]
+    fail_msg: Existing unsealed staging is retained for review; no replacement or cleanup is automatic.
+
+- name: Read a prior setup seal without build output
+  ansible.builtin.slurp:
+    src: "{{ ytptube_build_root }}/build-inputs.json"
+  register: ytptube_build_existing_seal
+  when: ytptube_build_seal.stat.exists
+
+- name: Refuse changed inputs in an existing retained build
+  ansible.builtin.assert:
+    that: [(ytptube_build_existing_seal.content | b64decode | from_json).files == ytptube_build_manifest]
+    fail_msg: Existing build inputs differ; preserve the attempt and review a new explicitly scoped build.
+  when: ytptube_build_seal.stat.exists
+
+- name: Create only the isolated protected builder directories
+  ansible.builtin.file:
+    path: "{{ ytptube_build_root }}/{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0700'
+  loop: ['', bin, context, empty-home, empty-home/.docker]
+  when: not ytptube_build_seal.stat.exists
+
+- name: Copy only exact public build inputs and verified standalone tools
+  ansible.builtin.copy:
+    src: "{{ item.item.path }}"
+    dest: "{{ ytptube_build_root }}/{{ item.item.relative }}"
+    owner: root
+    group: root
+    mode: "{{ '0700' if item.item.relative is match('^bin/') else '0600' }}"
+  loop: "{{ ytptube_build_inputs.results }}"
+  loop_control:
+    label: "{{ item.item.relative }}"
+  when: not ytptube_build_seal.stat.exists
+
+- name: Seal the isolated input identities and verified release provenance
+  ansible.builtin.copy:
+    dest: "{{ ytptube_build_root }}/build-inputs.json"
+    mode: '0600'
+    force: false
+    content: "{{ {'buildkit_version': 'v0.34.1', 'buildkit_archive_sha256': ytptube_build_archive_sha256, 'files': ytptube_build_manifest, 'root': ytptube_build_root, 'unit_prefix': ytptube_build_unit_prefix} | to_nice_json }}\n"
+  when: not ytptube_build_seal.stat.exists
+
+- name: Verify every remote file against the sealed controller hashes
+  ansible.builtin.command:
+    argv: [/usr/bin/python3, "{{ ytptube_build_root }}/build_phase.py", status, "{{ ytptube_build_root }}", "{{ ytptube_build_unit_prefix }}"]
+  changed_when: false

@@ -1,0 +1,64 @@
+{
+  "status": "HELD_PUBLIC_SOURCE_PREPARATION_NO_LIBC_BUILD",
+  "sourcePackage": "glibc2.39-0ubuntu8.9",
+  "independentReview": {
+    "actualExit": 0,
+    "manifestSHA256": "d7d966f8bd3e8b16bcae270c08326cdb0512493d3c17c239eecfac98c3b7c201",
+    "allManifestFilesCurrent": 30,
+    "beforeInverseByteExact": true,
+    "originalRows": 20733,
+    "candidateTarRows": 20771,
+    "tarEveryContentAndMetadataMatchesInventory": true,
+    "maintainedFixDifferencesOnlyHunkCoordinates": true,
+    "all116DistroPatchSemanticReplayByRoot": false,
+    "compileOrTargetRun": false,
+    "securityAccepted": false,
+    "heldSourceOnly": true
+  },
+  "independentReviewPin": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-glibc-held-source-review-20261016-v1.json",
+    "bytes": 490,
+    "sha256": "81baea330b34afc7461df13b8cc85fbecac9e302f7f56e98f3df8746e9c7a457"
+  },
+  "sourceManifest": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\glibc-noble-copied-source-preparation-20261016-v1-3\\manifest.json",
+    "bytes": 5269,
+    "sha256": "d7d966f8bd3e8b16bcae270c08326cdb0512493d3c17c239eecfac98c3b7c201"
+  },
+  "providerPlan": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\glibc-noble-copied-source-preparation-20261016-v1-3\\BUILD-PREREQUISITE-AND-PROVIDER-PLAN.json",
+    "bytes": 16627,
+    "sha256": "bd7f148c868eae1c0b9a373ef0ae651930b7b309bed1d4d1a37a4d855fbe37ff"
+  },
+  "copiedSourceTar": {
+    "bytes": 254515200,
+    "sha256": "273f878f155db89e45400b8a36cae52e0c8e7bab30a167a2b17fc3fd310ba8ab"
+  },
+  "delegatedPreparation": {
+    "distroPatches": 116,
+    "maintainedFixes": 2,
+    "exactContextApplication": true,
+    "reverseAllOriginalContentsMetadata": true,
+    "semanticReplayOfAll116ByRoot": false
+  },
+  "refusalsRetained": [
+    "v1 exact assembler refused overlapping unchanged distro hunk context",
+    "v1-1 named public hunk diagnosis; selected helper initially refused existing output before any modification",
+    "v1-2 applied all116 distro patches, refused ambiguous single upstream hunk context; unique ordered assignment used for header-only adaptation in v1-3",
+    "selected build-reference lookup initially noted absent vars.mk/gnu.mk then stopped before plan printing; no source mutation or build"
+  ],
+  "decision": "Hold the patched source without compilation. Trace actual consumer MODE inputs and evaluate a precise residual first; original A20 permits documented expiring exceptions and does not require scanner zero. No residual is accepted by this receipt.",
+  "remaining": [
+    "Opaque native fopen MODE construction and exposure",
+    "Any future custom libc requires complete prerequisites and matched loader/provider ABI, fixed regression and actual consumer tests",
+    "Current full-image security and production adoption"
+  ],
+  "proposedExpiryNotAccepted": "2026-10-22T23:59:59Z",
+  "sourceOrPackageInstalled": false,
+  "compilerOrTargetExecuted": false,
+  "newImage": false,
+  "scannerLiteralExitUnchanged": 1,
+  "mediumFindingsUnchanged": 12,
+  "securityAccepted": false,
+  "productionAndOriginalDataUnchanged": true
+}

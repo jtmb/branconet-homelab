@@ -1,0 +1,10 @@
+---
+# Client driver only. Preserve the NAS share, credentials, fstab and files.
+- name: Install pinned SMB CSI driver for existing NAS media
+  ansible.builtin.command:
+    argv: [helm, upgrade, --install, csi-driver-smb, --repo, https://raw.githubusercontent.com/kubernetes-csi/csi-driver-smb/master/charts, csi-driver-smb, --version, "{{ smb_csi_version | regex_replace('^v', '') }}", --namespace, kube-system, --wait, --timeout, 10m]
+  changed_when: true
+
+- name: Verify SMB CSI driver registration
+  ansible.builtin.command: kubectl get csidriver smb.csi.k8s.io
+  changed_when: false

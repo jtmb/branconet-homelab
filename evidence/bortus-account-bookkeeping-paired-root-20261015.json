@@ -1,0 +1,1164 @@
+{
+  "scope": "Original unchanged three-pair comparison of isolated single-reader bookkeeping candidate; warm gate fails",
+  "candidate": "d69f116057f51f5ef18d6f625528d702486d2027",
+  "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "initialTool": "231d74",
+  "finalTool": "184dfc",
+  "actualOuterExit": 0,
+  "actualRunnerExit": 0,
+  "actualSupervisorExit": 0,
+  "originalSummaryTool": "2a0969",
+  "exactTool": "2ec7cd",
+  "exactExit": 0,
+  "freshTool": "b4e7c3",
+  "freshExit": 0,
+  "laterPending": false,
+  "alternatingPairs": 3,
+  "observations": 6,
+  "profilesPerObservation": 6,
+  "frozenInputs": 66,
+  "exportedSourceFiles": 439,
+  "candidateSelectedSources": 282,
+  "baselineSelectedSources": 157,
+  "rawSHA256": "7b45a43d312bb8acb1e68002267d154ceb7ce9bf361522d43403b57f2ebefea7",
+  "summarySHA256": "2830b31fdb049a705888d9473d9230ea9a71382d8eb90c0d67559dd3a185ba32",
+  "warmP95Cases": [
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-12",
+      "baselineP95Ms": 10.93784500000038,
+      "candidateP95Ms": 14.668674999999894,
+      "changePercent": 34.109369807301015,
+      "regression": true
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95Ms": 46.691221999999925,
+      "candidateP95Ms": 45.22626700000001,
+      "changePercent": -3.1375383578521876,
+      "regression": false
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "warm-pods-12",
+      "baselineP95Ms": 7.516013000000385,
+      "candidateP95Ms": 6.239477999999508,
+      "changePercent": -16.984204258305713,
+      "regression": false
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95Ms": 55.409207000000606,
+      "candidateP95Ms": 49.54711599999973,
+      "changePercent": -10.579633453337111,
+      "regression": false
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "warm-pods-12",
+      "baselineP95Ms": 8.539867999999842,
+      "candidateP95Ms": 7.680732000000717,
+      "changePercent": -10.060296013933023,
+      "regression": false
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95Ms": 67.69907200000125,
+      "candidateP95Ms": 71.92142700000113,
+      "changePercent": 6.236946645294927,
+      "regression": true
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "warm-pods-12",
+      "baselineP95Ms": 6.303509000001213,
+      "candidateP95Ms": 5.933882999997877,
+      "changePercent": -5.8638133141915905,
+      "regression": false
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95Ms": 45.39654500000324,
+      "candidateP95Ms": 42.50825299999997,
+      "changePercent": -6.362360836057168,
+      "regression": false
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "warm-pods-12",
+      "baselineP95Ms": 7.069144000000961,
+      "candidateP95Ms": 6.0957109999981185,
+      "changePercent": -13.770167929847087,
+      "regression": false
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "warm-pods-concurrent-20",
+      "baselineP95Ms": 44.85789999999906,
+      "candidateP95Ms": 43.62639299999864,
+      "changePercent": -2.745351431967269,
+      "regression": false
+    }
+  ],
+  "warmRegressions": 2,
+  "warmCases": 10,
+  "nativeP95Cases": [
+    {
+      "fixture": "audit-small",
+      "baselineP95Ms": 93.79730999999992,
+      "candidateP95Ms": 67.66896999999972
+    },
+    {
+      "fixture": "metadata-200",
+      "baselineP95Ms": 61.53447799999958,
+      "candidateP95Ms": 66.89366999999947
+    },
+    {
+      "fixture": "metadata-1000",
+      "baselineP95Ms": 70.09278699999959,
+      "candidateP95Ms": 80.48929399999906
+    },
+    {
+      "fixture": "metadata-10000",
+      "baselineP95Ms": 238.49121100000048,
+      "candidateP95Ms": 166.57780400000047
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "baselineP95Ms": 174.50592300000062,
+      "candidateP95Ms": 159.1180110000023
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "baselineP95Ms": 110.78529699999854,
+      "candidateP95Ms": 97.44193299999824
+    }
+  ],
+  "allComparableLatencyWorkflowCPUMedianIncreases": [
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-12",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 63.15586099999973,
+      "candidateMedian": 78.49852499999997
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-12",
+      "metric": "http_p50_ms",
+      "baselineMedian": 4.812658000000283,
+      "candidateMedian": 4.813098999999966
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-12",
+      "metric": "http_p95_ms",
+      "baselineMedian": 10.93784500000038,
+      "candidateMedian": 14.668674999999894
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-12",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 107.237,
+      "candidateMedian": 134.188
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-concurrent-20",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 72.708,
+      "candidateMedian": 73.07
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "warm-pods-concurrent-20",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 50.0,
+      "candidateMedian": 60.0
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "services-after-pods",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 6.0859309999996185,
+      "candidateMedian": 83.16563300000053
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baselineMedian": 3.4776230000002215,
+      "candidateMedian": 80.36589699999968
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baselineMedian": 3.4776230000002215,
+      "candidateMedian": 80.36589699999968
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "services-after-pods",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 7.006,
+      "candidateMedian": 36.227
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "configuration-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 11.32987299999968,
+      "candidateMedian": 12.064438999999766
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "configuration-metadata",
+      "metric": "http_p50_ms",
+      "baselineMedian": 8.331568000000061,
+      "candidateMedian": 9.465634000000136
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "configuration-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 8.331568000000061,
+      "candidateMedian": 9.465634000000136
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "configuration-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 12.988,
+      "candidateMedian": 13.348
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "all-alias-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 11.38863399999991,
+      "candidateMedian": 35.643708999999944
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "all-alias-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 7.2580629999997655,
+      "candidateMedian": 8.652087999999821
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "all-alias-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 14.754,
+      "candidateMedian": 41.006
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "all-alias-metadata",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 10.0,
+      "candidateMedian": 40.0
+    },
+    {
+      "fixture": "audit-small",
+      "phase": "readiness-five-sequential",
+      "metric": "http_p95_ms",
+      "baselineMedian": 51.42406799999981,
+      "candidateMedian": 95.39835399999993
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "warm-pods-12",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 56.184785000001284,
+      "candidateMedian": 58.102004000000306
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "warm-pods-12",
+      "metric": "http_p50_ms",
+      "baselineMedian": 3.8788209999984247,
+      "candidateMedian": 3.969119999999748
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "warm-pods-12",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 69.637,
+      "candidateMedian": 74.673
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "warm-pods-concurrent-20",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 87.88,
+      "candidateMedian": 88.085
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "services-after-pods",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 5.698073999999906,
+      "candidateMedian": 81.77645399999892
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baselineMedian": 3.457914000000528,
+      "candidateMedian": 79.39504599999964
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baselineMedian": 3.457914000000528,
+      "candidateMedian": 79.39504599999964
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "services-after-pods",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 6.04,
+      "candidateMedian": 34.055
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "services-after-pods",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 0.0,
+      "candidateMedian": 10.0
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "configuration-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 10.104976000000534,
+      "candidateMedian": 11.859830999999758
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "configuration-metadata",
+      "metric": "http_p50_ms",
+      "baselineMedian": 7.667402999999467,
+      "candidateMedian": 9.525595000000976
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "configuration-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 7.667402999999467,
+      "candidateMedian": 9.525595000000976
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "configuration-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 10.376,
+      "candidateMedian": 12.845
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "native-secret-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 69.05255599999873,
+      "candidateMedian": 69.30883800000083
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "native-secret-metadata",
+      "metric": "http_p50_ms",
+      "baselineMedian": 61.53447799999958,
+      "candidateMedian": 66.89366999999947
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "native-secret-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 61.53447799999958,
+      "candidateMedian": 66.89366999999947
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "all-alias-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 10.398819000000003,
+      "candidateMedian": 33.52143400000023
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "all-alias-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 7.904469999999492,
+      "candidateMedian": 8.145340999999462
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "all-alias-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 12.986,
+      "candidateMedian": 38.51
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "all-alias-metadata",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 0.0,
+      "candidateMedian": 30.0
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "readiness-five-sequential",
+      "metric": "http_p95_ms",
+      "baselineMedian": 51.023229000000356,
+      "candidateMedian": 98.38223600000128
+    },
+    {
+      "fixture": "metadata-200",
+      "phase": "cold-pods-concurrent-20",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 110.0,
+      "candidateMedian": 170.0
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "warm-pods-concurrent-20",
+      "metric": "http_p95_ms",
+      "baselineMedian": 67.69907200000125,
+      "candidateMedian": 71.92142700000113
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "warm-pods-concurrent-20",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 134.945,
+      "candidateMedian": 137.697
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "services-after-pods",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 5.802061999998841,
+      "candidateMedian": 82.22744799999964
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baselineMedian": 3.543552000001,
+      "candidateMedian": 80.101267
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baselineMedian": 3.543552000001,
+      "candidateMedian": 80.101267
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "services-after-pods",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 6.233,
+      "candidateMedian": 35.688
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "services-after-pods",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 0.0,
+      "candidateMedian": 10.0
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "configuration-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 18.770706999999675,
+      "candidateMedian": 22.784247999999934
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "configuration-metadata",
+      "metric": "http_p50_ms",
+      "baselineMedian": 16.993365000000267,
+      "candidateMedian": 19.24643499999911
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "configuration-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 16.993365000000267,
+      "candidateMedian": 19.24643499999911
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "configuration-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 24.682,
+      "candidateMedian": 28.52
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "native-secret-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 75.69486899999902,
+      "candidateMedian": 94.55330200000026
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "native-secret-metadata",
+      "metric": "http_p50_ms",
+      "baselineMedian": 70.09278699999959,
+      "candidateMedian": 80.48929399999906
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "native-secret-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 70.09278699999959,
+      "candidateMedian": 80.48929399999906
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "native-secret-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 97.563,
+      "candidateMedian": 134.296
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "native-secret-metadata",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 70.0,
+      "candidateMedian": 110.0
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "all-alias-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 9.744912000000113,
+      "candidateMedian": 38.88333799999964
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "all-alias-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 7.2063730000008945,
+      "candidateMedian": 14.40458899999976
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "all-alias-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 11.467,
+      "candidateMedian": 50.023
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "all-alias-metadata",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 10.0,
+      "candidateMedian": 40.0
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "readiness-five-sequential",
+      "metric": "http_p95_ms",
+      "baselineMedian": 53.283596999999645,
+      "candidateMedian": 95.22897199999898
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "cold-pods-concurrent-20",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 140.0,
+      "candidateMedian": 200.0
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "services-after-pods",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 6.967007999999623,
+      "candidateMedian": 84.76896300000226
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baselineMedian": 5.506923000000825,
+      "candidateMedian": 82.6910229999994
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baselineMedian": 5.506923000000825,
+      "candidateMedian": 82.6910229999994
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "services-after-pods",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 8.98,
+      "candidateMedian": 38.77
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "configuration-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 146.1431850000008,
+      "candidateMedian": 179.1517100000019
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "configuration-metadata",
+      "metric": "http_p50_ms",
+      "baselineMedian": 131.4051959999997,
+      "candidateMedian": 163.66203600000154
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "configuration-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 131.4051959999997,
+      "candidateMedian": 163.66203600000154
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "configuration-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 175.094,
+      "candidateMedian": 257.01
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "configuration-metadata",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 140.0,
+      "candidateMedian": 240.0
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "all-alias-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 12.043359999999666,
+      "candidateMedian": 42.759242000000086
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "all-alias-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 9.39197299999796,
+      "candidateMedian": 10.071622999999818
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "all-alias-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 14.963,
+      "candidateMedian": 52.647
+    },
+    {
+      "fixture": "metadata-10000",
+      "phase": "all-alias-metadata",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 10.0,
+      "candidateMedian": 50.0
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "warm-pods-12",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 50.41810500000065,
+      "candidateMedian": 51.018520000001445
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "warm-pods-12",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 63.921,
+      "candidateMedian": 67.497
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "warm-pods-12",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 50.0,
+      "candidateMedian": 60.0
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "services-after-pods",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 5.508443999999145,
+      "candidateMedian": 83.357215
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baselineMedian": 3.2213540000011562,
+      "candidateMedian": 80.69780900000114
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baselineMedian": 3.2213540000011562,
+      "candidateMedian": 80.69780900000114
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "services-after-pods",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 6.614,
+      "candidateMedian": 36.271
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "configuration-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 9.896641999999702,
+      "candidateMedian": 11.116336000002775
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "configuration-metadata",
+      "metric": "http_p50_ms",
+      "baselineMedian": 7.931019000003289,
+      "candidateMedian": 8.923797000003105
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "configuration-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 7.931019000003289,
+      "candidateMedian": 8.923797000003105
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "configuration-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 11.045,
+      "candidateMedian": 11.5
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "all-alias-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 19.339418999999907,
+      "candidateMedian": 34.42041199999949
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phase": "all-alias-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 32.948,
+      "candidateMedian": 39.612
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "warm-pods-12",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 50.20256700000027,
+      "candidateMedian": 50.457203000001755
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "warm-pods-12",
+      "metric": "http_p50_ms",
+      "baselineMedian": 3.3769130000000587,
+      "candidateMedian": 3.463004000001092
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "warm-pods-12",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 60.176,
+      "candidateMedian": 64.43
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "services-after-pods",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 5.337402999997721,
+      "candidateMedian": 82.00813900000139
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "services-after-pods",
+      "metric": "http_p50_ms",
+      "baselineMedian": 3.268503999999666,
+      "candidateMedian": 79.65221699999893
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "services-after-pods",
+      "metric": "http_p95_ms",
+      "baselineMedian": 3.268503999999666,
+      "candidateMedian": 79.65221699999893
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "services-after-pods",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 6.019,
+      "candidateMedian": 34.501
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "services-after-pods",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 0.0,
+      "candidateMedian": 10.0
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "configuration-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 9.594323999997869,
+      "candidateMedian": 11.353469000001496
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "configuration-metadata",
+      "metric": "http_p50_ms",
+      "baselineMedian": 7.573712000001251,
+      "candidateMedian": 8.971989999998186
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "configuration-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 7.573712000001251,
+      "candidateMedian": 8.971989999998186
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "configuration-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 10.116,
+      "candidateMedian": 12.386
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "all-alias-metadata",
+      "metric": "workflow_elapsed_ms",
+      "baselineMedian": 10.259679999999207,
+      "candidateMedian": 49.40617700000075
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "all-alias-metadata",
+      "metric": "http_p95_ms",
+      "baselineMedian": 7.7192420000028505,
+      "candidateMedian": 25.711843000000954
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "all-alias-metadata",
+      "metric": "cgroup_cpu_ms",
+      "baselineMedian": 12.534,
+      "candidateMedian": 96.753
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phase": "all-alias-metadata",
+      "metric": "server_cpu_ms",
+      "baselineMedian": 10.0,
+      "candidateMedian": 60.0
+    }
+  ],
+  "wholeFixture": {
+    "baseline": {
+      "cgroup_peak_mib": {
+        "median": 363.06640625,
+        "min": 358.11328125,
+        "max": 388.5390625
+      },
+      "cgroup_cpu_seconds": {
+        "median": 32.41264,
+        "min": 32.162103,
+        "max": 32.527533
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    },
+    "candidate": {
+      "cgroup_peak_mib": {
+        "median": 424.125,
+        "min": 418.84765625,
+        "max": 437.53125
+      },
+      "cgroup_cpu_seconds": {
+        "median": 28.173989,
+        "min": 27.986965,
+        "max": 28.36505
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    }
+  },
+  "wholeFixtureIncludesDriverAndFixture": true,
+  "noIsolatedAppCPUMemoryClaim": true,
+  "originalNoWarmRegressionGatePassed": false,
+  "allPairsRetained": true,
+  "trimmedObservations": 0,
+  "toleranceChanged": false,
+  "workloadReplayed": false,
+  "freshPost": {
+    "actualPairedOuterExit": 0,
+    "candidate": "d69f116057f51f5ef18d6f625528d702486d2027",
+    "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+    "protectedWork": "/home/brajam/.cache/bortus-controlled-perf/run-067de43d1814",
+    "dispatcherPID": 2088479,
+    "dispatcherPIDOnlyAbsent": true,
+    "dispatcherStartNotCaptured": true,
+    "exactOwnedContainerNames": [
+      "bortus-perf-build-baseline-run-067de43d1814",
+      "bortus-perf-build-candidate-run-067de43d1814",
+      "bortus-perf-baseline-run-1-run-067de43d1814",
+      "bortus-perf-baseline-run-2-run-067de43d1814",
+      "bortus-perf-baseline-run-3-run-067de43d1814",
+      "bortus-perf-candidate-run-1-run-067de43d1814",
+      "bortus-perf-candidate-run-2-run-067de43d1814",
+      "bortus-perf-candidate-run-3-run-067de43d1814"
+    ],
+    "retainedContainerIDsQueried": {},
+    "freshIdentities": [
+      {
+        "pid": 2100144,
+        "startTicks": "8233846",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2088486,
+        "startTicks": "8174558",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2088487,
+        "startTicks": "8174572",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2088520,
+        "startTicks": "8174669",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2089488,
+        "startTicks": "8181749",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2090497,
+        "startTicks": "8189485",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2092383,
+        "startTicks": "8192399",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2092912,
+        "startTicks": "8195105",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2093908,
+        "startTicks": "8197830",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2095332,
+        "startTicks": "8200674",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2097247,
+        "startTicks": "8203533",
+        "sameIdentityAbsent": true
+      }
+    ],
+    "exactContainerQueries": [
+      {
+        "target": "bortus-perf-build-baseline-run-067de43d1814",
+        "actualExit": 1,
+        "exactNotFound": true,
+        "queryIdentity": {
+          "pid": 2100587,
+          "startTicks": "8234255",
+          "pgid": 2100587,
+          "sid": 2100587
+        },
+        "queryReaped": true,
+        "querySameIdentityAbsent": true
+      },
+      {
+        "target": "bortus-perf-build-candidate-run-067de43d1814",
+        "actualExit": 1,
+        "exactNotFound": true,
+        "queryIdentity": {
+          "pid": 2100616,
+          "startTicks": "8234278",
+          "pgid": 2100616,
+          "sid": 2100616
+        },
+        "queryReaped": true,
+        "querySameIdentityAbsent": true
+      },
+      {
+        "target": "bortus-perf-baseline-run-1-run-067de43d1814",
+        "actualExit": 1,
+        "exactNotFound": true,
+        "queryIdentity": {
+          "pid": 2100638,
+          "startTicks": "8234300",
+          "pgid": 2100638,
+          "sid": 2100638
+        },
+        "queryReaped": true,
+        "querySameIdentityAbsent": true
+      },
+      {
+        "target": "bortus-perf-baseline-run-2-run-067de43d1814",
+        "actualExit": 1,
+        "exactNotFound": true,
+        "queryIdentity": {
+          "pid": 2100657,
+          "startTicks": "8234323",
+          "pgid": 2100657,
+          "sid": 2100657
+        },
+        "queryReaped": true,
+        "querySameIdentityAbsent": true
+      },
+      {
+        "target": "bortus-perf-baseline-run-3-run-067de43d1814",
+        "actualExit": 1,
+        "exactNotFound": true,
+        "queryIdentity": {
+          "pid": 2100677,
+          "startTicks": "8234345",
+          "pgid": 2100677,
+          "sid": 2100677
+        },
+        "queryReaped": true,
+        "querySameIdentityAbsent": true
+      },
+      {
+        "target": "bortus-perf-candidate-run-1-run-067de43d1814",
+        "actualExit": 1,
+        "exactNotFound": true,
+        "queryIdentity": {
+          "pid": 2100696,
+          "startTicks": "8234367",
+          "pgid": 2100696,
+          "sid": 2100696
+        },
+        "queryReaped": true,
+        "querySameIdentityAbsent": true
+      },
+      {
+        "target": "bortus-perf-candidate-run-2-run-067de43d1814",
+        "actualExit": 1,
+        "exactNotFound": true,
+        "queryIdentity": {
+          "pid": 2100715,
+          "startTicks": "8234390",
+          "pgid": 2100715,
+          "sid": 2100715
+        },
+        "queryReaped": true,
+        "querySameIdentityAbsent": true
+      },
+      {
+        "target": "bortus-perf-candidate-run-3-run-067de43d1814",
+        "actualExit": 1,
+        "exactNotFound": true,
+        "queryIdentity": {
+          "pid": 2100735,
+          "startTicks": "8234412",
+          "pgid": 2100735,
+          "sid": 2100735
+        },
+        "queryReaped": true,
+        "querySameIdentityAbsent": true
+      }
+    ],
+    "readOnly": true,
+    "signalsOrDeletes": false,
+    "frozenInputsAndExportedSourcesCurrentVerified": true,
+    "noReplay": true,
+    "postReaderIdentity": {
+      "pid": 2100583,
+      "startTicks": "8234250",
+      "pgid": 2100583,
+      "sid": 2100583
+    }
+  },
+  "exactPost": {
+    "actualPostcheckExit": 0,
+    "originalRunnerExit": 0,
+    "originalSupervisorExit": 0,
+    "observations": 6,
+    "profilesPerObservation": 6,
+    "alternatingPairs": 3,
+    "frozenPureSummaryRecomputed": true,
+    "frozenInputs": 66,
+    "exportedSourceFiles": 439,
+    "rawSHA256": "7b45a43d312bb8acb1e68002267d154ceb7ce9bf361522d43403b57f2ebefea7",
+    "summarySHA256": "2830b31fdb049a705888d9473d9230ea9a71382d8eb90c0d67559dd3a185ba32",
+    "gateAssessment": "Not decided by metadata reader; unchanged summary retained for original acceptance review",
+    "performanceAcceptance": false,
+    "noWorkloadReplay": true,
+    "readOnly": true,
+    "exactReaderIdentity": {
+      "pid": 2100144,
+      "startTicks": "8233846"
+    },
+    "literalRootPairedExit": 0,
+    "candidateGitCommit": "d69f116057f51f5ef18d6f625528d702486d2027",
+    "candidateBase": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+    "overlaySHA256": "c046d7f47868d6672837fb854c00e4dc0441bc50f8f5377ee37ecbdc01a72774"
+  },
+  "sourcePreparerActualTool": "6c739a",
+  "sourcePreparerHandoffSHA256": "c0fe89a0b39818ca5fcc3e9a2641c8bd5ac6b2b0cff172fe69ad8f56ba8d34a8",
+  "sourceScanTool": "c39121",
+  "stageScanTool": "aa7a7b",
+  "preflightTool": "fa2964",
+  "postSourceScanTool": "8c6d61",
+  "allDefaultScansExit": 0,
+  "retainedUnrunV1ObserverIssue": "Added self identity variable shadowed by original query loop; corrected only added name before staging/execution",
+  "performanceAccepted": false,
+  "adoption": false,
+  "productionChanged": false,
+  "originalStoresRetired": false,
+  "laterTool": "a909c2",
+  "laterExit": 0,
+  "ownTool": "66a4f0",
+  "ownExit": 0,
+  "laterCurrentPins": 81,
+  "laterPostAndQueryBirthsAbsent": 9,
+  "laterOwnReceiptSHA256": "8c441284112760f73e836ac9e010127086e694151754ac33d7ab2ea2c82a9b1b",
+  "laterSourceScanTool": "61477e",
+  "laterSourceScanExit": 0,
+  "dispatcherBirthLimitation": "Dispatcher PID only; original dispatcher start ticks were not captured",
+  "nextWork": "Source-backed early warm serial CPU diagnosis; no unchanged replay or bounds changes"
+}

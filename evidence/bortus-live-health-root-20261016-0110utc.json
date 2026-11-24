@@ -1,0 +1,65 @@
+{
+  "scope": "Read-only live Kubernetes health snapshot; not data restore, candidate rollout or application acceptance",
+  "nodeReadTool": "1dfaf3",
+  "nodes": {
+    "total": 3,
+    "Ready": 3,
+    "version": "v1.37.1"
+  },
+  "resourceReadTool": "dc13b1",
+  "resourceObservedUTC": "2026-10-16T01:08:40.653721+00:00",
+  "PVCs": {
+    "total": 54,
+    "Bound": 54
+  },
+  "HelmReleases": {
+    "total": 34,
+    "ReadyTrue": 34
+  },
+  "Pods": {
+    "total": 97,
+    "Running": 91,
+    "Succeeded": 6
+  },
+  "storageAndAppReadTool": "5f2d9e",
+  "storageAndAppObservedUTC": "2026-10-16T01:10:00.936242+00:00",
+  "Longhorn": {
+    "total": 40,
+    "stateHistogram": {
+      "attached": 30,
+      "detached": 10
+    },
+    "robustnessHistogram": {
+      "healthy": 30,
+      "unknown": 10
+    },
+    "histogramsAreSeparateNotPaired": true,
+    "dataIntegrityOrReplicaRestoreProved": false
+  },
+  "BORTUS": {
+    "generation": 8,
+    "observedGeneration": 8,
+    "desiredReplicas": 1,
+    "readyReplicas": 1,
+    "image": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+    "retainedLegacyImage": true,
+    "newCandidatesDeployed": false
+  },
+  "fluxReadTool": "8182f8",
+  "fluxObservedUTC": "2026-10-16T01:10:33.522016+00:00",
+  "HelmReleaseImageMatchesDeployment": true,
+  "sourceRevisions": [
+    {
+      "name": "branconet-charts",
+      "namespace": "flux-system",
+      "revision": "validated@sha1:7828f5b5d219770077b72bd53d81fe745c61b621"
+    },
+    {
+      "name": "migration-validated",
+      "namespace": "flux-system",
+      "revision": "codex/kubernetes-validated@sha1:373a1e513e1bfb8b13ed5212ccc1b0f57a5ff301"
+    }
+  ],
+  "allActionsReadOnly": true,
+  "GlusterVaultConsulRetirementPerformed": false
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "case": "login-string",
+    "message": "Fixture invalid username or password",
+    "applicationAlertCount": 1,
+    "globalAlertCount": 2,
+    "enabled": true,
+    "actualAT": false,
+    "fieldObservation": "DOM values redacted; screenshot shows synthetic username and masked nonempty password; exact password equality unobserved"
+  },
+  {
+    "case": "login-fallback",
+    "message": "Login failed",
+    "applicationAlertCount": 1,
+    "enabled": true,
+    "actualAT": false,
+    "fieldObservation": "DOM values redacted; screenshot shows synthetic username and masked nonempty password; exact password equality unobserved"
+  },
+  {
+    "case": "login-network",
+    "message": "Network error — please try again",
+    "applicationAlertCount": 1,
+    "enabled": true,
+    "fieldObservation": "DOM values redacted; screenshots retained",
+    "actualAT": false
+  },
+  {
+    "case": "register-validation",
+    "message": "Passwords do not match",
+    "applicationAlertCount": 1,
+    "enabled": true,
+    "fieldObservation": "DOM values redacted; screenshots retained",
+    "actualAT": false
+  },
+  {
+    "case": "register-string",
+    "message": "Fixture username already exists",
+    "applicationAlertCount": 1,
+    "enabled": true,
+    "fieldObservation": "DOM values redacted; screenshots retained",
+    "actualAT": false
+  },
+  {
+    "case": "register-fallback",
+    "message": "Registration failed",
+    "applicationAlertCount": 1,
+    "enabled": true,
+    "fieldObservation": "DOM values redacted; screenshots retained",
+    "actualAT": false
+  },
+  {
+    "case": "register-network",
+    "message": "Network error — please try again",
+    "applicationAlertCount": 1,
+    "enabled": true,
+    "fieldObservation": "DOM values redacted; screenshots retained",
+    "actualAT": false
+  },
+  {
+    "case": "register-locked",
+    "locked": true,
+    "createAccountButtons": 0,
+    "actualAT": false,
+    "scope": "Preserved lock behavior only; lock announcement not qualified"
+  }
+]

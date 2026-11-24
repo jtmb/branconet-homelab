@@ -1,0 +1,165 @@
+---
+- name: Stage or operate the standalone LAN DHCP service
+  hosts: workernode2
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars_files:
+    - ../group_vars/all.yml
+  vars:
+    dhcp_lan_action: stage
+    dhcp_lan_router_disabled: false
+    dhcp_lan_unit: branconet-lan-dhcp.service
+    dhcp_lan_interface: enp3s0
+    dhcp_lan_address: 192.168.0.5
+    dhcp_lan_gateway: 192.168.0.1
+    dhcp_lan_resolvers: [192.168.0.253, 192.168.0.5]
+    dhcp_lan_ranges:
+      - [192.168.0.200, 192.168.0.245]
+      - [192.168.0.247, 192.168.0.250]
+    dhcp_lan_reservations:
+      - {mac: '40:16:7e:29:cc:7f', address: 192.168.0.4}
+      - {mac: '18:66:da:1b:33:68', address: 192.168.0.6}
+      - {mac: '60:a4:4c:5c:83:b0', address: 192.168.0.5}
+      - {mac: '04:7c:16:bb:21:5c', address: 192.168.0.13}
+      - {mac: 'd8:cb:8a:9b:f1:c6', address: 192.168.0.8}
+  tasks:
+    - name: Require the exact supported operation and serial handoff
+      ansible.builtin.assert:
+        that:
+          - dhcp_lan_action in ['stage', 'activate', 'verify', 'rollback']
+          - ansible_host == dhcp_lan_address
+          - dhcp_lan_action != 'activate' or dhcp_lan_router_disabled | bool
+          - dhcp_lan_ranges == [['192.168.0.200', '192.168.0.245'], ['192.168.0.247', '192.168.0.250']]
+          - dhcp_lan_reservations | selectattr('address', 'equalto', '192.168.0.246') | list | length == 0
+        fail_msg: Activate only after observing router DHCP disabled; the excluded address must never be allocated.
+
+    - name: Require the host's existing static address
+      ansible.builtin.command:
+        argv: [ip, -j, -4, addr, show, dev, '{{ dhcp_lan_interface }}']
+      register: dhcp_lan_addresses
+      changed_when: false
+
+    - name: Verify the permanent IPv4 assignment
+      ansible.builtin.assert:
+        that:
+          - >-
+            (dhcp_lan_addresses.stdout | from_json | first).addr_info |
+            selectattr('local', 'equalto', dhcp_lan_address) |
+            selectattr('valid_life_time', 'equalto', 4294967295) | list | length == 1
+
+    - name: Check the existing DHCP listener
+      ansible.builtin.command:
+        argv: [ss, -4, -Hlun, 'sport = :67']
+      register: dhcp_lan_listener
+      changed_when: false
+
+    - name: Refuse to stage over any active DHCP service
+      when: dhcp_lan_action == 'stage'
+      ansible.builtin.assert:
+        that: dhcp_lan_listener.stdout | trim == ''
+
+    - name: Stage the dedicated DHCP service without starting it
+      when: dhcp_lan_action == 'stage'
+      block:
+        - name: Require the already installed DHCP binary
+          ansible.builtin.command:
+            argv: [/usr/sbin/dnsmasq, --version]
+          changed_when: false
+
+        - name: Create the DHCP daemon group
+          ansible.builtin.group:
+            name: branconet-dhcp
+            system: true
+
+        - name: Create the non-login DHCP daemon identity
+          ansible.builtin.user:
+            name: branconet-dhcp
+            group: branconet-dhcp
+            system: true
+            create_home: false
+            home: /nonexistent
+            shell: /usr/sbin/nologin
+
+        - name: Preserve DHCP leases in a private runtime state directory
+          ansible.builtin.file:
+            path: /var/lib/branconet-lan-dhcp
+            state: directory
+            owner: branconet-dhcp
+            group: branconet-dhcp
+            mode: '0700'
+
+        - name: Install and validate DHCP-only configuration
+          ansible.builtin.template:
+            src: ../templates/lan-dhcp.conf.j2
+            dest: /etc/branconet-lan-dhcp.conf
+            owner: root
+            group: root
+            mode: '0644'
+            validate: /usr/sbin/dnsmasq --test --conf-file=%s
+
+        - name: Install the inactive service definition
+          ansible.builtin.copy:
+            src: branconet-lan-dhcp.service
+            dest: /etc/systemd/system/{{ dhcp_lan_unit }}
+            owner: root
+            group: root
+            mode: '0644'
+
+        - name: Keep DHCP disabled until the router has stopped serving
+          ansible.builtin.systemd_service:
+            name: '{{ dhcp_lan_unit }}'
+            daemon_reload: true
+            enabled: false
+            state: stopped
+
+    - name: Activate only the prepared DHCP service
+      when: dhcp_lan_action == 'activate'
+      block:
+        - name: Start the replacement DHCP service
+          ansible.builtin.systemd_service:
+            name: '{{ dhcp_lan_unit }}'
+            enabled: true
+            state: started
+
+        - name: Wait for the DHCP socket instead of accepting a transient process
+          ansible.builtin.command:
+            argv: [ss, -4, -Hlun, 'sport = :67']
+          register: dhcp_lan_start_listener
+          changed_when: false
+          retries: 5
+          delay: 1
+          until: dhcp_lan_start_listener.stdout | trim != ''
+      rescue:
+        - name: Stop a failed replacement before router rollback
+          ansible.builtin.systemd_service:
+            name: '{{ dhcp_lan_unit }}'
+            enabled: false
+            state: stopped
+
+        - name: Require restoration of router DHCP after failed activation
+          ansible.builtin.fail:
+            msg: Replacement DHCP was stopped and disabled; restore router DHCP and retain the failure log.
+
+    - name: Stop replacement DHCP before restoring router DHCP
+      when: dhcp_lan_action == 'rollback'
+      ansible.builtin.systemd_service:
+        name: '{{ dhcp_lan_unit }}'
+        enabled: false
+        state: stopped
+
+    - name: Verify service state
+      ansible.builtin.command:
+        argv: [systemctl, is-active, '{{ dhcp_lan_unit }}']
+      register: dhcp_lan_service
+      changed_when: false
+      failed_when: dhcp_lan_service.stdout != ('active' if dhcp_lan_action in ['activate', 'verify'] else 'inactive')
+
+    - name: Verify listener state
+      ansible.builtin.command:
+        argv: [ss, -4, -Hlun, 'sport = :67']
+      register: dhcp_lan_final_listener
+      changed_when: false
+      failed_when: >-
+        (dhcp_lan_final_listener.stdout | trim != '') !=
+        (dhcp_lan_action in ['activate', 'verify'])

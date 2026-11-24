@@ -1,0 +1,102 @@
+{
+  "scope": "Original A16 source-clause composition; no new test/browser run",
+  "originalValidation": "Edit/cancel/view, edit/error/reopen, different fetched versions and mode transitions. Viewer must never be editable or show Save; newly opened edit must use the fetched version or clearly offer draft recovery. [Screenshot](audit-evidence/yaml-view-retains-edit.jpg).",
+  "currentOwningSource": "996c384f893345a2a777fcf6af1cc8a94346a7ef",
+  "originalBrowserSource": "4df4d3251715dae689420a9f6242263aeb9bdbee",
+  "compiledSource": "ab7c6867f20af434aed704d1644e8b08267eda0a",
+  "rootHistoricalReceiptSHA256": "4e9719fdd24181bb5d2ace6614985480156b2392fc75a79aafed4a9353d1d1f7",
+  "reviewSHA256": "f50a0b752ddf678116e2ad8cb64af7329f6d34b6e4fa33a497f94d0b73a65e13",
+  "currentFiveProductionBindings": [
+    {
+      "path": "k8s-rewrite/front-end/src/app/(dashboard)/yaml-modal.tsx",
+      "relative": "src/app/(dashboard)/yaml-modal.tsx",
+      "mode": "100644",
+      "blob": "f9d6907455d13553aebeaa7b8fbe25085ca4c521",
+      "bytes": 3262,
+      "sha256": "b81ca742189930c5010f67425112b3b7baecf88695cc8fe4be582dc119bb482c",
+      "qualified4dfRawGitEqual": true,
+      "qualifiedAb7BuildSourceEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/(dashboard)/resource-actions-menu.tsx",
+      "relative": "src/app/(dashboard)/resource-actions-menu.tsx",
+      "mode": "100644",
+      "blob": "2f000c7d67733ea692c770d60c4452f6922d9b41",
+      "bytes": 12389,
+      "sha256": "8632c27a2485727412ddd437edbcaed128ddf830f7bda5c2ce9048406d8d0f6f",
+      "qualified4dfRawGitEqual": true,
+      "qualifiedAb7BuildSourceEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/components/ui/modal.tsx",
+      "relative": "src/components/ui/modal.tsx",
+      "mode": "100644",
+      "blob": "3369481cfdbf215de9fcb335e10a05f7df82bb64",
+      "bytes": 1753,
+      "sha256": "82a643aa3dbe242f548146ebe3a2788c50d4db7df5b821c580b0fba78c3daf79",
+      "qualified4dfRawGitEqual": true,
+      "qualifiedAb7BuildSourceEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/resource-yaml.ts",
+      "relative": "src/lib/resource-yaml.ts",
+      "mode": "100644",
+      "blob": "ebf428e193d17733bbd6a77aa8c4f3e5f4762c1d",
+      "bytes": 3843,
+      "sha256": "556b2e5b9c72d95276019f60b9a09efdc87c61d331580265529984ad933d8cf3",
+      "qualified4dfRawGitEqual": true,
+      "qualifiedAb7BuildSourceEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/pods/[namespace]/[name]/yaml/route.ts",
+      "relative": "src/app/api/cluster/pods/[namespace]/[name]/yaml/route.ts",
+      "mode": "100644",
+      "blob": "05218838d716172ced69165268b5a3486b053d4f",
+      "bytes": 159,
+      "sha256": "64ae389bc4d29aef9321eb94ade8245c4ee9ff3f8895fd01bfbd45da742083b2",
+      "qualified4dfRawGitEqual": true,
+      "qualifiedAb7BuildSourceEqual": true
+    }
+  ],
+  "actualCases": [
+    "Actual CLI save refusal retains draft; discard/reopen viewer and new edit show freshly fetched version without old draft/error or viewer Save",
+    "Changed actual fake-CLI resourceVersion is freshly fetched on View/Edit; no old failed draft or editable viewer survives"
+  ],
+  "actualRequestEvents": [
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "PUT",
+      "status": 502
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "allHistoricalActualClosuresExit0": true,
+  "sourceContinuityIndependentlyVerified": true,
+  "editCancelViewCoveredByDiscardAndReopen": true,
+  "originalSourceClauseQualified": true,
+  "historicalFourFailuresPreserved": true,
+  "oldBirthsComparedToCurrentBoot": false,
+  "testsReplayed": false,
+  "deliveredImageAccepted": false,
+  "performanceAccepted": false,
+  "actualAssistiveTechnologyAccepted": false,
+  "productionAdopted": false
+}

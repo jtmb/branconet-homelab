@@ -1,0 +1,140 @@
+enabled: false
+replicaCount: 0
+image: hashicorp/http-echo@sha256:fcb75f691c8b0414d670ae570240cbf95502cc18a9ba57e982ecac589760a186
+environmentSecret: http-echo-runtime
+migration:
+  verified: false
+  state: private-accepted-production-reconciled
+  sources:
+  - repository/test-stack/http-echo
+  requiredEnvironmentKeys: []
+  storageSizingVerified: true
+  nativeSecretsImported: true
+  applicationChecksPassed: true
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: http-echo
+    namespace: http-echo
+    labels:
+      app: http-echo
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: http-echo
+    template:
+      metadata:
+        labels:
+          app: http-echo
+          branconet.io/type: app
+        annotations:
+          homepage.group: Test
+          homepage.name: http-echo
+          homepage.icon: https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/hashicorp.svg
+          homepage.href: http://http-echo.branconet.local/
+          homepage.description: "Echo server \u2014 returns whatever you POST for\
+            \ curl/connectivity testing"
+      spec:
+        containers:
+        - name: http-echo
+          image: '{{ .Values.image }}'
+          args:
+          - -text=Hello from Branconet http-echo on Kubernetes + Longhorn!
+          - -listen=:8080
+          ports:
+          - containerPort: 8080
+            name: http
+          volumeMounts:
+          - name: data
+            mountPath: /data
+          resources:
+            requests:
+              cpu: 50m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          imagePullPolicy: IfNotPresent
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: http-echo-data-pvc
+    strategy:
+      type: Recreate
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: http-echo-ingress
+    namespace: http-echo
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+  spec:
+    rules:
+    - host: http-echo.branconet.local
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: http-echo
+              port:
+                number: 80
+    ingressClassName: traefik
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: http-echo-data-pvc
+    namespace: http-echo
+    annotations:
+      helm.sh/resource-policy: keep
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+    storageClassName: longhorn
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: http-echo
+    namespace: http-echo
+  spec:
+    type: ClusterIP
+    ports:
+    - port: 80
+      targetPort: 8080
+      name: http
+    selector:
+      app: http-echo
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: http-echo-https
+    namespace: http-echo
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+      meta.helm.sh/release-name: http-echo
+      meta.helm.sh/release-namespace: http-echo
+    labels:
+      app.kubernetes.io/managed-by: Helm
+  spec:
+    rules:
+    - host: http-echo.branconet.local
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: http-echo
+              port:
+                number: 80
+    ingressClassName: traefik
+    tls:
+    - hosts:
+      - http-echo.branconet.local

@@ -1,0 +1,69 @@
+{
+  "capturedAtUtc": "2026-10-11T02:44:43.4605228Z",
+  "scope": "Synthetic SQLite comparator regressions only; no production snapshot, forward image or actual restore acceptance",
+  "sourceFiles": [
+    {
+      "path": "scripts/migration/compare-bortus-databases.py",
+      "bytes": 9066,
+      "workingBytesSha256": "427a52f9162101da3a5dd24aae6dc254f138558d7967f2976e43acee1b4f2066"
+    },
+    {
+      "path": "scripts/migration/tests/test_database_preservation.py",
+      "bytes": 9231,
+      "workingBytesSha256": "87ce1f374331eeef39aaba934710112e2f87abeb76e3c129de83ea829ffed29a"
+    },
+    {
+      "path": "docs/MIGRATION-OPERATIONS.md",
+      "bytes": 53236,
+      "workingBytesSha256": "8bbc1d5b648bc1ccb7b4bf424c52181821b71e6f33c6c72680f4dc7cb706a777"
+    }
+  ],
+  "finalObservedExecution": {
+    "command": "python -m unittest discover -s scripts/migration/tests -p test_database_preservation.py -v",
+    "toolChunk": "5301cc",
+    "exitCode": 0,
+    "tests": 9,
+    "failures": 0,
+    "errors": 0,
+    "seconds": 0.675
+  },
+  "covered": [
+    "Preserves complete original row occurrences and raw blob/string cells across added tables/columns",
+    "Rejects password or alias changes and duplicate-row loss",
+    "Exact recovery rejects extra rows or changed schema indexes",
+    "Rejects foreign-key violations and unfinished Prisma migrations",
+    "Rejects nonzero new legacy sessionVersion and removed original columns",
+    "Rejects same input, nonempty WAL, wrong database and row cap",
+    "Detects input changes during comparison",
+    "Closes source if target open fails",
+    "Sanitized CLI failure and exclusive evidence creation"
+  ],
+  "firstAttempt": {
+    "tests": 7,
+    "result": "failed",
+    "errors": 7,
+    "reason": "Fixture sqlite context managers committed but did not close connections; Windows cleanup found open handles",
+    "preservedObservation": "tool chunk defa46",
+    "correction": "Explicit closing of fixture connections; production sequential connection acquisition and exceptional cleanup regression added"
+  },
+  "productionInputsRead": false,
+  "productionWrites": false,
+  "storedValuesInEvidence": false,
+  "credentialDigestsInEvidence": false,
+  "allDocsChecked": [
+    "ANSIBLE-2-API-INTERACTION.md",
+    "API-USAGE.md",
+    "BORTUS-DEPLOYMENT.md",
+    "BOTRUS-WORKFLOW.md",
+    "CONNECTING-TO-A-CLUSTER.md",
+    "FLUX-GITOPS.md",
+    "kubectl-cheatsheet.md",
+    "MIGRATION-OPERATIONS.md",
+    "SECRETS-ENGINE.md",
+    "TECH-STACK.md",
+    "USER-PERMS.md"
+  ],
+  "affectedDocs": [
+    "docs/MIGRATION-OPERATIONS.md"
+  ]
+}

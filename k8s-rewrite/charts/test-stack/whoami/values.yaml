@@ -1,0 +1,128 @@
+enabled: false
+replicaCount: 0
+image: traefik/whoami:latest@sha256:200689790a0a0ea48ca45992e0450bc26ccab5307375b41c84dfc4f2475937ab
+environmentSecret: whoami-runtime
+migration:
+  verified: false
+  state: private-accepted-production-reconciled
+  sources:
+  - proxy_whoami
+  requiredEnvironmentKeys:
+  - PATH
+  storageSizingVerified: true
+  nativeSecretsImported: true
+  applicationChecksPassed: true
+  dataCopies: []
+  sourceCommandArgumentsRequireReview: false
+  launchSecretKeys:
+  - args-0
+  - args-1
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: whoami
+    namespace: whoami
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: whoami
+    template:
+      metadata:
+        labels:
+          app: whoami
+        annotations:
+          homepage.group: Test
+          homepage.name: whoami
+          homepage.icon: https://raw.githubusercontent.com/traefik/traefik/master/docs/content/assets/img/traefik.icon.png
+          homepage.href: http://whoami.branconet.local/
+          homepage.description: "Lightweight HTTP request echo \u2014 shows hostname,\
+            \ IP, and headers"
+      spec:
+        containers:
+        - name: whoami
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p80-tcp
+            containerPort: 2001
+            protocol: TCP
+          args:
+          - $(MIGRATION_ARGS_0)
+          - $(MIGRATION_ARGS_1)
+          env:
+          - name: MIGRATION_ARGS_0
+            valueFrom:
+              secretKeyRef:
+                name: whoami-launch
+                key: args-0
+          - name: MIGRATION_ARGS_1
+            valueFrom:
+              secretKeyRef:
+                name: whoami-launch
+                key: args-1
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          imagePullPolicy: IfNotPresent
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: whoami
+    namespace: whoami
+  spec:
+    selector:
+      app: whoami
+    ports:
+    - name: p80-tcp
+      port: 80
+      targetPort: 2001
+      protocol: TCP
+    type: ClusterIP
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: whoami-http
+    namespace: whoami
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: whoami.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: whoami
+              port:
+                number: 80
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: whoami-https
+    namespace: whoami
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: whoami.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: whoami
+              port:
+                number: 80

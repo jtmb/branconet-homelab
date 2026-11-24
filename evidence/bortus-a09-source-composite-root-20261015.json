@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "scope": "Original A09 source-clause composition; no new test/browser replay",
+  "originalValidation": "Cover overlapping names, namespaces, arbitrary ReplicaSet names, orphan pods, rolling updates, missing status, zero replicas and fractional/oversized inputs. Assert correct attribution and that scale-up from zero requests one.",
+  "currentOwningSource": "996c384f893345a2a777fcf6af1cc8a94346a7ef",
+  "compiledSource": "ab7c6867f20af434aed704d1644e8b08267eda0a",
+  "focusedThree": {
+    "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-a09-focused-state-root-20261015.json",
+    "bytes": 2528,
+    "sha256": "16a9b6cf1e108b3f5ddfbdb4d3a35a843744ecde2240e80e6696f15c26af04c9"
+  },
+  "full342And8": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a05-a08-resource-browser-preparation-20261015-v3\\full-exact-prerequisite.json",
+    "bytes": 953,
+    "sha256": "65d5177ab231de9230a21e6b7e445d9710efca25fb05965e70a0f7b5ca773fd5"
+  },
+  "currentProductionAndTestBindings": [
+    {
+      "path": "k8s-rewrite/front-end/src/lib/deployment-state.ts",
+      "bytes": 2562,
+      "sha256": "4cc5bd9d3a53f0777839292504d7be172bac1324ef8c2f1ca16544536407a8a6",
+      "sameQualifiedAb7BuildSource": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/components/cluster/resource-list.tsx",
+      "bytes": 10707,
+      "sha256": "d1a79eb99d320cd7dc9ef440988d850a7570fe41cbe69401ce90f212b274e5f1",
+      "sameQualifiedAb7BuildSource": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/(dashboard)/resource-actions-menu.tsx",
+      "bytes": 12389,
+      "sha256": "8632c27a2485727412ddd437edbcaed128ddf830f7bda5c2ce9048406d8d0f6f",
+      "sameQualifiedAb7BuildSource": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/cluster/deployments/[namespace]/[name]/scale/route.ts",
+      "bytes": 1698,
+      "sha256": "95d4831c4579eb6c55f283253d6c4b97438867bb8d9704ef37406354dcd73a59",
+      "sameQualifiedAb7BuildSource": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/resource-state.test.ts",
+      "bytes": 3893,
+      "sha256": "d726354abef5c08210aa8dd311691e24a4b29f1efa9aa895d8997b505050b68c",
+      "sameQualifiedAb7BuildSource": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/http.integration.ts",
+      "bytes": 47933,
+      "sha256": "6b58c0c735a94d884a2963ee112d85c4c5a828c4af22054b00104df80cfd77d5",
+      "sameQualifiedAb7BuildSource": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/tests/deployment-state-rolling.test.ts",
+      "bytes": 4349,
+      "sha256": "d3d8e6663a3312595ac5f547c26d0cfdd6114f361becf0d1a551f5f94b6329d0",
+      "sameActualFocusedThreeSource": true
+    }
+  ],
+  "actualZeroToOne": {
+    "case": "zero-to-one-scale",
+    "method": "POST",
+    "status": 200,
+    "body": {
+      "replicas": 1
+    },
+    "argv": [
+      "scale",
+      "deployment/scaled-zero",
+      "-n",
+      "apps",
+      "--replicas=1"
+    ],
+    "uiAcceptanceVisible": true,
+    "controllerConvergenceClaimed": false
+  },
+  "actualV3Exact": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-a05-a08-resource-browser-success-postcheck-20261015-v3\\legacy-review-result.json",
+    "bytes": 57129,
+    "sha256": "ec32992bd9c50272124867ceca510a1829e426e5e1496abd94f5e5b9fb6d10ba"
+  },
+  "actualFinalOwn": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-resource-kv-combined-own-20261015-v1.json",
+    "bytes": 1287,
+    "sha256": "f298e0950011974343e66f8095860147e1aa7ab649a5f67039f98ff591b26d71"
+  },
+  "coverage": {
+    "overlappingNamesNamespacesAndArbitraryReplicaSets": "Existing unchanged resource-state tests within actual342; new actual focused3 old/new same-owner rolling case plus foreign/orphan/noncontroller/crossnamespace rejection",
+    "rollingUpdatesRestarts": "Actual focused3 restart sum12 across old/new ReplicaSets",
+    "missingStatusDesiredZero": "Actual focused3 full defaults/reconciling/draining/settled assertions",
+    "fractionalOversizedInputs": "Actual unchanged HTTP integration rejects -1,1.5,10001,null with no CLI call",
+    "scaleZeroToOne": "Actual browser POST replicas1/CLI --replicas=1/visible UI acceptance; no convergence claim"
+  },
+  "originalSourceClauseQualified": true,
+  "all44OriginalValidationUnchanged": true,
+  "priorFocusedReceiptFalseFlagsUnchanged": true,
+  "testsReplayed": false,
+  "realControllerRequirementAdded": false,
+  "deliveredImageAccepted": false,
+  "performanceAccepted": false,
+  "actualAssistiveTechnologyAccepted": false,
+  "productionAdopted": false
+}

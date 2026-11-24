@@ -1,0 +1,1420 @@
+# Immutable BORTUS release image builder
+
+## Read-only compiled-overlay execution-receipt auditor qualified - 2026-10-20 (Toronto)
+
+`scripts/migration/bortus-compiled-overlay-receipt-audit.py` adds separate closed
+formats `bortus-compiled-overlay-receipt-selection/v1` and
+`bortus-compiled-overlay-receipt-audit/v1`. Independent contract/selection and
+per-record SHA256 pins bind exporter, controller and three persisted node records.
+The exact contract a47ea88d, saved archive27bc0016/991697920bytes, direct manifest
+73aecec9, separate rawconfigd19974d6, source7940e9e1, reviewed module-source pins,
+unique owners and fixed hosts/ordinals must agree. Packaging records, planned
+envelopes, old protocols and source qualification results cannot replace receipts.
+Duplicate keys, extra/missing fields, type confusion, bad exit codes, altered
+recipe/contract/layers/labels and pin/host/order/scope drift refuse validation.
+
+Missing, validating, pending, refused and uncertain records remain incomplete;
+controller/node disagreements remain visible, including a completed node whose
+controller reply was lost. Final-persistence failures carrying completed fields
+remain uncertain. No historical record is written, repaired, upgraded or adopted.
+The auditor never opens an archive path from a receipt. POSIX file reads are
+bounded, regular/current-owner/single-link, nofollow, with ancestor and descriptor
+identity checks. There is no transport, subprocess, credential or runtime API.
+
+Evidence class is an unauthenticated external caller claim, separately matched
+to the pinned selection: public-synthetic inputs cannot satisfy a request labeled
+externally-observed. Fabricated bytes with a matching externally supplied claim
+cannot be authenticated by JSON or hashes. Even completed-content-consistent
+means content consistency only: actual_transport_proven, provenance_authenticated,
+current_node_state_proven, archive_bytes_reverified, execution_authorized,
+runtime_qualified and deployed always remain false. Original A01-A22 acceptance
+stays unchanged; all44clauses and21 separately named delivery gates remain.
+
+First36 frozen PUBLIC controls pass0.251s. Root source review adds explicit
+final-persistence uncertainty handling and three controls; all39 final frozen
+controls pass0.258s, no skips, under60s wall/30CPU-seconds/512MiB address space.
+Saved-evidence review passes2989 checks and rehashes1936 retained selected proofs.
+Its initial blanket AST guard rejected harmless string replace in CLI option
+normalization; that checker/refusal is preserved. Corrected checker only passes;
+source/tests unchanged and no controls replayed during saved review.
+Initial passing source/tests remain frozen. Tests use hand-built public receipt
+fixtures and protected POSIX temporary files; subprocess/network calls are blocked.
+No old suite, archive parser, adapter CLI export/preload, Docker/SSH/sudo/ctr,
+application runtime, graph walk, operatorDB, private-native/recovery, scan/CI,
+publication or production execution occurs. Root review is not independent-person
+or runtime acceptance. [Evidence](../evidence/bortus-compiled-overlay-receipt-audit-root-20261020.json) records the finite source scope.
+
+All190 existing docs/evidence files were read for impact; four operational docs
+and PLAN/status are updated with exact original-byte inverses retained. RootdocsLOCAL;
+four new/prior32/earlierone findings, all original failures and preceding security,
+performance/actualAT/native/recovery/backup/quiescence/schema/effectiveRBAC/admission/
+data gates remain unresolved. OverallCIQualified=false; the three retained successful
+CI scopes remain distinct. Full goal ACTIVE/no budget. PRDdeployment AND actual
+verification remain FINAL REQUIRED after all original preceding gates.
+
+## Compiled-overlay staging adapters source qualified - 2026-10-20 (Toronto)
+
+Separate `stage-bortus-compiled-overlay.py`, `bortus-compiled-overlay-node.py`
+and `bortus-compiled-overlay-io.py` implement the distinct
+`bortus-compiled-overlay-adapter/v1` execution protocol, consuming the exact
+compiled-overlay compatibility contract SHA256
+`a47ea88d868bc99e0007ca78af7f393a616db4cbbfd03fd59f62c69c4c397ca1`.
+The read-only validator, exact contract and legacy v1/release-v2 files are unchanged.
+Expected packaging records and planned envelopes cannot satisfy the separate
+completed export execution receipt. Manifest/local73aecec9 and rawconfigd19974d6
+remain different identities; exact saved archive27bc0016/991697920bytes remains
+required. Source and node identity checks do not adopt old execution receipts.
+
+Export inspects the exact local Docker tag before/after its bounded save, checks
+the entire archive and records a distinct execution outcome. Preload verifies a
+pinned completed export, copies protected inputs and calls ONLY the fixed three
+SSH targets in order, port2002/strict host keys/no agent forwarding. The fixed
+launcher injects reviewed copied source modules in memory; credentials and image
+bytes enter stdin only. The exact contract pin is checked independently on each
+node, before authorization. The separate node protocol refuses legacy envelopes,
+checks both tag spellings absent before receipt and immediately before import,
+verifies the entire exact archive hash/size, then queries the direct OCI manifest
+and separate config after import. Config Env is never persisted or returned.
+Both exporter and node recheck retained archive stability after final metadata.
+
+Exclusive deterministic0700 runs and0600 files, nofollow non-writable ancestor
+and regular/single-link input checks, descriptor identity fences, and fsynced
+pending records precede dispatch. Lost/invalid replies or failures after dispatch
+remain uncertain; later nodes stop, earlier completed nodes remain. No resume,
+adoption, rollback, automatic replay or automatic retry exists. Any future
+execution needs protected Linux tooling/input locations and separate authority.
+External exclusive source/tag/import ownership is required; tag operations are
+not atomic CAS. Child stdout is bounded, raw stderr discarded, failures fixed
+and redacted, and only the owned child PID is killed/waited on timeout. Remote
+operations may outlive lost SSH replies; no remote cancellation is attempted.
+Python cannot promise password zeroization or power-loss durability.
+
+The first31 frozen public controls pass in2.932s. Review adds final archive
+stability fences and two concurrent-write controls; all33 final frozen controls
+pass in3.001s under60s wall/30CPU-seconds/512MiB address space. Initial passing
+source/test snapshots remain frozen. Controls use public synthetic archives,
+protected POSIX fixture files, fake child processes and mocked transports only;
+the existing public archive generator is reused, without running its old suite.
+No actual adapter CLI export/preload, Docker/SSH/sudo/ctr command, runtime,
+publication or production operation occurred. This is source qualification only.
+[Reviewed evidence](../evidence/bortus-compiled-overlay-adapter-root-20261020.json) records the scope and retained failures.
+
+All189 existing docs/evidence files were read for documentation impact; four
+operational docs plus plan/status are updated with original suffixes preserved.
+RootdocsLOCAL; four new/prior32/earlierone findings, all44originalclauses/failures,
+and original security/performance/actualAT/compatible independentrecovery/fresh
+backup/quiescence/schema/effectiveRBAC/admission/data gates remain unresolved.
+Three successful CI scopes stay separate; overallCIQualified=false. No new scan,
+manualCI/workflow, app source/build/install/download, graph/oldcorpus/benchmark,
+operatorDB/private-native/recovery replay, remote mutation or promotion. Fullgoal
+ACTIVE/no budget; PRDdeployment AND actualverification remain FINAL REQUIRED.
+
+
+## Distinct compiled-overlay source compatibility contract - 2026-10-20 (Toronto)
+
+`scripts/migration/bortus-compiled-overlay-contract.py` is a separate read-only
+contract validator. Its version is `bortus-compiled-overlay-staging/v1`, recipe
+`compiled-overlay-v1`. The exact public contract is
+`scripts/migration/contracts/compiled-overlay-7940e9e1-v1.json`. An independent
+SHA256 pin is required to load a contract. It binds source7940e9e1/BuildID
+6L__Bb3L8GTj93JRhod5U, manifest/local image73aecec9, distinct raw configd19974d6,
+actual saved archive27bc0016/991697920bytes, all20 ordered layer descriptors and
+diff IDs, all eight labels, retained base4a84c0b5 and eight separate authority
+hashes. Raw-Git296, current-source333 and compiled/dependency41723 authorities
+remain separate; checking authority file bytes does not rewalk the graph.
+
+The Python API validates saved archive bytes using the original bounded archive
+primitives plus this recipe's direct OCI manifest/index and exact eight-label
+contract. It verifies export-record identities, constructs credential-free planned
+preload envelopes for the three fixed hosts in order, and checks supplied node
+inventory/manifest/config bytes against the exact image. Constructing an expected
+export record or envelope is not proof that an export or import happened. Config
+Env fields are never returned. The open regular-file identity must remain stable
+through archive verification; acquisition/transport ownership remains external.
+The only CLI operation validates a contract file;
+there is no Docker/SSH/sudo/import/export/transfer/publication/deployment dispatch.
+Future transport integration and actual execution require their own reviewed scope.
+Legacy v1/release-v2 exporter and per-node source/protocol are unchanged and keep
+refusing this recipe. The new protocol cannot be sent to the legacy node helper.
+
+The source contract is complete and reviewed. Twenty initial frozen public
+controls pass; after a stable-file review correction, all22 final controls pass
+in0.774s under the60s wrapper. The original passing source/test snapshots remain.
+A saved-evidence review passes223 checks; its initial Windows path-separator
+refusal is preserved and corrected without repeating the controls. One read-only
+verification of the exact retained991697920-byte archive passes in3.722s under
+30CPU-seconds/512MiB address-space/60s wall limits, including all20 ordered blob
+and expanded diff IDs, exact OCI/index/config metadata and stable file identity.
+No Docker/SSH/sudo/import/export transport or application runtime is invoked.
+[Reviewed evidence](../evidence/bortus-compiled-overlay-contract-root-20261020.json) records the finite scope. The contract-only
+CLI requires the exact contract-file SHA256
+`a47ea88d868bc99e0007ca78af7f393a616db4cbbfd03fd59f62c69c4c397ca1`.
+
+No actual export/preload was run for this tooling task. RootdocsLOCAL;
+four new/prior32/earlierone findings, all original44clauses/failures and all security,
+performance/actualAT/compatible independent recovery/fresh backup/quiescence/schema/
+effectiveRBAC/admission/data gates remain unresolved. No acceptance is inferred
+from a packaging contract. PRD deployment AND actual verification remain FINAL.
+
+## Exact-image public browser assessment reviewed - 2026-10-20 (Toronto)
+
+The [finite exact-image assessment](../evidence/bortus-exact-image-public-browser-root-20261020.json) is complete and reviewed on unchanged application7940e9e1/BuildID6L__Bb3L8GTj93JRhod5U, image73aecec9 and separate configd19974d6. The first run reaches welcome, login keyboard order and invalid-login feedback, then fails with ChunkLoadError because the bridge excludes parentheses in actual dashboard static paths. Its screenshot/log/failed result remain literal. A separately frozen continuation uses170 exact retained static paths, passes12 route controls and completes the remaining selected flow. No compiled graph walk, rebuild, dependency install or source change occurs.
+
+Saved-evidence review passes154 checks across26 DOM/AX captures, eight inspected screenshots and19 exact static-byte transactions. Writer/readonly account metadata and visible mutation controls, dialog labels/disabled submission, keyboard focus/trap/return and both sign-outs are verified. The original I11 oracle expected protected navigation to login; actual post-sign-out /users redirects to /welcome, matching current middleware. The oracle remains unchanged and mismatched. Continuation producer passed means task completion only; there is no uninterrupted all-expected-states pass. Four explicit503 API scope refusals and five502 page-prefetch refusals remain unforwarded; they are bridge evidence, not application responses or native acceptance. The continued browser warn/error capture is empty. A closed-tab observer refusal is retained without browser replay.
+
+Both fresh synthetic tmpfs runtimes use the unchanged normal entrypoint/11 migrations and original2CPU/1GiB/no-extra-swap/PID256/network-none/read-only/1800s maximum, with the original total phase deadline retained. Runtime durations66.8s and93.4s, actor/tool exits0; both exact container IDs/names, four sampled runtime births and recorded tool/supervisor births are independently absent. Linux/Windows4401 is absent. Closure is finite. No operatorDB, private/native/recovery handler forwarding, old corpus/benchmark replay, scan/newCI/workflow, preload or production action. ActualAT/truezoom/fullbrowser/security/performance and every original delivery gate remain open. RootdocsLOCAL; fournew/prior32/earlierone findings and all44clauses/failures remain. Three successful CI scopes stay separate; overallCIQualified=false. Full goal ACTIVE/no budget; PRD deployment AND actual verification FINAL.
+
+
+## Current-source image assembled and public HTTP qualified - 2026-10-20 (Toronto)
+
+The current-source image is assembled and locally exported with a distinct
+`compiled-overlay-v1` recipe. [Saved evidence](../evidence/bortus-current-source-compiled-image-root-20261020.json) binds application
+7940e9e1 and BuildID `6L__Bb3L8GTj93JRhod5U` to manifest/local ID
+`sha256:73aecec9018cfc0634828a1def4a78c58410054a5fa51f7aa340493e2bef804c`
+and separate raw config `d19974d641cec360ca457abf0f82810947642e8c5686559cadae2851e7ce3053`.
+The actual Docker export is991697920bytes/SHA256
+`27bc001603e397ad5c9c14d82ceb8c62a17ab23459cf9ab745aed3076bdde337`.
+All20 ordered layers,183 installed production packages and28258 application
+payload entries verify. Actual inert Docker exports prove all933 entries outside
+`/app` unchanged and the complete new payload exact, with stale application
+entries absent. Both inert containers are removed. No application rebuild,
+dependency install/download or native/private recovery replay occurred.
+
+The296 raw-Git context,333 current raw inputs and41723 compiled/dependency records
+remain separate authorities. ONE new-lane graph comparison completed before the
+first invalid LF/CRLF equality assertion;284 raw source files differ from Git only
+by CRLF. That pre-Docker failure is retained; the reviewed continuation does not
+repeat the graph walk. Actual assembly uses4CPU/4GiB/no-extra-swap/PID256,
+network-none/read-only-root and900s; Docker daemon operations are separately
+bounded, without a daemon-wide resource-cap claim. Worker exit0 is separate from
+controller exit1 at post-load tag lookup. The exact generated digest was then
+verified and the absent canonical local alias created in a separate operator
+step. Assembly/load were not replayed; both original failures remain literal.
+
+Twenty-one synthetic packaging controls and25 saved-evidence review checks pass.
+One focused actual-image public runtime passes12 semantic groups/26 HTTP requests:
+normal entrypoint applies11 migrations to a fresh synthetic tmpfs DB; liveness,
+public pages/redirect/static bytes, bootstrap/login/session, readonly permissions,
+logout cookie and tampered-signature checks pass. Readiness correctly503 without
+Kubernetes access. Runtime retains2CPU/1GiB/no-extra-swap/PID256/network-none,
+read-only-root and1800s maximum. Runtime/tool exit0, exact CID/name and two sampled
+runtime births are absent; nine runtime/tool/supervisor and12 assembly-tool births
+are independently absent. Closure is finite. Both SQLite experimental warnings
+remain recorded. No populated-data preservation/schema-compatibility claim follows.
+
+This completes only the bounded assembly/export/public-HTTP task. No image browser,
+actualAT/truezoom, security/performance, native values/history/CAS/rotation/recovery,
+effective RBAC/admission or production acceptance is added. Original v1/release-v2
+exporter/preloader contracts remain unchanged and REFUSE this new recipe; source
+contract compatibility remains a separate prerequisite before any future preload.
+No scan/newCI/workflow/preload/merge/promotion/production change. RootdocsLOCAL;
+four new/prior32/earlierone findings, A07five-of-ten warm failures, all44clauses and
+original failures remain. Three CI scopes remain distinct; overallCIQualified=false.
+Full objective ACTIVE/no budget; PRD deployment AND actual verification remain FINAL.
+
+## Current-source compiled overlay assembly preparation - 2026-10-20 (Toronto)
+
+A distinct `compiled-overlay-v1` lane is being prepared in
+`scripts/migration/assemble-bortus-compiled-release.py`. It packages the existing
+7940e9e1 compiled BuildID `6L__Bb3L8GTj93JRhod5U`; it does not run npm, install,
+recompile, or execute migrations. The 296-file raw-Git context, 333 current source
+inputs, 41723 compiled/dependency records, native/worker packaging and qualified
+runtime base remain separate authorities. The exact lock selects installed
+production packages, including the Prisma CLI absent from standalone output.
+Public/static files, schema/migrations, native selector and account worker are
+preserved. Only the copied entrypoint receives the existing CRLF-to-LF treatment.
+
+The proposed OCI layer makes `/app` opaque, replacing stale application assets
+while retaining the base layers and runtime configuration. Packaging is intended
+for a read-only container with 4CPU/4GiB/no-extra-swap/PID256/network-none and a
+900-second maximum. Docker save/load metadata operations are separate daemon
+operations; those container limits do not assert a daemon-wide CPU/memory cap.
+Input review/freeze, one NEW integrity comparison, actual constrained assembly,
+independent archive/filesystem review, exact local image inspection and focused
+public startup/auth/permission qualification remain pending. Original
+`release-v2` builder/exporter/preload contracts and all receipts remain unchanged;
+they refuse this new recipe. No preload authority is established by its archive.
+
+No image has yet been assembled in this lane. No new scan, CI replay/workflow,
+private native/recovery replay, production mutation or publication is authorized.
+Root documentation stays LOCAL; four new/prior32/earlierone findings and all
+original performance/security/actualAT/recovery/schema/RBAC/admission/data gates
+remain unresolved. Full objective ACTIVE/no budget; PRD deployment AND actual
+verification remain FINAL after the original preceding gates.
+
+## Welcome source copy supersedes image copy - 2026-10-18 (Toronto)
+
+Application source `b0802b9` corrects the unsupported welcome claims, with [separate source qualification](../evidence/bortus-truthful-welcome-root-20261019.json). No new release image is assembled for this copy-only feature. The7b03 image and its browser observations below remain bound to d6382450, including the stale welcome copy. Package at the next justified source release boundary and qualify that exact image; do not transfer prior image/UI/performance evidence to changed source. All original release gates remain open.
+
+## Corrected image verified with the integrated browser - 2026-10-19 UTC
+
+Source `d6382450ba9064c79f7bbcac23c1d27c9c179610` fixes the internal-origin redirect using supported Next configuration; CI39192452213 passes. New runtime index `sha256:7b03b4b8d40fc3014822212aa9db4c24dfcc4a5781b9b5e5632cbc33fb9ff276` builds/exports successfully. All12 public startup checks pass/container0; original wrapper cleanup exit1 remains retained with separate exact-container absence proof. [Current evidence](../evidence/bortus-corrected-image-root-20261019.json) records independently checked identities, archive/receipt hashes and two new screenshots.
+
+Actual integrated Codex browser verifies same-origin root/welcome/sign-in, owner login, Secrets/KV navigation, logout, readonly login and absent readonly configuration mutations. The disposable preview is closed; both platform listeners are absent. No native Computer Use skill is needed. [Earlier broader UI evidence](../evidence/bortus-integrated-browser-ui-root-20261019.json) remains bound to the previous image. Welcome still contains stale AES-256-GCM/auto-sync claims, requiring source follow-up.
+
+The [original paired performance gate](../evidence/bortus-page-origin-performance-root-20261019.json) fails three of ten warm comparisons; seven improve. Root recomputes all1386 distributions from retained raw measurements. Fresh default scan exits1 with12 Medium findings and zero secrets, without dispositions or acceptance. Assistive technology, live native value/history/CAS/rotation, independent compatible recovery and guarded adoption remain open. New image is locally exported, not preloaded or deployed. Draft charts PR5 at `835dabebd97a7691311b2c6748fd3cfa4db17f44` joins the release and three allowlists to that index;29 tests,33-chart/34-release/71-resource validation and CI39194242639 pass. It stays unmerged, Helm suspended and adoption false. Policy reconciliation is independent of Helm suspension.
+
+## Final source image staged — 2026-10-18
+
+Current app source `5aba82c` builds through release-v2 over the explicitly pinned maintained runtime. The exact saved image and its ordered layers are verified, and all three supplied nodes import the same runtime index `sha256:bfc78b697373727aebccf50c70ef1944c76691cc435da0ad3bcc4e44670ff211`. A separate operator cache correction adds the absent exact `docker.io/library/bortus@sha256:…` alias without force or changing the release tag; source and alias targets agree on every node. This operator step is recorded separately and is not attributed to the preload helper.
+
+All12 existing isolated public runtime checks pass. The original wrapper exit1 from capitalization of Docker's absent-object message remains recorded; separate exact-ID/name absence checks prove cleanup without rerunning the application. Fresh default Trivy reports12 Medium findings and zero secrets, with no suppression or accepted residual. The first export refusal led to a v2-only repeated-layer fix: duplicate tar members remain forbidden, all22 ordered references/21 unique blobs and diff IDs are checked, and every position counts toward expansion bounds. The build was not repeated. Current [release evidence](../evidence/bortus-current-release-staging-root-20261018.json) and [post-staging cluster health](../evidence/bortus-post-staging-health-root-20261018.json) record the actual scope. No production image, schema, credentials, PVC or adoption setting was changed. Private recovery/security policy blocks and the retained performance/AT/live gates remain unresolved.
+
+
+## Current-source release recipe
+
+The existing raw-Git context producer includes `Dockerfile.release` from the exact
+selected application commit without changing its closed manifest format. Use a
+new producer output, not a plain `git archive` tar or a hand-labelled earlier
+build. The builder's opt-in `--recipe release` runs on the operator's local Docker
+daemon and selects that exact manifest-listed Dockerfile. It supplies
+`BORTUS_SOURCE_REVISION` and `BORTUS_RUNTIME_IMAGE`, not the legacy
+`KUBECTL_VERSION` argument. The original default legacy recipe still builds on
+the fixed SSH builder with its original arguments and five-label contract.
+
+For the release recipe, additionally supply `--runtime-image <existing-local-ref>`
+and `--runtime-image-id sha256:<independently-qualified-local-image-id>`. Before and
+after the build, the local reference must inspect to that exact ID. The base must
+already exist; the recipe uses `--pull=false --platform linux/amd64`. These checks
+bind the supplied identity; they do not establish that its providers are qualified.
+Keep exclusive control of both base and output references throughout the build.
+
+Use the normal producer command and its exact archive/manifest hashes, then:
+
+```sh
+python3 scripts/migration/build-bortus-release-image.py \
+  --context /approved/runtime/release-input/context.tar.gz \
+  --manifest /approved/runtime/release-input/context.json \
+  --source-commit <exact-application-commit> \
+  --context-sha256 <producer-archive-sha256> \
+  --manifest-sha256 <producer-manifest-sha256> \
+  --runtime-parent /home/brajam/.local/share/branconet-migration \
+  --recipe release --runtime-image <qualified-local-runtime-reference> \
+  --runtime-image-id sha256:<qualified-runtime-local-image-id>
+```
+
+All original source/archive, exclusive-run, pre-dispatch tag checks, protected
+logs, 2,400-second build/30-second metadata bounds and no-replay behavior remain.
+A completed new receipt explicitly records `build_recipe: release-v2`, local
+transport, selected Dockerfile SHA, runtime reference/inspect ID and new local
+image ID. Docker inspect IDs on the current daemon identify OCI indexes, not raw
+config objects. The new build receipt does not label that ID `config_image_id`. Its
+image must have all five original source/context/owner labels plus the exact
+`org.opencontainers.image.base.name` reference. The existing exporter/preloader
+accepts this distinct contract and verifies all six labels through the saved
+archive and each node. It still treats config ID, OCI manifest and runtime
+acceptance as separate identities/scopes. No previous two-label build is adopted
+or relabelled as an original five-label build receipt.
+
+The release exporter validates the full ordered OCI chain even when an immutable
+layer occurs more than once. That v2-only case does not change the original v1
+uniqueness rule or permit duplicate tar members; see the staging contract.
+
+
+## Current qualification checkpoint: 2026-10-18
+
+### Earlier maintained-runtime result
+
+Exact isolated candidate `4a84c0b5` has qualified saved-image chain,31,800-entry filesystem,original public startup/auth/permission checks and public SDK/Node TLS4. Its unchanged default scan remains literal1 with12 Medium findings and zero secrets. Production is still on `3b076fb9`, confirmed by the October18 read-only snapshot below. The allocation candidate169107f remains isolated because the original three-pair benchmark fails two warm cases. Actual assistive technology,private SecretTransport/recovery,complete image-security disposition and guarded live acceptance remain open. No new image has been deployed and no original data retired.
+
+### Retained October16 source and preparation checkpoints
+
+The following paragraphs retain the sequence of earlier qualifications and failures; later dated receipts supersede their specific pending preparation states. The Node continuation,component packaging and combined image/public runtime checks have since completed as recorded below. Historical pending statements do not reopen completed checks.
+
+
+
+The [current hosted CI receipt](../evidence/bortus-current-hosted-ci-qualified-root-20261016.json) qualifies source9cb81363/FE5fcbfdda through actual run38862871467 on validation commitfc17e40d: clean pinned build,lint/types,352 unit tests,eight HTTP checks,all eight pristine0/mutant1 sensitivity pairs and compiled Pods smoke pass. ROOT independently recomputes the five TAP matrices from14 saved raw logs and matches all three sensitivity groups,browser and cleanup JSON;all18 evidence files and fresh remote source/main refs match. The source and log default scans report0/zero. The earlier run38861922778 remains failed at a stale transitive manifest hash before the process test;the correction changes only that checksum. Main,charts and production are unchanged.
+
+The [patched partial-workspace freeze](../evidence/bortus-node22-patched-partial-freeze-root-20261016.json) passes double content/physical snapshots over47,001 entries/1,407,402,075bytes and independent/final checks. It proves current source/generated/configuration/patch consistency,not object compilation provenance or a new executable. The original full build1/compile-15 remains failed. A fresh isolated continuation now copies those already-patched partial objects with exact content,modes,links and mtimes under the original resource and time limits,then runs the unchanged compile,offline279 dependencies,full4,706 tests,canary and version checks. Its result is pending. No historical unpatched objects,image adoption or private data changes are authorized by the snapshot. Actual AT,performance,private recovery,coherent image/security and live acceptance remain open;no user action is pending.
+
+
+The [earlier isolated application composition](../evidence/bortus-parent-stat-a15-functional-composite-root-20261016.json) qualifies source6b254b2 with the actual bc10 compiled output:352 units and eight HTTP checks pass after correcting only the legacy Modal test model. The earlier350/352 failure remains recorded. The [current compiled-account qualification](../evidence/bortus-parent-stat-a15-compiled-account-root-20261016.json) also passes10 HTTP/12 fresh SQL/13 join oracles with independent closure. The current source-CI and focused contrast results are above;original performance,actual AT and delivered-image qualification remain open.
+
+The [bundled-zlib Node compilation attempt](../evidence/bortus-node22-bundled-zlib-compile-timeout-root-20261016.json) stops at the unchanged7,200-second compilation deadline: overall1/build-15. Independent checks retain14 runtime inputs,15 absent recorded host identities and absent exact container ID/name. The worker's `original_cache_unchanged:false` remains literal; it is not independent proof of cache drift because the success-path check did not run. No new binary, default4,706 tests, canary or version check completed. The earlier Node-suite pass remains tied to its original binary. No automatic retry or production adoption follows this result.
+
+The [earlier hosted CI receipt](../evidence/bortus-json-response-hosted-ci-qualified-root-20261015.json) qualifies original A19 source CI for frontend47f85279: clean native/standalone build, lint/types,352 units,eight HTTP checks,all eight pristine0/mutant1 sensitivity pairs and compiled Pods smoke pass. The earlier frontend4658deef result remains a historical source qualification. The [A12 source composite](../evidence/bortus-a12-source-composite-root-20261015.json) now includes the actual deleted-account browser flow and the enabled Run. These are source qualifications; the older dated sections below preserve their historical open states.
+
+The [isolated Noble zlib source qualification](../evidence/bortus-zlib-noble-local-source-qualification-root-20261015.json) passes upstream check/test64 for both trees after all eight distribution patches. Its original writer fails the unchanged canary regression at stage4/79; the minimal reset candidate passes at stage6/0, including recovery/normal clear. Independent current-file, host-identity and exact container checks pass. The evaluation flags are not Noble binary-equivalence evidence. No system image, installed library or Node bundled zlib has changed, and no residual exception or security pass is accepted. The existing scanner1/ten Medium findings remain. Performance, private recovery, human AT, coherent final image and guarded live acceptance remain open.
+
+The [retained patched system-zlib ABI qualification](../evidence/bortus-system-zlib-retained-static-abi-root-20261015.json) now passes static SONAME/export/version/dependency coverage with independent current-artifact and exact-container closure. Three unresolved weak symbols remain recorded; runtime consumer, new image and Node bundled-zlib qualification remain pending. No source rebuild, stripping, package-version rewrite or live change occurred.
+
+## 2026-10-15: hosted regression sensitivity and real-CLI prerequisites
+
+The [seven-case hosted CI receipt](../evidence/bortus-hosted-seven-regressions-root-20261015.json) records successful run 38770022640 on validation commit 3420513e, with frontend 2dd777ca/workflow a8198320 equal to owning source e386e5bf; docs commit e1ef6bd6 preserves both. Clean install/build, lint/types, 342 units and eight integrations pass. Seven pristine cases pass and their separate source mutations fail at the unchanged intended assertions. The two new database controls specifically detect deleted-account JWT fallback and multiple bootstrap writers; their expected nested child assertions and parent aggregates are matched exactly. The earlier five controls remain intact. All fourteen bounded children restore inputs; no tests are skipped. Default raw-source, hosted-log and docs scans report zero findings. Whole A19 remains open for meaningful cross-process regression sensitivity and the small browser CI smoke suite. Original warm performance failures, image security, recovery and live gates remain open; main and production are unchanged.
+
+The [exact API image metadata receipt](../evidence/bortus-a04-file-capability-metadata-root-20261015.json) records one read-only save of the acquired image and independent revalidation of its 31,201,280-byte archive, selected manifest/config, fifteen layer diffIDs and fixed binary payload. Its revision-2 file-capability record permits only NET_BIND_SERVICE with the effective flag; four pure decoder groups pass against the retained public Linux UAPI header. This is saved-file metadata, not proof of the running effective set or exclusive EPERM cause. The first reader retained exit 1 for a tuple/list comparison error; corrected reader and independent current archive/source/process checks pass. The earlier cluster attempts remain failures. A narrowly scoped disposable API-role capability proposal is under qualification; no Kubernetes business, security, production policy or retirement acceptance follows.
+
+`scripts/migration/build-bortus-release-image.py` consumes the archive and manifest
+produced by `prepare-bortus-release-context.py`. Supply the exact lowercase
+40-character commit and independently pinned SHA-256 hashes of both artifacts.
+The helper verifies the closed manifest, complete regular tar inventory, paths,
+modes, raw Git blob IDs and SHA-256 hashes, required Docker/package/schema files,
+migration inventory and the producer's exclusions before any SSH request.
+Limits are 2,000 included plus excluded entries, 16 MiB per source file, 128 MiB
+source total, 144 MiB compressed/decompressed archive and 4 MiB manifest.
+PAX path headers are supported within 8 KiB; links, global/other extensions,
+unexpected metadata and nonzero payload after tar EOF refuse. Nothing is extracted.
+
+Run under Linux/WSL as the approved operator. Source inputs must be bounded,
+regular, operator-owned and not group/world writable. Each is copied fresh with
+nofollow/nonblocking reads, stable inode/content timestamps before and after,
+and a protected copy hash/identity check immediately before streaming. The
+protected copy pins ctime/mtime and link count as well as inode, avoiding
+acceptance of a replaced file whose inode was reused. A post-stream check
+refuses completion if the copy changes during dispatch; it cannot undo remote
+work already dispatched. The coordinator must exclude concurrent writes by
+the operator to the owned run and supplied source inputs.
+The
+operator runtime parent may be owned mode 0755; all ancestors must be owned by
+root or the operator and not group/world writable. The final parent is pinned
+and operator-owned. A new, deterministic `bortus-release-<fullcommit>` directory
+is created mode 0700 and its parent entry is fsynced. Run files are mode 0600.
+Any existing run refuses; the helper never reopens, adopts, overwrites or retries
+an earlier intent, including failed validation or an uncertain outcome.
+
+```sh
+python3 scripts/migration/build-bortus-release-image.py \
+  --context /approved/runtime/release-input/context.tar.gz \
+  --manifest /approved/runtime/release-input/context.json \
+  --source-commit <exact-lowercase-40hex-commit> \
+  --context-sha256 <independently-pinned-64hex> \
+  --manifest-sha256 <independently-pinned-64hex> \
+  --runtime-parent /home/brajam/.local/share/branconet-migration
+```
+
+The sole destination is `james@192.168.0.4`, SSH port 2002, BatchMode=yes,
+StrictHostKeyChecking=yes and ForwardAgent=no. No sudo, password, forwarded
+agent, operator kubeconfig or runtime Secret is supplied. The sole build arg is
+the approved nonsecret `KUBECTL_VERSION=v1.37.1`. Docker receives the verified
+archive on stdin and the exact tag `bortus:release-<fullcommit>`. Existing tags
+refuse both during the initial query and immediately before the remote build.
+Docker provides no atomic tag compare-and-set: the release coordinator must
+hold exclusive builder/tag ownership throughout this operation. The helper
+does not claim to exclude an unrelated concurrent Docker writer.
+
+A file-and-directory-fsynced pending record exists before build dispatch.
+Complete build stdout/stderr are retained separately in the protected run,
+hashed by streaming reads rather than buffered as a whole. SSH query/inspection
+timeouts are 30 seconds; build timeout is 2,400 seconds, with a 15-second SSH
+connection timeout. The local SSH child is waited/reaped by subprocess.run.
+Timeout/lost reply (SSH exit 255), failed metadata inspection and post-dispatch
+durability failures leave an uncertain intent or the prior pending record.
+The remote Docker build may still run after a lost reply; no automatic retry,
+remote cleanup, cancellation or image adoption is attempted. A received normal
+nonzero build exit is failed; the remote pre-build tag guard exit 73 is refused.
+Flush failures never grant success. This is fault injection qualification, not
+power-loss testing. Protected logs may contain complete build diagnostics and
+must not be copied indiscriminately into Git or public reports.
+
+After build exit zero, the helper inspects only image config ID, positive image
+size and five exact labels: source commit, application tree, context hash,
+manifest hash and unique build owner. It never inspects environment values or
+full image configuration. The `sha256:` config image ID is **not** an OCI
+manifest or runtime digest. Successful completion records no qualified runtime
+digest and `deployed=false`, `runtime_accepted=false`. This helper has no run,
+deploy, export or preload API. Image scanning, runtime/migration/data acceptance,
+admission, distribution and release are separate coordinator gates.
+The separate [export/preload helper](BORTUS-RELEASE-STAGING.md) consumes this
+exact completed receipt and retains its own independent staging intents.
+
+The prior `build-bortus-image.py` binds a historical fixed image/source checkpoint;
+its evidence remains historical. This generic helper does not reinterpret that
+record. The separately qualified operator mTLS adapter has a scoped live TLS 1.3
+Volume LIST/HTTP 200 watch-handshake receipt; it supplies no build input and is
+not full independent restore or restored-data acceptance. See
+[restore watch prerequisites](BORTUS-RESTORE-WATCH.md).
+
+The local tests use public disposable source archives, actual POSIX file/dir
+flushes and injected filesystem/subprocess faults. They do not contact the
+builder, read operator credentials, run Docker, build an image or deploy.
+
+Root selected immutable `7e30b9b4` for an inert recovery holder after independently
+verifying its raw/working sources, 687 compiled files, original Windows and Linux
+functional artifacts. The actual immutable build completed at 09:14:59 UTC on
+2026-10-11. Exact source/context/build/config bindings are in the
+[holder receipt](../evidence/bortus-holder-source-image-7e30-20261011.json).
+This build does not qualify application performance, image runtime or deployment.
+
+## Exact c29fc application image qualification
+
+The [c29fc image receipt](../evidence/bortus-app-source-image-c29fc-20261011.json)
+records the single source-bound build (12:06:21 UTC) and export (12:10:33 UTC)
+on 2026-10-11. Its 265 production entries match independently verified raw Git
+sources and the tested build context. The Docker config ID is
+`sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c`;
+this is not a qualified OCI manifest or runtime digest. The archive's ordered
+layers/config/labels match the completed receipt. Exact child owners are closed.
+
+A fresh pinned Trivy 0.75.0 default image and image-config scan completed at
+12:11:00 UTC with exit 1: zero Secret findings, 346 vulnerability entries
+(125 Low, 142 Medium, 67 High, 11 Unknown, one Critical). Nineteen fixable entries
+are in bundled kubectl, including four High. The Critical zlib finding has
+scanner status `will_not_fix`; no suppression or application reachability
+acceptance follows from that status. The earlier inert-holder assessment cannot
+qualify the application image. At that scan checkpoint, runtime/schema fixtures were pending; the later
+disposable fixture below records their scoped result. Kubectl remediation and
+security review, A07/A21 performance, three-node runtime qualification, active guards,
+independent complete-row recovery and final live acceptance stay open.
+This qualification dispatched no application rollout, cluster mutation or
+production data read; the original writer and data remain preserved.
+
+## Disposable c29fc image runtime and synthetic forward migration
+
+The [runtime receipt](../evidence/bortus-app-disposable-runtime-c29fc-20261011.json)
+records one reviewed run completed at 12:18:51 UTC on 2026-10-11. Exact config
+and five source labels matched before execution. Three disposable stages ran
+with no network, read-only root, UID/GID1000, 2CPU/1GiB/128PID limits and bounded
+tmpfs mounts: package inventory, fresh schema/restart and legacy1438 forward
+migration/restart. Liveness returned200; native-unavailable readiness returned503.
+All11 migrations completed with zero schema drift and the expected account lock,
+legacy principal and write/admin versus readonly/nonadmin policy bridge.
+
+The legacy fixture uses the exact historical schema and seven raw migrations,
+with every original application table populated. The unchanged comparator
+checked all14 original tables, all original columns and complete row multisets:
+21 source rows survived unchanged, including both users and the alias with an
+underscored key. Added migration rows are separately recorded. SQLite integrity,
+foreign keys, terminal migration state and new sessionVersion default0 passed.
+These are synthetic rows; the fixture's arbitrary hashes do not establish login
+behavior, and this is not production preservation or independent storage recovery.
+
+Root freshly checked absence of all20 owned Linux process identities, the exact
+Windows launcher and the complete owner-labelled Docker container list. Fixture
+database frames remained in memory/tmpfs and cleanup completed. No production
+PVC/database/native credentials, Kubernetes operation, image preload or rollout
+was used. Application security, A07/A21, full-row production recovery, admission,
+actual auth/UI/consumer acceptance and final live release remain separate gates.
+
+## c29fc selected MiniZip package/file review
+
+The [single bounded metadata probe](../evidence/bortus-app-minizip-metadata-c29fc-20261011.json)
+completed at12:27:50 UTC with actual exit0 on the exact config/source image.
+Installed package selection finds zlib1g from source zlib; nine selected regular
+files totaling242,823,089 bytes were read with no symlink following. No selected
+MiniZip-owned pathname, positive ELF token or linked MiniZip library was found.
+The sole positive text reference was zlib's copyright notice. Scope is limited
+to selected package-owned files and fixed Node/kubectl/curl/openssl/Prisma binaries;
+stripped, inlined, compressed or obfuscated code is not excluded. It is not an
+all-image inventory, reachability proof or application security pass.
+
+Root freshly verified eight Linux process identities, the Windows launcher and
+complete owner-labelled container-list absence. No app entrypoint, native
+credential or production mount was used. The original default Trivy exit1,
+346 vulnerability entries, Critical finding and kubectl remediation remain
+unsuppressed. The [separate preload receipt](../evidence/bortus-app-preload-c29fc-20261011.json)
+confirms image staging on all three nodes. The later inert Kubernetes runtime
+is recorded below; active guards, independent production recovery and final
+live acceptance remain open.
+
+
+## c29fc digest aliases and inert Kubernetes runtime completed
+
+The [actual three-node runtime receipt](../evidence/bortus-app-three-node-runtime-c29fc-20261011.json)
+records the separate alias-only operation at12:55:18 UTC and inert public
+runtime at12:56:45 UTC on2026-10-11, both actual exit0. Each node verifies the
+same config, five source labels, ordered layers and OCI manifest068254f3;
+absent digest cache names were created without force or image replacement.
+The image is referenced by its manifest digest, never its Docker config ID.
+
+All three nodes ran Node22.23.3/Prisma6.19.3 against two public SQLite rows in
+an8-MiB memory volume, with integrity and an8192-byte reader frame checked.
+Pods used UID1000, read-only root, dropped capabilities and no service-account
+token, production PVC or application entrypoint. Six owned execs completed.
+UID/resourceVersion-preconditioned deletion and a fresh complete PodList prove
+all three probe names/UIDs and the owner label absent. Root independently
+verified all seven runtime process identities and the exact Windows launcher
+absent, plus all24 frozen helper hashes unchanged. The original Deployment and
+Ready writer retain their exact UIDs, resourceVersions and1438 image.
+
+This qualifies c29fc as an inert public-fixture runtime only. The newer ab8d
+application source needs its own final image qualification. No production-row
+restore, active admission, original PVC schema migration, app rollout, security,
+performance or live auth/UI/consumer acceptance follows from these probes.
+
+The fresh [4ae9 Linux functional qualification](../evidence/bortus-functional-4ae9-root-20261011.json) passed its production build, 262 unit tests without skips, whole-source lint, fresh type checking and six existing HTTP/process controls. Root independently rehashed 344 executed sources, 77 test/helpers, 4,262 compiled files and all five original stage logs against the final 345 raw Git frontend bindings. All observed owned processes and containers are absent. The first read-only root count assertion accidentally included 22 doc rows; the corrected frontend-only check passed without rerunning qualification. Browser lifecycle, universal action, paired performance, immutable final image and live release gates remain separate and pending. Production remains unchanged.
+
+
+The [actual immutable 4ae9 image receipt](../evidence/bortus-app-source-image-4ae9-20261011.json) records build0 at18:28:26 UTC, export0, exact five source labels, complete independently verified linux/amd64 archive/config/ordered-layer hashes and observed owned-process closure. Default Trivy0.75 scanning completed with exit1:346 findings (1critical,67high), including four fixable high findings in kubectl, and zero secrets. The critical zlib1g finding is individually classified using Debian's Bookworm binary-package assessment and actual archive package/library contents; its original count remains retained. This does not accept the entire image. No application/image runtime or deployment occurred. Patched CLI selection, remaining security/performance, latest-data capture and final schema/admission/principal/live/rollback gates remain open.
+
+
+## 2026-10-12: final4ae9 performance execution closed, regression gate failed
+
+The [independent root comparison review](../evidence/bortus-performance-4ae9-root-20261012.json) verifies40 originals,424 raw Git blobs/modes and actual immutable baseline157/candidate267-file tar bytes. The unchanged original runner completed six unique alternating observations, three per source, with all assertions. Root recomputed330 workflow/HTTP summary distributions, confirms all six native metadata profiles returned the complete expected inventory, and observed supervisor/runner absence. Execution success does not establish A07/A21 acceptance: native HTTP latency regresses at200/1000objects and large-value cases; some warm1000-object tails improve. The10,000-Pod baseline false-empty cases remain ineligible for equivalent latency claims; native metadata comparisons independently remain valid. The first root read placed the native phase oracle on its request entry; correction used the actual phase field without rerunning measurement. Original limits/oracles/source remain unchanged. Safe performance remediation, final runtime/security, latest-data migration and live/rollback acceptance stay open.
+
+
+## 2026-10-12: primary package triage and pinned custom-build inputs
+
+The [primary remediation receipt](../evidence/bortus-image-remediation-research-20261012.json) retains all20 unique Debian High/Critical IDs from the default4ae9 scan and current Debian release tables. All20 primary requests succeeded. Debian13 contains fixes for some Bookworm findings (for example [util-linux target-path redirection](https://security-tracker.debian.org/tracker/CVE-2026-53613) and [OpenSSL DTLS retransmission](https://security-tracker.debian.org/tracker/CVE-2026-84782)); several other findings remain vulnerable there. A base upgrade alone cannot establish security acceptance. No suppression or change to original346 findings is applied.
+
+Root downloaded the exact upstream Kubernetes1.37.1 source42196261bytes and Go1.26.9 Linuxamd64 toolchain66935201bytes onto the separate build host, then independently rehashed both and observed the downloader absent. The source checksum remainsd58492a0… and Go42d158b4…; full bindings are in the receipt. Actual source layout is flat with two file and three directory symlinks, unlike the draft fixture; those cases are corrected before compilation. Inputs are public archives, no cluster or credential mount is involved. Custom compilation, vendor diff review, binary scan, final source/image injection and runtime acceptance remain pending.
+
+
+The separate [custom kubectl security build contract](BORTUS-KUBECTL-SECURITY-BUILD.md)
+consumes pinned upstream1.37.1 source and Go1.26.9 archives, with reviewed
+x/net0.60.0 and transitive pins. It is a local-only candidate for a custom
+binary, not an upstream1.37.2 release or image security pass. Existing Dockerfile
+and release-builder defaults remain unchanged pending separately qualified
+source-linked injection and actual image/runtime acceptance.
+
+
+Custom kubectl build receipts keep detailed source/cache diffs in a bounded,
+protected fsynced metadata sidecar and full before/after ZIP; only count/SHA/path
+stay in the1MiB ownership record. Public archive modes are preserved inside the
+private run. The first actual attempt failed before compiler dispatch at the
+record bound; earlier fixtures did not qualify its cache scale. Existing image
+contracts and defaults remain unchanged; see [custom build](BORTUS-KUBECTL-SECURITY-BUILD.md).
+
+
+Root [integrated helper qualification](../evidence/bortus-kubectl-security-build-root-20261012.json) verifies all9 selected raw native files and84 retained originals, then passes18 controls without skips against the current checkout. Actual unittest time1.805s/root wall1.891s; frozen source hashes stay unchanged. These are controlled Python/bash child/archive/version fixtures, not actual Go compiler acceptance. Default image builder remains unchanged. Root separately dispatched the exact helper on the existing build host with two-core affinity, pinned public archives, fresh HOME/module/cache and one2400s budget. Supervisor/helper PID/start identities were observed live in preparation; no final binary, scan, image injection or cluster deployment is yet accepted.
+
+
+### Actual custom-build preparation failure, retained without replay
+
+The [actual build receipt](../evidence/bortus-kubectl-actual-preparation-failed-20261012.json) records terminal1 before the compiler stage. Actual Go1.26.9 version/offline module ABI, five dependency pins, upstream vendor regeneration and the full module query passed. Full source diff ZIP275523080bytes/43022members is CRC-valid. The detailed37388-path list would make the main record3757314bytes, above its unchanged1MiB bound; a later failure save also remains bounded, leaving the prior5960-byte pending record. All observed commands and supervisor are absent.
+
+31730 newly inventoried paths are upstream module cache under `_output`;5465 changes are mode-only. The original full diff/archives/logs stay intact and this owner is never reopened, adopted or replayed. The next source correction stores detailed diff metadata separately under a finite bound and retains compact count/SHA identity in the main record. Local18-control success did not cover this real source size. No compiler, final binary, image injection or cluster change is accepted.
+
+
+Root [bounded-diff correction qualification](../evidence/bortus-kubectl-diff-metadata-root-20261012.json) verifies8 raw native files/37 original artifacts and passes21 causal controls without skips in2.097s (2.187s wall). The >1MiB path-list fixture retains all18k paths outside the bounded main record and proves small failure receipts remain writable; public archive modes are preserved under the private root. Detailed sidecar is finite64MiB, main record remains1MiB, and no source/vendor/cache path is dropped. Frozen sources remain unchanged. A documentation-only apply check refused because newer root sections follow the native EOF; exact native insertions were merged with those sections preserved, before source changes/tests. This local result does not establish a corrected actual build or image.
+
+## 2026-10-12 05:31 UTC: actual custom kubectl build and component scan
+
+The [actual root receipt](../evidence/bortus-kubectl-actual-build-root-20261012.json) records all12 build stages with exit0, completed at05:18:10UTC. The 61,960,354-byte binary is a custom `v1.37.1-bortus.security.1-dirty`, built with Go1.26.9 and x/net0.60.0; SHA-256 `a3c4741294f061550b30bd2e3f357197ffbac37eefc5a45d686fe9cd29032b75`. All observed build command, helper and supervisor PIDs are absent.
+
+Root independently verifies34 transferred originals, complete CRC-valid original/diff ZIPs and32,084 changed-file byte identities. All31,916 paths remain retained, including31,723 generated cache paths; faithful archive modes eliminate artificial mode-only changes. The detailed sidecar is12,741,184bytes while the main completion record is8,902bytes. Source changes outside generated cache are module records and x/* vendor files, including upstream-selected sync/tools/mod transitives.
+
+Default Trivy0.75 component scan returns0 with zero vulnerability or secret findings and explicitly analyzes the kubectl Go binary and90 packages. The first protected copy had mode600 and yielded no Go analysis; that report is retained and rejected. A new owned scan uses the unchanged binary with its original0755 mode inside a private directory, confirms Go1.26.9/x/net0.60.0, retains all severities and uses no suppressions. The original image scan remains346 findings (1Critical/67High). This component result does not accept a final image, deployment, performance, schema migration or live engine. Source-linked image injection, full image/runtime gates and the latest-data cutover remain open.
+
+
+A separate [patched ELF image adapter](BORTUS-PATCHED-KUBECTL-IMAGE.md) can bind a
+completed custom kubectl receipt and exact ELF to a named BuildKit context while
+keeping the raw Git source tar and five source labels. Its protected injection
+sidecar is required for root qualification; existing export/preload alone does
+not qualify the patch. Default builder and frontend Dockerfile stay unchanged;
+actual binary/image/security/runtime acceptance remains separately required.
+
+## 2026-10-12: integrated patched-binary image adapter
+
+The [root qualification](../evidence/bortus-patched-kubectl-image-root-20261012.json) independently verifies all10 raw native files,50 retained originals and1,879 CRC-valid ZIP members. Three source/test files and the dedicated image-adapter doc are integrated; later root build/scan sections are preserved. All21 POSIX orchestration controls pass without skips in2.510s (2.620s wall), with seven original sources unchanged and the owned test child reaped. The first root freeze check incorrectly counted newly generated test-fixture copies as original sources; that failed harness result remains retained, and no source/test behavior was altered.
+
+Root separately validates all six actual compiled artifacts in3.138s: complete247,076,441-byte source diff ZIP,12,741,184-byte metadata sidecar/all31,916 paths, ELF, completed build receipt, actual version and Go build metadata. Their identities and bytes remain unchanged. These checks call no build, transfer, SSH or Docker operation. The default builder/export/five-label contracts and frontend Dockerfile remain unchanged.
+
+A future source-linked build must carry both completed image and injection receipts, exact owner/config/context identities and actual launcher terminal0. The adapter supplies the separately verified kubectl through a named BuildKit context and checks its SHA in the image consumer; interrupted or mismatched outcomes cannot qualify. Actual consumer/source image construction, full image/runtime/performance, latest-data and live schema/RBAC/admission/rollback gates remain open.
+
+## 2026-10-12: actual e50 source-bound image build completed
+
+The [root build receipt](../evidence/bortus-patched-app-build-e50-root-20261012.json) records actual helper exit 0 in 307.112 seconds. The canonical e50 source context includes the approved named-context kubectl consumer and pinned Trixie runtime base. Completed build and injection sidecars bind the same source, owner, context, manifest and config image ID. Root verifies all eight stage-log hashes, exact five-label inspection and absence of the owned supervisor/helper/observed children. Inputs remain unchanged.
+
+The config image ID is `sha256:db6a14d34ee75d8477e03d7efd0323100ca8b85941b6a46f96edda80d3e86bbc`; it is not a qualified OCI/runtime digest. The sidecar binds the separately reviewed kubectl ELF SHA `a3c4741294f061550b30bd2e3f357197ffbac37eefc5a45d686fe9cd29032b75`. Actual archive/layer contents, full image security, runtime and deployment acceptance remain pending. Performance evaluation is separate; this image retains the eight-request production cap.
+## 2026-10-12: independent Debian advisory triage
+
+The [root triage receipt](../evidence/bortus-debian-high-triage-root-20261012.json) binds the unchanged default report to26 retained originals and15 Debian primary-source snapshots. Its43 HIGH rows match installed binary/source versions and group into8 CVEs/5 source families. All eight current Trixie CVE tables mark the source versions vulnerable;42 rows carry `no-dsa` and one `postponed`. These policy notes grant no not-affected or fixed status. All162 default findings remain retained.
+
+The audit's A20 validation requires compatible updates and complete functional/image qualification; residual exceptions require precise execution-boundary rationale and expiry. Universal zero-HIGH was not the original acceptance clause. This triage accepts no exception, package purge, unsupported mixed-suite upgrade, final runtime image or deployment. The isolated runtime-rootfs prototype must retain complete scanner package visibility and pass the existing Node/native/Prisma/operator/migration contracts before adoption.
+
+The [isolated rootfs preparation review](../evidence/bortus-chisel-rootfs-preparation-root-20261012.json) verifies1200 originals,1082 canonical Git blobs/all200 trees,169 file objects and the separate archive root. Root independently verifies the three Ubuntu archive signatures and binds six complete indexes and17 deb/control records to those releases. This prototype contains62 slices; its patched libtinfo is `6.4+20240113-1ubuntu2.2`. It has no application, Node or custom kubectl copy and no binary execution. Scanner metadata is a proposed partial-package view outside the rootfs; its later inclusion and complete image visibility remain unqualified. The archive's UID/GID1000/root0700 is preparation metadata, not final container traversal acceptance. Missing `sed` and unusable Perl-based `c_rehash` are explicitly recorded tool-presence differences; the actual requirements are clarified below.
+
+Actual requirements must come from source, documented workflows and portable acceptance checks. Exact e50 uses `sed` only for Docker build-time CRLF normalization; no frontend call or Markdown promise requires `c_rehash`/`update-ca-certificates`. Historical scanner inventories list those files without establishing a command contract. Their presence/absence needs a truthful assembly decision, but universal equivalence with every inherited Debian utility is not an acceptance gate. Node/native/Prisma, actual shell/filesystem/kubectl behavior, trust/OpenSSL dependencies and complete recovery/data checks remain mandatory.
+
+
+The [root runtime tool selection](../evidence/bortus-runtime-tool-license-selection-root-20261012.json) binds the exact 61,960,354-byte patched kubectl ELF to its completed build/injection receipts and provides a separate executable named context. The cached Node image is identified by its actual OCI manifest descriptor and resident repository digest. A read-only filesystem copy from a unique container that was never started verifies `/usr/local/LICENSE`, 145,485 bytes, SHA256 `c738ae413cf561f174e34f6961f8ca458aae2369a73640dda6234c629b98bcc4`. All seven owned CLI identities are freshly absent, and removal plus a fresh successful query proves the inspector container absent. No image execution, pull, prototype build or source adoption occurs. These inputs resolve preparation prerequisites only; the complete assembled image still requires dependency/runtime/data-preservation qualification and its own durable full default security scan.
+
+## 2026-10-12: component build success with preserved wrapper failures
+
+The [root partial-artifact review](../evidence/bortus-runtime-build-partial-root-20261012.json) retains install wrapper1 (case-sensitive absence guard), then compile/prune wrapper1 (post-prune lock equality). Actual npm install/build/prune commands exited0, and the native module loaded successfully. The latter lock changes remove30 `libc` metadata fields only: all584 package entries, versions, integrity and dependency fields otherwise match. All312 removed installed packages are development dependencies; all189 retained package graphs match the input lock. Root independently verified4,263 compiled and27,749 pruned regular files and53 absent owned identities. These partial artifacts may be selected by a separate COPY-only packaging owner with both locks declared; neither original failure is relabelled0, and no component is replayed. Runtime compatibility, scanner and image acceptance remain open.
+
+## 2026-10-12: JWT/alias candidate functional composition
+
+Source9fd434e has [verified composite functional evidence](../evidence/bortus-jwt-alias-functional-composite-root-20261012.json): original environment/build/native-load0, followed by a corrected source-unchanged280-unit and8 strict HTTP/process continuation0 with no skips. It is not an uninterrupted five-stage pass. The original one-unit failure and subsequent diagnostic wrapper failures remain. The [causal control](../evidence/bortus-tmpfs-execution-cause-root-20261012.json) proves the local runner introduced noexec/tmp, unlike original CI; only disposable compiler fixtures gain exec, and output reads use0755 inside a private0700 owner. All358 source files,4,263 compiled files and40,635 dependency objects remain unchanged. No install/build replay, timing acceptance, final runtime image qualification or deployment follows.
+
+
+## 2026-10-13: Node core advisory coverage remains open
+
+The [root primary review](../evidence/bortus-node-core-primary-review-root-20261013.json) verifies21 packet files/22 CRC-valid members, current original bindings, the inspection process birth absent and six current ELF-header/needed-name comparisons totaling15520 bytes. Node22.23.3 bundles OpenSSL3.5.8; its ELF has no direct libssl/libcrypto dependency, while Prisma's query engine needs both shared libraries. These bounded linkage observations do not prove every dynamic-load/caller path or replace the existing full-byte image authority.
+
+The [September OpenSSL advisory](https://openssl-library.org/news/secadv/20260929.txt) includes HIGH CVE-2026-84782 in the3.5.8 range. The exact Node built-in TLS selector cannot select its required DTLS operation; that source rationale does not waive the whole ELF/addon boundary. LOW CVE-2026-35189 concerns ordinary peer-certificate processing and remains unresolved for the native HTTPS client. The original default Trivy exit1/five MEDIUM/zero reported HIGH remains unchanged; its npm target did not assess Node core. No exception or security pass is accepted. Source-only remedies compare a custom Node22/full OpenSSL3.5.9 update with official Node26.11.1 and a fresh coherent qualification profile. Neither changes runtime, benchmark acceptance, source image or deployment.
+
+## 2026-10-13: upstream source signatures authenticated
+
+The [root signature receipt](../evidence/bortus-node-source-signatures-root-20261013.json) records the bounded source-authentication result. Root authenticated the signed Node22.23.3 checksum list and Node/OpenSSL3.5.9 tag signatures using the published primary keys. All three actual GPG checks exit0. The original wrapper exits1 on non-ASCII public signer display text; a distinct read-only post exits0 after parsing only machine status fields. Independent root checks verify all22 current input rows and all five original/post process births absent. The wrapper failure is retained, and no cryptographic check is replayed. This authenticates the existing small public signatures only; source archive bytes, OpenSSL archive signature, exact Node22 regeneration/build, ABI/Prisma/TLS and final image security/performance remain unqualified. No runtime or deployment changes.
+
+## 2026-10-13: source archives authenticated and cached builder inspected
+
+The [archive receipt](../evidence/bortus-node-source-archives-root-20261013.json) records two successful fixed acquisitions: Node22.23.3 source50,447,060 bytes and OpenSSL3.5.9 source53,279,637 bytes. The Node archive matches the authenticated signed checksum list; the OpenSSL detached archive signature passes once against the expected primary key. Independent read-only checks verify archive/source/keyring/tool bytes and four original process births absent, followed by the reader itself. No download or crypto check is replayed. The original source scan retains two public-receipt-digest findings; clearer checksum naming passes the unchanged default scan without suppressions. Archives remain unextracted/unpatched/uncompiled.
+
+The [builder receipt](../evidence/bortus-node-builder-inspection-root-20261013.json) records corrected inspection0 and independent post0 against the fixed cached image. It retains the prior pre-create missing-Labels refusal and started inspection refusal. The actual corrected reader observes Perl with two legitimate hard links, GCC/G++12.2, binutils2.40, make4.3 and Python3.11.2. NASM is absent; the exact OpenSSL regeneration helper invokes it even on Linux. The18657-byte default config is retained separately from process.config. Root verifies8 source files/228 records,43 original host births absent, four exact container ID/name queries and five later reader/query births absent. Container tool coordinates are never treated as host PIDs. Isolated authenticated tooling, safe source projection, generation/build, ABI/Prisma/TLS, final image/security and recovery/live qualification remain open.
+
+## 2026-10-13: source-copy controls pass; real-archive preparation refuses
+
+The [source-preparation receipt](../evidence/bortus-node-source-projection-root-20261013.json) records 14 passing synthetic controls, including real regular/executable/symlink/materialized-hardlink copying and the exact 106 modified, six added and 33 removed path operation. Existing-copy refusal preserves the copied bytes. Independent checks verify all three input files, actual suite exit and two distinct process births absent. The selected source and runner pass their default scans without findings or suppressions.
+
+The subsequent authenticated-archive attempt exits 1 during stage-one validation, with no source trees created. Independent read-only checks confirm the actor birth absent, all three source files and four authority records unchanged, and both authenticated archives retaining their original full hashes and fingerprints. The numeric refusal does not establish its cause; a bounded read-only diagnosis is next. The failed attempt remains preserved. No extraction, generation, compilation, production adoption or deployment has occurred.
+
+Root also revalidates the 178 immutable originals and archive CRC for the completed two-reader original three-pair benchmark. Its six observations finish successfully, but A07/A21 remain failed/open; no benchmark is replayed or candidate adopted. The goal stays active with no pending user decision. Original Gluster/Vault/Consul data and backups remain protected.
+
+## 2026-10-13: read-only archive diagnosis identifies a representation mismatch
+
+The [updated source-preparation receipt](../evidence/bortus-node-source-projection-root-20261013.json) records diagnostic exit 0 and independent read-only post 0. The unchanged Node parser returns all 32,585 logical objects and 553,575,480 expanded regular bytes. For OpenSSL, the first root header carries a bounded `comment` PAX field and mode 0775; the current parser rejects the PAX allowlist at source line 258, before admitting any OpenSSL object. This is a new current-parser witness, not a retroactive assertion about the original caught exception.
+
+The diagnostic process is absent and all three bound inputs plus both archives retain their original bytes and fingerprints. No extraction, crypto replay, network, generation or compilation occurs. A scoped correction is being prepared for the fixed signed OpenSSL distribution: retain bounded inert metadata, preserve bytes and Git execute modes, and remove group/other write bits only from newly created copies. Node guards, path/link/sparse/special-file checks and original archives remain protected. That correction was unexecuted at this checkpoint; the later V5 result below supersedes source-preparation status. Build, security, performance and live acceptance remain open.
+
+## 2026-10-13: authenticated signed-release source projection completes
+
+The [updated source receipt](../evidence/bortus-node-source-projection-root-20261013.json) records three passing scoped SSL distribution controls and six exact release-mapping controls. The retained V4 attempt refuses before tree creation. A complete current comparison checks all 145 paths: all 138 present Node preimages match old blobs/modes, all 112 SSL postimages match new blobs/modes, and all 33 removals are absent from SSL. Only `deps/openssl/openssl/doc/build.info` is absent from the signed Node release. V5 maps that exact path, old/new blobs and modes from Git-modified to release-added, preserving every other byte/mode/removal guard. Git counts remain 106 modified/six added/33 removed; measured release counts are 105 modified/seven added/33 removed. No export-policy intention is claimed.
+
+The once-only V5 actor exits zero. Independent read-only verification binds all six manifests and all three current physical source trees, all three source files/four authority records, the original actor birth absence and both unchanged archive hashes/fingerprints. Finalizers are empty. Newly copied SSL files clear group/other write bits while preserving content/execute modes; original files remain unchanged. The six-control supervisor has disclosed LF/CRLF byte differences with equal normalized text/AST; archive/source content is never normalized. No generated main-branch files, Git context, generator, compiler, custom runtime or production deployment follows this source-preparation result. NASM/tool compatibility, Node build/security, original performance and private recovery/live gates remain open.
+
+## 2026-10-13: NASM parser controls pass; signed-index acquisition refuses
+
+The [NASM prerequisite receipt](../evidence/bortus-nasm-prerequisite-root-20261013.json) records eight passing public parser controls and an independent current-source/process check. Public packet/protocol/index/tar fixtures do not establish actual GPG or Debian provenance; the sparse case models the parsed TarInfo boundary. Original source scanning retains two public primary-fingerprint findings. The corrected runtime files pass their three-file default scan, while the complete eight-file packet still exits one for the historical removed line in its diff. Both findings remain reported, with no suppression/filter or overall eight-file pass. The standalone five-file acquisition packet passes its default scan.
+
+The actual once-only acquisition exits one at stage four. All seven completed commands exit zero, including the original Release signature command; six public downloads remain retained, with no NASM download/tool tree. A separate read-only witness confirms all eight original births absent, current source/artifact hashes and both complete compressed/plain index hashes. The exact current parser rejects an index line over its 16KiB field bound. The longest signed-index line is 75,649 bytes and stanza 76,338 bytes; the NASM stanza still matches the fixed 2.16.01-1/amd64/405,156-byte package digest. This is a current parser witness, not a retrospective original exception assertion. A secondary generic diagnostic also refused before publication and remains retained. No network, crypto or download is replayed for the successful witness. A narrowly scoped package-index correction is being prepared; real package projection, compatibility, generation/build and security remain open. Production and original data/backups remain protected.
+
+## 2026-10-13: scoped index correction qualifies; continuation refuses before download
+
+The [updated NASM receipt](../evidence/bortus-nasm-prerequisite-root-20261013.json) records two passing focused controls. Only package-index lines/stanzas use 128KiB; Release/deb-control fields keep 16KiB, with full size/hash/uniqueness/package checks unchanged. Seven source files pass the default scan; independent verification confirms all three runtime files and two original births absent. The earlier eight controls are not replayed.
+
+The separate continuation exits one at stage one before downloading NASM. Its two source files and all 24 original public records remain current, with the actor birth absent and empty finalizers. A new typed read-only witness finds all seven original terminal identities equal to their started identity fields but with the sole added `same_identity_absent: true` cleanup annotation. The new exact whole-dictionary comparison is therefore false; every original job is zero/reaped/no-refusal and currently absent. This is a current predicate witness, not retrospective exception reconstruction. The correction will admit only that affirmative annotation while preserving every recorded identity field and fresh absence check. No crypto, prior download, package execution or build is replayed. Actual tool compatibility and build/security/performance/live gates remain open.
+
+
+## 2026-10-14: authenticated NASM projection and builder compatibility verified
+
+[The updated NASM receipt](../evidence/bortus-nasm-prerequisite-root-20261013.json) records two passing identity-annotation controls. The corrected guard preserves all six recorded identity fields and admits only the affirmative cleanup annotation. The new continuation exits zero, downloads only the fixed 405,156-byte NASM 2.16.01-1/amd64 package, verifies its digest against the retained signed complete index, and projects only the executable and copyright. Root independently verifies 24 original records, six artifacts, full index selection, tool hashes/modes/fingerprints, and all ten original/new host births absent. Prior crypto and downloads are not replayed; prior refused actors remain recorded. The signed Release has date 2026-07-11 and no Valid-Until field. The three disclosed NASM advisories remain recorded with no security exception; this is build-only tooling, with no host installation or final runtime inclusion.
+
+The separate fixed-c4 builder compatibility actor exits zero. Readelf dynamic/symbol inspections and the actual version command all exit zero; NASM reports 2.16.01 and requires libc.so.6 through GLIBC_2.34. Independent verification binds four runtime source files, six acquisition records and both unchanged tools, confirms 18 recorded host births and fresh exact container ID/name absence, then separately confirms five later reader/query births absent. The initial independent post refused because absent formatted Docker inspect emits one LF; a new exact-LF post passes without replaying the compatibility workload. Three tool coordinates belong to the container namespace and are not host PIDs.
+
+This qualifies loader/startup/version only. Node regeneration, compilation, default upstream tests, runtime ABI/Prisma/TLS, final-image security, original performance, private recovery and guarded live acceptance remain open. The first long-build proposal is source-only and unrun; review requested explicit private PID namespace identity, compiler temporary files on the new private output filesystem, and durable closure records under the original deadline. No production adoption, deployment or retirement follows.
+
+
+## 2026-10-14: isolated Node generator refuses; independent cleanup verified
+
+[The literal build receipt](../evidence/bortus-node22-build-root-20261014.json) records actual exit one with empty finalizers and the exact container removed. New-copy Git initialization, add and commit exit zero. The unchanged all-target OpenSSL generator exits two on its first aix64-gcc-as Configure: embedded test/build.info is absent and no Makefile is produced. Configure, compilation, upstream tests and the new-Node probe never start. The fixed three-hour lease, 60-second closure reserve, 2CPU/8GiB/no-swap/PID512, no network and new private compiler temporary directory remain unchanged. Actual resource checks pass; distinct PID and IPC namespace identities are recorded before worker release. The eleven-file source default scan and scanner absence pass. Earlier source-only V1/V2/V3 drafts remain unrun.
+
+The separate outcome-honest post exits zero while preserving the original actor failure. It verifies 83 current records, five runtime sources/authority records, the original working tree, tool fingerprints and both unchanged archive hashes/fingerprints; all 14 recorded host births, fresh exact container ID/name absence and three later post/query births are absent. Four phase coordinates are container identities, never host PIDs; unsampled descendants close through the verified private namespace and removed exact container. No source-generation, build, runtime or security pass follows. Source review now checks the full authenticated OpenSSL distribution for required auxiliary inputs while preserving embedded projected bytes and the exact generator/test recipe. No production mutation or data retirement occurred.
+
+
+## 2026-10-14: synchronous HS256 primitive controls qualify; integration held
+
+[The isolated authentication receipt](../evidence/bortus-sync-hs256-controls-root-20261014.json) records ten passing control sections and 175 untrimmed comparisons against unchanged public JOSE6.2.12 verification, including accepted/refused outcomes and exact payload/header equality. Actual nonextractable-key HMAC, an independent RFC4231 vector and real key-slot cold/warm/rotation/no-overlap/zeroing controls pass. The candidate authenticates original HS256 compact bytes before using public JOSE claims validation; external unsigned tokens remain rejected. This is finite corpus evidence, not universal verifier equivalence or whole-operation constant-time proof.
+
+Root exact and fresh posts verify all 370 source files, 18 inputs, 5,382 compiled objects and 40,635 dependency objects unchanged, all 16 original process births and fresh exact container ID/name absence, then three later reader/query births absent. Nineteen control-source files and six post-source files pass default scans and fresh scanner absence. The original 300-second/60-second closure, 150-second child/180-second attach, 2CPU/1GiB/no-swap limits remain unchanged; actual private PID namespace, UID1000, read-only/network-none/cap-drop/no-new-privileges checks pass. Original thirteen authorization outcomes, compiled application, typed integration, performance and adoption remain explicitly unproven. Application source and production remain unchanged. A typed isolated integration proposal is being reviewed; the frozen original warm-performance gate remains failed/open.
+
+
+## 2026-10-14: typed signing-path checks pass; full preparations interrupted
+
+[The typed candidate receipt](../evidence/bortus-sync-hs256-typed-root-20261014.json) records actual exit zero for types, the original ten-section/175-case differential corpus using the real typed export, original thirteen authorization/four key-slot cases (eighteen TAP entries including the parent), and lint. Independent checks bind371 raw source files,394 inputs,40,635 dependency objects and5,382 unchanged old compiler-context objects; the latter are not candidate compiled proof. All64 recorded original births, eight exact container ID/name queries and nine later reader/query births are absent. Source/post default scans pass without suppression, and scanner birth absence is verified. The earlier four public-digest metadata findings remain retained; conventional relative/sha256 rows clear the new source packet without changing code or fixtures. The earlier V4 OCI mountpoint failure remains exit one with no child checks run; its cleanup passed. V5 adds only two empty mountpoint directories in a new source copy. Full production build, original322-unit/eight-integration checks, compiled authorization, performance and deployment acceptance remain open.
+
+[The complement receipt](../evidence/bortus-node22-complement-root-20261014.json) retains the initial11/12 public copy-control result: an existing destination-parent symlink caused44 new objects in a disposable protected fixture sibling before late rejection. No original data was involved. Verifying the entire original destination and source before any new effect makes the unchanged12 cases pass. Further Configure source review shows that22 missing build.info files alone cannot establish generator readiness. The complete complement is exactly6,077 authenticated full-distribution objects minus2,712 existing embedded objects:3,365 additions, comprising128 directories and3,237 files/96,299,821 bytes. Existing embedded bytes and modes remain authoritative even where the full distribution differs.
+
+All15 distinct complete-protocol controls pass, including exact actual-manifest derivation, source/destination symlink refusal, no overwrite, full union checks, mode/type/hash/path refusals, hard-SHA tampering and expiry. Independent current checks bind seven inputs and both original births absent, then the later reader absent. These public fixtures do not authenticate source archives or prove generator readiness. The new actor uses the already authenticated read-only full source, one consumed source FD at a time, with original-tree/full-tree checks before and after. Link and special input types are refused; no atomic privileged-race claim follows. Its ten-file default scan and current scanner absence pass.
+
+The isolated complete-complement build and fresh application dependency preparation were interrupted by a WSL kernel restart. Both WSL invocations return exit one with empty diagnostics; no Python exception or OOM cause is inferred. Current kernel uptime68.43 seconds contrasts with the old actor start tick923435 (about9,234 seconds), and the new boot ID is recorded. The retained complete-complement receipt reports3,365 objects/3,237 files/128 directories/96,299,821 bytes and git-init exits zero, but no generator, compiler or upstream tests start and neither actor nor worker terminal exists. The exact owned build container is observed exited255 with matching image/owner/source, then removed; fresh exact ID/name queries report not found. The application has all371 source files but an incomplete dependency copy, no completion receipt and no dispatched full suite. Independent current-input/authority checks are pending; partial outputs will not be reused. The unchanged Node10800/60 and application900/60 recipes remain separate new-owner work, to be run sequentially. No source-generation, build, runtime, performance, security or deployment acceptance follows the interruption. The earlier failures remain retained. No original data or retirement changed.
+
+
+## 2026-10-14: fresh full and compiled authorization qualification pass
+
+[The qualification receipt](../evidence/bortus-sync-hs256-functional-compiled-root-20261014.json) records a fresh dependency copy from the unchanged40,635-object authority, production build/native load/lint/types, all322 original units and eight original integrations with no failures or skips. Independent checks bind371 raw source files,400 inputs,5,382 actual compiled objects and40,635 installed objects; all185 recorded births, eight exact container ID/name queries and nine later post/query births are absent. Four standalone worker/core/receipt/schema bindings and the actual8dde native ELF load pass. The original900/60-second full recipe and commands remain unchanged.
+
+The separate compiled fixture and independent numeric join checks pass ten exact HTTP statuses/full-body assertions, twelve fresh SQL calls (five session three-column and seven write five-column projections), thirteen attempt/settlement/worker joins and stable reports through actual server exit. One database and two prepared statement owners are observed. Current371 raw files plus four separately declared generated runtime extras make375 checked objects; this is not375 raw Git files. All34 inputs and the current compiled/installed graphs remain unchanged. All18 recorded births, exact container ID/name absence and three later post/query births pass. Original300/60/180/150 bounds and observer/fixture/oracles remain unchanged. Source and post default scans and scanner birth absence pass.
+
+The interrupted V2 preparation remains exit one and never dispatched. A separate post-restart witness verifies371 source files and the full40,635 authority before/after. Its partial36,721-object copy has3,914 missing and33,442 mismatched complete metadata rows; individual corruption fields and restart cause are not inferred. That partial copy is retained and never reused. The fresh V3 run above uses a new dependency copy.
+
+[The updated runtime-source receipt](../evidence/bortus-node22-complement-root-20261014.json) preserves V6 outer exit one, missing terminals and the observed exited255 container. Its independent incomplete post passes47 current records, all six projection manifests/three original trees/archives/tool authorities, the physical original-plus3,365 complement union excluding only new Git metadata, and exact removed container ID/name absence. Nine recorded host coordinates predate that post's boot; no namespace continuity across restart is claimed. Three post/query births and the later reader are absent, with differing boot IDs recorded without cause attribution. No generator, compiler, upstream tests or runtime/security acceptance follows. Fresh V7 changes only owner/path/labels; its five other runtime files, phases and10800/60 resource contract remain identical and its source scan passes.
+
+The unchanged original three-alternating-pair/six-profile comparison is now running against baseline51e8 and candidate4df4, with all five benchmark files, exporter, fixtures, warmup, oracles and limits fixed. Node V7 is held for this exclusive measurement window. Performance, final image/security, private recovery and live acceptance remain open. No production deployment, original-data change or retirement occurred.
+
+
+## 2026-10-14: original HS256 comparison complete; warm gate fails
+
+The [original comparison receipt](../evidence/bortus-sync-hs256-paired-root-20261014.json) supersedes the running/held status in the preceding checkpoint. The original three alternating pairs and six profiles complete with actor exit zero and every native inventory present. Root independently recomputes 1,386 distributions / 4,158 numeric values and verifies all 438 exported tar members against raw Git blob IDs, bytes and modes (281 candidate, 157 baseline). All 66 frozen inputs remain unchanged. Exact and fresh posts pass: ten recorded births and eight exact container names are absent. There are no retained container IDs; dispatcher absence is PID-only. Eight later query births are absent. These scopes are not expanded into stronger ownership claims.
+
+The no-warm-regression gate fails five of ten comparable cases. Serial warm p95 medians in milliseconds rise from 6.82 to 8.26 for 200 Pods, 9.99 to 24.14 for 1,000, 7.31 to 8.49 for the 25-large fixture and 7.27 to 7.32 for the three-largest fixture. Audit-small concurrent warm p95 rises from 51.09 to 55.69. Other warm cases improve, but do not cancel failures. The baseline 10,000-Pod false-empty result remains ineligible for equivalently successful latency. No fixtures, driver, warmup, timing windows, limits or tolerance are changed; the benchmark is retained without replay. Functional/compiled qualification remains valid and separate from failed performance acceptance. Candidate 4df4d32 remains isolated and unadopted.
+
+Source review finds the current route already caches redacted Pod rows and their JSON string for the exact cached items array. A further serialization cache is not justified. A held 1,000-Pod diagnostic will reuse the qualified Next collector, worker observer and gate, preserving 13 requests, 41 SQL checks and 26 spans; only the public fixture count and matching exact full-body oracle change. It will run after the isolated Node build's exclusive resource window and will report middleware, route and emission wall windows with instrumentation/overlap limits. It does not authorize adoption or relax acceptance.
+
+Fresh Node V7 is now dispatched once and its exact generator phase has started. No terminal build/test result or new ELF/image/security pass exists yet. Final image, TLS, private recovery and live acceptance remain open. Production, original data and retirement state are unchanged.
+
+
+## 2026-10-14: V7 header dependency refusal and 1,000-Pod causal trace
+
+[The updated Node receipt](../evidence/bortus-node22-complement-root-20261014.json) supersedes the running status: actor exit one, generator exit two, complete retained failure and exact container removal. The final error is missing Text/Template.pm at generate_headers.pl line 6; compilation and default tests never start. The independent post exits zero, verifies 84 current records, all six original manifests/three physical source trees/archives, four phase terminals, 14 recorded host births and exact container ID/name absence. Three post/query births and the later fresh reader are absent. No generated-manifest, ELF, license/config, runtime or security acceptance follows. The original generator command/platforms/options/tests/deadlines remain fixed; a generator-only search-path correction using authenticated existing module bytes is being prepared in a fresh owner.
+
+[The 1,000-Pod trace receipt](../evidence/bortus-sync-hs256-warm1000-trace-root-20261014.json) records actual actor/exact/fresh/later checks at exit zero. One cold seed and twelve serial warm requests return every exact expected row, with 41 fresh SQL checks and 26 qualified Next middleware/route spans. Memoization has twelve hits/one miss and zero warm CLI calls. The 371 raw source files plus four generated extras, 29 inputs, 5,382 compiled objects and 40,635 installed objects remain current. Nineteen original births, exact container ID/name and three later post/query births are absent. Thirty source files and four post files pass default scans with scanner birth absence; only new source directories/files receive private modes. The qualified observers/gate/lifecycle bounds are retained; only the public fixture count and matching complete-body oracle change.
+
+The numeric windows are instrumented wall observations with nested spans, framework/client scheduling and full-field fixture validation sharing the fixed cgroup. They cannot be summed as independent CPU costs or substituted for the unchanged original benchmark. Causal source analysis continues. The five-of-ten warm performance failure remains; no candidate adoption, production mutation or data retirement occurs.
+
+
+## 2026-10-14: fresh generator dependency-path attempt dispatched
+
+Fresh V8 starts once after V7 independent cleanup and the completed quiet trace. Root verifies the actor has only fresh owner/path/label and worker-hash changes; all old non-main worker functions and the nested phase implementation remain unchanged. The only worker change binds the authenticated Text::Template subtree (four rows, two files, 72,212 bytes), verifies its signed full-distribution and new-work copies before/after, and supplies PERL5LIB only to generator descendants. It removes the variable before configure/build/tests. No install, download, overwrite, platform/options/test change or partial-work reuse occurs. The same 10,800-second whole/60-second closure and phase/resource bounds remain fixed. Twelve source files pass the default scan and fresh scanner birth absence. V8 is running; no terminal, new ELF or security/runtime acceptance is claimed. V7's failed source/log/terminal/post evidence remains preserved.
+
+The completed 1,000-Pod trace has ordinary warm medians of 7.1405 ms client, 1.4645 ms middleware, 1.578 ms middleware-to-route transition and 0.7175 ms route module. Its twelve timed complete-body reads total 105.967 ms; the whole loop takes 147.012 ms, leaving 41.045 ms for fixture parsing/full-field assertions, inter-request work and overhead outside those timers. Nested medians are not additive CPU costs. The largest warm request includes both an IPC delivery window and a route window; this does not identify SQL, GC, compression or allocation as a cause. Existing row/JSON memoization and bare successful middleware continuation are already present. No source remedy follows from this correlation. A separate source-only proposal will add supported thread/process CPU and GC/scheduling observations with bounded numeric output; the original benchmark, fixtures, permission/freshness limits and failed acceptance remain unchanged. No production mutation or retirement occurs.
+
+## 2026-10-14: CPU helper qualification and pre-operation receipt refusal
+
+[Current root receipt](../evidence/bortus-current-checkpoint-root-20261014.json) records seven new CPU/GC helper controls passing, plus exact, fresh and later cleanup checks. These tests qualify bounded numeric sampling and forwarding behavior only. They do not rerun prior controls or the original performance benchmark. The prepared 13-HTTP/41-SQL/26-Next-span trace remains held until Node V8 and its post checks close; GC delivery coverage remains explicitly incomplete.
+
+Node V8 header generation and configuration exit zero; compilation is running. There is no actual terminal or qualified new ELF. Original build commands, platform, tests, resource and deadline bounds remain unchanged.
+
+The public TCP attempt exits 1 before creating its operation directory. Its generic caller failure does not retain an exception. A separate bounded read-only diagnostic reproduces the first current refusal at the cache prerequisite's `completed_monotonic <= time.monotonic()` predicate. The retained receipt predates the WSL boot; its monotonic timestamp is ahead of the current clock. The diagnostic constructs no transport and issues no API command, creates no resources and accesses no credentials. Four recorded process births are absent on a fresh observation; the operation directory remains absent. This identifies a current prerequisite failure, not the historical exception. Preserve the failed attempt and predicate; obtain a fresh actual cache attestation before binding a new attempt. Public isolation proof would still not authorize delivery into a different private holder.
+
+The read-only 03:30 UTC snapshot shows 3 Ready nodes, 97 Pods, 54 Bound PVCs and 33 current Ready active Helm releases. BORTUS is Ready with zero restarts on its existing immutable image; its Helm release remains suspended. All 40 Longhorn volumes are encrypted with two replicas: 30 attached/healthy and 10 detached/unknown. Both Git sources and the release Kustomization are Ready. This is metadata evidence, not a push/rollout, restore or acceptance claim. Performance, final image/security, TLS, private recovery and guarded live acceptance remain open. No user decision is pending; original data/backups stay preserved.
+
+## 2026-10-14: fresh current-boot cache attestation completed
+
+The [current root receipt](../evidence/bortus-current-checkpoint-root-20261014.json) now includes fresh run c5a4381e960b. The original qualified caller and read-only actor remain unchanged. Only observer/closure nonce bindings change. The 75-second local lease starts before verification and the private controlling-TTY prompt; remote work retains its inherited maximum 60-second bound. Root verifies ECHO disabled and the caller PID/start/UID/foreground group before input. Actual outer/caller exits are zero in 19.709 seconds; all four read-only containerd jobs exit zero and are reaped. Manifest/config hashes, source labels, platform and 16 ordered layer-content names match; layer bodies are not rehashed. No pull, import, alias mutation, container or private material delivery occurs.
+
+Root independently checks eight recorded remote and four local identities absent, final SSH birth absent, the same WSL boot before/after and all 17 source-authority files unchanged. The closed archive verifies 38 raw originals against ZIP CRC/SHA and all 38 current originals. Original four-source default scanning retains literal exit 1 and one finding, independently bound to the public inspect-api-cache.py SHA256 at caller line 17; there is no suppression or scanner-pass claim. The two nonce-only observer/closure sources scan with exit zero and no findings separately.
+
+The old 8326 receipt, failed TCP attempt and cross-boot refusal remain intact. A distinct TCP proposal is being bound to the new actual receipts and archive counts. No TCP attempt has run after this refresh, and neither sampled cache metadata nor a public TCP test proves same-holder private recovery isolation. Node V8 remains compiling; performance and final live/recovery acceptance remain open. No user decision is pending.
+
+## 2026-10-14: refreshed TCP startup hash mismatch
+
+The fresh-cache-bound TCP attempt 11fc01a9d088 exits 1 before its supervisor or operation directory exists. Root first verifies the current 200 staged hashes/modes/UID/nlink and a fresh owned six-dependency inspection; both pass. Its generic late-durability/closure/deadline output does not retain the underlying exception. The source review identifies an explicit incompatibility: configuration pins refreshed prerequisite 640f3927, but the supervisor's unchanged PREREQUISITE_SHA is 8630bf47 and both configuration equality and file pinning require it. Root missed this dependent constant in the initial review. A separate constant-only correction and dependent source bindings are being prepared; the same functions, guards, original 300-second lease/one-second closure and controls remain intact. Neither failed nonce is reused, and no success reader runs against a failure.
+
+The four-source review verifies the closed 51-file ZIP and exact nonce/count/comment prerequisite delta. Its default scanner retains literal exit 1 and two generic matches at caller lines 18/19; root binds both to current public source SHA256 values for the recovery specifications and TCP isolation program. There is no suppression, replay or scanner-pass claim. Fresh cache evidence remains separate and valid as a same-boot sampled prerequisite; it does not prove TCP or private-holder isolation. The old receipt and failed attempts remain preserved. No production or data mutation, adoption or retirement occurs.
+
+## 2026-10-14: public TCP sample and independent cleanup completed
+
+Fresh V9.1 changes only the supervisor prerequisite constant and dependent source hashes; every function/class, including main, is raw-identical to the qualified supervisor. Root verifies all fixed runtime pins match actual source, 53 closed ZIP files, 12 unchanged receipt payloads, original staging functions and all 200 current staged hashes/modes/UID/nlink. A fresh owned six-dependency check passes. The default four-source scan retains exit 1 and the same two findings independently bound to public source checksums; no suppression, replay or pass claim occurs. Failed attempts and old receipts remain preserved.
+
+Actual public TCP run 586c5101fc0d exits zero in 47.066 seconds under the original 300-second lease plus one-second OS closure. Both directions first deliver the expected marker; after policy enforcement both new connections are blocked while loopback listeners remain alive. Source/callback checks remain unchanged. The caller records 451 jobs; the supervisor records 452 observed identities. No private material or API server starts.
+
+The unchanged independent V5 post exits zero in 1.104 seconds under its original 30-second lease. Five read-only API requests verify three resource absences by exact name and UID. It validates 453 identities including the actor supervisor. Root subsequently checks seven reader/supervisor/job identities absent, corroborates each job's expected UID against observed births, verifies current 200 actor sources and five post sources, and later observes the fresh-checker birth absent on the same boot. Root binds the actual supervisor5336 hash and actual pending/terminal/input bytes; the post reader does not independently rerun the cache callback validation. The [current root receipt](../evidence/bortus-current-checkpoint-root-20261014.json) contains the hashes and scopes.
+
+This completes the public TCP sample and cleanup evidence. It does not authorize private material delivery into a different holder or prove future CNI enforcement. The next recovery work must prove isolation on the same live holder used for accepted private backups, then restore and validate all required rows/keys. Private recovery, final image/security, performance and guarded live acceptance remain open. Node V8 is still compiling; the CPU trace remains held, and the two missing A16 browser permutations have a source-only current-runtime adapter in preparation. No production adoption or original-data retirement occurs.
+
+## 2026-10-14: V8 build interrupted; partial evidence retained
+
+The original build handle is missing. Authoritative Docker metadata reports the exact owned container exited 255 at 05:08:07 UTC, Running=false, PID=0 and OOMKilled=false. WSL's boot ID changed. Neither the actor terminal nor the build-phase terminal exists; no compiler exit, interruption cause or successful build is inferred. Header generation/configuration had exited zero. No new ELF, default-suite, runtime or security qualification follows from this partial output.
+
+Root verifies original CID/name/source labels and immutable image, then removes only the already-stopped experimental container without force or volume deletion. The first cleanup wrapper exits 1 after removal because its absence parser expected empty output/capitalized text; actual Docker returns a JSON empty array and lowercase missing-object error. A separate read-only audit prefix also refuses on that case-sensitive check before new queries. The corrected separate audit performs metadata-only exact CID/name absence checks, retains hashes for 73 partial records and verifies six original actor-source files unchanged. Root later verifies those records remain current and six current-boot query/observer births are absent. No historical PID coordinates are compared or signalled across boots, no build/remove is replayed, and output bind directories remain intact. This narrow interruption audit does not revalidate the full input projection trees or substitute for the prepared 900-second success/failure post that requires a real actor terminal; that post remains unrun.
+
+The completed public TCP/cleanup evidence belongs to the prior boot and remains historical evidence. Private execution needs current source/cache custody and proof on its own live holder. The quiet interval can now be used for the prepared CPU/GC trace before a fresh build owner is considered. Original benchmark failures and all acceptance gates remain unchanged; no deployment, original-data retirement or whole-goal completion is claimed.
+
+## 2026-10-14: bounded CPU/GC observation completed
+
+The [root CPU/GC receipt](../evidence/bortus-sync-hs256-cpu-gc-trace-root-20261014.json) records actual actor/exact/fresh/later exits zero. All 13 complete 1,000-Pod bodies, 41 SQL queries and 26 Next spans pass unchanged; warm reads use no CLI and retain 12 memo hits. Root verifies the 130 main/91 worker/39 client numeric samples, current source371+4/input35/compiled5382/dependency40635 guards, 19 recorded identities absent and exact container/name absence. A later check confirms three reader/query births absent and all three numeric hashes current. An initial later-reader metadata attempt selected the wrong exact-receipt filename and failed before writing a result; the corrected filename-only read succeeds without repeating the actor or post tests.
+
+Root independently recomputes ordinary warm HTTP wall brackets of 4.903–4.940 ms and main-thread CPU median 2.3245 ms. Whole warm windows show substantial server/client CPU, but narrow counter deltas sometimes exceed their wall upper bracket: 2/12 middleware-to-route, 3/12 route, 6/12 IPC wait and 7/12 client oracle windows. These public counters do not attribute per-stage CPU or prove idle scheduling. Server observed GC lies between sampled HTTP windows in this observation; GC delivery coverage remains incomplete, so absence of observed overlap cannot exclude GC. Process and thread counters overlap and nested windows must not be summed.
+
+No source correction or performance acceptance follows yet. The next direct diagnostic samples compiled-server function stacks with the same workload/oracles and explicit profiler overhead/output bounds; it does not alter the original benchmark, fixtures, permissions, freshness or runtime limits. A07/A21 remain failed/open, the candidate remains isolated, and no production or original-data retirement occurs.
+
+## 2026-10-14: function profile closes; performance gate stays open
+
+The [function-profile receipt](../evidence/bortus-sync-hs256-function-profile-root-20261014.json) records one actual profile exit zero and unchanged 13 complete 1,000-Pod responses, 41 SQL queries and 26 Next spans. All three new profile-parser controls pass. Two private profiles total 709,585 bytes; the main thread has 91 warm samples (51 within HTTP), the database worker 92 (53 within HTTP). Idle self samples are 42 and 85 respectively. These are sampled counts with profiling overhead, not CPU milliseconds or latency shares. There is no dominant application, SQL or JWT hotspot supporting a distinct source correction; earlier equivalent response-body variants remain rejected. No further timing/profile variant is selected, no original benchmark is replayed, and A07/A21 remain failed/open.
+
+The first independent profile reader fails because its new window calculation uses framework HTTP endpoints instead of the original parent request endpoints. A separate reader corrects only that collection and independently reconstructs both raw profile trees, sample arithmetic and file mappings. Exact/fresh/later checks exit zero: source371+4, input46, compiled5382 and dependency40635 authorities remain current; 19 runtime identities and exact container/name are absent, followed by three reader/query births absent and both raw hashes current. Neither actor nor workload is repeated. Raw names/URLs stay private; output byte limits remain post-exit acceptance bounds, not a native profiler disk-write cap.
+
+The 13:18:18 UTC read-only cluster snapshot still shows three Ready nodes, 54 Bound PVCs, 33/33 active Ready Helm releases and the existing BORTUS image Ready with zero restarts. BORTUS's HelmRelease in flux-system remains suspended. All 40 Longhorn volumes retain encryption/two replicas: 30 attached/healthy and ten detached/unknown. Metadata acquisition exits zero; an initial saved-result formatter assumes the wrong HelmRelease namespace, then a corrected local reader summarizes the same retained response without another remote acquisition. This is health metadata, not rollout or recovery acceptance.
+
+The exact application commit is recovered into a new clean managed checkout after the old checkout directory is found absent; retained verified build authorities continue to back the diagnostic. A fresh Node V9 owner starts after profiling closes, retaining the original 10,800-second/60-second closure and 2CPU/8GiB limits, default tests and authenticated inputs. It reuses no interrupted V8 output; build, new ELF and security qualification remain pending. The two-case Windows Job control attempt refuses its exact-two-process assumption after observing four owned members; the helper reports every member closed. Browser/app runtime has not started. The correction must retain full bounded job census/closure and require the expected parent and descendant, with actual image metadata. Original migration data/backups and production remain preserved; the goal remains active.
+
+## 2026-10-14: current cache custody and source guards; browser closure remains open
+
+The [current-cache receipt](../evidence/bortus-current-cache-d917-root-20261014.json) records a fresh current-boot read-only attestation: actual original caller/TTY exit zero in 22.558 seconds under the unchanged 75-second local/60-second remote limits. All 17 original/new observer source bytes remain current, eight recorded remote and four local identities are absent, and the last SSH identity is freshly absent. Thirty-six current raw records are frozen in a 38-member CRC/SHA-verified archive. Sixteen ordered layer names and manifest/config bytes are verified; layer bodies, continuous cache validity and same-holder isolation are not claimed. The foreground closure command exits zero; no unrecorded closure PID tuple is invented. Credential values are not written by this workflow. Historical previous-boot receipts remain separate.
+
+The [same-holder source-control receipt](../evidence/bortus-same-holder-source-controls-root-20261014.json) records twelve passing finite public source guards, including refusal when only the CNI receipt changes. This is source/control qualification, not a live holder or private recovery run. The default source scanner returns one finding: an exact public source-code checksum at source-bindings.json:18, independently reproduced from the original Git blob. The literal finding stays recorded without suppression or a green relabel. Concrete source composition now binds the real source graph and accepted encrypted32/snapshot paths; an executable original private600 caller, real same-holder gate and independent restore/oracle closure remain pending. Fresh Node V9 generation and configuration exit zero; compilation/default-suite/runtime/security acceptance remain pending.
+
+Two normal/timeout Windows Job controls and a scoped optional-image metadata control pass. Browser assertions repeatedly reach both requested A16 checks with the exact five GET200/one PUT502 sequence, but the completed workflow remains unaccepted. Preserved failures distinguish the first optional-image query denial, the one-shot gate pipe deadline, and later process-object absence checks despite a normally exited driver and empty owned job. Their independent failure readers preserve actual exits one; no partial report is promoted to acceptance. The latest attempt records a still-queryable Chrome birth after the existing five-second check, without recording its historical live/signaled state. That state cannot be guessed from a later absent PID. A Windows kernel liveness control and correctly named liveness metadata are required before any further acceptance. Original assertions, data fields, benchmark, resource budgets and production remain unchanged. A07/A21 and full migration/recovery/live acceptance stay open; original data and backups remain preserved.
+
+The separate real Windows process-state control exits zero: an exited process remains queryable with the same creation time while its held handle is open, yet the kernel wait is signaled and exit code is zero; a running process returns WAIT_TIMEOUT/STILL_ACTIVE. This matches [Microsoft process termination semantics](https://learn.microsoft.com/en-us/windows/win32/procthread/terminating-a-process). It does not infer the historical state of the failed Chrome birth. The correction will report retained signaled objects separately from absent objects and require no live recorded births, exact identity, empty owned job, reaping and closed owned handles. Live, failed or uncertain kernel state must refuse; prior failed workflows remain failed.
+
+## 2026-10-14: two missing A16 browser cases verified
+
+The [A16 root receipt](../evidence/bortus-a16-two-cases-root-20261014.json) records actual server/browser exits zero and independent exact, Linux, Windows and later checks zero. The unchanged two cases verify that a failed save retains the draft/error, discard and reopen clear them, and View/Edit fetch the actual changed resource version. The exact five GET200/one PUT502 sequence passes against the retained compiled application. All 371 source files plus four generated files, 5,382 compiled objects, 40,635 dependencies and 481 browser dependency files retain their qualified bytes. No product source changes or original performance benchmark replay occur.
+
+The corrected Windows observer distinguishes kernel liveness from process-object queryability. One original Chrome object is still queryable but signaled with exit zero; it is explicitly reported as retained, never absent. The owned job is empty, its child reaped and owned handles closed; twelve recorded Windows births have no live process, 39 Linux births and exact container/name are absent. Three later Linux reader/query births and the Windows reader also close. Existing 480/60/420-second server/closure/attach and 300/330-second browser limits remain unchanged. All four earlier failed workflows remain failed. This qualifies the two finite A16 cases, not mobile, actual screen-reader, delivered-image or performance acceptance. A07/A21, private recovery, final image/security and guarded live acceptance remain open; production and original data/backups remain preserved.
+
+## 2026-10-14: numeric/count browser checks and recovery startup controls pass
+
+The [A13 browser receipt](../evidence/bortus-a13-count-browser-root-20261014.json) records complete server/browser exits zero and sixteen exact direction observations across eight columns: Pods Restarts/Ready, deployment Ready/Up to date/Available, node CPU/memory and storage capacity. It checks zero, positive values, count ties and reachable missing values through the actual routes, preserving each complete name/link/cell tuple. Omitted Pod restart counts normalize to zero; node nulls and storage unknown values sort last in both directions. No API response interception or product source change occurs. Independent exact/Linux/Windows/later checks pass: current371+4 source,5382 compiled,40635 dependencies,30 inputs and481 browser dependencies;62 Linux births and exact container/name absent,10 Windows births with no live process, then three Linux readers/queries and the Windows reader closed. The proposed readiness change is not executed because the frozen first run succeeds. Original budgets remain unchanged. This covers the numeric/count subset, not every table/date column, physical DOM identity, actual screen-reader, performance or delivered-image acceptance.
+
+The separate [private600 startup-control receipt](../evidence/bortus-private600-state-controls-root-20261014.json) records four passing public state/journal controls under the original30/2+1-second bounds,249 unchanged source files and both original supervisor/suite births absent. It permits only an actual admitted, journal-bound API startup-status progression with fixed Pod UID/spec/security and fixed policy/ConfigMap UID/RV. The original admitted journal remains immutable; readiness gets a separate receipt. No Transport, live API or private backup data is used by these controls. The default six-source scan exits one for two embedded public source checksums, independently reproduced from their original qualified files; the literal findings, initial zero-findings wrapper refusal and failed Git-HEAD assumption remain preserved without suppression or pass relabeling. Actual same-holder private recovery remains unproven.
+
+The A16 archive is independently verified:1,756 original members/current paths match the26,762,180-byte CRC/SHA-checked archive, retaining four failed workflows and the final successful two-case workflow. No tests are replayed for archiving. Node V9 compilation remains in progress; performance, final image/security, private recovery and guarded live acceptance remain open. Production and original data/backups remain preserved.
+
+## 2026-10-14: legacy sorting and offline runtime-test prerequisites
+
+The legacy /cluster/* sorting correction is committed at fb960307 and passes eight focused tests, fresh types and affected lint, with independent source/process/container closure. Its fresh build and compiled-browser qualification remain pending. The Node default-suite prerequisites now have144 exact-lock SRI-verified tarballs, an independently checked810-object offline cache and a twice-checked51,008-object retained build snapshot. These are preparation results; the unchanged default suite has not been rerun and the new runtime remains unqualified. See the [focused sorting receipt](../evidence/bortus-legacy-sort-focused-root-20261014.json) and [offline prerequisite receipt](../evidence/bortus-node22-offline-prerequisites-root-20261014.json). Original Gluster/Vault/Consul data and accepted backups remain preserved.
+
+## 2026-10-14: fresh legacy sorting functional qualification
+
+The legacy /cluster/* sorting correction at fb960307 now passes a fresh build, native load, lint, fresh types,330 unit tests and eight HTTP integrations. Independent checks verify373 current source files,396 inputs,5382 compiled objects,40635 installed objects and closure of168 recorded process identities plus four exact container IDs/names; a later check verifies the nine reader/query identities closed. Its first ten-column browser run fails after six columns/twelve directions because the legacy Nodes page can match an earlier shared IP before the exact hostname. The failed run and independent cleanup remain retained; the minimal hostname-first correction at6718193 awaits a new331-unit/eight-integration build and the unchanged browser checks. See the [root functional receipt](../evidence/bortus-legacy-sort-full-root-20261014.json). This is local functional evidence, not performance, final image, compiled worker SQL or production adoption. The original benchmark remains failed; original Gluster/Vault/Consul and accepted backups remain preserved.
+
+## 2026-10-14: Node runner guards and public volume proposal controls
+
+Two offline controls pass against the actual corrected Node runner: a private700 workspace containing npm755 node_modules is inventoried correctly, while workspace/cache roots must remain700. Independent source and actor/suite closure checks pass. The continuation runner has started on a new copy; the default suite remains unqualified and the original V9 suite exit2 is preserved. The host has24 available CPUs and about14GiB free, sufficient for fixed Node2CPU/8GiB and app4CPU/4GiB functional checks; no performance timing is accepted from concurrent work. See the [runner guard receipt](../evidence/bortus-node22-continuation-guards-root-20261014.json).
+
+Six pure controls pass for the ephemeral API whole-volume read-only mount proposal. An initial independent reader fails; a distinct stable-fingerprint reader and later closure pass. Root verifies70 archived members and68 original paths. These controls perform no API request or private-data release; actual admission and same-holder recovery remain unproven. See the [volume control receipt](../evidence/bortus-ephemeral-volume-controls-root-20261014.json). Original Gluster/Vault/Consul and accepted backups remain preserved.
+
+## 2026-10-14: latest isolated qualification outcome
+
+The [6718193 qualification receipt](../evidence/bortus-legacy-node-identity-qualified-root-20261014.json) records fresh build, native load, lint/types,331 unit tests and eight HTTP integrations, followed by all ten legacy sorting columns/twenty directions. Independent checks bind373 source files,401 functional inputs,5382 compiled and40635 installed objects;177 functional births and later nine reader/query births are absent. Browser checks bind35 inputs,77 Linux births absent and11 Windows births with no live recorded process, followed by separate later closure. The initial shared-IP lookup failure and subsequent four incorrectly encoded expected em dashes remain failed; the final attempt changes only those four expected codepoints with nine runtime files unchanged. Its frozen prose says330 tests, while actual executable gates/TAP require331+8. Root independently verifies all4849 originals against their69737176-byte CRC/SHA archive. This qualifies finite local functional/browser behavior only; actual assistive technology, performance, delivered image and adoption remain open.
+
+The [Node continuation outcome](../evidence/bortus-node22-continuation-outcome-root-20261014.json) records offline documentation installation exit0 with279 exact-lock packages, then unchanged make -j2 test-only JOBS=2 exit2: two original cluster scripts time out after120seconds and the pending-DNS setServers test misses its expected exception. The version phase is not run. A live read-only sample binds114 zombies to the exact owned Python PID1; this establishes deficient orphan reaping, without retrospectively identifying the failed worker PIDs or proving the DNS cause. Independent outcome/custody checks exit0 with78 records, original51008-object workspace/physical fingerprint and810-object cache current,14 original births and exact CID/name absent; three later reader/query births are absent. The generic terminal SHA equals an older failure because its JSON bytes match; distinct started/phase/post records establish this execution. Runtime/security/image acceptance remains unproven. A separate bounded unchanged-script baseline/init and DNS observation is prepared; no suite skip, weakened oracle, performance replay or adoption is authorized by these results.
+
+## 2026-10-14: Node init and DNS diagnosis
+
+The [finite init/DNS diagnostic](../evidence/bortus-node22-init-dns-diagnostic-root-20261014.json) exits zero, followed by an independent zero-exit source/workspace/closure check. Both unchanged cluster scripts time out after 120 seconds with Python as PID 1, then both pass with the exact verified Docker init executable. In both cells the existing one-server DNS configuration yields ECONNREFUSED without the expected pending-query exception; a real reachable loopback sink receives one DNS datagram and preserves ERR_DNS_SET_SERVERS_FAILED until cancellation. Actual Node 22.23.3, OpenSSL 3.5.9 and module ABI 127 assertions pass. This supports a runner reaping and resolver-environment correction; it does not turn the failed original full suite into a pass. The selected direct-test environment differs from full-suite PATH/unused Git variables and uses new owned HOME/TMPDIR/NODE_TEST_DIR/TEST_SERIAL_ID scratch. Source, test bodies, original frozen 51008-object workspace/physical fingerprint, network-none and fixed 2CPU/8GiB/no-swap/512-PID limits stay intact. Independent checks verify 29 original host births absent and both exact created CIDs/names absent; five reader/query births and the saved later checker birth are also absent on the same boot. V1 stays unrun; the executed V1.1 adds directory fsync, held/revalidated actual-init executable/namespace FDs and independent deadline-protected socket cleanup. No original performance benchmark, private recovery, production rollout or data retirement occurs.
+
+## 2026-10-14: standard resolver qualifies; full Node suite running
+
+The [focused resolver receipt](../evidence/bortus-node22-local-resolver-root-20261014.json) records eight UDP/TCP protocol checks and an exit-zero unchanged upstream DNS test with both mustCall callbacks completed. The owned responder answers localhost A/AAAA immediately, local other types with NODATA and nonlocal queries with REFUSED; it does not forward or deliberately delay. Independent checks bind six sources, the original51008-object content/physical fingerprint,17 host births and exact container ID/name absence; three reader/query births and the later checker are also absent. The [new full-suite dispatch](../evidence/bortus-node22-init-resolver-dispatch-root-20261014.json) uses a fresh exact copy, unchanged make/test command and original oracles/environment, adding verified init and this private resolver. Offline documentation installation exits zero and the default test phase is running. Its source-enforced pre-create boot authority is explicit; the inherited started schema has no boot field. The original failed suite remains failed; this pending attempt grants no runtime, security, performance or deployment acceptance.
+
+## 2026-10-14: legacy Nodes focused permission and inventory checks pass
+
+The [focused candidate receipt](../evidence/bortus-legacy-node-permissions-focused-root-20261014.json) records11 passing actual TSX/useMutation/MutationTask model tests, fresh nonincremental types and affected-file lint. The correction gates controls/handlers with canonical fresh write/admin authority, uses encoded inventory IDs for PUT/DELETE, retains failed edit drafts with modal errors, and blocks mutations after inventory-read failure until explicit successful refresh. Model tests are distinct from DOM, session-polling and server authorization proof. Independent checks bind374 sources,386 inputs,40635 installed and5382 historical compiled-context objects;47 owned host births, all three exact CIDs/names and seven later reader/query births are absent. The initial reused preparer refuses a historical322-test count before workspace creation; a distinct preparation corrects only that count to the retained331-test authority. A new342-unit/eight-integration build and browser checks remain pending. No performance acceptance or production change occurs.
+
+## 2026-10-14: Debian advisory metadata refreshed
+
+The [eight-source primary advisory refresh](../evidence/bortus-debian-advisory-refresh-root-20261014.json) retains each fetched HTML hash and supported-release row. All eight tracked CVEs still show Trixie vulnerable without a supported Trixie fix; fixes listed for forky/sid are not treated as supported Trixie updates. This is advisory metadata only: the original complete scanner findings remain retained, no image is rescanned or changed, and no residual exception/security acceptance is granted.
+
+## 2026-10-14: committed Nodes correction full qualification passes
+
+The [fresh6e2efbd full receipt](../evidence/bortus-legacy-node-permissions-full-root-20261014.json) records build/native load/lint/types,342 unit tests and eight HTTP integrations with all original commands and limits. Independent checks bind374 raw committed sources,399 inputs,5383 new compiled and40635 installed objects, all four standalone worker file bindings and the native module.190 host births and all four exact CIDs/names are absent; nine later reader/query births are also absent. This does not prove compiled middleware/handler SQL on the worker. The separate nine-case browser run fails at case4 after three accepted cases, with failed-outcome independent closure being prepared; no nine-case browser, performance or production acceptance is claimed.
+
+## 2026-10-14: corrected full Node runner fails; originals and closure verified
+
+The [literal runner outcome](../evidence/bortus-node22-init-resolver-outcome-root-20261014.json) preserves outer exit1, offline documentation install0, unchanged default suite2 and unrun final version phase. Its failure footer contains90 unique sequential tests; the earlier two cluster tests and pending-query DNS test are absent from that footer. Thread creation/resource refusals appear in the raw logs, but no particular exhausted limit or OpenSSL cause is proved. No limit, source/oracle or skip is changed. Independent post0 binds91 records, the frozen51008-object content/physical fingerprint,810 cache objects, ten current sources and the58210-object failed copy. Fifteen recorded host births and the exact CID/name are absent; three reader/query births are later absent. The reused generic failure-terminal SHA is not treated as run identity. No full-suite, new runtime/security or image acceptance is granted.
+
+## 2026-10-14: failed Nodes browser workflow independently closed
+
+The [literal failed-browser receipt](../evidence/bortus-legacy-node-permissions-browser-failure-root-20261014.json) preserves browser/server exit1, fixture child0, three completed checkpoints and24 network events ending in real PUT409. The failure is the first global alert-count assertion at browser.mjs123:10 after the modal alert was visible. Historical actual count/DOM were not retained. Installed Next source creates an additional clipped open-shadow role=alert route announcer; conflation is a grounded source inference rather than a recovered DOM fact. No all-nine workflow is qualified. Independent exact/Linux/Windows checks exit0, bind374 sources/35 inputs/5383 compiled/40635 installed objects, verify96 Linux births and exact CID/name absent, and ten Windows recorded births with no live process. Later Linux reader/two queries and Windows reader are closed. Success-only readers remain unrun. A new harness must distinguish framework announcements from exactly one owned modal error and preserve duplicate-application-alert checks; no product/performance/adoption change is made.
+
+## 2026-10-14: retained Node thread-refusal evidence
+
+The subsequent current-source/log review binds the996338-byte stdout and260-byte stderr to the independent Linux post records, verifies each public assertion snippet against both the frozen original and selected copy, and retains90 unique failed tests/30 Signal6 markers. The first failed test reports thread creation refused at src/node_platform.cc104; eight pthread_create/resource-unavailable messages and four uv_thread_create occurrences are retained. No contemporaneous pids/memory denial counters were captured, so the exhausted resource remains unproved. The next held proposal selects one unchanged first sequential test with bounded read-only counters and unchanged limits; no new diagnostic executes here.
+
+## 2026-10-14: corrected finite legacy Nodes browser qualification passes
+
+The [corrected browser receipt](../evidence/bortus-legacy-node-permissions-browser-qualified-root-20261014.json) records nine passing permission/inventory/error workflows and38 page request events against committed6e2efbd. Application/main/modal alert counts are checked separately from the pinned Next framework announcer. The two observed global/app counts are2/1 at the failed-edit modal and1/0 after pending authority withdrawal; the previous failed run remains failed with its historical count unknown. Product source and all nine business oracles are unchanged. Independent exact/Linux/Windows checks pass with374 sources,39 actual inputs,5383 compiled and40635 installed objects current;40 Linux births are absent and10 Windows births have no live recorded process. Later reader/query checks pass. The original preparation summary said35 inputs; its separate preserved metadata correction binds40 copies/39 inputs. The synthetic gateway503 proves the UI transport-error path, not a database outage. Fencing a late response cannot undo a server-accepted write. Actual assistive-technology, whole-UI, performance, runtime/image and production acceptance remain separate.
+
+## 2026-10-14: unchanged first sequential test reaches the PID ceiling
+
+The [single-test resource receipt](../evidence/bortus-node22-first-sequential-resource-root-20261014.json) retains actor1 and original driver1: zero passed/one failed, with the upstream120-second timeout, not the outer150-second cap. The same2CPU/8GiB/no-swap/PID512 container records61 numeric rows/3636bytes, sampled pids.current512 and35725 sticky pids.events:max denials. Every memory-event delta is zero; sampled memory.current peaks at1221668864bytes. Logs contain five pthread_create refusal tokens. These establish PID-limit denials in this new run, without retrospectively proving the cause of all90 earlier failures. No test, oracle, skip, affinity or NODE_OPTIONS changes. Independent post0 verifies the counters, seven current sources, frozen51008-object content/physical fingerprints,15 host births absent and exact CID/name absence; three later reader/query births are absent. A distinct same-test PID1024 source-only evaluation is being prepared with all other limits fixed. It grants no full-suite, runtime/image/security, performance or production acceptance.
+
+## 2026-10-14: current compiled authorization worker ownership qualifies
+
+The [current compiled ownership receipt](../evidence/bortus-legacy-node-compiled-ownership-root-20261014.json) verifies ten HTTP requests, twelve fresh worker SQL reads (five session/seven account projections), thirteen exact dispatch/operation/settlement joins and zero parent SQL calls. Current6e2 compiled middleware and handlers exercise role changes, session revocation, account deletion and schema outage with unchanged complete-response oracles. Independent exact/fresh/later checks pass:374 raw sources plus four generated extras,35 inputs,5383 compiled and40635 installed objects are current;19 recorded births and exact CID/name are absent, followed by three later reader/query births. This composes with the earlier full342+8 and nine-case browser qualification; it does not assert universal ownership or latency acceptance. V1 preparer exit1 at its Windows-UNC prerequisite is retained before workspace/actor creation. Distinct V2 corrects only canonical POSIX receipt paths and owner/input bindings. Its literal source default scan exits1 with one finding, independently traced to public container-name/prior-attempt status metadata; no suppression, exclusion or scanner replay occurs. Performance, runtime/security-image, private recovery and guarded live acceptance remain open.
+
+## 2026-10-14: isolated PID1024 comparison passes; full suite remains open
+
+The [same-test comparison](../evidence/bortus-node22-pid1024-comparison-root-20261014.json) changes only the diagnostic container PID ceiling from512 to1024, keeping2CPU/8GiB/no swap, the unchanged test/120-second driver and150-second phase. One test passes; all sticky PID/memory event deltas are zero. Three numeric rows/156bytes give sampled pids.current447 and memory.current741433344bytes; these sampled peaks are lower bounds. Independent post0 binds seven current sources, frozen51008-object content/physical fingerprint,17 host births absent and exact CID/name absence; three later reader/query births are absent. The earlier512 case stays failed with35725 PID-limit denials. A stale-pin first1024 source draft was caught before execution and remains unrun; the executed V2 has all direct executable pins verified. This supports a distinct full-suite runner preparation with PID1024; that full suite has not run. Original90-failure history and production resource limits are unchanged. No runtime/image/security or performance acceptance follows.
+
+## 2026-10-14: full PID1024 evaluation running; result pending
+
+The [dispatch receipt](../evidence/bortus-node22-full-pid1024-dispatch-root-20261014.json) records actual root dispatch and a live PID/start/UID/boot witness. After the successful isolated comparison, this distinct runner changes the test-container PID ceiling to1024, keeps2CPU/8GiB/no swap and all original test commands/oracles/skips,10800-second lease/60-second closure and2400-second test bound. It uses a fresh copy of the frozen51008-object workspace and unchanged offline cache. Offline documentation installation exits0; upstream default tests have started. Actual completion is pending, not a full-suite/runtime/image/security pass. Production resource limits and the previous90-failure result remain unchanged.
+
+## 2026-10-14: full unchanged Node upstream suite passes
+
+The [full PID1024 qualification](../evidence/bortus-node22-full-pid1024-qualified-root-20261014.json) records actor0 and original default-test command0,4706 driver passes/zero failures, plus offline-doc-ci0 and new-version0. Node22.23.3/OpenSSL3.5.9/ABI127 retains ELF a7b77e9e,125362584bytes. Independent post0 verifies current10+6 sources, the original51008-object frozen content/physical fingerprints,810-object cache, archive/projection/tool authorities and six selected current-copy artifacts;16 recorded host births and exact CID/name are absent. Four later corrected-reader/query/failed-reader births are absent. The first post1 at267/178/5 retains a stale duplicate input hash; the distinct corrected reader changes only that hash to executed selected bytes and fresh source/owner, preserving all900/30 validation branches. Test2CPU/8GiB/no swap/PID1024, qualified init/local resolver,10800/60/2400 bounds and original commands/oracles/skips remain fixed. The old90-failure/PID512 results and production resource limits are unchanged. This passes upstream tests, not BORTUS application/native/TLS compatibility, final image/security or deployment acceptance.
+
+## 2026-10-14: bounded local qualification controls
+
+The [local controls receipt](../evidence/bortus-local-control-outcomes-root-20261014.json) retains the first actual ABI parser control failure on qualified dynamic/version fragments. No ABI actor, newNode, target loader or app runtime was executed. Static inspection finds symbol parsing is not restricted to the dynsym section, allowing numeric version-table rows into symbol parsing. A narrow source correction and exclusion control are being prepared without changing the actual fragments or eight-version expectation. The failed test/supervisor close; all27 staged sources remain current and both recorded births are absent. Default22-source and11-control-source scans pass without findings. The unchanged ABI input-selection predicate covers47 regular library/loader files and26 symlinks; earlier57-file prose in the held packet is not an actual regular-file count. No image/runtime/security acceptance follows.
+
+## 2026-10-14: static new-ELF ABI observation qualified
+
+The [static ABI receipt](../evidence/bortus-node22-static-abi-qualified-root-20261014.json) records corrected13 parser controls0 with both births/current inputs independently checked; the original retained-fragment control failure remains recorded. The separate V2 actor1 stops before create on a missing optional Docker Labels field. A distinct V3 changes only that lookup and owner coordinates, retains all tools/inputs/adapter/helpers and original300/60/180/per-tool10 bounds, and exits0. In the pinned c4 Python/readelf context, six ELF subjects satisfy the finite required-version/strong-symbol closure with no RPATH;27 unresolved weak symbols remain explicit and weak runtime semantics are unqualified. Independent post0 checks current16 actor sources/47 regular libraries/26 symlinks/selected physical identities, all capture bytes/argv/tool subjects/counts,19 host births absent and known CID/name absent. Six inner namespace births remain separate from host PIDs. Later0 confirms current sources and reader/two query births absent. No Node, target loader, native addon, TLS or application ran; no runtime/image/security/performance/adoption acceptance follows. Three-source post scan retains one exact public authority digest finding with unresolved0; source scans34/16 pass without findings. New-runtime composition and downstream execution remain pending.
+
+## 2026-10-14: qualified preparation for the next isolated gates
+
+The [current6e runtime inputs receipt](../evidence/bortus-current6e-runtime-inputs-root-20261014.json) records six generated metadata/fixture files bound to current6e/a7,24 current metadata inputs and12 exact qualified method-source bindings. The first producer1 rejects a wrong four-worker count before output; its distinct correction requires the exact three worker files/compiled-runtime-source hashes and keeps the separate four-row native manifest/8dde artifact. Corrected producer0 and independent current/output/inverse-byte checks pass. The original runtime fixture changes only its Node hash plus ABI127/OpenSSL3.5.9 assertions; the other11 Node rows/runtime directories and COPY/TLS fixture bytes remain exact. Original buildactor1/compilephase0 remain distinct from the4706-test continuation pass. No binary/application/dependency copy, prune, image, Node or TLS execution occurred. Fresh current6e prune/context, raw release provenance, Node component, new image export/fullFS/defaultscan and owned TLS material/runtime checks remain required. Olda720 application output/image identities cannot stand in for current6e.
+
+## 2026-10-14: current6e fresh copy and lock-respecting prune qualified
+
+The [prune qualification](../evidence/bortus-current6e-prune-qualified-root-20261014.json) verifies a fresh copy of raw374/current compiled5383/native4/runtime4/standalone3 and installed40635 objects from the qualified current6e build, preserving original metadata and bytes. Copy actor0 and independent preparation post0/later0 confirm two preparation births and reader absent. The isolated prune actor0 uses the exact npm prune --omit=dev --package-lock=true --no-save --ignore-scripts command with scripts/network disabled; package and lock hashes remain unchanged. The existing fde tool Node executes npm; newa7 and BORTUS runtime do not execute. The900/60/150/180-second bounds and2CPU/1GiB/no swap/PID256 stay fixed. Independent prune post0 verifies29814 actual pruned objects, original manifests/current25 inputs,23 absent original host births and exact known CID/name absence; later0 confirms reader/two query births absent. Source scan1 retains four public NAPI header provenance hashes with unresolved0/no suppression/replay; both independent-post sources scan0. The initial source freezer display TypeError and root wrong-argument pre-journal refusal remain recorded. No image, newNode compatibility, TLS, default image scan, performance or adoption follows. Fresh copy context, raw current6e release and exact newNode component are the next assembly prerequisites.
+
+## 2026-10-14: fresh newNode component copied and inventoried
+
+The [component receipt](../evidence/bortus-current6e-node-component-root-20261014.json) records copier0 and independent complete Node12/runtime-directory5 inventories with the copier birth absent. Exact ELF a7 and unchanged LICENSE come from the qualified PID1024 workspace; config.gypi is provenance only. Six current metadata inputs bind original buildactor1/compilephase0,4706 tests and27 unresolved weak static symbols without changing their scopes. The old eleven Node metadata rows and five runtime directories remain exact; fixed passwd/group match the expected public bytes. Fourteen qualified copy/read/write/inventory helpers remain exact; the eight-file source scan passes without findings. No subprocess, Node, loader or app runs. Current6e context/raw release, image assembly/export/full-filesystem/default scan and runtime/native/TLS acceptance remain pending.
+
+## 2026-10-14: current6e COPY context independently verified
+
+The [COPY-context receipt](../evidence/bortus-current6e-copy-context-root-20261014.json) records actor0 and independent complete30904-object path/type/mode/UID/GID/byte/hash inventory0 with the actor birth absent. It excludes only compiled standalone/node_modules (3332 objects), retains716 standalone objects including all three worker files, and copies dependencies solely from the exact29814-object pruned tree. Original raw374/current25 inputs remain checked, and LF normalization is limited to the copied entrypoint. No original source is rewritten. Fresh raw release export, image assembly/export/full-filesystem/default scan and runtime/native/TLS remain pending; no image or newNode executes.
+
+## 2026-10-14: raw release failures retained; narrow metadata-query correction qualifies locally
+
+The [raw-export outcomes](../evidence/bortus-current6e-raw-export-failures-root-20261014.json) retain two actual workflow1 failures, each with a222724-byte partial archive and no manifest. V1 parent PermissionError has no exact historical callsite. V2 adds bounded numeric first-exception context without changing exporter/gate/helper/tools/oracles/300+5 limits: phase6 observe→helper93→83 reports WinError31 at optional QueryFullProcessImageNameW after actual Job membership and initial birth. Both Jobs empty/reap/close; independent posts verify all193/183 recorded births no longer live, preserving original retained signaled main objects/exit125. The first V2 observer1 refuses before queries on two stale V1 paths; its distinct two-literal correction0 preserves all pins/counts/60s. The source-freeze collision also remains a metadata-only refusal, with no exporter replay. Neither archive is accepted.
+
+The [query31 controls](../evidence/bortus-image-query31-controls-root-20261014.json) pass10 real-self/scoped-model cases and independent actor noLive/current-method checks. Only OwnedJob.describe_member changes: optional image metadata may fail5 or observed31 after exact membership and stable birth; unexpected87, membership/GetTimes/OpenProcess31 and changed second birth still refuse. All other helper methods stay exact. Four source files scan0 without findings. This qualifies the narrow metadata predicate, not a whole Job/exporter, raw release, image or app. A distinct new export must bind these actual controls and both retained failures before execution; no source/image adoption follows automatically.
+
+## 2026-10-14: current6e raw source independently qualified
+
+The [raw-source qualification](../evidence/bortus-current6e-raw-source-qualified-root-20261014.json) records the distinct V3 exporter and child at exit zero. Independent verification reconstructs the full 375-entry Git tree and checks every selected blob, mode, size and SHA-256, complete gzip/tar boundaries and no extra members: 282 included files, 93 excluded entries and eleven migrations. All 472 recorded process births are freshly confirmed no longer live; the independent reader is also closed. Seven optional image queries returned error 5 and one returned 31 under the qualified stable-birth/membership predicate. The default production-source scan passes with zero findings across all 282 selected files, unchanged bytes and scanner birth no longer live. The earlier V1/V2 partial archives remain failed and unaccepted. Current6e COPY context and newNode component are qualified separately; COPY-only image assembly, full-filesystem/default image scan, runtime/native/TLS, performance and guarded live acceptance remain pending. No production image or recovery guard changes.
+
+## 2026-10-14: current6e/newa7 image built and independently checked
+
+The [new image assembly](../evidence/bortus-current6e-image-assembly-root-20261014.json) completes at actor/build exit zero with no finalizer or deadline failure. The COPY-only recipe uses the qualified current6e 30904-object context, newa7 Node12/runtime-directory5 inputs, 904-object base rootfs and raw282 source labels. Independent post zero verifies all original inputs, labels, modes and five original process births absent; the later check verifies 52 current pins and both reader/query births absent. The default eleven-file actor and four-file observer source scans pass. No application container starts. Docker reports a 277093634-byte image with local inspect ID 270b1b49; this is an index identity and is not independently qualified as an OCI config digest. Saved index-to-platform-manifest-to-config validation, recomputed full-image filesystem inventory, fresh unsuppressed security scan and actual application/native/TLS checks remain pending. The earlier existing canonical Ubuntu security report cannot qualify this new image. Production and recovery guards remain unchanged, and no performance or deployment acceptance follows.
+
+## 2026-10-14: saved current6e/newa7 image independently resolved
+
+The [saved-image qualification](../evidence/bortus-current6e-image-export-qualified-root-20261014.json) records one export/save at exit zero and an independent zero recomputation of the complete archive and descriptor chain. The 277117952-byte archive has SHA-256 2737b45f; local index 270b1b49 resolves to Linux/amd64 manifest 04d53895 and config 41bb5099, with thirteen ordered layers checked against their blob hashes and expanded diff IDs. Exact source labels, seven public config environment entries and attestation reference bytes are checked; attestation semantics and registry publication are not qualified. Nineteen original metadata files and two exporter sources remain current, four original process births and the independent reader are absent, and the later archive hash matches. Default seven-file exporter and combined five-file independent-source scans pass. No image is resaved, imported, pushed or run. Full filesystem comparison, fresh image security scan, application/native/TLS behavior, performance and guarded live acceptance remain pending.
+
+## 2026-10-14: New image filesystem independently qualified
+
+The [full-filesystem qualification](../evidence/bortus-current6e-full-filesystem-qualified-root-20261014.json) reconstructs all thirteen ordered saved layers in memory and matches all 31794 expected objects, with zero path or content/ownership/mode/type mismatches. The deterministic 6808223-byte inventory has SHA-256 2433f781. An independent check freshly derives the intended union from the current input trees and exact three manifests, verifies every inventory row and unchanged archive hash, and confirms the original actor absent; the independent reader is subsequently confirmed absent. No host extraction, xattr application, Node, loader or app execution occurs. The six-file actor source scan passes; its independent source has no findings in a combined scan retaining four unchanged public/fixture findings with zero unresolved and no suppression/replay. Fresh image security, application/native/TLS, performance and guarded live acceptance remain pending.
+
+## 2026-10-14: Current image runtime and literal security findings
+
+The [new image runtime qualification](../evidence/bortus-current6e-runtime-qualified-root-20261014.json) passes using the exact new Node22.23.3 ELF: native public checks, Prisma migrations/generated-client query, original entrypoint, loopback health, registration/login/session, fresh database permission denial, readonly denial and write success. The independent reader binds three sources and81 original outputs, confirms22 original HOST births and the exact container ID/name absent, and rechecks current filesystem inputs and archive descriptor/diffID chain. A later check confirms the reader and two query births absent and all112 combined runtime/security pins current; its own reader is subsequently absent. This isolated synthetic-data result does not qualify the native TLS HTTP client, performance, production schema migration or live deployment.
+
+The [fresh default security scan](../evidence/bortus-current6e-security-findings-root-20261014.json) exits1 with ten MEDIUM vulnerabilities, zero secret findings and zero reported fixes. No severity/unfixed filter, ignore file, exclusion or suppression is applied. An independent reader reconstructs report arithmetic, hashes all three cache files, the tool and saved image archive, and preserves literal scanner1/securityAccepted:false. Later reader/process closure passes. Findings remain open for A20 triage; the earlier five-finding scan remains retained, with a different database snapshot. Neither scanner target counts nor a count comparison prove the new Node ELF vulnerability-free or establish causation.
+
+## 2026-10-14: original SDK TLS cases pass on current image
+
+The [current-image SDK TLS qualification](../evidence/bortus-current6e-sdk-tls4-qualified-root-20261014.json) passes the byte-identical four-case fixture on the exact new Node ELF: valid mutual TLS200, wrong CA refusal, wrong SAN refusal and missing-client refusal. The image’s actual KubeConfig/Node HTTPS implementation is exercised with synthetic two-day certificates; no operator credentials or certificate bodies enter Git. Material generation and independent current-byte/1246-dependency/three-birth checks pass. The matching image post verifies eight sources,76 original outputs,15 HOST births absent, exact CID/name absence and current app/rootfs/Node/archive-chain fences. A later check confirms its reader and two queries absent, with its own reader subsequently absent. Original300-second lifecycle and2CPU/1GiB/no-swap/PID256/network-none/read-only constraints remain. This qualifies SDK/Node compatibility; the packaged application SecretTransport, performance, security exceptions and live rollout remain open.
+
+## 2026-10-14: Exact report comparison and static consumer triage
+
+The [security normalization and static-consumer review](../evidence/bortus-current6e-security-triage-root-20261014.json) verify eight retained report/DB inputs. All old five exact findings persist; five new PCRE2 detections concern the same installed version. All21 reported OS package rows and the scanner match; both database and image changed, so Node or database causation is not isolated. Static inspection hashes89 unique ELF contents at92 image paths against the qualified inventory, without executing them. Grep imports PCRE2 JIT/growable-stack APIs; no image nscd path exists. No inspected ELF directly needs the system zlib, but Node exports the relevant gz functions and its retained header says1.3.1; bundled exposure remains open. This is scoped triage, not complete dynamic/static reachability or security acceptance. Follow the [PCRE2 maintainer advisory](https://github.com/PCRE2Project/pcre2/security/advisories/GHSA-r9hj-j2rw-4q3m) and [Ubuntu zlib notes](https://ubuntu.com/security/CVE-2026-85091) for required input/API conditions. All ten scanner findings remain; no exception or unsupported package change is adopted.
+
+## 2026-10-14: packaged SecretTransport finite cases qualify
+
+The [packaged SecretTransport qualification](../evidence/bortus-current6e-packaged-secret-transport-qualified-root-20261014.json) passes through the REAL image entrypoint, server, middleware, database roles and compiled `/api/secrets` route. It returns all334 synthetic Secret metadata objects across18 namespaces with exact row/key/type/RV and redaction checks; unauthenticated requests401, readonly value/mutation403 and out-of-scope namespace403 occur before upstream access. Operator selected-value access succeeds. Actual application mTLS succeeds; wrong CA, wrong SAN and missing client each produce sanitized503 with zero successful upstream HTTP requests. Upstream RBAC403 is sanitized to503 and valid configuration recovers to200. The original native-load probe confirms the actual application loads the exact8dde addon; no application/dependency overlay, source import or upstream mutation occurs. SDK error-category proof remains separate. Independent checks bind15 sources,81 outputs,22 HOST births absent, current filesystem/archive authorities and exact CID/name absence; later proof checks110 pins and three reader/query births absent, followed by its own reader absence. The first reader1 is retained: the unchanged probe writes a99-byte public loaded/digest record as0644. A distinct reader accepts only that exact known record/mode while all other80 remain0600, preserving UID/link/no-writable/hash/physical-identity checks; no original chmod or runtime replay occurs. This qualifies the listed image compatibility cases, not every CRUD/CAS contract, SQL thread ownership, live production behavior, performance or security acceptance.
+
+## 2026-10-14: Source boundaries and PCRE2 preparation
+
+The [security source follow-up](../evidence/bortus-current6e-security-source-followup-root-20261014.json) independently verifies16 small-file bindings. Inspected Node public zlib JavaScript/native bindings operate on memory buffers and expose no inspected gzFile/error-clear/formatted-write sequence. Bundled gz exports still exist; hidden/static libvips or future native addons are not excluded, and this is not a security exception. The PCRE2 proposal follows the maintained10.42 backport path and requires authenticated exact Noble source before patching. Official pool discovery lists an orig tar plus.diff.gz; source Format and existing patch mechanism must come from authenticated.dsc/source metadata, rather than an assumed Debian tar/quilt layout. No source acquisition, patch/build or replacement image has run. All ten scanner findings and A20 remain open.
+
+## 2026-10-14: PCRE2 control warning retained
+
+The [retained PCRE2 control warning](../evidence/bortus-pcre2-control-warning-root-20261014.json) records wrapper exit1 although all13 pure synthetic cases returned0 and were reaped. Python3.14 emitted203bytes warning about return inside finally; the unchanged empty-stderr check refused. Independent and later readers verify five actual runtime inputs plus seven actual output records and actor/suite/reader closure without upgrading the wrapper result. A source-only post preflight corrected an assumption that two external review files had been staged, using distinct V1.1 paths and no retroactive files. The original outputs and unrun variants remain. A fresh acquisition source moves preowner return after finally; it and fresh controls remain unrun. No warnings are suppressed and no source download/unpack, package build, product edit or replacement image has run. A20 and all ten image findings remain open.
+
+## 2026-10-14: fresh parser controls and first source acquisition
+
+The [fresh parser controls and retained acquisition attempt](../evidence/bortus-pcre2-source-acquisition-attempt-root-20261014.json) qualify all13 unchanged pure cases against the corrected source: control/post/later all exit0, stderr is empty, five runtime inputs/seven outputs and interpreter/process closure are verified; the later reader is subsequently absent. The six-file acquisition-source scan has zero findings. The once-only300/60-second acquisition then exits1 after one255850-byte Noble InRelease download and its actual0 signature verification. The unchanged parser rejects the checksum field’s leading empty continuation line, before any index or source archive download. Saved-byte diagnosis reproduces that refusal without replaying network or signature checks. The independent post exits0 while retaining literal acquisition1, verifies13 closed files and the actor/two child births absent; its own reader is subsequently absent. Source authority remains unqualified. A distinct source correction and additional real-continuation cases are required before another candidate runs. No source unpack, patch/build, app/image change or security/performance acceptance follows; the original warning failure remains.
+
+## 2026-10-14: Checksum continuation controls pass
+
+The [checksum-continuation controls](../evidence/bortus-pcre2-continuation-controls-root-20261014.json) pass15 cases: all13 original function/assertion bodies are raw-identical and two groups add the retained signed Noble metadata plus explicit synthetic Source/DSC continuations. The only parser change skips whitespace-only checksum lines; all nonblank hash/size/path/duplicate checks remain. Control, independent and later readers exit0, six runtime inputs/seven outputs and the pinned interpreter/births are current; stderr is empty and the later reader is subsequently absent. The complete six-file acquisition-source scan has zero findings. The new acquisition candidate remains unrun at this checkpoint, with the original300/60-second budget,12 requests,15 children and128MiB total bound. Earlier failures remain. No source archive/unpack/build, image change or security acceptance is claimed.
+
+## 2026-10-14: authenticated source index reaches empty XZ trailer
+
+The [second source-acquisition attempt](../evidence/bortus-pcre2-empty-xz-failure-root-20261014.json) retains actor1 after two downloads and three closed child commands. The Noble InRelease signature check succeeds; the signed compressed source index is acquired, but the unchanged single-stream parser rejects its32-byte trailing empty XZ stream. Saved-byte inspection confirms the5753247-byte primary decoded content matches the signed descriptor and the trailer is exactly one complete zero-output stream. This diagnosis replays no network or signature check. Independent post0 retains literal actor1, verifies19 closed files and actor/three-child absence; its own reader is subsequently absent. No source archive has been acquired or unpacked, and no patch/build, image change or security acceptance follows. A distinct narrow parser correction and fresh controls are being prepared; earlier failures remain.
+
+## 2026-10-14: exact Noble PCRE2 source authenticated
+
+The [empty-trailer controls](../evidence/bortus-pcre2-empty-xz-controls-root-20261014.json) pass16 cases with the prior15 bodies/assertions unchanged. The narrow correction permits one complete zero-output XZ trailer and rejects nonempty, repeated, truncated or garbage trailers. Independent/later checks pass, with reader absence verified. A separate bounded no-network check decodes the actual retained1383940-byte index into5753247 bytes matching the signed descriptor; the original1MiB control-source cap is unchanged.
+
+The [opaque source acquisition](../evidence/bortus-pcre2-source-qualified-root-20261014.json) then exits0 within its original300/60-second budget,12 requests and15 child commands. The signed Ubuntu archive SHA256 chain authenticates the exact10.42-4ubuntu2.1.dsc, orig tar and.diff.gz; actual source Format is1.0. This is archive authentication, not a verified uploader signature. Independent post0 verifies88 current closed files and actor/15-child absence, followed by its own reader absence. Nothing is unpacked, patched or built; image/security acceptance remains open. Prior failures stay recorded.
+
+## 2026-10-14: authenticated original source extracted and fully checked
+
+The [archive-safety qualification](../evidence/bortus-pcre2-stage-b-controls12-root-20261014.json) passes12 finite cases covering unsafe paths, links/devices/PAX/GNU/sparse members, duplicate or undeclared ancestry, damaged headers/terminators, size/count/mode limits, exclusive no-follow output and malicious direct rows rejected before writes. Actual signed-authority/diff identities and retained header are checked. Independent/later checks pass, with reader absence verified. The default nine-file scan remains literal1: one exact public authority SHA256 assignment is independently classified, with zero unresolved and no suppression/replay.
+
+The [original-source extraction](../evidence/bortus-pcre2-orig-extraction-qualified-root-20261014.json) then exits0 under its300/60-second lease. All423 files and eight directories,11038267 regular bytes, match authenticated orig contents, modes and complete431-entry path set. Independent/later readers rederive the expected archive, hold and recheck file fingerprints, then re-enumerate names and verify directory/work/tree root physical fingerprints; both exit0 and the final reader is subsequently absent. Four sources and authenticated inputs remain current. The first post draft stays unrun; V1.1 adds only final tree/directory checks and fresh coordinates within60seconds. No extracted source or packaging code executes, and no Ubuntu diff, maintained backport, compile or replacement image is applied. Actual format1.0 reconstruction and security remediation remain next steps.
+
+## 2026-10-14: exact Format1 verifier and pinned GNU tool qualify
+
+The [Format1 verifier qualification](../evidence/bortus-pcre2-format1-controls10-root-20261014.json) passes10 pure cases for all23 authenticated diff sections, exact context/count/position handling, unsafe targets, truncation, strict command output and explicit new-file mode policy. The actual retained config and independently expected replacement are checked; the other422 unchanged file payloads are explicitly synthetic. This tests the445-file projection, not an actual whole-tree reconstruction. Independent/later checks pass with eight current inputs/seven outputs, empty stderr and final reader absence. Source10-file and post7-file default scans are zero.
+
+The [pinned GNU patch smoke qualification](../evidence/bortus-pcre2-gnu-patch-smoke-qualified-root-20261014.json) then passes three owned commands: actual GNU patch2.8 version, strict synthetic dry run and strict synthetic apply. Tool bytes/physical identity, fixed flags and same-child held tool/tree/diff descriptors are verified. Dry run preserves the fixture; apply produces exact expected bytes. Fuzz, offsets, warnings and extra patch diagnostics refuse. Independent/later checks verify three sources,18 files/six directories, original host births, final path/directory/work-root fingerprints and reader absence. Both source5-file and post3-file scans are zero. The tool is existing root-owned host software pinned by bytes, not an authenticated Noble build-toolchain claim. No real original tree, packaging code, maintained backport or image is modified or built. Real Format1 reconstruction remains next; all ten image findings and performance/private-recovery/live acceptance remain open.
+
+## 2026-10-14: authenticated Noble Format1 source reconstructed
+
+The [isolated Format1 reconstruction](../evidence/bortus-pcre2-format1-reconstruction-qualified-root-20261014.json) passes its two strict GNU patch commands: dry run and apply of the authenticated Ubuntu diff. The original431-entry source tree remains unchanged. Independent and later readers rederive that original from the authenticated archive and verify every reconstructed byte, hash, mode and path across445 files and10 directories, including422 unchanged original files, one modified config and22 new Debian files. New-file modes0644 and debian/rules0755 are explicit reconstruction policy, not archive facts. All23 diff sections match exactly; fuzz, offsets, warnings and extra diagnostics refuse.
+
+The wrapper retains300/60-second operation/closure bounds and30 seconds per command, using the already qualified host GNU patch2.8 without a version replay. Source5-file and post3-file default scans are zero. Both independent checks pass; original actor/two host births and the final reader are absent, with current source/tool/prerequisites and final directory/path fingerprints verified. This reconstructs existing Noble10.42-4ubuntu2.1 only. No maintained security backport, packaging script, configure/build, image replacement or production change has run. All ten image findings, performance, private recovery and live acceptance remain open.
+
+## 2026-10-14: upstream metadata parser passes six local cases
+
+The [six parser-control groups](../evidence/bortus-pcre2-upstream-controls6-root-20261014.json) pass under30/5-second bounds with empty stderr. They exercise the exact bounded parser using synthetic public commit/tree/blob/policy metadata, including duplicate JSON, object/URL identity, unsafe or duplicate tree paths, truncated/missing selection, blob size/encoding/Git-object hash mismatch, policy selection and aggregate-byte limits. Independent and later checks verify four current runtime sources, seven actual output records and actor/suite/post-reader absence, followed by final reader absence. Source6-file and post3-file default scans are zero.
+
+Actual upstream policy-layout compatibility remains unknown: no retained official fulltext was found, and the positive synthetic fixture assumes a PCRE2 10.42 heading. These cases do not establish current official refs, trusted project signing, patch applicability or CVE coverage. The separately held13-request acquisition must resolve real immutable Git objects and refuse an actual policy/file mismatch; no request, patch acquisition/application, build, image change or production change has run in this qualification. All ten image findings remain open.
+
+## 2026-10-14: upstream fetch retains an unselected-gitlink refusal
+
+The [first upstream acquisition](../evidence/bortus-pcre2-upstream-gitlink-failure-root-20261014.json) exits1 after two HTTP200 responses, both curl children0 with empty stderr. The saved main commit and nontruncated786-entry tree correspond, and all ten required policy/patch paths exist as regular blobs. The tree also contains one unselected gitlink160000/commit entry, which the current mode/type predicate excludes. The actor records ValueError at line258, not an exact inner predicate trace; this unsupported shape is retained without inventing a more specific recorded exception. No policy or patch body is fetched, and no patch/build/image or production change occurs.
+
+Independent and later checks pass while preserving literal acquisition1/unqualified. They verify three current sources,15 partial files, three directories, actor/two curl births absent, and then reader absence. Both source3-file and post2-file default scans are zero. The failure is retained without a retry. A separate source correction will allow only unselected gitlink metadata without following it; selected artifacts must remain regular blobs. Existing assertions and the original failed artifacts remain preserved. Actual policy compatibility, nine patch payloads, applicability and all ten image findings remain open.
+
+## 2026-10-14: gitlink metadata correction passes six groups and actual retained responses
+
+The [corrected six-group parser qualification](../evidence/bortus-pcre2-upstream-gitlink-controls6-root-20261014.json) passes with all18 original assertion/refusal AST nodes retained and the same six case groups. The only core change accepts gitlink160000/commit entries as unselected metadata; selected files still require regular blob modes. New positive and negative cases verify that distinction and reject unknown modes. The actual retained main/tree responses,5811 and186513 bytes, now yield all ten required selected paths. No submodule is followed or fetched. The failed predecessor remains failed.
+
+Independent and later checks pass for six current sources, seven output records, both actor/suite births and post-reader absence, followed by final reader absence. Source10-file and post3-file default scans are zero. This validates data parsing of two retained observations and synthetic refusals; it makes no new network request, latest-main, actual policy-layout, signing, patch-applicability or security claim. A distinct bounded continuation must preserve those two observations separately from eleven new HTTPS requests. No policy or patch payload, patch application, build, image or production change occurs here.
+
+## 2026-10-14: retained policy refusal and private source packet prepared
+
+The [policy acquisition](../evidence/bortus-pcre2-policy-failure-root-20261014.json) exits1 after one new HTTP200 policy blob, retaining two earlier metadata observations as separate provenance. The actual20359-byte policy lists all nine10.42backports. Its heading already matches the parser; the failure is the parser’s unsupported demand for a literal10.42branch in text that explains per-release branches using10.47as an example. The earlier heading diagnosis is corrected. No patch body is acquired. Matched post/later checks0 retain acquisition1, verify three sources/12partialfiles/twodirectories and actor/curl birth absence; final reader is absent. A missing verifier variable was caught and fixed before any verifier execution, preserving unrun draft. Source5-file and post5-file default scans are zero. The failed actor is not retried or adopted. A narrow policy parser correction must pass saved-document and refusal controls before any distinct remaining fetch.
+
+The [private source preparation](../evidence/bortus-private63-live-prepared-root-20261014.json) fixes the Windows UNC fstat limitation using one fixed233-public-file native held-FD snapshot. Native actual0/stderr0, sealed closure and subsequent recorded-birth absence are verified; those FDs do not remain held during later generation. Source-only review caught and corrected cleanup exception handling before execution. The resulting270-file/271-member packet changes only four scalar/dependent-pin roles, leaving243runtime roles and every private phase/function unchanged. Qualified63 and8proof records are cross-bound. All247runtime sources plus manifest are staged and checked with Linux UID/mode/nlink/hash/boot/owner guards. Default bound-packet scan remains literal1/four findings, all exact unchanged public hash assignments or malformed rejection fixture, zero unresolved and no suppression/replay. A retained source AST SyntaxWarning is recorded; binder stderr is not claimed empty.
+
+Private recovery has not run. Its original600+1lease, fresh same-holder gates, original controllingTTY and independent noecho/foreground observation remain mandatory. The original approved credential contract forbids transcript recovery; fresh direct human terminal entry is needed. Availability was requested immediately while other checks continue, with no password requested in chat. No private input was opened, no production deployment occurred, and performance/security/private/live acceptance remain open.
+
+## 2026-10-14: actual upstream policy passes corrected six-group parser qualification
+
+The [policy parser qualification](../evidence/bortus-pcre2-policy-controls6-root-20261014.json) passes all six groups, retaining all25 V2 assertion/refusal AST nodes and20 lifecycle helpers. Only policy() changes: the exact10.42heading/section and nine-file equality remain; the generic preamble must explicitly describe a branch for each release and bind its example to the matching release tag. This follows the actual saved20359-byte official document, rather than demanding an absent literal10.42branch. New controls reject missing or wrongly scoped generic authority, an example/tag mismatch and a patch moved across the next version heading. Both actual saved main/tree responses and selected-regular-blob/gitlink restrictions remain checked. The earlier acquisitions stay literal failures.
+
+Actual control0/test0 has empty stderr. Independent and later checks0 verify seven current sources, seven outputs, pinned interpreter and actor/suite/post-reader closure; a final fresh check confirms reader absence. Source11-file and post3-file default scans are zero. A root helper-count preflight assumption was corrected before verifier execution, with unchanged source. This is local parser qualification with zero new requests, patch application or build. A distinct bounded continuation may now request only the maintained release ref and nine immutable patch blobs, keeping three retained HTTP observations separate. Private recovery still awaits fresh direct human terminal input; production/data and performance/security/live acceptance remain unchanged.
+
+## 2026-10-14: nine upstream patch bodies acquired; private attempt remains failed
+
+The [bounded upstream acquisition](../evidence/bortus-pcre2-upstream-qualified-root-20261014.json) passes ten new HTTPS requests and ten child commands. Three earlier HTTP observations remain separate, and both earlier actor failures remain literal failures. The release ref and nine selected main-tree blobs match their Git object identities and SHA256 digests. No main, tree or policy request is replayed. Independent and later checks pass for three sources, 78 output files, 11 directories, both retained failed-owner trees, tools, CA, boot and process closure; final reader absence is checked. Source five-file and post four-file default scans are zero. The original 300/60-second bounds and 22 actor helpers remain.
+
+This is official HTTPS provenance, without trusted project-signature or latest-main claims. The flat patches are not automatically the maintained 10.42 adaptations: several target files are absent from the actual Noble source. No patch is applied or built. Adapted commit-chain, base-source and runner correspondence must be established before a separate blob selection or build. Security acceptance stays open.
+
+The private attempt now has actual tool/outer/caller exit 1 after 476.10 seconds, with its original 600-second limit unchanged. Fresh same-holder public proof, pending receipt, independent prompt observer and fresh foreground/echo-off check pass. The previously supplied, explicitly authorized credential was entered through that live prompt without echo; the earlier availability question was withdrawn as unnecessary. No transcript/log search or credential file loader was used. Material validation stops at stage 8 before restore/API startup/oracle acceptance. All 6,697 registered jobs are reaped and absent; exactly one exits 1. The existing matched outcome reader returns 0 while retaining the failed outcome, verifies all recorded births absent, and finds five test resources still matching their exact recorded UIDs and base specs. UID-bound cleanup is being prepared. Production and original data remain unchanged.
+
+## 2026-10-14: failed private attempt fully cleaned up
+
+The [private attempt and cleanup receipt](../evidence/bortus-private-b7-failure-cleanup-root-20261014.json) preserves actual tool, outer and caller exit 1 at 476.10 seconds under the original 600-second limit. Fresh same-holder proof and independent foreground/echo-off observation passed before authorized input. Material validation stopped at stage 8; restore, API startup and oracle recovery were not accepted. All 6,697 registered jobs are typed, reaped and absent: 6,696 exit 0 and exactly one exits 1. The ordinal does not identify its command. The original catch discarded inner diagnostic context, so authentication, decryption and guard causes remain unproved. Private inputs may have been read; no claim of unopened private inputs is made.
+
+The separate, reviewed exact-UID cleanup returns 0, deletes only the three Pods, ConfigMap and policy in that order, and verifies natural absence. All 176 cleanup jobs exit 0 and are reaped/absent. Independent eight-GET verification returns 0, retains actor failure and confirms all five names and recorded UIDs absent, with 6,875 actor/cleanup birth identities absent. A no-child later check returns 0 with all 52 public records current, original 247 sources plus manifest, cleanup sources and observer source unchanged, and fresh absence of the observer and eight query births. Its own reader is subsequently absent. Default cleanup/observer 11-file and final-later three-file scans are zero. An unrun draft field-shape mistake was corrected before handoff. No failed actor is replayed, no production data is changed and no original store is retired. Private recovery remains open.
+
+The [six new adapted-metadata control groups](../evidence/bortus-pcre2-adapted-metadata-controls6-root-20261014.json) also pass, preserving eight prior core functions and 20 lifecycle helpers. They check chain completeness, independent changed-file sets, base byte/mode identity and malformed metadata using an actual retained head plus explicitly synthetic compare/tree/base data. Independent, later and own-absence checks pass for five sources and seven outputs; source eight-file and post three-file scans are zero. Actual maintained-source correspondence remains unproved. Independent source review caught a chained exceptional-cleanup issue in the held four-request actor before any dispatch. A narrow correction and focused failure controls are being prepared; no adapted files, patches or builds run here.
+
+## 2026-10-15: fetch finalization passes focused child and FD controls
+
+The [six finalization control groups](../evidence/bortus-pcre2-fetch-finalization-controls6-root-20261015.json) pass with five real disposable children and no network calls. They verify gate EOF and reaping before ownership is established, normal owned closure, preservation of the primary refusal, independent close attempts after multiple injected failures, shutdown failure followed by a wait, and partial allocation cleanup. Finalizer-only failures remain refusals. All 25 prior adapted-actor helpers and 20 wrapper helpers remain unchanged. Independent, later and final reader-absence checks pass for four runtime sources and seven outputs. Source six-file and combined post six-file default scans are zero. The original 30/5-second control bounds remain. No metadata fetch, patch, build, image change or production adoption occurs in this qualification.
+
+## 2026-10-15: maintained source correspondence verified; browser failure closed
+
+The [four-request metadata acquisition](../evidence/bortus-pcre2-adapted-metadata-qualified-root-20261015.json) passes with four HTTP200/curl0 observations and no cleanup failures. Complete base/head trees and compare metadata establish a nine-commit linear chain with 23 changed paths. All 23 selected original and Noble preimages match bytes, Git blob identity and modes; packaging differences remain intact. Complete tree names and directory fingerprints are checked, without claiming every unselected byte was rehashed. Independent, later and final reader-absence checks pass for three runtime sources, 29 output files and five directories. The nine-file source scan is zero. This qualifies metadata and preimages only: adapted blobs, patch applicability, builds and security acceptance remain open.
+
+The [three-case browser attempt](../evidence/bortus-a13-settings-pvc-failure-root-20261015.json) remains actual server1/browser1. Settings PV Capacity and Created pass four directions; the PVC transition times out without a recorded PVC request. Hydration is an unproved possible cause. Exact, fresh Linux/Windows and later checks pass, verifying unchanged 374 sources, 39 inputs, 5,383 compiled objects and 40,635 dependencies; 48 Linux births and exact container ID/name are absent, 13 Windows births have no live process, and later readers/queries are closed. No success reader or whole-matrix acceptance is used. A metadata-only success-post preparer failure is retained. A distinct readiness-only continuation will await the initial PV response and rendered rows before the single PVC selection, preserving all business oracles and original limits. Production remains unchanged.
+
+## 2026-10-15: numeric failure controls and maintained source bodies qualify
+
+The [numeric diagnostic evaluation](../evidence/bortus-private-material-diagnostic-qualified6-root-20261015.json) passes six local public groups after a [retained fixture failure](../evidence/bortus-private-material-diagnostic-failed6-root-20261015.json) in test06: the selected reader fixture omitted its actual outcome variable. The correction adds that public fixture only; every assertion and the other five methods remain unchanged. The original material projection, gate, private phase, cleanup and 600-second live lease remain exact. Failure-only capture retains at most 32 code nodes/eight numeric frames in one optional 4KiB record, without exception text, arguments, locals, operator paths or value digests. Controls exercise freshness, subtype/canary exclusion, bounds, exclusive writes, cleanup and the original gate/reader seams. Both failed and passing evaluations have independent, later and final reader-absence checks. Their 207 sources plus CONTROL remain current. Default scans remain literal1 for the exact unchanged malformed public rejection fixture, zero unresolved and no suppression/replay. No private input, network or actual recovery executes here.
+
+The [23-file acquisition](../evidence/bortus-pcre2-adapted-blobs-qualified-root-20261015.json) passes 23 new HTTPS/curl commands and independently verifies all 2,137,268 decoded bytes against the fixed maintained Git blob IDs and SHA256 values. It reuses the qualified parser and finalization functions, rederives the prior metadata/preimages, and fetches no refs or trees. Independent, later and final reader-absence checks pass for three runtime sources, 165 outputs and 24 directories. The combined ten-file source scan is zero; original 300/60-second bounds remain. These are authenticated-by-HTTPS source/test bodies, without trusted project-signing, application, build or security acceptance claims.
+
+The [second three-case browser attempt](../evidence/bortus-a13-settings-pvc-v2-failure-root-20261015.json) remains server1/browser1 with two partial Settings columns/four directions. Initial-PV readiness fails before the PVC request. The launcher separately refuses Windows image-query error31; its job is terminated, empty, reaped and closed. Exact and fresh Linux checks pass for unchanged 374 sources, 39 inputs, 5,383 compiled objects and 40,635 dependencies, with 54 births and exact container ID/name absent. The Windows fresh reader itself fails on access-denied5 and remains failed. A separate bounded query proves 11 recorded births have no live process; CIM reports the twelfth PID has a creation time 358.124 seconds later than the original. Supplemental verification records this distinct birth without inventing a direct-API success. Later checks close the Linux reader/two queries and failed Windows reader. Whole-browser acceptance remains false. Actual component and installed Playwright source support a Resource-label matching defect in the test; a role-selector correction with bounded failure diagnostics is held for review. No production change occurs.
+
+## 2026-10-15: finite sorting and fresh source composition; recovery binding refusal
+
+The [three-case A13 qualification](../evidence/bortus-a13-settings-pvc-qualified-root-20261015.json) passes Settings PV Capacity/Created and Storage PVC Capacity in all six directions after correcting the test selector and initial readiness checks. The 374 product sources remain unchanged. Exact, fresh Linux/Windows and later checks pass for 40 inputs, 5,383 compiled objects and 40,635 dependencies; 58 Linux births and the exact container/name are absent, 11 Windows births have no live process, and all later readers/queries are closed. Both failed predecessors remain failed. This is finite sorting evidence, with no universal physical-DOM, assistive-technology, performance or delivered-image acceptance.
+
+The [new private attempt](../evidence/bortus-private76-stage1-refusal-root-20261015.json) stops at stage1 with actual tool/outer/caller1 after 0.301 seconds, before same-holder proof or credential input. The unchanged all-183-old-source correspondence check currently rejects the diagnostic material row even though that row matches the qualified six-control source; 182 other rows and the gate match. This current witness does not identify the historical first exception. No guard is waived. Eight independent read-only GETs confirm all five names absent; the principal birth and nine later observer/query births are absent, followed by the later reader. All 247 sources plus manifest remain current. Actual private recovery remains open.
+
+The [fresh PCRE2 source composition](../evidence/bortus-pcre2-maintained-composition-root-20261015.json) passes actual, independent, later and final reader-absence checks. It preserves the original 431-object and Noble 455-object trees, and creates a separate 445-file/10-directory tree containing exactly 23 maintained existing-file replacements and 422 unchanged Noble files. All 11,076,845 bytes match the independently reconstructed projection. It executes no source code, patch command, build or network request, and changes no file-descriptor limit. All ten image findings and A20 remain open until supported build, consumer and security validation.
+
+## 2026-10-15: single-reader bookkeeping candidate passes focused controls
+
+The [isolated bookkeeping candidate](../evidence/bortus-account-bookkeeping-focused83-root-20261015.json) passes all 83 original focused tests, 25 exact worker cases, semantic type checking and lint across four original phases. It replaces temporary result wrappers with direct synchronous file-stat storage, while preserving every syscall after a fault, both real scheduling yields, fresh file/schema/role checks, one active read, 64 queued reads and the five-second deadline. This is a one-file raw-source overlay; 373 other sources remain unchanged. Independent checks verify 374 sources, 386 inputs, 40,635 dependencies and 5,383 retained compiled objects used only as type context. All 83 recorded births and eight exact container-ID/name queries show absence, followed by nine observer/query births and final reader absence. A root-only preflight atime-equality refusal remains retained and is corrected before target execution using the established stable fingerprint. This qualifies focused functionality only: a fresh canonical application build, compiled fixture and unchanged performance benchmark remain required. No production adoption occurs.
+
+## 2026-10-15: exact two-authority source correspondence qualifies
+
+The [six source-correspondence controls](../evidence/bortus-checkpoint-material-correspondence6-root-20261015.json) pass actual, independent, later and final reader-absence checks. The caller now requires the exact 182 unchanged original63 rows and gate, plus the one exact diagnostic material row through its completed six-control proof and 207-source manifest. All other 24 caller functions, private phase, cleanup and original 600-second lease remain unchanged. The new finite tests execute the actual qualification functions with public fixtures: the old whole-graph check refuses the diagnostic row; exact two-authority correspondence passes; unrelated graph/gate/material/proof changes and original deadline/pin faults refuse. The public unit FD adapter does not replace runtime Pins. No old63/eight/material6 suite is replayed. Current 236 sources plus CONTROL and original actor/suite/post-reader absence are verified. The default492-file scan retains five exact unchanged public checksum/malformed-fixture findings with zero unresolved; post12-file and later1-file scans are zero. This qualifies the correction locally; a new private attempt remains unrun.
+
+## 2026-10-15: fresh candidate build verified; corrected private source prepared
+
+The [fresh bookkeeping application build](../evidence/bortus-account-bookkeeping-build-root-20261015.json) and corrected independent, fresh, later and final reader-absence checks pass. It uses a new writable 40,635-object dependency copy and no old .next output. All 374 source files, 398 inputs and 5,383 new compiled objects are verified, with exact worker/schema bindings, the original 8dde native binary and full output/source provenance. The first verifier remains exit1 because it wrongly required an unshipped standalone provenance JSON; actual packaging and both historical/current manifests confirm only the binary is shipped. The correction retains provenance/binary checks and adds the exact two-row standalone native oracle. All 59 recorded births, two exact container-ID/name queries, three later reader/query births and final reader are absent. Original 900/60 and build540/child510 limits remain. This is build-only evidence; the unchanged compiled SQL fixture and original performance comparison remain required. No production adoption occurs.
+
+The [corrected private source preparation](../evidence/bortus-private-dfe-source-prepared-root-20261015.json) passes source-only generation and closed-packet review with 247 runtime leaves plus manifest. The two actual-function-qualified correspondence functions remain raw-identical; only three public run coordinates change inside run_once. The native snapshot verifies 500 fixed public files under the unchanged 512-file, 16MiB raw, 32MiB envelope and 30-second limits, preserving all original455 paths and adding 14 proof records plus31 source/control rows. Its native process is reaped and subsequently absent. Full new236-path currentness remains the prior root post/later proof, distinct from the fresh selected-path native snapshot. The original AST warning is retained. The new runtime source is not staged and no private actor, credential or restore has run. A separate Linux prelaunch review remains required; no recovery acceptance is granted.
+
+
+## 2026-10-15: build-tool prerequisites verified
+
+The [PCRE2 builder inventory](../evidence/bortus-pcre2-build-tools-root-20261015.json) verifies eight tool commands and fourteen prerequisite files in the fixed compiler image. Actual, independent, later and final reader-absence checks pass; the container and26 capture plus three observer/query host identities are absent. The original capture did not record boot identity, which remains explicit. The image supplies Debian build flags and OpenSSL3.5.8; this inventory proves neither Noble-supported binary equivalence nor a replacement application runtime. No compilation or installation has run. The maintained source tree remains separate and unchanged; all ten image findings and A20 remain open.
+
+
+## 2026-10-15: PCRE2 evaluation commands pass; final validation refuses
+
+The [isolated build attempt](../evidence/bortus-pcre2-evaluation-build-failure-root-20261015.json) returns wrapper1 despite successful regeneration, configure, compilation, original upstream check and DESTDIR installation. The upstream summary reports4pass/0skip/0fail/0error; POSIX macro warnings are retained. Final worker validation refuses at stage6 after publishing the staged manifest, without a build result or first-exception context. The exact cause remains unproved. The original900-second limit and resource/ownership guards remain. Independent, later and final reader-absence checks pass, preserving actor1. All five original sources, two post sources,98actor records,11post records, the unchanged445-file/10-directory source and staged manifest are current. Fifteen original host identities plus the observer/two query identities are absent; the exact container ID/name are absent, followed by the final reader. Five phase identities belong to the removed container namespace and are not compared against host PIDs. No Noble binary equivalence, consumer compatibility, image or security acceptance follows from these phase successes.
+
+
+A separate read-only [current-predicate witness](../evidence/bortus-pcre2-evaluation-build-failure-root-20261015.json) returns0 with final reader absence. The unchanged inventory rejects build/src/pcre2_chartables.c because it is an absolute symlink to the fresh copy at /output/pcre2-source/pcre2-10.42/src/pcre2_chartables.c.dist. It refuses before resolving the target, so no external target-content read or outside-root result is claimed. This explains the current predicate refusal, not the original unrecorded exception. The failed build result is retained; qualification of the already-staged libraries and their consumers remains next, with no unchanged build replay.
+
+
+## 2026-10-15: retained static ABI passes; diagnostic profile refuses
+
+The [retained-stage static ABI inspection](../evidence/bortus-pcre2-retained-stage-static-abi-root-20261015.json) passes actor, independent, later and final reader checks. Nine ELF subjects have no missing selected versions, strong symbols or direct PCRE imports, no removed baseline exports and no RPATH; 18 unresolved weak symbols remain explicit. The unchanged source455/stage239 objects and source/record bindings verify, and recorded host births and the exact container ID/name are absent. The original build wrapper remains exit1 despite its five successful phase commands. This is static evidence only: canonical-loader consumer execution, Noble binary equivalence, replacement image and A20 security acceptance remain open.
+
+The [diagnostic profile](../evidence/bortus-smallserial-profile-failure-root-20261015.json) returns actual1. The baseline completes14 requests, but the candidate fails its first session request with HTTP500 before warm phases; no complete comparison is claimed. The controller reports final container removal, all CLI identities absent and current measured graphs. Three observer refusals remain retained: a success-only cleanup field, a historical reader record with mode0644 and an argument-dispatch error before query creation. The corrected exact reader and fresh reader pass, verifying125 pins, all eight measured graphs,27 absent host births and the absent exact container ID/name. The later reader and final root check also pass, with148 current pins and31 host births freshly absent, including the later reader. No actor or workload is replayed. Exact Node startup source shows inherited preload runs before the Worker script path is inserted into argv; the earlier eval-Worker adapter never covered that boundary. A new real file-Worker control must qualify before changed instrumentation runs. Private raw profiles stay outside Git. A07/A21 remain failed/open; no candidate is adopted.
+
+
+## 2026-10-15: finite consumer dependency predicate refuses
+
+The [finite consumer evaluation](../evidence/bortus-pcre2-consumer-runtime-failure-root-20261015.json) returns actual1 at stage4/type5 after three literal-zero jobs: tiny public harness compilation, harness ELF inspection and the baseline grep loader listing. Worker finalizers are empty and the controller reports container removal; independent, later and final root checks pass, with25 host births freshly absent and the generated harness/current455+239 objects verified. The retained grep listing contains only PCRE2-8, libc and the canonical loader, while the shared checker incorrectly also requires libselinux. This is a current source/output mismatch, not a recorded original internal assertion. Correct each consumer dependency set without admitting extra or host-fallback modules. No complete corpus, replacement-image or security acceptance follows; the original PCRE build1 and18 explicit weak symbols remain.
+
+
+## 2026-10-15: affected CI checks pass; preload composition controls pass
+
+The [affected read-only CI phase](../evidence/bortus-a19-readonly-ci-checks-root-20261015.json) passes lint, semantic type checking and all342 unchanged unit tests, with zero failures/skips/cancellations. The source fix replaces `npm test` in that read-only phase with `node --import tsx --test tests/*.test.ts`; unconditional worker generation remains in the prior writable build. This run uses a fresh374-file source copy and four qualified generated artifacts with existing dependencies/compiled output mounted read-only, under the original4CPU/4GiB limits. It proves the revised check command, not a fresh install/build, eight integrations, per-regression negative controls, hosted CI or deployment. Exact/fresh/later/final checks pass, with965 current pins and59 host births freshly absent. The owning commit is `9fbd85f` (workflow plus11 docs); root independently verifies all12 committed raw blobs and unchanged frontend tree. Hosted CI remains unproved. Four default scanner findings are exact pinned public Node header checksums; the literal scanner1 is retained with zero unresolved findings and no suppression/replay.
+
+The [new preload composition controls](../evidence/bortus-worker-preload-composition-controls-root-20261015.json) pass all six finite groups: four actual file Workers with default inherited require arguments, forwarding/error identity checks, and actual MessagePort listener restoration with precise wrong-tuple refusal. The helper validates the script path/hash at the first public message-listener registration; the adapter declares its exact later restoration tuple separately. This proves diagnostic composition only, not prevention of earlier script execution, application/SQLite behavior or performance. Exact/fresh/later/final checks pass, with93 current pins and20 host births freshly absent. The separately qualified corrected profile now completes; the old profile failure and original benchmark regressions remain.
+
+
+## 2026-10-15: corrected consumer runtime corpus passes
+
+The [corrected retained-harness consumer run](../evidence/bortus-pcre2-retained-harness-consumer-root-20261015.json) passes all14 bounded jobs and matches baseline/candidate outputs for10 public corpus cases. Exact loaded-component sets verify separately for grep and libselinux; missing, extra and host-fallback modules still refuse. It reuses the qualified compiled harness without any compiler/readelf replay. The original runtime1 and PCRE build1 remain retained, with18 unresolved weak symbols explicit. The corrected independent, later and final checks pass, verifying149 actor records, the retained harness/current455+239 objects and27 host births freshly absent. The first independent reader1 retains a stale container-name literal and starts no query; its distinct correction preserves the original checks. This proves the selected runtime compatibility cases, not serialized SELinux databases, kernel policy, application/image or A20 security acceptance; all ten existing scanner findings remain until a separately assessed replacement image and precise residual evidence.
+
+
+## 2026-10-15: corrected diagnostic observation completes
+
+The [dual-lane observation](../evidence/bortus-smallserial-profile-v2-root-20261015.json) completes14 HTTP200 requests per lane and14 actual candidate account reads with28 real yields. Independent numeric reparse matches every published projection, verifies the exact listener-restoration proof,133 current pins,26 absent host births and the absent exact container ID/name; later/final checks also pass, with153 current pins and30 host births freshly absent, including the later reader. Raw profiles, names and URLs stay private. Warm samples are sparse (largest active leaf only2 samples), and the baseline lacks middleware association, so this does not establish a dominant source cause or equivalent middleware comparison. Instrumented thread counters and nested intervals are diagnostic only; they are not additive CPU shares or an original benchmark pass. The two warm regressions remain open; application and production are unchanged.
+
+
+## 2026-10-15: system8 image preparation stops before build
+
+The [COPY-only image attempt](../evidence/bortus-pcre2-system8-image-prebuild-refusal-root-20261015.json) refuses at stage20/type5: its added baseline image inspect returns1 because that exact saved raw-config digest is not found as a daemon-local image ID. This does not establish that the earlier Docker image identity or saved export is absent. No build or container starts. The retained raw components and exported31794-object filesystem remain the authority; a fresh source correction will remove only that unnecessary daemon-lookup requirement because this producer reconstructs FROM scratch. The planned output changes one PCRE8 payload and adds explicit provenance while requiring all31793 other existing objects unchanged. Full output/runtime/default scan and precise residual assessment remain pending; all ten original scanner findings remain visible.
+
+
+## 2026-10-15: corrected system8 image assembles locally
+
+The [fresh COPY-only producer](../evidence/bortus-pcre2-system8-image-assembly-root-20261015.json) completes all four Docker jobs with actual0 under the original300-second bound. It reconstructs the qualified current6e application/Node components and adds only the selected system PCRE8 payload and explicit public provenance. The inspected local Docker identity is681de2d3; its OCI index/leaf/raw-config relationship is not yet qualified. Independent actor closure, saved export/descriptor chain, exact31795-object filesystem comparison, fresh runtime and default security scan remain pending. No container or production workload starts in this assembly. All ten previous scanner findings and the failed first lookup remain retained; no security exception or deployment follows.
+
+
+## 2026-10-15: current cluster and boot-aware image closure
+
+The [read-only live snapshot](../evidence/bortus-live-cluster-metadata-root-20261015.json) verifies3 Ready nodes,54 Bound PVCs,91 Running/Ready Pods and6 completed Pods, with no other phases. All33 active Helm releases and chart/Flux reconciliation are Ready. BORTUS remains suspended and serves the previous3b076fb9 image. Longhorn has40 encrypted two-replica volumes:30 attached/healthy and10 detached/unknown; detached status is retained, not promoted to healthy. These metadata checks do not prove application recovery or upgrade acceptance.
+
+The [image assembly closure](../evidence/bortus-pcre2-system8-image-assembly-root-20261015.json) now passes independent and final root checks for9 source files,26 actor records and3 owned payload files. WSL restarted between assembly and observation; the first observer1 created no owner. The corrected reader binds current boot19d54e89 and original boot7fbd3ead explicitly, records five original births in the different boot, and never compares their PID/start tuples with current processes. The current reader is freshly absent. The first export source refuses before owner/CLI/save because one input row incorrectly expects0600 for the original qualified0644 status file. That file is unchanged; only a fresh binding correction is allowed. Saved export/fullFS/runtime/security qualification remains pending.
+
+
+## 2026-10-15: fresh image export completes
+
+The [corrected export](../evidence/bortus-pcre2-system8-export-root-20261015.json) returns actual0 for all three inspect/save/inspect jobs. Its278025216-byte archive hashes to f9f5c926 and binds15 ordered layer digests to the actual saved Linux/amd64 manifest4f8cfddc and raw configf67ca934. The local Docker identity681de2d3 is recorded separately. Registry publication, attestation semantics, complete filesystem reconstruction, fresh runtime and security acceptance remain unproved. The first matched post draft is held unrun after source review finds it must also pin the staged manifest; its fresh correction preserves the archive/parser guards. No application or production workload changes.
+
+
+## 2026-10-15: complete system8 filesystem equation passes
+
+The [new ordered-layer reconstruction](../evidence/bortus-pcre2-system8-fullfs-root-20261015.json) returns actual0 and compares all31795 entries with the expected inventory. Root separately compares the entire saved baseline plus declared delta: one PCRE8 payload replacement, one public provenance addition,31793 unchanged old entries and no removed paths. Alias, parent metadata, package-origin status and Chisel visibility remain exact. Inventory3530793c binds15 layers and937737229 expanded regular bytes without extracting files onto the host. The independent export chain and final current-boot reader absence pass; native held-descriptor/fullFS closure also passes, with all3 source files/5 actor records current, the archive hash/fingerprint current and both the original fullFS process and independent reader freshly absent. This proves the filesystem equation, not fresh runtime, default security scan, residual acceptance, performance or live delivery.
+
+## 2026-10-15: system8 runtime passes; default image findings remain
+
+The [exact-image runtime receipt](../evidence/bortus-pcre2-system8-runtime-root-20261015.json) records actual0 for the unchanged native selector, Prisma migrations/query, real entrypoint and loopback HTTP/login/session/fresh-role checks under the original2CPU/1GiB/no-swap/PID256 limits. Independent closure verifies all5 actor sources including the manifest,81 records,21 absent host births and exact container ID/name absence; root then verifies current held-file hashes/fingerprints and the absent reader/two query births. This finite fixture does not qualify the Kubernetes TLS Secret transport, performance or live upgrade.
+
+The [fresh default scan](../evidence/bortus-pcre2-system8-security-scan-root-20261015.json) retains literal scanner1:10 Medium findings, no secrets and no reported fixed versions. Its new DB was updated2026-10-15T07:10Z. Independent and final root checks preserve the actual report/cache/source hashes and absent scanner/reader births without rerunning the scan. The unchanged package-origin records still identify seven PCRE, two libc and one zlib finding. The PCRE payload has changed with explicit provenance; each CVE still needs its precise source-to-payload/residual mapping. The overlay supplies no libc/zlib fix. No exception, scanner-zero, security acceptance or deployment is claimed.
+
+The [first A02 executable attempt](../evidence/bortus-a02-deleted-cookie-source-review-root-20261015.json) retains actual1 after124 protected API401 assertions. The first protected page returns307, then its exact Location assertion refuses, so zero pages and no complete160-call matrix are accepted. Installed Next code canonicalizes loopback127 URLs to localhost before middleware; a narrow fixture-origin correction is being prepared, retaining exact307/same-origin/welcome and all other oracles. The historical Location was not retained and cannot be reconstructed as an observed value. No production source or data changes.
+
+## 2026-10-15: seven PCRE source rows mapped to the actual image
+
+The [row mapping](../evidence/bortus-pcre2-system8-seven-row-coverage-root-20261015.json) joins each of the seven actual PCRE findings to its official fix/maintained commit and the combined23 replacement blobs. Root rereads all23 current bodies, verifies SHA256/Git blob identities and their original qualified composition records, and reviews the12-code-file diff. Consolidated10.42 JIT files are included where mainline path names differ; a filename intersection alone is insufficient. The selected a731 payload, f9f5 archive, full filesystem and finite runtime/closure are bound explicitly. This preserves the original build-wrapper1,18 unresolved weak symbols, and the absence of per-CVE exploit/sanitizer/32-bit proof. The proposed review expiry has not been accepted; the default scanner still exits1 and libc/zlib remain separate open rows.
+
+## 2026-10-15: remaining libc/zlib inputs reviewed without a blanket waiver
+
+The [bounded consumer table](../evidence/bortus-system8-libc-zlib-input-boundaries-root-20261015.json) binds33 selected current source files. YAML file writes reach numeric `open(2)` flags, and Next response compression reaches buffer-based zlib streams; these particular paths do not supply attacker-controlled C stdio MODE or gzFile formatted-write sequences. Image parsing enters opaque libvips/codec code, and Prisma/SWC/OpenSSL/utility internals and privileged operator execution remain untraced. Node retains its gzFile exports. Disabling provisioning does not disable the separate privileged operator shell. The shipped image has no nscd paths, but alternate entrypoints/extensions/host socket mounts invalidate a narrowly configured-image rationale. No universal unreachability, compatible replacement, accepted residual, security pass or deployment follows.
+
+## 2026-10-15: source/CI progress does not replace the release image
+
+Owning frontend tree `2d47cae1abf1ed2d969ee552e41104fd29791713` passes the fresh build/342units/8HTTP, hosted clean CI and [four finite browser checks](../evidence/bortus-overview-terminal-four-browser-root-20261015.json). These results bind the new source; the held system8 image still binds its original6e payload. A final new-source immutable image and its package/bundle inspection remain required. The [npm audit receipt](../evidence/bortus-npm-audit-build-residual-root-20261015.json) preserves full1/9 development-package rows and omitdev0/0 with a trusted-build-only residual expiring2026-10-22; it does not waive final image/system-package, performance, recovery or live acceptance gates. No deployment follows.
+
+## 2026-10-15: finite real-API route checks independently pass
+
+The [finite actual-API receipt](../evidence/bortus-a04-real-api-finite-root-20261015.json) records actor0 and44 completed checks against Kubernetes v1.37.1, etcd3.7.0 and the patched real kubectl, using only generated public fixture credentials. The permitted Namespace YAML read uses the exact fixed kubeconfig argv; crafted queries cause no alternate-server hits. Seven readonly YAML families deny child admission. Two Services/volumes PUT outcomes are405 method rejection and do not qualify handler validation. All52 Docker jobs exit0 and all five containers are removed.
+
+Corrected independent post0 verifies285 public actor records, four source files,374 raw sources,5383 compiled objects and40635 dependency objects before/after. Root current/fresh checks verify57 original and11 post/query host identities absent,54 post records current, three Windows dispatchers not live and the final reader absent. The earlier V1-5 inspect-spelling refusal remains1 with independent cleanup; the first success observer remains1 for a flat-versus-envelope version comparison, with no owner or Docker query created. Neither failure is rewritten or replayed.
+
+This fixture adds NET_BIND_SERVICE only to its disposable API roles and changes no production capability policy. It is API-only, with no workers or controllers; the observed etcd version is not a claim of the complete upstream support matrix. Full A04 remains open for Flux create/stored-name validation, real Flux list/status and remaining successful write-handler cases. Successful kubelet-backed logs/exec require separate evidence. Performance, private recovery, final image/security and live rollout remain open; original data is preserved.
+
+## 2026-10-15: Flux argument-order failure isolated
+
+The [additional real-API probe receipt](../evidence/bortus-a04-flux-order-probes-root-20261015.json) retains the separate remainder failure: eight cases complete, then Flux hierarchy returns502. With the same real CLI/API/config and duplicate JSON flags, leading `--all-namespaces` exits1 while moving only that flag after `get helmreleases` exits0 with a valid empty list. The withheld63-byte error text is not characterized. Independent checks verify290 actor records, current source/build/dependencies,57 original and11 post/query identities absent, all five IDs/names absent and final reader closure. Individual probe PID identities were not recorded; their containment evidence is the removed anchor namespace/cgroup. The three affected Flux calls are being corrected separately; the corrected compiled45-case fixture remains unproved. The earlier44-check qualification remains unchanged; full A04 and live acceptance remain open.
+
+## 2026-10-15: compiled Pods browser CI smoke passes
+
+The [current hosted browser receipt](../evidence/bortus-hosted-browser-smoke-root-20261015.json) binds owning source939648f5/frontend407239c9 to validation e92cfcfd. Build, lint/types,342 units,eight HTTP integrations and all seven unchanged regression controls pass. The compiled Pods browser test observes HTTP200/all208 records,100 initial rows,three filtered records,eight non-Age columns and three exact links, with no mutations. Earlier503 failures remain recorded; the diagnostic run proves noexec/EACCES, and the one-option fixture-only exec correction yields spawn0 and browser pass. Both confirmed containers and all three exact names are absent after orderly cleanup. This finite smoke does not close human AT, performance, cross-process regression sensitivity, real-cluster acceptance or final image/delivery; production is unchanged.
+
+## 2026-10-16: patched Node passes the unchanged original suite
+
+The [patched Node receipt](../evidence/bortus-node22-patched-original-suite-root-20261016.json) records actual actor0 and seven phases0, including all4,706 original upstream tests,279 locked offline packages and the bundled-zlib source/object/archive/ELF canary. The new Node22.23.3 executable is125,362,584bytes with SHA256`8da744a4f73fb8a267b629d306b646748b54823019b3cfd49953c22e2e65a22c`;version/config reporting retains OpenSSL3.5.9,module127,N-API10 and full ICU. The continuation explicitly reuses only the previously frozen already-patched partial objects. Historical original build1/compile-15 remain unchanged.
+
+The first independent post refuses an incorrect0600 manifest expectation for the actual0644 linker map. A native finite128-record metadata check identifies exactly that mismatch;the corrected binding retains every guard and changes only the exact mode and fresh observer coordinates. The corrected post0 verifies128 records,13 artifacts,20 source files,actual private namespace/init evidence,and exact container ID/name absence. Fresh and one finite final check pass with183 current pins and20 absent recorded host births,without a new graph walk,Docker query or recursive reader chain. These results qualify component packaging inputs;the combined application image,runtime,security,private recovery,performance and live adoption remain open. Production and original data remain unchanged.
+
+## 2026-10-16: current source composition and production context qualified
+
+The [release-context receipt](../evidence/bortus-current-source-release-context-root-20261016.json) binds rawsource9cb81363/frontend5fcb to the retained qualifiedd901/frontend25aff compilation. Exactly390 selected source rows remain identical;the two CI sensitivity-manifest rows have full inverse comparisons. The explicit9cb archive is453,507bytes/SHA256`96a4b90ab571a9e6fb8ae1612debc8f1ce1594f8d6075ebac5fd596a209fe742`. No new9cb compilation or product test replay is claimed.
+
+The application copy helper completes and writes its two receipts,but the ROOT outer wrapper subsequently fails with NameError in its final pin loop. Original exit1,missing historical wrapper birth and incomplete outer checks remain recorded. A separate full current-copy observer passes,followed by fresh/final34/35-pin closure;no copy is replayed. The first closure script has a syntax error before native execution and is retained separately. Offline prune then completes0 under its original limits;independent post/fresh/final checks pass,with93 current pins and27 absent recorded host births. Package/lock bytes,5388 compiled artifacts,native/runtime workers and the original40635-entry dependency authority remain unchanged;the actual pruned inventory has29814 entries.
+
+Production context creation and independent verification complete0 under their original300-second bounds. The exact standalone node_modules subtree is excluded;the sole production dependency source is the pruned tree. Context selection,entrypoint LF copy,partial-package status and three standalone worker bindings are checked. Fresh and one finite final check pass with42 current pins andthree absent recorded births,without another graph walk,Docker query or recursive reader chain. The default closed-source scan retains literal1/four exact authenticated public Node header hashes,with recorded classification and no suppression/rescan. Final combined image,Node ELF/loader/runtime checks,security,private recovery,performance and live adoption remain open. Production and original data remain preserved.
+
+## 2026-10-16: new Node component packaged and independently checked
+
+The [component receipt](../evidence/bortus-node22-patched-component-root-20261016.json) records copier0 and independent post0 for the new8da744a4 Node executable. All12 Node roles andfive runtime-directory roles match the declared inventory;LICENSE,account files,destination modes and directories are preserved. The original14 FD/copy helpers and300-second bound are unchanged. Version/config metadata and the separate unchanged4706-test/canary receipt are bound explicitly. Old static-ELF/weak27 acceptance is not transferred to the new executable.
+
+The post verifies49 finite source/artifact pins and copier birth absence. Fresh and one finite final check pass with57 pins,explicit component-directory metadata andthree absent recorded births,without a source/dependency graph walk,new Docker query or recursive reader chain. The two source scans return0/zero. No Node/loader/application process runs for packaging. New ELF/loader compatibility,combined image filesystem/runtime/security and live adoption remain pending.
+
+## 2026-10-16: new Node static closure and current combined image assembly
+
+The [new static ABI receipt](../evidence/bortus-node22-patched-static-abi-root-20261016.json) qualifies the actual8da Node interpreter/DT_NEEDED closure against canonical providers: six subjects,100412 parsed symbols,zero missing strong symbols/versions/RPATH entries and27 explicitly unresolved weak symbols. Counts come from new captures;old6/27 results are not transferred. Original capture/observer/core and300/60/180/10-second limits remain. The missing actor-intent stage row is corrected before any execution;13 files are actually staged and the first actor completes0. The independent post and141-pin/24-birth final check pass,including26 explicit symlink targets,without new graphs/queries/readelf or target-loader replay. Default post-source scan retains literal1/three exact public metadata checksums,independently reproduced without suppression/rescan. Static coverage does not prove weak-symbol runtime semantics or the delivered image;the five actual provider rows must match the eventual exported image.
+
+The [current COPY-only image receipt](../evidence/bortus-current-copy-image-assembly-root-20261016.json) binds9cb source/retainedd901 compiled product,new8da Node,selectedPCRE and patched system-zlib payloads plus provenance. All four original CLI jobs and the actor complete0 without container start. Its local Docker inspect identity iscec6dc57;278161866bytes and17 ordered saved-inspect layers are observed. This identity is not yet a qualified raw OCI config digest. Complete input composition yields a prospective31798-entry manifest;actual exported fullFS remains unverified.
+
+The first assembly post exits1 at stage1/type5. A finite native inspection finds its archived kubectl source-mode expectation0755 differs from actual0600;the owned copied executable is correctly0755. The historical refusing line was not captured. A distinct post changes only that exact source-mode expectation and fresh coordinates;all20 helpers,other guards and30-second bound remain. Corrected post0 and80-pin/eight-birth final closure pass,retaining the failed reader and original failure without rebuilding. Saved OCI/export/fullFS,new-image runtime/default security scan,performance,actual assistive technology,private recovery and live adoption remain pending. Production and original data are unchanged.
+
+
+## 2026-10-16: current saved OCI and observed complete filesystem
+
+The [saved OCI receipt](../evidence/bortus-current-saved-oci-root-20261016.json) qualifies export349131/0, independent chain6ada6b/0 and finite finalfebe2f/0. The 278190080-byte archive has SHA612ad659; actual saved config74503640 and selected amd64 manifest88461db5 are distinguished from local Docker/index IDcec6dc57. All17 ordered layers and the exact public configuration are authenticated. Four staged source files,19 actor metadata files and four original export births are checked;final110 pins/14 absent identities require no new graph walk or Docker query. Attestation semantics and registry publication remain unqualified.
+
+The [complete observed filesystem receipt](../evidence/bortus-current-full-filesystem-root-20261016.json) records reconstruction42dddf/0, independent post58022a/0 and fresh/one finite final661268/0. All31799 entries match with zero path or metadata mismatches:31798 declared named paths plus the original structural root0755/UID0/GID0. Inventory6809264 bytes/SHAf3477789 covers17 layers and938051729 expanded regular bytes under the original bounds; no files are extracted or executed. Complete current input composition replaces the old image-specific baseline/delta. The new Node row,five static canonical provider rows and all26 canonical symlink rows match the saved filesystem exactly;weak-symbol runtime semantics remain unproved.
+
+The actor preserves25 original functions/classes and the independent post20 helpers. Source scans pass6/zero and7/zero. Final125 pins/18 absent recorded identities are verified without a new graph/query/layer replay or reader chain. The application/native/Prisma/public TLS runtime,fresh default image scan,performance,actual assistive technology,private recovery and live adoption remain separate. Production and original Gluster/Vault/Consul data are unchanged.
+
+
+## 2026-10-16: current isolated runtime, public TLS4 and literal default scan
+
+The [current runtime receipt](../evidence/bortus-current-image-runtime-root-20261016.json) qualifies actorc15ff6/0, independent post71d3e8/0 and fresh/one final2f0b32/0. The original fixture changes only the expected Node digest. Native valid/invalid loading,Prisma migration/client queries,original entrypoint,loopback health,registration/login/session,readonly403/write200 and fresh database revocation403 pass against the exact saved image. Six staged source files and81 records are verified;the confirmed container is removed and two independent CID/name queries verify absence. Final231 pins/45 absent identities add no graph/query/replay. Original300/20/+1/180-second and2CPU/1GiB/no-swap/PID256/netnone/readonly/UID1000 controls remain intact.
+
+The [public SDK/Node TLS4 receipt](../evidence/bortus-current-public-tls4-root-20261016.json) qualifies actorefb575/0, post30b79a/0 and final475283/0. The unchanged four-case fixture observes one authorized mTLS200/GET and rejects wrong CA,wrong SAN and missing client with zero GETs. Eleven sources,76 records and15 original host births are checked;final231 pins/38 absent identities and exact CID/name absence pass. The original public synthetic material is reused unchanged and all five certificates remain valid for the entire dispatched lease. Source scanner literal1/four findings are retained and exactly classified as the four already-qualified public test-key spans;no suppression/rescan occurs. Production SecretTransport,weak-symbol semantics and private recovery remain unqualified.
+
+The [fresh full-image scan receipt](../evidence/bortus-current-default-image-scan-root-20261016.json) retains actor/scannerb2dd15/1 with failure null. The independently checked report has12 Medium findings,zero secrets and zero reported distro FixedVersion fields. Fresh DB metadata records update2026-10-16T01:13:54Z/download08:47:05Z. Seven PCRE,one zlib,two libc andtwo newly reported dash rows are preserved as package metadata;they are not installed-code behavior proof. Independent post59000f/0 and final8e338b/0 verify report,three cache files/tool/archive/source bytes and150 pins/23 absent identities. Original600/590/10-second,two-CPU affinity,128MiB report cap,fresh default DB and empty ignore/secret configuration remain;no severity/unfixed filtering or hard-memory quota is introduced. Literal findings1 remains1 and security acceptance remains false. Source remedies and precise residual decisions,original performance acceptance,actual assistive technology,private recovery and live adoption remain open. Production and original data are unchanged.
+
+
+## 2026-10-16: authenticated Noble dash applicability
+
+The [exact Noble dash source review](../evidence/bortus-dash-noble-source-applicability-root-20261016.json) authenticates the signed source/archive and installed129,784-byte dash binary, checks all13 patches and joins the official amd64 build records. The build disables libc fnmatch and includes the recursive fallback matcher described by CVE-2026-102473; hostile-input reachability remains unproved. The Unicode escape/reservation path described by CVE-2026-102474 is absent from the exact selected function and patch set; this does not reclassify the Ubuntu advisory. Independent signature/binary and source-metadata readers pass; the bounded57-file public packet scan returns0/zero findings. Two initial XZ-format assumptions refused before publication; the final reader verifies two valid streams with an empty second stream. No dash execution, package change, suppression, waiver or deployment follows. The original image scanner remains1 with12 Medium findings and zero secrets; security acceptance remains false.
+
+The [bounded consumer follow-up](../evidence/bortus-dash-consumer-followup-20261016.json) verifies the exact entrypoint,three direct process-call sources and four spans of the retained Prisma CLI. The reviewed entrypoint uses quoted checks and fixed commands;the inspected platform probes use fixed shell text. Transitive dependency and operator/volume-controlled pattern inputs remain untraced. No maintained fix was identified in the consulted primary references;upstream observations retain an explicit missing raw-byte digest. No whole-image unreachability or residual acceptance follows.
+
+
+## 2026-10-16: bounded queue and thread-CPU diagnostic
+
+The [one-case queue/CPU diagnostic](../evidence/bortus-queue-cpu-concurrent-diagnostic-root-20261016.json) passes its controls and all22 complete-body request joins on the retained3d/V2 compiled lineage. Median warm queue residence is47.551–47.558ms;dequeue-to-post preparation is5µs. The main HTTP warm window records69.338ms thread CPU;the separate worker-operation window records8.558ms thread CPU. These windows differ and include instrumentation;ELU is not CPU,overlapping waits cannot be summed,and neither blocking nor observer cost is isolated. Original300/60/180/150-second and2CPU/1GiB/no-swap/PID256/netnone/readonly controls remain. Exact/fresh/one-final checks pass with129 current pins,24 prior births absent and two retained CID/name absence queries. The source scanner remains literal1/two precisely classified public code hashes;the first selection-basename staging refusal is retained. This is no original benchmark replay or performance acceptance. A separate allocation-only source evaluation must preserve fresh checks,yields and all original gates before any adoption.
+
+
+## 2026-10-16: custom dash component verification
+
+The [isolated custom dash component](../evidence/bortus-dash-fnmatch-component-root-20261016.json) passes all seven build phases, independent verification and one finite final check. Switching the authenticated Noble source to `--enable-fnmatch` compiles out its recursive fallback; all 13 original patches and inverse checks remain intact. Static target-libc symbol/version checks and 15 ordinary shell groups pass with zero mismatches. UTF-8 group 10 remains unsupported. The 534704-byte candidate has SHA `02ca0e8a…`; its C4 compiler differs from Noble's, so no distro-binary equivalence or fixed-package claim follows.
+
+The first independent reader remains exit 1: Windows UNC supplied synthesized 0666 modes for all 788 files, incompatible with its exact/nonwritable checks. The historical refusing line was not recorded. Only native expected modes and fresh reader coordinates/hashes changed; original functions, checks and limits remain exact. Corrected exact/fresh/final checks pass with 810 finite records, 20 prior process births absent and two retained CID/name queries, without a component rebuild, new graph walk or final query. Entrypoint/Prisma runtime compatibility, image/security acceptance and adoption remain open. Production and original migration data are unchanged.
+
+
+## 2026-10-16: allocation candidate full functional result
+
+The [isolated account-snapshot candidate](../evidence/bortus-account-snapshot-full-functional-root-20261016.json), source `169107f` / frontend `79433a2c`, passes a fresh build, native loading, all 359 unit tests and eight integration tests. Independent checks verify 393 source files, 456 inputs, 5388 compiled entries and 40635 dependencies. One finite final check passes with 1067 current records, 187 prior process births absent and eight retained container ID/name queries; it adds no graph traversal or queries. The initial missing-DOCKER_HOST preparation refusal and literal source-scan exit 1 for two exact public Git identifiers remain recorded.
+
+This candidate caches only an exact-file lexical path plan and reduces per-check allocations. Every filesystem/account/schema check remains fresh, with one active read, 64 queued reads, the five-second deadline and both real yields. It changes no original benchmark fixture or acceptance clause. Controls pass 90 tests; a separate internal ABBA observation does not establish application performance. Original three-pair benchmark, hosted CI, browser, image and live adoption remain unqualified for this new candidate. Production and original migration data are unchanged.
+
+
+## 2026-10-16: custom dash runtime compatibility
+
+The [custom dash runtime compatibility check](../evidence/bortus-dash-fnmatch-runtime-root-20261016.json) passes the unchanged public fixture against the qualified current base image. An owned 0755 copy is mounted read-only at `/usr/bin/dash`; the original artifact and image remain unchanged. All 12 checks pass, including the original entrypoint, Prisma migration/client queries, native loading, registration/login/session, readonly/write permissions and fresh permission revocation. No production credentials or Kubernetes client traffic are used.
+
+Independent exact/fresh/one-final checks pass with 120 finite records, 26 prior process births absent and two retained CID/name queries. The base image's earlier runtime, filesystem and OCI proofs are retained; their artifact graphs and archive are not requalified. This qualifies component compatibility only. New image, fixed-package, UTF-8, security, performance and production adoption claims remain false. The earlier component reader failure remains preserved.
+
+
+## 2026-10-16: allocation candidate original comparison fails warm gate
+
+The [new allocation candidate comparison](../evidence/bortus-account-snapshot-paired-root-20261016.json) completes all six observations in the original B1/C1/C2/B2/B3/C3 order, each with all six profiles. Actor/runner/supervisor exit 0 establishes completed business checks; the original performance gate still fails. Eight of ten warm median p95 comparisons improve. Two **sequential twelve-request Pod** comparisons regress:
+
+| Profile | Baseline p95 median | Candidate p95 median | Change |
+|---|---:|---:|---:|
+| 200 records | 6.267322 ms | 6.368112 ms | +1.608% |
+| 1000 records | 8.427829 ms | 24.133183 ms | +186.351% |
+
+All three 1000-record candidate samples are slower. Whole-fixture CPU median falls from 34.292826 to 28.936958 seconds; peak-memory median rises from 357.777344 to 432.144531 MiB, with no observed OOM. These are separate accounting scopes, not allocation-only causal results or a performance pass. No samples, tolerances, warmups, fixtures or original bounds change, and no unchanged comparison is replayed.
+
+Independent original-summary recomputation, exact/fresh checks and one finite final check pass: 452 exported source files, 66 inputs, 57 final records and 20 prior process births absent. Eight exact-name queries are retained; the historical dispatcher retained no CIDs, so no CID-query claim is added. The final adds no graph walk or query. The literal final source scan 1 for two exact public Git identifiers and both preparation refusals remain preserved. Source `169107f` remains isolated; A07, image/security, actual assistive technology, private recovery and production adoption remain open.
+
+
+## 2026-10-16: bounded libc applicability and source gap
+
+The [bounded libc review](../evidence/bortus-libc-bounded-applicability-root-20261016.json) preserves both `libc6 2.39-0ubuntu8.9` findings as affected/Medium with no reported fixed version. [CVE-2026-18374](https://security-tracker.debian.org/tracker/CVE-2026-18374) requires attacker control of the character-set mode suffix passed to C `fopen`; selected Node paths use numeric flags or fixed modes, while opaque/transitive native consumers remain untraced. [CVE-2026-89092](https://security-tracker.debian.org/tracker/CVE-2026-89092) requires an enabled nscd service processing malicious oversized DNS answers. The qualified filesystem has no nscd paths and the fixed public fixture starts Prisma/Node without nscd socket mounts. This supports only that configured fixture's missing precondition.
+
+Debian lists maintained unstable fixes in glibc 2.43-5 and 2.43-7 respectively; neither is a qualified Noble replacement. Exact authenticated Noble source/patch correspondence and maintained fix-body applicability remain open. No build, exploit, package change, source patch, suppression or waiver follows. The scanner remains literal 1 with 12 Medium findings and security acceptance remains false.
+
+
+## 2026-10-16: exact Noble glibc source authenticated
+
+The [independent source review](../evidence/bortus-glibc-authenticated-source-root-20261016.json) authenticates glibc `2.39-0ubuntu8.9` through two successful Ubuntu archive-signature checks, the signed Sources index and all four archive digests. All 13 selected source/packaging files match those archives. All 116 declared distro patches are present; none touches the three affected files. The maintained official HTTPS fixes match one exact ordered context in `libio/fileops.c` and 19 in the two nscd daemon files. This supersedes the preceding source-authentication/context gap only.
+
+The first checker refusal (ambiguous `configure.ac` suffix) and corrected mirror-provenance wording remain retained. No patch application, compilation, replacement ABI/runtime result, fixed-package claim or security acceptance follows from this review. The image scan still reports literal 1 and 12 Medium findings. Opaque native consumers and final image qualification remain open; production and original migration data remain unchanged.
+
+
+## 2026-10-16: patched libc source held; no runtime replacement
+
+The [held source review](../evidence/bortus-glibc-held-source-root-20261016.json) verifies all 30 packet files, the 20,771-entry candidate TAR's content/metadata, byte-identical before/inverse inventories and header-coordinate-only differences in the maintained fixes. Delegated preparation applied all 116 distro patches plus two fixes; ROOT did not independently replay all 116 transformations. Earlier preparation refusals remain retained. No compiler, target, package install or new image ran.
+
+A custom libc build is deferred while the actual native consumers' mode-input boundaries are reviewed. Original A20 permits precise exceptions with expiry and does not require scanner zero. The proposed 2026-10-22 expiry is not accepted, no residual is waived, and all 12 Medium findings/literal scan 1 remain visible. Any later replacement must qualify prerequisites, matched loader/provider ABI, the fixed regression and actual consumers. Production and original migration data remain unchanged.
+
+
+## 2026-10-16: finite sequential diagnostic does not reproduce pauses
+
+The [one-case diagnostic](../evidence/bortus-metadata1000-serial12-diagnostic-root-20261016.json) completes 14 body checks and stage joins on isolated source `169107f`, including 12 sequential warm requests. Their maximum complete-body time is 13.758ms; the original 23–34ms pauses are not reproduced. Separate main/worker windows record 51.737/5.454ms thread CPU, include observation cost and have different endpoints. The only observed warm main-GC overlap is 1.034905ms at request 12; incomplete coverage prevents ruling GC in or out. No compression is observed.
+
+Independent checks and one finite final check pass: 147 current records, 26 prior births absent and two retained CID/name queries, with no final graph walk or new query. Source scan literal 1 for three precisely classified public Next checksums and all preparation refusals remain retained. Original benchmark results, all 44 clauses and all four ledgers remain unchanged. The diagnostic establishes no cause, optimization or performance acceptance. Secret lists follow warm Pods in each fresh server; unchanged Pods already reuse projection/JSON. No further timing replay is proposed; candidate169 remains isolated and unadopted, and A07 remains open.
+
+
+## 2026-10-16: bounded native mode review and scoped nscd residual
+
+The [native input review](../evidence/bortus-glibc-mode-boundary-root-20261016.json) checks 32 actual source files, 38 line excerpts and seven byte spans against the qualified image/context or original source. Seven native binary metadata rows remain bound to the earlier full-filesystem proof; no native binary is executed or newly rehashed. Reviewed Node file-open flags become POSIX integers. Prisma inputs are query fields/operator database configuration; Next image optimization passes permitted internal image bytes as a Buffer to sharp. No exposed C `fopen` mode option is identified, but opaque Prisma/SWC/libvips/codec/transitive mode construction remains unresolved. This is no whole-image unreachability claim.
+
+ROOT accepts only an expiring nscd residual for exact isolated image `cec6dc57` and its qualified public fixture: affected daemon modules are distinct from libc clients, no daemon path exists in the qualified filesystem, and the fixed entrypoint/mounts do not start or connect a mounted daemon. It expires 2026-10-22T23:59:59Z, sooner on a fixed-package/advisory change or changed image, provider, entrypoint, daemon/socket/mount/DNS boundary. It does not transfer to another image or authorize production. The `fopen` finding remains unresolved; all 12 Medium rows and literal scan 1 stay visible, with no suppression or whole-security acceptance. The initial excerpt checker LF-presentation refusal is retained. No source, image, live workload or original data changes.
+
+
+## 2026-10-16: custom dash COPY-only image candidate qualified
+
+The [new local assembly](../evidence/bortus-dash-copy-image-assembly-root-20261016.json) completes build, independent exact review and one fresh/final sequence with literal 0. It retains current9cb source/qualifiedd901 product, patched Node, PCRE and system zlib; only dash is replaced and one truthful provenance file added. Package status, aliases, libc and loader remain intact. The local Docker ID is `4a84c0b5`; raw OCI config/manifest, observed full filesystem, new-image runtime and default scan are still pending. The prospective inventory has 31,799 named paths; it is not an observed whole-filesystem count.
+
+Independent review verifies 24 source files, 27 actor records and nine owned files. The finite final checks 91 current records and seven prior process births absent, without a new graph walk, Docker query or reader-absence chain. Both source scans report zero findings. The current image remains unchanged; no container is started or image pushed/deployed by assembly. No fixed-package, UTF-8, security or performance acceptance follows. The nscd exception is not carried to this new image; fopen remains unresolved. Original acceptance clauses and data-preservation gates remain unchanged.
+
+
+## 2026-10-16: custom dash saved-image chain verified
+
+The [saved-image review](../evidence/bortus-dash-copy-image-export-root-20261016.json) verifies the 278449664-byte archive, 30 members and all 19 ordered layers. Local Docker ID `4a84c0b5`, raw config `79e6f768` and selected manifest `fa401b02` are distinct recorded identities. Export, independent parser and fresh/one-final checks exit 0; the final binds 120 current records and 13 prior process births absent, with no added graph traversal, Docker query or reader chain. The first ROOT checker's incorrect basis-path assumption remains retained; the corrected source review preserves all 20 helpers and changes only result semantics in the finite native program. Default source scan reports zero findings.
+
+This supersedes only the preceding raw OCI identity gap. Observed full filesystem, new-image startup/default scan and security acceptance remain pending. The scoped old-image nscd exception does not transfer. No image push, production change, benchmark replay or data retirement occurs.
+
+
+## 2026-10-16: actual AT startup fails before reader gate
+
+The [failed startup receipt](../evidence/bortus-a15-current-at-startup-failure-root-20261016.json) retains native/Windows exit 1, headed TimeoutError, the observed Chrome profile-error title and an unlocated native-stage SyntaxError. No BORTUS window binding, reader start or native UI input occurs. Original Windows cleanup reports an AssertionError and incomplete process absence; a later unchanged strict identity check confirms all 12 captured births absent. Native retained cleanup confirms all 80 CLI children reaped/absent, the exact container removed and supervisor closed. These later facts do not turn the original attempt into a pass. ROOT independently checks 19 retained record pins.
+
+The headed profile was under UNC output, unlike the earlier local NTFS placement. A reviewed one-line source proposal gives Chrome a fresh exclusive local NTFS profile and retains all cases, gates and time limits. This is a concrete repair proposal, not proof of the sole TimeoutError cause or a fix for the unlocated SyntaxError. No relaunch or actual AT acceptance follows this checkpoint. Production and original migration data remain unchanged.
+
+
+## 2026-10-16: custom dash image full filesystem verified
+
+The [ordered full-filesystem review](../evidence/bortus-dash-copy-image-fullfs-root-20261016.json) verifies all 19 saved layers against the complete current composition: 31,799 named paths plus the separately required structural root, 31,800 whole objects. Path and metadata mismatches are zero; the 6809476-byte inventory has SHA `e4ca8f67`. Original path, whiteout, hardlink, mode and ownership rules remain intact. No filesystem is extracted or target executed. Independent and fresh/one-final checks exit 0; the final binds 135 current records and 17 prior process births absent, with no added graph, query or reader chain. The initial ROOT metadata-key checker refusal remains recorded.
+
+This qualifies the exact saved image filesystem, including the custom dash/provenance rows and unchanged libc/loader. New-image runtime, default scan and security acceptance remain pending. No fixed-package or UTF-8 claim, transferred nscd exception, benchmark replay, deployment or data retirement follows.
+
+
+## 2026-10-16: actual AT blocked by supported window-state access
+
+The [local-profile attempt](../evidence/bortus-a15-current-at-owner-blocked-root-20261016.json) reaches BORTUS/configuration. Official Windows automation returns one Chrome window; id-only get_window returns the exact same app/id/title. Its get_window_state then rejects ownership with “no longer belongs to Chrome; current owner is Chrome.” One permitted fresh-window/explicit-app recovery fails with the same message. ROOT records the exact calls, aborts and sends no native input or START-READER. The internal helper cause is unresolved; no bypass or further unchanged retry is scheduled. Actual AT remains blocked.
+
+Both original controllers exit 1. The original Windows Job confirms all 18 captured births absent and all handles closed; native cleanup confirms 53 recorded children reaped/absent, exact container removed and supervisor closed. The missing headed terminal is not treated as browser success. ROOT checks all 15 retained record pins. Earlier profile-timeout, stage SyntaxError and owner-abort failures remain preserved. No reader, production or original migration data change occurs.
+
+
+## 2026-10-16: new dash image runtime and default scan completed
+
+The [exact-image runtime](../evidence/bortus-dash-copy-image-runtime-root-20261016.json) passes the original 12 public checks on local image `4a84c0b5`: original entrypoint, Prisma migration/client, native loading, login/session, readonly/write gates and fresh permission revocation. The first independent reader fails before queries because preparation replaced the wrong authority list. Its incorrect guard-retention claim is corrected: all six original authority rows are restored, and only the later five fullFS metadata rows rebound. The application tests are not replayed. Corrected exact/fresh/one-final checks pass; the final binds 241 records and 43 prior births absent, retaining only the original two CID/name queries. New-image public TLS/client semantics, performance and adoption remain separate.
+
+The [unchanged default scan](../evidence/bortus-dash-copy-image-default-scan-root-20261016.json) returns literal 1 with no orchestration failure: 12 Medium rows, zero secret findings and no reported fixed version. Package rows remain dash2/libc2/PCRE7/zlib1. A fresh default DB, all severities/unfixed findings and empty ignore/secret configurations are preserved. Independent and one finite final checks pass, binding 157 records and 22 prior births absent, without a final graph or query. No suppression, rescan, new-image nscd exception or fixed-package claim follows. Security acceptance, production rollout and original data retirement remain open.
+
+
+## 2026-10-16: exact new-image public SDK/Node TLS4 qualified
+
+The [public TLS4 review](../evidence/bortus-dash-copy-image-public-tls4-root-20261016.json) passes all four original cases on image `4a84c0b5`: trusted server succeeds; wrong CA, wrong SAN and missing client certificate refuse before an HTTP request. Actual GET counts are 1/0/0/0. Original synthetic material, complete-lease validity guard, fixture, limits and all authority loops remain unchanged. Actor and independent checks exit 0; one finite final check binds 241 current records and 37 prior process births absent, retaining only the original two CID/name queries. The exact container is removed.
+
+The default source scan remains literal 1 for four exact private-key spans in the unchanged synthetic fixture. ROOT classifies the exact badca/badsan/client/server positions against the qualified material hash; no values are published, no production/operator material used and no finding suppressed or scan replayed. Earlier preparation/checker refusals remain recorded. This qualifies public SDK authentication and Node TLS compatibility only. Production SecretTransport/private recovery, broad weak-symbol semantics, security, performance, actual AT and adoption remain unqualified. Original data and production are unchanged.
+
+
+## 2026-10-18: current-boot cluster and storage status
+
+The [read-only health snapshot](../evidence/bortus-live-health-root-20261018.json) records three Ready nodes,54 Bound PVCs,34 Ready Helm releases and both Flux sources Ready at retained revisions. The [storage/workload snapshot](../evidence/bortus-live-storage-workload-root-20261018.json) records91 Running/6 Succeeded Pods, no unhealthy Pod entries,30 attached healthy Longhorn volumes and10 detached/unknown volumes. BORTUS remains1/1 on `docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879`; candidate4a84 is not deployed.
+
+Observations are from14:30–14:31 UTC under new WSL boot6f0249c6-a446-44f3-a9ba-6b368b297b4e. Historical process closures are not current-boot assertions. The [first query refusal](../evidence/bortus-live-health-first-query-refusal-root-20261018.json) remains retained; preserving literal JSONPath escapes in the generated Python corrects the harness without changing query/timeout bounds. No Secret API/value output or writes occurred. Health, Bound status and Longhorn robustness are metadata evidence, not restore/data-integrity or complete migration acceptance. No original-data retirement follows.
+
+
+## 2026-10-18: updated helper still blocks actual BORTUS AT
+
+The [generic Chrome helper probe](../evidence/bortus-a15-supported-helper-probe-root-20261018.json) obtains current state and closes its window through supported keyboard input; indexed input refuses its cached element after one refreshed retry. It does not establish the requested executable's process ownership or actual AT. A separately reviewed fresh controlled BORTUS fixture then reaches `/configuration` in ChromeTesting149.0.7827.55, using the retained d901 build and selected9cb source. All30 frozen files,14 native payloads and18 Windows inputs match. Source scanning returns0/zero; current native tools/boot and exact base-image availability pass. Original five manual cases,zero automated cases,resource limits and480/60-native,420-fixture,120-Windows,110-headed bounds remain unchanged.
+
+The [actual attempt](../evidence/bortus-a15-current-at-owner-blocked-root-20261018.json) fails before START-READER. `get_window({id:17370190})` returns the exact selected ChromeTesting Window, then state capture refuses: `window id 17370190 no longer belongs to Chrome; current owner is Chrome`. Fresh selection and the single explicit-app recovery produce the same refusal. ROOT stops; no NVDA, fixture input or speech observation occurs. Both controllers return1. Original closure records show65 native CLI children closed, exact owned container removed,17 Windows births non-live, empty Job and closed handles. Two signaled Chrome objects remain queryable; no all-births-absent claim follows. The headed terminal is missing, as in the earlier failed attempt. Its ready record is pending1, not a browser pass.
+
+ROOT independently verifies15 finite record pins and retained source/input checks; peer review matches all65 CLI output hashes. No added process graph, Docker query, historical-boot reassignment or reader-absence chain follows. Initial ROOT READY-reader mistakes are retained in the receipt and corrected from the actual schema without restarting the fixture or changing bounds. Actual A15 announcements remain unproved and blocked on official helper access. No further unchanged AT retry, source adoption, production change or original-data retirement is scheduled.
+
+The first controller preflight stopped at an invalid raw-byte equality between
+raw-Git LF and compiled-workspace CRLF inputs, before any Docker command.
+All296 source bindings differ only by CRLF in284 files; no other delta was
+observed. The original333/41723 comparison is retained and is not repeated;
+a distinct reviewed continuation uses that exact comparison and validates the
+line-ending relationship separately. Original failure and controller remain.
+
+
+The single constrained assembly completed and its20-layer archive verified.
+Local Docker load returned0, but the following tag-name inspection refused.
+Read-only lookup by the exact generated manifest found the image and original
+tag. The controller failure is retained; its exact container was removed.
+A separate digest verification/local canonical-alias correction and export are
+being prepared, without rebuilding, reloading or replaying the assembly.

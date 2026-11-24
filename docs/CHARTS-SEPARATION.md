@@ -1,5 +1,12 @@
 # Separate charts repository and Flux delivery
 
+This document records the original 2026-10-10 chart-separation checkpoint.
+Later BORTUS image/schema/principal changes and current release gates are tracked
+in [migration operations](MIGRATION-OPERATIONS.md); the historical image, grants
+and rollback paths below must not override those gates. `scripts/charts/` is the
+retained historical implementation, not a current acceptance-regeneration or
+cutover command. No new live action follows this merge.
+
 Completed live cutover/canary verification on 2026-10-10. Historical extraction
 checkpoint: `373a1e513e1bfb8b13ed5212ccc1b0f57a5ff301` from branconet-homelab.
 Private repository: https://github.com/jtmb/branconet-charts.
@@ -22,7 +29,8 @@ Private repository: https://github.com/jtmb/branconet-charts.
 
 The HTTP echo claim UID, volume, Deployment UID, image digest and response SHA256
 were identical before canary, after rollout and after rollback. The three observed
-Pod UIDs are recorded in evidence/canary.json. Only the Pod annotation changed.
+Pod UIDs are recorded in the charts repository's historical `evidence/canary.json`.
+Only the Pod annotation changed.
 
 Application/TLS limits: route probes verify public-domain certificate chains;
 existing LAN .lan/.local default certificates are explicitly unverified.
@@ -34,11 +42,13 @@ The original chart publisher is removed from the old migration workflow; its
 remaining archival validation cannot promote a deployment source. Recovery
 Ansible defaults require the new native source Secret and target the new source;
 syntax check passed without host reprovisioning. Final publication/revisions and
-old workflow deactivation are recorded in evidence/publication.json after push.
+old workflow deactivation were recorded in the charts repository's historical
+`evidence/publication.json`.
 
-Current BORTUS remains bortus:migration-1438b27 with pullNever, one Recreate
-replica, unchanged native Secrets/RBAC and Longhorn SQLite claim. The separately
-developed BORTUS image/engine is not rolled out by this setup. Native Secret values,
+At that original checkpoint, BORTUS used `bortus:migration-1438b27` with pullNever,
+one Recreate replica, unchanged native Secrets/RBAC and Longhorn SQLite claim.
+The separately developed BORTUS image/engine was not rolled out by that setup.
+Current images and release gates remain linked in [migration operations](MIGRATION-OPERATIONS.md). Native Secret values,
 private keys, kubeconfigs and databases are absent from both repositories and all
 reports. Swarm/Gluster/data/claim/encryption/backup recovery sources remain intact.
 

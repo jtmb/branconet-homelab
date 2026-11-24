@@ -1,0 +1,60 @@
+{
+  "abi": 1,
+  "observed_utc": "2026-10-12T20:30:25.472771+00:00",
+  "source": "2216fa62acf642862517dbda884c345197e540ed",
+  "scope": "successful component commands and independently verified partial artifacts; original wrapper failures remain failures",
+  "install": {
+    "command_exit": 0,
+    "original_wrapper_exit": 1,
+    "cause": "absence guard required uppercase No such object; actual Docker error was lowercase",
+    "originals_retained": 95,
+    "owned_identity_absence_verified": 31,
+    "compile_dispatched_in_failed_install_run": false
+  },
+  "compile_continuation": {
+    "npm_build_exit": 0,
+    "npm_prune_exit": 0,
+    "native_elf_sha256": "8dde4ce66cf7045bfa7d5c0c0fb8ad3ff3d98809fbe24b76487b520ea664f6c2",
+    "native_require_loaded_before_prune": true,
+    "actual_supervisor_and_container_exit": 1,
+    "cause": "post-prune source-lock equality guard refused actual npm libc metadata removal",
+    "source_after_prune_unchanged": false,
+    "original_absolute_deadline_monotonic": 335615.965441003,
+    "original_component_commands_replayed": false
+  },
+  "lock_delta": [
+    {
+      "path": "package-lock.json",
+      "originalSHA256": "32b54a6453b70a6438e5a1ed2f0e7a49cc1c971418bdd6eebb29cef4e9c0654c",
+      "actualSHA256": "24df33446525f6c882a4e856a13643f7ba47055f3e46f54f010ecb3438b2cff2"
+    }
+  ],
+  "independent_graph_comparison": {
+    "all584_package_entries_all_other_json_fields_identical": true,
+    "removed_libc_metadata_fields": 30,
+    "installed_before": 501,
+    "installed_after": 189,
+    "removed_packages": 312,
+    "all_removed_dev": true,
+    "remaining_versions_integrity_and_dependency_graphs_match_original_input": true
+  },
+  "current_complete_manifests": {
+    ".next": {
+      "objects": 5350,
+      "regularFiles": 4263
+    },
+    "node_modules": {
+      "objects": 29814,
+      "regularFiles": 27749
+    }
+  },
+  "fresh_owned_identity_absence": 53,
+  "originals_verified_crc_bytes_sha": 458,
+  "immutable_handoff_sha256": "4fdfdef756d3887e5ab870d55bcfd80cd525ce9430a3edf9e0a37be76021c631",
+  "immutable_originals_zip_sha256": "1836b855293df05b5f8d82d8e3557f8491f3eb3d126ea2026e1279d0df4a809f",
+  "root_current_review_sha256": "06855a8a9e80f32450c6000706f6dff93891e06b63f9b9680b2f7d5aa14f45c2",
+  "packaging_rule": "separate COPY-only owner selects exact compiled/pruned/native/prisma/public/entrypoint objects; original raw lock remains source authority; pruned changed lock is separately declared runtime metadata",
+  "image_runtime_security_acceptance": false,
+  "deployment": false,
+  "overall_acceptance": false
+}

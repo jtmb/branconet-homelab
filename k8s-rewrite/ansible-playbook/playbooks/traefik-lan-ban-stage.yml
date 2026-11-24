@@ -1,0 +1,44 @@
+---
+- name: Stage the Traefik LAN ban bridge on the existing ingress workers
+  hosts: worker
+  serial: 1
+  any_errors_fatal: true
+  become: true
+  tasks:
+    - name: Install the bridge and firewall client
+      ansible.builtin.copy:
+        src: branconet-traefik-ban.py
+        dest: /usr/local/libexec/branconet-traefik-ban
+        owner: root
+        group: root
+        mode: "0755"
+        validate: /usr/bin/python3 -B %s --help
+
+    - name: Install the socket directories, Fail2Ban action, and inactive reader units
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: root
+        group: root
+        mode: "0644"
+      loop:
+        - src: branconet-traefik-lan-bridge.tmpfiles
+          dest: /etc/tmpfiles.d/branconet-traefik-lan-bridge.conf
+        - src: branconet-traefik-lan-shared.conf
+          dest: /etc/fail2ban/action.d/branconet-traefik-lan-shared.conf
+        - src: branconet-traefik-lan-sync.service
+          dest: /etc/systemd/system/branconet-traefik-lan-sync.service
+        - src: branconet-traefik-lan-sync.timer
+          dest: /etc/systemd/system/branconet-traefik-lan-sync.timer
+
+    - name: Create only the dedicated bridge socket directories
+      ansible.builtin.command:
+        argv:
+          - systemd-tmpfiles
+          - --create
+          - /etc/tmpfiles.d/branconet-traefik-lan-bridge.conf
+      changed_when: false
+
+    - name: Load the reader unit definitions
+      ansible.builtin.systemd_service:
+        daemon_reload: true

@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "status": "Three public historical-proof boot controls qualified; private recovery remains unaccepted",
+  "historicalProofBoot": "7fbd3ead-db6c-4422-8cde-63afd93dabec",
+  "currentLaunchBoot": "19d54e89-533f-46e2-b89d-25657251c8d7",
+  "callerSHA256": "c16785e3a5b5cdbb5f1d0f2af24ea947bbc38afa504f096af5271fdf446c668e",
+  "changedQualificationFunctions": [
+    "diagnostic_material_qualification",
+    "checkpoint_qualification"
+  ],
+  "otherRuntimeRowsUnchanged": 246,
+  "privatePhaseAndRunOnceUnchanged": true,
+  "sameHolderAndTCPGateSHA256": "8f4ecc91c63ced5ec7a0b650baf4a5428088501c705e588f016ac1d3a511728a",
+  "diagnosticMaterialSHA256": "4cf934998f02d913c40c97da8fb98526c32af148fafe3b220cd8cbed8eb001b3",
+  "liveBudgetSecondsUnchanged": 600,
+  "scope": "Historical completed proofs keep their literal original boot and exact hashes. New active execution still requires the literal current boot; old PID identities are never interpreted on the new boot.",
+  "controls": [
+    "Exact old proof/current launch succeeds; old body refuses; inverse recovers qualified original caller exactly.",
+    "Wrong launch boot, wrong historical proof boot, failed proof and byte tampering refuse.",
+    "Current graph, material, deadline and final pin guards remain enforced."
+  ],
+  "actualTool": "d7afd3",
+  "actualExit": 0,
+  "testExit": 0,
+  "groupsPassed": 3,
+  "testStderrBytes": 612,
+  "old63AndSixControlSuitesReplayed": false,
+  "independentTool": "60ab7d",
+  "independentExit": 0,
+  "laterTool": "df28ac",
+  "laterExit": 0,
+  "rootOwnTool": "d8b93b",
+  "rootOwnExit": 0,
+  "rootOwnReceiptSHA256": "37eb988411a288cc8e731cecd8ca93138fea31688ba5d5c9e110473290355569",
+  "rootFinalFreshTool": "c39afd",
+  "rootFinalFreshExit": 0,
+  "currentSourceAndOutputPins": 260,
+  "historicalFixtureFilesCurrent": 237,
+  "newSourceFilesIncludingManifest": 8,
+  "actorAndObserverBirthsAbsent": 4,
+  "threeWindowsDispatchersNotLive": true,
+  "finalReaderAbsent": true,
+  "historicalBoundarySixCorrespondence": {
+    "tool": "1eb7d1",
+    "actualExit": 0,
+    "currentPublicRecords": 14,
+    "historicalOutputRecords": 13,
+    "nativeFDAndFullFP9HashChecks": true,
+    "receiptSHA256": "4ff0ba7dea578980825358da701757c4b75fa3e4e73e0aa41dfae2200984f263",
+    "historicalPIDsQueried": false,
+    "controlsReplayed": false
+  },
+  "defaultSourceScans": [
+    { "tool": "e82b04", "exit": 0, "findings": 0, "files": 25 },
+    { "tool": "0fb226", "exit": 0, "findings": 0, "files": 3 },
+    { "tool": "bb93cb", "exit": 0, "findings": 0, "files": 6 },
+    { "tool": "0cc2bf", "exit": 0, "findings": 0, "files": 6 }
+  ],
+  "retainedStagingRefusals": [
+    "d68462/1: native exit2 with181 stderr bytes not retained; later witness shows Windows script/packet paths invisible through /mnt/c. No staged source or test existed. Dependent bbaf5c guarded refusal executed no target.",
+    "240e00/1: Windows path-stat and descriptor-stat ctime differed. The corrected wrapper preserves separate complete before/after fingerprints and cross-compares common identity fields; captured hashes remain exact.",
+    "A root inline generator quoting error and dependent missing-file calls occurred before source creation or scanner/test execution; original failures remain retained.",
+    "f309bf/1: new stager incorrectly required shared runtime0700; current protected ancestor is0755. Source staging42df32/0 requires exact current0755/UID1000/GID1000, leaves private source0700 and files0600, and performs no chmod."
+  ],
+  "privateInputsRead": false,
+  "networkExecuted": false,
+  "actualRecoveryAccepted": false,
+  "previousPrivate831FailureCause": "Still unknown; original stage8/type2 remains unchanged",
+  "productionChanged": false,
+  "originalDataAndBackupsPreserved": true
+}

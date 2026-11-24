@@ -1,0 +1,248 @@
+{
+  "GCcoverageComplete": false,
+  "SQLQueries": 41,
+  "actorOuterExit": 0,
+  "actorOuterTool": "d5840e",
+  "analysisSHA256": "e5f6bf3f191f1594d234d59eade3bc927db04e95b678169b3c5639b1804b688b",
+  "clientCPUSamples": 39,
+  "compiledAppQualifiedByThisTrace": false,
+  "compiledObjects": 5382,
+  "dependencyObjects": 40635,
+  "exactContainerNameAndIDAbsent": true,
+  "exactPostExit": 0,
+  "exactPostTool": "928ca9",
+  "exactReceiptSHA256": "46f15f9e427e6f91ae02be09e90f874fee212f84bd85b0286e770fefb96d7a79",
+  "freshPostExit": 0,
+  "freshPostTool": "83c6e2",
+  "freshReceiptSHA256": "24a244d182e781da26a09b60fbbfa198ff64cbb7ae213d6e6102c2ce94933a29",
+  "freshRecordedIdentitiesAbsent": 19,
+  "generatedExtras": 4,
+  "inputsCurrent": 35,
+  "laterPostExit": 0,
+  "laterPostTool": "003aec",
+  "laterReaderAndQueryBirthsAbsent": 3,
+  "laterReceiptSHA256": "7043202bd187e3d9b33c9d5309904792d82f39308da02fd6838d0c4c7211996d",
+  "mainCPUSamples": 130,
+  "memoHits": 12,
+  "narrowCPUAboveWallCounts": {
+    "IPCwait": 6,
+    "clientOracle": 7,
+    "middlewareToRoute": 2,
+    "route": 3
+  },
+  "narrowCounterDeltasDoNotAttributeCPUOrProveIdle": true,
+  "nextDiagnostic": "bounded compiled-server function CPU profile with workload and original benchmark unchanged",
+  "nextSpans": 26,
+  "numericFiles": {
+    "numeric-cpu-gc-13-0.json": "80ecd83eaae86d101c41b0ea942ba76e59bf64f7830367629309426a23eb0332",
+    "numeric-cpu-gc-71-0.json": "90f745cd7c2bd4bb2e5f861a1f40a553c0a6d0662e72b39d36e481958ab30d4f",
+    "numeric-cpu-gc-71-1.json": "696537f62390aa1cd6cc9645a5690e3948924eab61db8f484c3439fdc5a100a6"
+  },
+  "observedGCEntryCounts": [
+    56,
+    1,
+    11
+  ],
+  "performanceAccepted": false,
+  "podsEach": 1000,
+  "productionAdopted": false,
+  "requests": 13,
+  "samplingAndCallbackOverheadPresent": true,
+  "scope": "one diagnostic observation only; unchanged original benchmark remains failed",
+  "source": "4df4d3251715dae689420a9f6242263aeb9bdbee",
+  "sourceFilesCurrent": 371,
+  "sourceRemedyJustified": false,
+  "terminalSHA256": "bd83e71e80f3e629c3060e4b69288dd45b5709c449a2fb2d94cfac4b8f2c5fdd",
+  "warmCLIRequests": 0,
+  "warmHTTPMediansIndependentlyRecomputed": {
+    "threadCPUUs": 2324.5,
+    "wallLowerUs": 4903.0,
+    "wallUpperUs": 4940.0
+  },
+  "warmHTTPRowsIndependentlyRecomputed": [
+    {
+      "request": 2,
+      "threadCPUUs": 5415,
+      "wallLowerUs": 7309,
+      "wallUpperUs": 7384
+    },
+    {
+      "request": 3,
+      "threadCPUUs": 4905,
+      "wallLowerUs": 5956,
+      "wallUpperUs": 5984
+    },
+    {
+      "request": 4,
+      "threadCPUUs": 4503,
+      "wallLowerUs": 7889,
+      "wallUpperUs": 7916
+    },
+    {
+      "request": 5,
+      "threadCPUUs": 1623,
+      "wallLowerUs": 5282,
+      "wallUpperUs": 5333
+    },
+    {
+      "request": 6,
+      "threadCPUUs": 3304,
+      "wallLowerUs": 4524,
+      "wallUpperUs": 4547
+    },
+    {
+      "request": 7,
+      "threadCPUUs": 2282,
+      "wallLowerUs": 4436,
+      "wallUpperUs": 4453
+    },
+    {
+      "request": 8,
+      "threadCPUUs": 4960,
+      "wallLowerUs": 7126,
+      "wallUpperUs": 7145
+    },
+    {
+      "request": 9,
+      "threadCPUUs": 2367,
+      "wallLowerUs": 5752,
+      "wallUpperUs": 5771
+    },
+    {
+      "request": 10,
+      "threadCPUUs": 1331,
+      "wallLowerUs": 4153,
+      "wallUpperUs": 4172
+    },
+    {
+      "request": 11,
+      "threadCPUUs": 2169,
+      "wallLowerUs": 3664,
+      "wallUpperUs": 3680
+    },
+    {
+      "request": 12,
+      "threadCPUUs": 890,
+      "wallLowerUs": 3217,
+      "wallUpperUs": 3233
+    },
+    {
+      "request": 13,
+      "threadCPUUs": 749,
+      "wallLowerUs": 4343,
+      "wallUpperUs": 4359
+    }
+  ],
+  "wholeWarmWindows": {
+    "clientWarmReq2To13IncludingOracle": {
+      "eluActiveUs": 86166.6719977461,
+      "eluIdleUs": 43262.42899999989,
+      "endpointBracketUs": 21,
+      "observedGC": [
+        {
+          "deliveryAfterEndUs": 101.25899964532437,
+          "durationUs": 8520.778000354767,
+          "kind": 1,
+          "ordinal": 5,
+          "overlapUs": 8520.778000354767
+        },
+        {
+          "deliveryAfterEndUs": 109.78899949805054,
+          "durationUs": 8332.96100050211,
+          "kind": 1,
+          "ordinal": 6,
+          "overlapUs": 8332.96100050211
+        },
+        {
+          "deliveryAfterEndUs": 13289.888998103379,
+          "durationUs": 168.14900189638138,
+          "kind": 8,
+          "ordinal": 7,
+          "overlapUs": 168.14900189638138
+        },
+        {
+          "deliveryAfterEndUs": 79.50000071696195,
+          "durationUs": 1252.9329992830753,
+          "kind": 4,
+          "ordinal": 8,
+          "overlapUs": 1252.9329992830753
+        },
+        {
+          "deliveryAfterEndUs": 805.4859974577084,
+          "durationUs": 429.5780025422573,
+          "kind": 1,
+          "ordinal": 9,
+          "overlapUs": 429.5780025422573
+        },
+        {
+          "deliveryAfterEndUs": 83.00999817538468,
+          "durationUs": 368.2680018246174,
+          "kind": 1,
+          "ordinal": 10,
+          "overlapUs": 368.2680018246174
+        },
+        {
+          "deliveryAfterEndUs": 645.7170023704748,
+          "durationUs": 691.8669976294041,
+          "kind": 1,
+          "ordinal": 11,
+          "overlapUs": 691.8669976294041
+        }
+      ],
+      "observedGCOverlapUs": 19764.534004032612,
+      "processCPUUs": 120754,
+      "threadCPUGreaterThanWallUpper": false,
+      "threadCPUUs": 56814,
+      "wallLowerUs": 129418,
+      "wallUpperUs": 129439
+    },
+    "serverWarmFromReq2StartTo13Finish": {
+      "eluActiveUs": 62451.46600091266,
+      "eluIdleUs": 63335.10199999999,
+      "endpointBracketUs": 70,
+      "observedGC": [
+        {
+          "deliveryAfterEndUs": 113.81999883451499,
+          "durationUs": 1356.1340011656284,
+          "kind": 1,
+          "ordinal": 55,
+          "overlapUs": 1356.1340011656284
+        },
+        {
+          "deliveryAfterEndUs": 108.57899878806165,
+          "durationUs": 1546.9730012118816,
+          "kind": 1,
+          "ordinal": 56,
+          "overlapUs": 1546.9730012118816
+        }
+      ],
+      "observedGCOverlapUs": 2903.10700237751,
+      "processCPUUs": 75746,
+      "threadCPUGreaterThanWallUpper": false,
+      "threadCPUUs": 57820,
+      "wallLowerUs": 125731,
+      "wallUpperUs": 125801
+    },
+    "workerWarmReq2To13Send": {
+      "eluActiveUs": 8716.589000620388,
+      "eluIdleUs": 112842.04799999998,
+      "endpointBracketUs": 28,
+      "observedGC": [
+        {
+          "deliveryAfterEndUs": 3916.8009975223868,
+          "durationUs": 740.8770024776459,
+          "kind": 1,
+          "ordinal": 1,
+          "overlapUs": 740.8770024776459
+        }
+      ],
+      "observedGCOverlapUs": 740.8770024776459,
+      "processCPUUs": null,
+      "threadCPUGreaterThanWallUpper": false,
+      "threadCPUUs": 8363,
+      "wallLowerUs": 121545,
+      "wallUpperUs": 121573
+    }
+  },
+  "workerCPUSamples": 91
+}

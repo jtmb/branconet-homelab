@@ -1,0 +1,340 @@
+{
+  "status": "QUALIFIED_ORIGINAL_COMPARISON_PERFORMANCE_GATE_FAILED",
+  "rootPublicationPending": false,
+  "source": "169107f1940e702f32d275265a48c701babc9a10",
+  "frontendTree": "79433a2c0bf35fb248a3c57b80dcd38d7b3b706a",
+  "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "actor": {
+    "dispatchTool": "fab539",
+    "actualFinalTool": "a098f7",
+    "actualExit": 0,
+    "startedUtc": "2026-10-16T10:25:17.100490+00:00",
+    "completedUtc": "2026-10-16T10:30:57.352549+00:00",
+    "businessPassed": true,
+    "observations": 6,
+    "profilesPerObservation": 6,
+    "originalAlternatingOrder": [
+      "B1",
+      "C1",
+      "C2",
+      "B2",
+      "B3",
+      "C3"
+    ]
+  },
+  "originalProtocol": {
+    "runs": 3,
+    "inputs": 66,
+    "sevenImmutableSourcesExact": true,
+    "totalSeconds": 5430,
+    "runtimeCPUs": 2,
+    "runtimeBytes": 1073741824,
+    "buildCPUs": 4,
+    "buildBytes": 4294967296,
+    "pids": 256,
+    "swap": 0,
+    "originalOraclesFixturesBoundsUnchanged": true,
+    "noExtraObservationsOrTrimmingOrTolerance": true
+  },
+  "independent": {
+    "tool": "5b955d",
+    "exactExit": 0,
+    "freshExit": 0,
+    "exportedSourceFiles": 452,
+    "originalSummaryRecomputed": true,
+    "birthsAbsent": 11,
+    "exactNameQueries": 8,
+    "retainedCIDQueries": 0,
+    "dispatcherPIDOnly": true
+  },
+  "oneFinal": {
+    "tool": "899bbf",
+    "actualExit": 0,
+    "currentPins": 57,
+    "birthsAbsent": 20,
+    "retainedNameQueries": 8,
+    "newQueries": 0,
+    "graphsRewalked": false,
+    "noFurtherSelfAbsenceClaim": true
+  },
+  "warmGate": {
+    "comparisons": 10,
+    "lower": 8,
+    "equal": 0,
+    "regressions": 2,
+    "passed": false,
+    "originalNoRegressionRuleUnchanged": true
+  },
+  "failures": [
+    {
+      "fixture": "metadata-200",
+      "phase": "warm-pods-12",
+      "baselineP95": {
+        "median": 6.2673219999996945,
+        "min": 6.219553000000815,
+        "max": 7.35457999999926
+      },
+      "candidateP95": {
+        "median": 6.36811200000011,
+        "min": 6.018803000000844,
+        "max": 7.178398000000016
+      },
+      "medianDifference": 0.1007900000004156,
+      "medianPercentChange": 1.608182888966292,
+      "regresses": true,
+      "untrimmedThreeRuns": {
+        "baseline": [
+          {
+            "run": 1,
+            "p95": 6.219553000000815,
+            "requests": 12,
+            "workflow_ms": 60.38172300000042,
+            "cgroup_cpu_ms": 72.658,
+            "server_cpu_ms": 50.0,
+            "cli": 0,
+            "native": 0
+          },
+          {
+            "run": 2,
+            "p95": 6.2673219999996945,
+            "requests": 12,
+            "workflow_ms": 55.932136999999784,
+            "cgroup_cpu_ms": 69.545,
+            "server_cpu_ms": 60.0,
+            "cli": 0,
+            "native": 0
+          },
+          {
+            "run": 3,
+            "p95": 7.35457999999926,
+            "requests": 12,
+            "workflow_ms": 67.85872199999903,
+            "cgroup_cpu_ms": 83.101,
+            "server_cpu_ms": 60.0,
+            "cli": 0,
+            "native": 0
+          }
+        ],
+        "candidate": [
+          {
+            "run": 1,
+            "p95": 6.018803000000844,
+            "requests": 12,
+            "workflow_ms": 54.95580700000028,
+            "cgroup_cpu_ms": 70.291,
+            "server_cpu_ms": 50.0,
+            "cli": 0,
+            "native": 0
+          },
+          {
+            "run": 2,
+            "p95": 6.36811200000011,
+            "requests": 12,
+            "workflow_ms": 56.52793299999939,
+            "cgroup_cpu_ms": 71.841,
+            "server_cpu_ms": 60.0,
+            "cli": 0,
+            "native": 0
+          },
+          {
+            "run": 3,
+            "p95": 7.178398000000016,
+            "requests": 12,
+            "workflow_ms": 61.310373999998774,
+            "cgroup_cpu_ms": 77.366,
+            "server_cpu_ms": 50.0,
+            "cli": 0,
+            "native": 0
+          }
+        ]
+      }
+    },
+    {
+      "fixture": "metadata-1000",
+      "phase": "warm-pods-12",
+      "baselineP95": {
+        "median": 8.427828999998383,
+        "min": 8.124526999999944,
+        "max": 10.554729999999836
+      },
+      "candidateP95": {
+        "median": 24.133182999999917,
+        "min": 23.74114499999996,
+        "max": 34.31653600000027
+      },
+      "medianDifference": 15.705354000001535,
+      "medianPercentChange": 186.35112316593688,
+      "regresses": true,
+      "untrimmedThreeRuns": {
+        "baseline": [
+          {
+            "run": 1,
+            "p95": 8.124526999999944,
+            "requests": 12,
+            "workflow_ms": 83.42950000000019,
+            "cgroup_cpu_ms": 112.919,
+            "server_cpu_ms": 70.0,
+            "cli": 0,
+            "native": 0
+          },
+          {
+            "run": 2,
+            "p95": 8.427828999998383,
+            "requests": 12,
+            "workflow_ms": 84.09552299999996,
+            "cgroup_cpu_ms": 115.525,
+            "server_cpu_ms": 70.0,
+            "cli": 0,
+            "native": 0
+          },
+          {
+            "run": 3,
+            "p95": 10.554729999999836,
+            "requests": 12,
+            "workflow_ms": 100.44392899999912,
+            "cgroup_cpu_ms": 136.977,
+            "server_cpu_ms": 90.0,
+            "cli": 0,
+            "native": 0
+          }
+        ],
+        "candidate": [
+          {
+            "run": 1,
+            "p95": 24.133182999999917,
+            "requests": 12,
+            "workflow_ms": 127.7383579999987,
+            "cgroup_cpu_ms": 197.567,
+            "server_cpu_ms": 150.0,
+            "cli": 0,
+            "native": 0
+          },
+          {
+            "run": 2,
+            "p95": 23.74114499999996,
+            "requests": 12,
+            "workflow_ms": 113.98543599999903,
+            "cgroup_cpu_ms": 205.472,
+            "server_cpu_ms": 140.0,
+            "cli": 0,
+            "native": 0
+          },
+          {
+            "run": 3,
+            "p95": 34.31653600000027,
+            "requests": 12,
+            "workflow_ms": 130.61349800000062,
+            "cgroup_cpu_ms": 198.486,
+            "server_cpu_ms": 150.0,
+            "cli": 0,
+            "native": 0
+          }
+        ]
+      }
+    }
+  ],
+  "wholeFixture": {
+    "baseline": {
+      "cgroup_peak_mib": {
+        "median": 357.77734375,
+        "min": 355.1171875,
+        "max": 363.59765625
+      },
+      "cgroup_cpu_seconds": {
+        "median": 34.292826,
+        "min": 33.436257,
+        "max": 34.411162
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    },
+    "candidate": {
+      "cgroup_peak_mib": {
+        "median": 432.14453125,
+        "min": 428.99609375,
+        "max": 439.6796875
+      },
+      "cgroup_cpu_seconds": {
+        "median": 28.936958,
+        "min": 28.699025,
+        "max": 29.457874
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    }
+  },
+  "sourceSummaryAuthority": "Original summarize.py94983e4f9d5d5a167ff6435098daa4bfbe9f618995af7dec8b0a742c92f238a6; actual0e7899/0. Frozen descriptive summary-once/0 alias is not an additional tool identity.",
+  "history": {
+    "sourceAndPacketScansLiteral0": true,
+    "postAuthor6831f4": "Refused preserved original runner output filename after writing only new review source; corrected author100d65 proved partial source bytes exact and wrote fresh output coordinate. No reader/target ran in failed author.",
+    "finalScanner": {
+      "actualExit": 1,
+      "findings": 2,
+      "classifiedPublicGitIdentifiers": 2,
+      "unresolved": 0,
+      "reportSHA256": "498bfe7b952b34950773bfd9041c885392d1dd3ff42b745f19df6e3e4ece112e",
+      "originalPreStageRefusal": "39de5f/1",
+      "noRescanOrSuppression": true
+    }
+  },
+  "fullFunctionalQualifiedSeparately": true,
+  "fullFunctionalReceiptSHA256": "c69fa268de80ae9df4543bbd78472b327a92cf1d03d4427c7aa1c79a6b56a51b",
+  "overallComparisonNotAllocationOnlyCausality": true,
+  "originalA07Accepted": false,
+  "performanceAccepted": false,
+  "imageOrProductionAdopted": false,
+  "pins": [
+    {
+      "linuxPath": "/home/brajam/.cache/bortus-controlled-perf/paired-account-snapshot-20261016-v1/terminal.json",
+      "bytes": 3060,
+      "sha256": "6c3a4450cbca78de96b187addba543c31e05495f29563f7b5b83fda8daa45cb9"
+    },
+    {
+      "linuxPath": "/home/brajam/.cache/bortus-controlled-perf/paired-account-snapshot-20261016-v1/dispatch-owned.json",
+      "bytes": 403,
+      "sha256": "e9deb23facb0e21cf4fc37bb41501d2e34a6d117f29c4ba43c63570304a0e8a6"
+    },
+    {
+      "linuxPath": "/home/brajam/.cache/bortus-controlled-perf/paired-account-snapshot-20261016-v1/raw-report.json",
+      "bytes": 861053,
+      "sha256": "08eeada19568f7401a58e5a9203e882558e8ba2224cd332eab3f3f131e6c7080"
+    },
+    {
+      "linuxPath": "/home/brajam/.cache/bortus-controlled-perf/paired-account-snapshot-20261016-v1/summary.json",
+      "bytes": 222363,
+      "sha256": "b063072edc1ff9fa81d20098ea5fa896d32b7f16880847ce8ccf498221663bb7"
+    },
+    {
+      "linuxPath": "/home/brajam/.local/share/branconet-migration/app-account-snapshot-paired-postcheck-20261016-v1/paired-review-result.json",
+      "bytes": 1004,
+      "sha256": "2933d8de37e89639c6838bd4c2062b309306c026ead553ef29420a3d3bd43081"
+    },
+    {
+      "linuxPath": "/home/brajam/.local/share/branconet-migration/app-account-snapshot-paired-postcheck-20261016-v1/fresh-result.json",
+      "bytes": 4873,
+      "sha256": "1c3094b2abbfe8f0552321931d7df4754af5616c8003df6a460add4c38a267d9"
+    },
+    {
+      "linuxPath": "/home/brajam/.local/share/branconet-migration/root-account-snapshot-paired-final-own-20261016-v1.json",
+      "bytes": 23980,
+      "sha256": "4b9dd314e23c259b6bb723a6e883694045645b818f72302cc552b10fd3d8bcfb"
+    },
+    {
+      "windowsPath": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-account-snapshot-paired-numeric-review-20261016-v1\\matrix.json",
+      "bytes": 266796,
+      "sha256": "7198091c37f7067bd138c1989ece4d3fae8b28f112dcd4bc6840295b8e39dc14"
+    }
+  ],
+  "rootNumericReview": "9e941d: all10 medians independently recomputed from untrimmed triplets",
+  "rootEightPinsCurrent": true,
+  "receiptProposalSHA256": "de84860b9633c7a93c4c9dbf7ac016508341bcb295a75e932f8289e68188b1dc",
+  "productionAndOriginalDataUnchanged": true
+}

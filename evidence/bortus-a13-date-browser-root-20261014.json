@@ -1,0 +1,192 @@
+{
+  "sourceCommit": "4df4d3251715dae689420a9f6242263aeb9bdbee",
+  "scope": "Two A13 raw-date browser cases only",
+  "actualBrowserExit": 0,
+  "actualServerExit": 0,
+  "exactPostExit": 0,
+  "linuxPostExit": 0,
+  "windowsPostExit": 0,
+  "laterExit": 0,
+  "casesPassed": 2,
+  "checks": [
+    "/pods: actual raw-date ascending/descending, missing-last and duplicate-date name tie; API/name/link/immutable-cell identity retained",
+    "/deployments: actual raw-date ascending/descending, missing-last and duplicate-date name tie; API/name/link/immutable-cell identity retained"
+  ],
+  "requestEvents": [
+    {
+      "route": "/api/cluster/pods",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/pods",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/deployments",
+      "method": "GET",
+      "status": 200
+    },
+    {
+      "route": "/api/cluster/deployments",
+      "method": "GET",
+      "status": 200
+    }
+  ],
+  "linuxBirthsFreshAbsent": 52,
+  "windowsNoLiveRecordedBirths": 11,
+  "laterLinuxReaderAndQueryBirthsAbsent": 3,
+  "laterWindowsReaderNoLive": true,
+  "currentSourceFiles": 371,
+  "currentInputFiles": 30,
+  "productChanged": false,
+  "performanceAccepted": false,
+  "deliveredImageAccepted": false,
+  "actualScreenReaderAccepted": false,
+  "records": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a13-date-browser-20261014-v1\\output\\browser-report.json",
+      "bytes": 4027,
+      "sha256": "f252b30a37de7aab69532e22ca43091159cc70da21f758bb7585e00a28bd2204"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a13-date-browser-20261014-v1\\terminal.json",
+      "bytes": 46037,
+      "sha256": "187b0f9684fc178d27c0bac81d34c0edd7b112c781d0bec23aaa6a9ac6c17a5a"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-a13-date-browser-postcheck-20261014-v1\\fresh-result.json",
+      "bytes": 10670,
+      "sha256": "61db60447ff422654b5dd7dda0c4891376d90d6945991ff55105529f30a51921"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a13-date-browser-postcheck-20261014-v1\\windows-fresh-result.json",
+      "bytes": 3988,
+      "sha256": "d1bf9cbf69b307383c924da1c02dda5bb3f593a914ba7a87a5ccd47b2b66480e"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a13-date-later-20261014.json",
+      "bytes": 453,
+      "sha256": "6bd6ab86d3b1ed29162f49a677b922a03ac3a1097c93e93d887386ad21206e5a"
+    }
+  ],
+  "dateColumns": 2,
+  "directions": 4,
+  "observations": [
+    {
+      "route": "/pods",
+      "column": "Age",
+      "sortKind": "date",
+      "direction": "asc",
+      "names": [
+        "a13-date-z-oldest",
+        "a13-date-b-second",
+        "a13-date-e-second",
+        "a13-date-d-third",
+        "a13-date-a-newest",
+        "a13-date-c-missing"
+      ],
+      "created": [
+        "1999-01-01T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2017-06-03T00:00:00Z",
+        "2025-09-04T00:00:00Z",
+        null
+      ],
+      "missingLast": true,
+      "duplicateDateTieNamesAscending": true,
+      "nameLinkAndImmutableCellsUnchanged": true,
+      "elapsedAgeTextNotComparedAsImmutable": true
+    },
+    {
+      "route": "/pods",
+      "column": "Age",
+      "sortKind": "date",
+      "direction": "desc",
+      "names": [
+        "a13-date-a-newest",
+        "a13-date-d-third",
+        "a13-date-b-second",
+        "a13-date-e-second",
+        "a13-date-z-oldest",
+        "a13-date-c-missing"
+      ],
+      "created": [
+        "2025-09-04T00:00:00Z",
+        "2017-06-03T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "1999-01-01T00:00:00Z",
+        null
+      ],
+      "missingLast": true,
+      "duplicateDateTieNamesAscending": true,
+      "nameLinkAndImmutableCellsUnchanged": true,
+      "elapsedAgeTextNotComparedAsImmutable": true
+    },
+    {
+      "route": "/deployments",
+      "column": "Age",
+      "sortKind": "date",
+      "direction": "asc",
+      "names": [
+        "a13-date-z-oldest",
+        "a13-date-b-second",
+        "a13-date-e-second",
+        "a13-date-d-third",
+        "a13-date-a-newest",
+        "a13-date-c-missing"
+      ],
+      "created": [
+        "1999-01-01T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2017-06-03T00:00:00Z",
+        "2025-09-04T00:00:00Z",
+        null
+      ],
+      "missingLast": true,
+      "duplicateDateTieNamesAscending": true,
+      "nameLinkAndImmutableCellsUnchanged": true,
+      "elapsedAgeTextNotComparedAsImmutable": true
+    },
+    {
+      "route": "/deployments",
+      "column": "Age",
+      "sortKind": "date",
+      "direction": "desc",
+      "names": [
+        "a13-date-a-newest",
+        "a13-date-d-third",
+        "a13-date-b-second",
+        "a13-date-e-second",
+        "a13-date-z-oldest",
+        "a13-date-c-missing"
+      ],
+      "created": [
+        "2025-09-04T00:00:00Z",
+        "2017-06-03T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "2001-04-02T00:00:00Z",
+        "1999-01-01T00:00:00Z",
+        null
+      ],
+      "missingLast": true,
+      "duplicateDateTieNamesAscending": true,
+      "nameLinkAndImmutableCellsUnchanged": true,
+      "elapsedAgeTextNotComparedAsImmutable": true
+    }
+  ],
+  "allTablesAccepted": false,
+  "immutableOriginals": {
+    "owner": "app-a13-date-qualified-originals-20261014-v1",
+    "currentOriginals": 292,
+    "ZIPMembers": 292,
+    "archiveBytes": 7720144,
+    "archiveSHA256": "5eb5073a9bd71d54edb4dfeb6a6a14499a364c77b7872dbeb2f9b4c9e213809e",
+    "manifestSHA256": "19aa5580aad6428d841ac367f83d49140ed1dc5895323e111100a61ea1621087",
+    "CRCAndSHAAndCurrentBytes": true
+  }
+}

@@ -1,0 +1,501 @@
+{
+  "scope": "Actual exact c29fc BORTUS application image build/export/default image scan only; no application security/runtime/performance/live release acceptance",
+  "recorded_at_utc": "2026-10-11T12:13:30.055208+00:00",
+  "source_commit": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+  "application_tree": "ed8302c281e965c3e25d284c54a9711c325bf41e",
+  "source_functional_evidence": "evidence/bortus-app-maintenance-follow-through-20261011.json",
+  "production_build_entries": 265,
+  "context_sha256": "949782205c682c2a544100bd94b3a4e0ad9b74ab8c7ef272109cacf816705466",
+  "manifest_sha256": "02333377521920bb493e1f67a0138f91b27fac3f830c1b1983c25ea932fac5d2",
+  "context_independently_bound": true,
+  "build": {
+    "scope": "Immutable BORTUS image build only; no runtime/deployment acceptance",
+    "owner": "15cfbae0-4aaa-4f44-94a0-8a07ffce398d",
+    "source_commit": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+    "image_tag": "bortus:release-c29fc8c44847172e040e83df11c51ad42f1da51e",
+    "phase": "completed",
+    "started_at_utc": "2026-10-11T12:03:18.959230+00:00",
+    "deployed": false,
+    "runtime_accepted": false,
+    "context_sha256": "949782205c682c2a544100bd94b3a4e0ad9b74ab8c7ef272109cacf816705466",
+    "manifest_sha256": "02333377521920bb493e1f67a0138f91b27fac3f830c1b1983c25ea932fac5d2",
+    "application_tree": "ed8302c281e965c3e25d284c54a9711c325bf41e",
+    "labels": {
+      "org.opencontainers.image.revision": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+      "io.branconet.bortus.source-tree": "ed8302c281e965c3e25d284c54a9711c325bf41e",
+      "io.branconet.bortus.context-sha256": "949782205c682c2a544100bd94b3a4e0ad9b74ab8c7ef272109cacf816705466",
+      "io.branconet.bortus.manifest-sha256": "02333377521920bb493e1f67a0138f91b27fac3f830c1b1983c25ea932fac5d2",
+      "io.branconet.bortus.build-owner": "15cfbae0-4aaa-4f44-94a0-8a07ffce398d"
+    },
+    "included_files": 265,
+    "tag-check_exit_code": 0,
+    "tag-check_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tag-check_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pending_at_utc": "2026-10-11T12:03:21.011216+00:00",
+    "build_exit_code": 0,
+    "build_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "build_stderr_sha256": "514c6a3b83fe65f0999501e35f88d86f2d108a6071d73502d2298b3f1d862101",
+    "completed_at_utc": "2026-10-11T12:06:21.377842+00:00",
+    "inspect_exit_code": 0,
+    "inspect_stdout_sha256": "7388c9380df04e680d5544c2cff29286521a20e8592bd6cd330279b6ae196c1a",
+    "inspect_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "config_image_id": "sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c",
+    "image_bytes": 1117723758,
+    "image_manifest_digest": null,
+    "runtime_digest_qualified": false
+  },
+  "build_receipt_sha256": "9dd7f856c873231aab05ac7b6902d112160daf3e10f1b6da6fd5d35692453138",
+  "export": {
+    "phase": "completed",
+    "source_commit": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+    "config_image_id": "sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c",
+    "archive_sha256": "c5a0cf4cd665128ac7e3ea00b657f8efd03fe62392e9c881519717ae20279ff2",
+    "archive_bytes": 1150326784,
+    "runtime_qualified": false,
+    "deployed": false
+  },
+  "export_receipt_sha256": "5cb05f19f56e508319c835b60545d63ace645ac4f5b7dc4d6201f9d6e63f1bf5",
+  "image_scan": {
+    "actual_exit": 1,
+    "completed_at_utc": "2026-10-11T12:11:00.601961+00:00",
+    "owned_child_reaped": true,
+    "source_commit": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+    "config_image_id": "sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c",
+    "export_receipt_sha256": "5cb05f19f56e508319c835b60545d63ace645ac4f5b7dc4d6201f9d6e63f1bf5",
+    "archive_sha256": "c5a0cf4cd665128ac7e3ea00b657f8efd03fe62392e9c881519717ae20279ff2",
+    "archive_bytes": 1150326784,
+    "scanner_version": "0.75.0",
+    "scanner_sha256": "93f9da8e4ba5e0c1c76d8234ed2494cf9afb0a96fd21953e424bb795f3299b8e",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "886efda78b0688189afd30260226726aa416b55dd3836e9b995e1384d38d5797",
+    "image_executed": false,
+    "application_deployed": false,
+    "live_acceptance": false,
+    "scan_complete": true,
+    "report_sha256": "83c300c91e5d80d2d163fa6a99c252a09dd50314b18a012745a61823530abd7b",
+    "vulnerabilities_by_severity": {
+      "LOW": 125,
+      "HIGH": 67,
+      "MEDIUM": 142,
+      "UNKNOWN": 11,
+      "CRITICAL": 1
+    },
+    "fixable_by_severity": {
+      "HIGH": 4,
+      "MEDIUM": 7,
+      "UNKNOWN": 7,
+      "LOW": 1
+    },
+    "secret_findings": 0,
+    "report_protected": true,
+    "configuration": "No user ignorefile/secret configuration, default built-in rules; telemetry disabled; all severities retained"
+  },
+  "fixable_and_critical_findings": [
+    {
+      "target": "/home/brajam/.local/share/branconet-migration/bortus-export-c29fc8c44847172e040e83df11c51ad42f1da51e/image.tar (debian 12.15)",
+      "class": "os-pkgs",
+      "type": "debian",
+      "VulnerabilityID": "CVE-2023-45853",
+      "PkgName": "zlib1g",
+      "InstalledVersion": "1:1.2.13.dfsg-1",
+      "FixedVersion": null,
+      "Severity": "CRITICAL",
+      "Status": "will_not_fix",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-45853"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-78669",
+      "PkgName": "golang.org/x/net",
+      "InstalledVersion": "v0.57.0",
+      "FixedVersion": "0.60.0",
+      "Severity": "HIGH",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-78669"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-78663",
+      "PkgName": "golang.org/x/net",
+      "InstalledVersion": "v0.57.0",
+      "FixedVersion": "0.60.0",
+      "Severity": "MEDIUM",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-78663"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-97032",
+      "PkgName": "golang.org/x/net",
+      "InstalledVersion": "v0.57.0",
+      "FixedVersion": "0.60.0",
+      "Severity": "MEDIUM",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-97032"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-78659",
+      "PkgName": "golang.org/x/net",
+      "InstalledVersion": "v0.57.0",
+      "FixedVersion": "0.60.0",
+      "Severity": "UNKNOWN",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-78659"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-78660",
+      "PkgName": "golang.org/x/net",
+      "InstalledVersion": "v0.57.0",
+      "FixedVersion": "0.60.0",
+      "Severity": "UNKNOWN",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-78660"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-56851",
+      "PkgName": "golang.org/x/text",
+      "InstalledVersion": "v0.40.0",
+      "FixedVersion": "0.41.0",
+      "Severity": "UNKNOWN",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-56851"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-78667",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "HIGH",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-78667"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-78669",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "HIGH",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-78669"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-97031",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "HIGH",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-97031"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-56866",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "MEDIUM",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-56866"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-78663",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "MEDIUM",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-78663"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-94439",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "MEDIUM",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-94439"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-94448",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "MEDIUM",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-94448"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-97032",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "MEDIUM",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-97032"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-56857",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "LOW",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-56857"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-78659",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "UNKNOWN",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-78659"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-78660",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "UNKNOWN",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-78660"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-94440",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "UNKNOWN",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-94440"
+    },
+    {
+      "target": "usr/local/bin/kubectl",
+      "class": "lang-pkgs",
+      "type": "gobinary",
+      "VulnerabilityID": "CVE-2026-97030",
+      "PkgName": "stdlib",
+      "InstalledVersion": "v1.26.8",
+      "FixedVersion": "1.26.9, 1.27.2",
+      "Severity": "UNKNOWN",
+      "Status": "fixed",
+      "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2026-97030"
+    }
+  ],
+  "security_scope": "Zero image Secret findings does not resolve 346 vulnerability entries, the 19 fixable kubectl entries, or two historical source-provenance findings. Old inert-holder reachability scope is not application acceptance. No exclusions/suppressions applied.",
+  "closure": {
+    "scope": "Root unchanged helper hash bindings and exact terminal process closure only",
+    "sources": [
+      {
+        "path": "scripts/migration/build-bortus-release-image.py",
+        "sha256": "9b7765fd6295eeb64bd0661a070fb9100fbaa58411916257f937e9068aa8f27f"
+      },
+      {
+        "path": "scripts/migration/stage-bortus-release-image.py",
+        "sha256": "69a5fcb70984fca647f8014e5f37bcd3bc6d7c6ced34011016085ea92ca02d41"
+      }
+    ],
+    "windows_owners": [
+      {
+        "owner": "builder-owner.json",
+        "pid": 49636,
+        "exact_start_utc": "2026-10-11T12:03:18.6430486Z",
+        "owned_process_absent": true
+      },
+      {
+        "owner": "export-owner.json",
+        "pid": 42232,
+        "exact_start_utc": "2026-10-11T12:09:32.7656147Z",
+        "owned_process_absent": true
+      },
+      {
+        "owner": "scan-owner.json",
+        "pid": 29872,
+        "exact_start_utc": "2026-10-11T12:10:45.4795404Z",
+        "owned_process_absent": true
+      }
+    ],
+    "linux_scanner": {
+      "scan_pid": 1981160,
+      "owned_process_absent": true
+    },
+    "retained_observation_failure": "First Windows Get-Process absence probe lacked explicit exit0; assertion refused before receipt publication. Corrected read-only absence probe made no process or cluster changes.",
+    "runtime_or_deployment_acceptance": false
+  },
+  "retained_private_originals": [
+    {
+      "name": "context.tar.gz",
+      "sha256": "949782205c682c2a544100bd94b3a4e0ad9b74ab8c7ef272109cacf816705466"
+    },
+    {
+      "name": "context.json",
+      "sha256": "02333377521920bb493e1f67a0138f91b27fac3f830c1b1983c25ea932fac5d2"
+    },
+    {
+      "name": "context-verification.json",
+      "sha256": "30f4870ad798a9967017c9657cdbc476ce4df9db540efb526f4df9db780fcc44"
+    },
+    {
+      "name": "builder-metadata.stdout",
+      "sha256": "844be8d485ecb9681a00cb4c7a4d729eb78006cf66a41c723a65937496651d60"
+    },
+    {
+      "name": "build-final-app-v1.py",
+      "sha256": "8e674e2702d87e9433ec65085f804147f9d1ff4bff2879b6d8f383ef96cb983d"
+    },
+    {
+      "name": "build-intent.json",
+      "sha256": "098bac0f6bbc23ba721d0623d618d1d2a887001c207a706b878e3e59f176b8f7"
+    },
+    {
+      "name": "builder-owner.json",
+      "sha256": "49f50e39e3c6975274cccb74b64add6f9c8061575dbc105b3d996af1f7ba1eaa"
+    },
+    {
+      "name": "builder.stdout",
+      "sha256": "1a66820d9485caa9adfdeb09ae1c55abd964d12f88d4321e419d3d8a3b03734d"
+    },
+    {
+      "name": "builder.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "builder-terminal.json",
+      "sha256": "9ba9f8d4fd957ee0aef5a769598277a2683e9c04d52d62429325b18beb605663"
+    },
+    {
+      "name": "completed-build-receipt.json",
+      "sha256": "9dd7f856c873231aab05ac7b6902d112160daf3e10f1b6da6fd5d35692453138"
+    },
+    {
+      "name": "export-final-app-v1.py",
+      "sha256": "f8dd48a3c154cd45aba8faabf3afe1392eaa8742bc94e5ac91362f438e9d94cb"
+    },
+    {
+      "name": "export-final-app-v2.py",
+      "sha256": "1f5491d4046ef5b343c478dbc315d7137847228e31785686344843a49935ce2e"
+    },
+    {
+      "name": "export-intent.json",
+      "sha256": "a9b701d20ba226427661c3743c0ded85acd1c4c2ed21ddda5e03d4edcf80c620"
+    },
+    {
+      "name": "export-owner.json",
+      "sha256": "66e14f5b143f0ef0e8dadd202ceeb89b99d92870cbe65560b5f7a4468eac6d58"
+    },
+    {
+      "name": "export.stdout",
+      "sha256": "19866dc14d63c6736ffd9497148c0db5325c20d8968cf93329b6ff0514ba1f8e"
+    },
+    {
+      "name": "export.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "export.terminal.json",
+      "sha256": "51035c0ceba374b004daa4724d500db9ad0581f75aa95e39a3a50048022aec4b"
+    },
+    {
+      "name": "completed-export-receipt.json",
+      "sha256": "5cb05f19f56e508319c835b60545d63ace645ac4f5b7dc4d6201f9d6e63f1bf5"
+    },
+    {
+      "name": "scan-final-app-v1.py",
+      "sha256": "02bf70053fb1bbb0906ccd096358c7d56ae72e4859fcdd6beaf369aee98fc9c5"
+    },
+    {
+      "name": "scan-owner.json",
+      "sha256": "00f928c354b40ea40c926ff7a6be62ff9e6c72f0b7d480d25b6f7d0dd9e0b993"
+    },
+    {
+      "name": "image-scan-launch.stdout",
+      "sha256": "47ff26421bcf92cfcc7d7575ca54c49fe1495890b56b05a7179b8b6a237e3da0"
+    },
+    {
+      "name": "image-scan-launch.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "image-scan-launch.terminal.json",
+      "sha256": "c50ba821783cb24f2cf7cd7e2b0600134e3f38da183dda10caf28964826ce7bd"
+    },
+    {
+      "name": "image-scan-safe-review.json",
+      "sha256": "ca8df5fc7c8e95c05e96b121d594917621fe6de429ca10e43e2d6b177f0d458f"
+    },
+    {
+      "name": "root-helper-closure.json",
+      "sha256": "c092f8d16ad817868d36c3727057844d83dccb42e0d1c8e6fe5e6c332f760a22"
+    }
+  ],
+  "failed_before_dispatch": [
+    {
+      "exit": 1,
+      "script": "export-final-app-v1.py",
+      "cause": "Export helper hash checked against stale reader-only qualification manifest; changed preload/export helper refused before export intent/SSH. Current helper was then independently bound to completed 474-case current-source qualification; one actual export dispatched."
+    }
+  ],
+  "acceptance": {
+    "exact_image_build_and_export": true,
+    "default_image_scan_completed": true,
+    "application_security": false,
+    "runtime": false,
+    "performance_A07_A21": false,
+    "runtime_manifest_digest": false,
+    "three_node_preload": false,
+    "independent_actual_full_row_restore": false,
+    "active_admission": false,
+    "final_live": false,
+    "application_deployed": false
+  }
+}

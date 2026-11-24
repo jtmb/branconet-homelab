@@ -1,0 +1,70 @@
+---
+# Reviewed, hash-guarded update of ONE monitor module so the published snapshot
+# reports a derived delivery state instead of a hardcoded "not-configured".
+# Nothing else on the host is touched.
+- name: Update the monitor delivery-state derivation
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    monitor_code: /usr/local/libexec/bortus-certificate-monitor
+    target: "{{ monitor_code }}/certificate_monitor.py"
+  tasks:
+    - name: Require the documented host and service
+      ansible.builtin.assert:
+        that:
+          - kubernetes_node_name == 'node02'
+          - monitor_expected_sha256 is defined
+          - monitor_expected_sha256 | length == 64
+
+    - name: Record the currently installed module hash
+      ansible.builtin.command:
+        argv: [sha256sum, "{{ target }}"]
+      changed_when: false
+      register: monitor_before
+
+    - name: Refuse to replace unexpected installed content
+      ansible.builtin.assert:
+        that:
+          - (monitor_before.stdout | split | first) == monitor_expected_sha256
+        fail_msg: "installed certificate_monitor.py does not match the reviewed checkpoint"
+
+    - name: Install the reviewed module
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../scripts/migration/certificate_monitor.py"
+        dest: "{{ target }}"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Require the installed module to carry the derivation
+      ansible.builtin.command:
+        argv: [grep, -c, "def delivery_state", "{{ target }}"]
+      changed_when: false
+      register: monitor_marker
+
+    - name: Refuse an install without the derivation
+      ansible.builtin.assert:
+        that:
+          - monitor_marker.stdout | trim == '1'
+
+    - name: Compile the module as the service account would load it
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, -B, -c, "import ast,sys;ast.parse(open(sys.argv[1]).read())", "{{ target }}"]
+      changed_when: false
+
+    - name: Restart the monitor onto the reviewed module
+      ansible.builtin.systemd_service:
+        name: bortus-certificate-monitor.service
+        state: restarted
+
+    - name: Confirm the service returned active
+      ansible.builtin.command:
+        argv: [systemctl, is-active, bortus-certificate-monitor.service]
+      changed_when: false
+      register: monitor_state
+      retries: 6
+      delay: 5
+      until: monitor_state.stdout | trim == 'active'

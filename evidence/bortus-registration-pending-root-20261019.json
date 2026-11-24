@@ -1,0 +1,449 @@
+{
+  "frontendTree": "0fa982c56ce5eddab4cf0632b43e6fe6cc43fca8",
+  "originalSensitivityPairs": 8,
+  "applicationOwnerReceiptSHA256": "a9ddf6ae56210463a64b510d17f1b6037c27cd264d2b95d98f0576c58a7ffe89",
+  "ui": {
+    "validationSentNoPOST": true,
+    "allScreenshotsVisuallyReviewed": true,
+    "noAutofillObserved": true,
+    "observerEvents": 6,
+    "accountsCreated": 0,
+    "publicAXTexts": 11,
+    "actualAT": false,
+    "cases": [
+      {
+        "name": "01-open-cleared",
+        "alerts": [],
+        "fields": 3,
+        "formPresent": true,
+        "pending": false
+      },
+      {
+        "name": "02-validation-current",
+        "alerts": [
+          "Passwords do not match"
+        ],
+        "fields": 3,
+        "formPresent": true,
+        "pending": false
+      },
+      {
+        "name": "03-held-fetch-current",
+        "alerts": [],
+        "fields": 3,
+        "formPresent": true,
+        "pending": true
+      },
+      {
+        "name": "04-string-settled",
+        "alerts": [
+          "Fixture username already exists"
+        ],
+        "fields": 3,
+        "formPresent": true,
+        "pending": false
+      },
+      {
+        "name": "05-held-error-body",
+        "alerts": [],
+        "fields": 3,
+        "formPresent": true,
+        "pending": true
+      },
+      {
+        "name": "06-fallback-settled",
+        "alerts": [
+          "Registration failed"
+        ],
+        "fields": 3,
+        "formPresent": true,
+        "pending": false
+      },
+      {
+        "name": "07-held-403-body",
+        "alerts": [
+          "Registration LockedAccount creation has been disabled by the administrator."
+        ],
+        "fields": 0,
+        "formPresent": false,
+        "pending": false
+      },
+      {
+        "name": "08-lock-settled",
+        "alerts": [
+          "Registration LockedAccount creation has been disabled by the administrator."
+        ],
+        "fields": 0,
+        "formPresent": false,
+        "pending": false
+      },
+      {
+        "name": "09-availability-closed",
+        "alerts": [
+          "Registration LockedAccount creation has been disabled by the administrator."
+        ],
+        "fields": 0,
+        "formPresent": false,
+        "pending": false
+      },
+      {
+        "name": "10-availability-unknown",
+        "alerts": [
+          "Unable to check registration availability. Reload this page to try again."
+        ],
+        "fields": 0,
+        "formPresent": false,
+        "pending": false
+      },
+      {
+        "name": "11-final-cleared",
+        "alerts": [],
+        "fields": 3,
+        "formPresent": true,
+        "pending": false
+      }
+    ],
+    "privateCaptureLimitations": [
+      "Capture closure created before tab binding throws tab undefined after field clearing; corrected to explicit page argument; no submission replay",
+      "Two early same-call PNGs lag DOM/AX after action: validation image shows prior blank form and heldfetch image shows prior validation; retained privately; later current captures in separate calls; no submission replay"
+    ],
+    "allForwarded": false,
+    "publicPNGs": 11,
+    "allRequestBodiesRetained": false,
+    "interceptedPOSTs": 3,
+    "captureMethodsSequentialNotSimultaneous": true,
+    "publicObservations": 11,
+    "exactPasswordEqualityUnobserved": true,
+    "publicDOMs": 11,
+    "tabClosed": true,
+    "windows4401Absent": true,
+    "allSettledByFile": true,
+    "fieldsExplicitlyClearedBeforeAndAfter": true,
+    "fourIntentionalClicks": 4
+  },
+  "retainedFailures": [
+    "Windows gh absent after successful push;read-only CI lookup continued with existing WSL gh;no workload replay",
+    "Capture closure created before tab binding throws tab undefined after field clearing; corrected to explicit page argument; no submission replay",
+    "Two early same-call PNGs lag DOM/AX after action: validation image shows prior blank form and heldfetch image shows prior validation; retained privately; later current captures in separate calls; no submission replay"
+  ],
+  "rootIndependentlyCheckedCIMetadataAllStepsAndRawLogs": true,
+  "nextFinding": "Three unchanged Get Started buttons await fresh session HTTP/JSON without per-request pending status/busy;checking only initial effect;root+independent source finding only;no next tests/patch/browser/AT or failed announcement inferred",
+  "build": {
+    "sourceUnchanged": true,
+    "buildLogSHA256": "46c0b223008ee2efa6f37f33299d08c1e99bc27dff265b6d94139532baa0123c",
+    "passed": true,
+    "buildId": "aeCN7rsRnzoVbTUjnqtfh",
+    "limits": {
+      "cpu": 4,
+      "memory": 4294967296,
+      "swap": 0,
+      "pids": 256,
+      "deadlineSeconds": 900
+    },
+    "exporterSHA256": "5bcdb86fd8a795d72f195dbf5163a46ad09de79b54d0ead4dbba0eadb0743470",
+    "graphSHA256": "4562779f5bc835a8eaf4759aeb551278b7fe771f7165720ce8f3fd0157ae6629",
+    "workerBindingsVerified": true,
+    "sourceFiles": 296,
+    "graphRecords": 41723
+  },
+  "sourceReview": {
+    "observedUnix": 1792392953.332028,
+    "rootReviewed": true,
+    "base": "29036ff9548d67374354d40be2c042dc59a902ce",
+    "commit": "170de4e5295b465d633e92c11ebd4c417ac5785d",
+    "frontendTree": "0fa982c56ce5eddab4cf0632b43e6fe6cc43fca8",
+    "entirePriorPageRestoredByRemovingParagraphAndTwoAttributes": true,
+    "handlerAndStateByteIdentical": true,
+    "loginByteIdentical": true,
+    "focusedOldNewPagesRawGitExact": true,
+    "changedFiles": [
+      "docs/BOTRUS-WORKFLOW.md",
+      "docs/USER-PERMS.md",
+      "k8s-rewrite/front-end/src/app/auth/register/page.tsx",
+      "k8s-rewrite/front-end/tests/registration-availability.test.ts"
+    ],
+    "sameFinalTests": {
+      "tests/registration-availability.test.ts": "4a92818ff0c1215a31d01e0a23368517e639601d88123fb290ba775858bd9ab3",
+      "tests/login-submit.test.ts": "5dd0bb56f370a3630763352c2689e33ed1169f2015d6fb7f1ff7618578fbcef3"
+    },
+    "beforeExit": 1,
+    "afterExit": 0,
+    "lintExit": 0,
+    "actualAT": false,
+    "testScope": "Actual source TSX VM models;not DOM/auth/AT",
+    "guides": [
+      "https://nextjs.org/docs/15/app/getting-started/server-and-client-components",
+      "https://nextjs.org/docs/15/architecture/accessibility",
+      "https://www.w3.org/WAI/WCAG22/Techniques/aria/ARIA22",
+      "https://www.w3.org/TR/wai-aria-1.2/#aria-busy"
+    ]
+  },
+  "publicationScan": {
+    "commit": "170de4e5295b465d633e92c11ebd4c417ac5785d",
+    "exactRawGitBlobs": true,
+    "files": 4,
+    "exit": 0,
+    "findings": 0,
+    "scannerSHA256": "88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+    "noSuppression": true,
+    "notImageSecurityAcceptance": true
+  },
+  "compiledPodsSmoke": true,
+  "applicationFilesChanged": 4,
+  "lint": {
+    "exit": 0,
+    "warnings": 0,
+    "files": 4
+  },
+  "closure": {
+    "observedUnix": 1792393367.4764895,
+    "cleanupClosed": true,
+    "exactPreviewContainerIdAndNameAbsent": true,
+    "exactBuildContainerIdAndNameAbsent": true,
+    "supervisorBirthAbsent": true,
+    "linuxLoopback4401Absent": true,
+    "rawSourceFilesUnchanged": true,
+    "sourceRecords": 296,
+    "runtimeReadonlyGraphReliedOn": true,
+    "graphNotRewalked": true,
+    "actualNetworkNone": true,
+    "actualReadonlyRootfs": true,
+    "actualOnlySocketBindWritable": true,
+    "noRecursiveReaderChain": true
+  },
+  "guardedRelease": {
+    "security": "Open;default image scan1/12Medium/zeroSecrets;no suppression/disposition/residual acceptance",
+    "chartsChanged": false,
+    "guardedAdoption": false,
+    "compatibleIndependentRecovery": "Open",
+    "chartsDraftUnmerged": true,
+    "originalClausesPreserved": 44,
+    "actualAT": "Open",
+    "liveAcceptance": "Open",
+    "newImage": false,
+    "productionChanged": false,
+    "A07": "Failed5/10originalwarmcases;no replay",
+    "helmSuspended": true,
+    "rejectedActionsRemainStopped": true
+  },
+  "sourceChange": "Persistent empty sr-only role=status outside open form; Creating account… only existing loading; form aria-busy loading; submit Loader2 aria-hidden true",
+  "tests": {
+    "before": {
+      "tests": 61,
+      "pass": 42,
+      "fail": 19,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "after": {
+      "tests": 61,
+      "pass": 61,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    "sameFinalRegistrationTestSHA256": "4a92818ff0c1215a31d01e0a23368517e639601d88123fb290ba775858bd9ab3",
+    "unchangedLoginTestSHA256": "5dd0bb56f370a3630763352c2689e33ed1169f2015d6fb7f1ff7618578fbcef3",
+    "onlyChangedInput": "src/app/auth/register/page.tsx",
+    "beforeExit": 1,
+    "afterExit": 0,
+    "interpretation": "Actual source TSX transpilation/VM scoped React/router/HTTP model, not DOM/browser/AT/server-authority proof"
+  },
+  "newHandoff": "docs/operations/handoffs/2026-10-19-bortus-registration-pending-successor.md",
+  "windows4401Absent": true,
+  "applicationDocsChecked": 22,
+  "applicationCommit": "170de4e5295b465d633e92c11ebd4c417ac5785d",
+  "existingRootMarkdownDocsChecked": 48,
+  "prelaunch": {
+    "sourceRecords": 296,
+    "compiledDependencyRecords": 41723,
+    "allCurrent": true,
+    "nativeBindings": true,
+    "workerBindings": true,
+    "graphSHA256": "4562779f5bc835a8eaf4759aeb551278b7fe771f7165720ce8f3fd0157ae6629",
+    "frontendTree": "0fa982c56ce5eddab4cf0632b43e6fe6cc43fca8",
+    "observedUnix": 1792393109.1731446,
+    "readonlyMountsRequired": true
+  },
+  "nextFeature": "Bounded welcome Get Started pending-session status semantics review; preserve fresh per-click lookup, all three destinations and actual assistive-technology acceptance gate",
+  "fullGoalComplete": false,
+  "ci": [
+    {
+      "run": 39212831241,
+      "event": "push",
+      "commit": "170de4e5295b465d633e92c11ebd4c417ac5785d",
+      "conclusion": "success",
+      "allStepsSuccess": true,
+      "stepCount": 12,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked install and native/standalone build in pinned compiler image",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original lint, type and unit checks with isolated runtime network",
+          "conclusion": "success"
+        },
+        {
+          "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+          "conclusion": "success"
+        },
+        {
+          "name": "Separate-process SQL writer-lock regression sensitivity",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original strict integration and process controls",
+          "conclusion": "success"
+        },
+        {
+          "name": "Acquire locked browser CI tools (no app dependency change)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Finite compiled Pods browser smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "rawLogBytes": 579946,
+      "rawLogSHA256": "9bb19eae15c4c1412fd5f4cbd47a45e0aa2ba4d6f2d956769e7af8c8a11d964d",
+      "metadataSHA256": "4ffdf1599d4299e88d67e5c3522dba9d65644aa90adfd0d440ceda2659ae620d",
+      "skippedSteps": 0,
+      "unitPassLines": [
+        "quality\tOriginal lint, type and unit checks with isolated runtime network\t2026-10-19T06:59:40.3691386Z # pass 422",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:41.5006080Z # pass 1",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:41.7967017Z # pass 0",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:42.1042012Z # pass 1",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:42.3882877Z # pass 0",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:42.7067910Z # pass 1",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:42.9972816Z # pass 0",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:43.7772207Z # pass 1",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:44.4723130Z # pass 0",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:44.6699928Z # pass 1",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:44.8550127Z # pass 0",
+        "quality\tDeleted-account and bootstrap DB regression sensitivity checks\t2026-10-19T06:59:47.4118721Z # pass 5",
+        "quality\tDeleted-account and bootstrap DB regression sensitivity checks\t2026-10-19T06:59:49.1495702Z # pass 3",
+        "quality\tDeleted-account and bootstrap DB regression sensitivity checks\t2026-10-19T06:59:50.7127175Z # pass 11",
+        "quality\tDeleted-account and bootstrap DB regression sensitivity checks\t2026-10-19T06:59:52.2545200Z # pass 4",
+        "quality\tSeparate-process SQL writer-lock regression sensitivity\t2026-10-19T06:59:54.2175297Z # pass 1",
+        "quality\tSeparate-process SQL writer-lock regression sensitivity\t2026-10-19T06:59:55.7771794Z # pass 0",
+        "quality\tOriginal strict integration and process controls\t2026-10-19T07:01:09.6447628Z # pass 8"
+      ]
+    },
+    {
+      "run": 39212838035,
+      "event": "pull_request",
+      "commit": "170de4e5295b465d633e92c11ebd4c417ac5785d",
+      "conclusion": "success",
+      "allStepsSuccess": true,
+      "stepCount": 12,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked install and native/standalone build in pinned compiler image",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original lint, type and unit checks with isolated runtime network",
+          "conclusion": "success"
+        },
+        {
+          "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+          "conclusion": "success"
+        },
+        {
+          "name": "Separate-process SQL writer-lock regression sensitivity",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original strict integration and process controls",
+          "conclusion": "success"
+        },
+        {
+          "name": "Acquire locked browser CI tools (no app dependency change)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Finite compiled Pods browser smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "rawLogBytes": 581817,
+      "rawLogSHA256": "a49995d50c9fdce44100cdffa7c1d71564613ff3d34db47de453e2c18788bdd8",
+      "metadataSHA256": "8a0387c0996bd3ccb578cbf8e2d21597bbb31c337a25eb6ebc762bca8b283751",
+      "skippedSteps": 0,
+      "unitPassLines": [
+        "quality\tOriginal lint, type and unit checks with isolated runtime network\t2026-10-19T06:59:28.5984847Z # pass 422",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:29.6499423Z # pass 1",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:29.9219346Z # pass 0",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:30.2111069Z # pass 1",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:30.4836475Z # pass 0",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:30.7794183Z # pass 1",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:31.0475250Z # pass 0",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:31.8047351Z # pass 1",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:32.4613624Z # pass 0",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:32.6452597Z # pass 1",
+        "quality\tFive source regression sensitivity checks (A04/A05/A06/action/cache)\t2026-10-19T06:59:32.8199500Z # pass 0",
+        "quality\tDeleted-account and bootstrap DB regression sensitivity checks\t2026-10-19T06:59:35.1623840Z # pass 5",
+        "quality\tDeleted-account and bootstrap DB regression sensitivity checks\t2026-10-19T06:59:36.7142457Z # pass 3",
+        "quality\tDeleted-account and bootstrap DB regression sensitivity checks\t2026-10-19T06:59:38.1379017Z # pass 11",
+        "quality\tDeleted-account and bootstrap DB regression sensitivity checks\t2026-10-19T06:59:39.5278154Z # pass 4",
+        "quality\tSeparate-process SQL writer-lock regression sensitivity\t2026-10-19T06:59:41.3200332Z # pass 1",
+        "quality\tSeparate-process SQL writer-lock regression sensitivity\t2026-10-19T06:59:42.7237174Z # pass 0",
+        "quality\tOriginal strict integration and process controls\t2026-10-19T07:00:54.3625399Z # pass 8"
+      ]
+    }
+  ],
+  "integrations": 8,
+  "scope": "Bounded registration pending-submit status semantics;full BORTUS objective incomplete",
+  "unitTests": 422,
+  "independentAcceptance": {
+    "all11PublicImagesAnd2PrivateStaleFramesReviewed": true,
+    "excludes": "Later root publication/rootCI;no independent full41723object rehash/newclosurequeries",
+    "finitePins": 121,
+    "activeFindings": 0,
+    "accepted": true,
+    "receiptSHA256": "951957a7270d8334137136ad250665b9c677bea50070962746e739430c41622e",
+    "manifestSHA256": "a0214fd159ccc3f481972ea6d4ed1ffcc41e341ebe4b18a67f507a3735a02f22",
+    "scope": "Bounded registration pending-submit source/model/compiledUI/CI/savedclosure/docs only"
+  }
+}

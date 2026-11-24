@@ -1,0 +1,18 @@
+[Unit]
+Description=Branconet plaintext node-IP port restrictions (boot persistence)
+Documentation=file:/usr/local/libexec/branconet-plaintext-restriction
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/python3 -B /usr/local/libexec/branconet-plaintext-restriction-all
+TimeoutStartSec=180
+# The helper owns its own validation; keep the unit itself unprivileged-looking
+# but it still needs root to write nftables state.
+User=root
+NoNewPrivileges=no
+
+[Install]
+WantedBy=multi-user.target

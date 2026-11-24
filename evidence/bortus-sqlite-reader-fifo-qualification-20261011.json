@@ -1,0 +1,47 @@
+{
+  "scope": "Nonblocking FIFO refusal in inert Linux SQLite reader; no production capture",
+  "qualified_source_commit": "c851236eeb84df083071d180b5f6fadeb9a8b679",
+  "source_sha256": {
+    "scripts/migration/bortus-sqlite-archive.py": "5bc4d5c32d474d54814e46cd1d2c0312c82411c567d5798ff887c0916d302a86",
+    "scripts/migration/tests/test_node_sqlite_reader.py": "8fc064bc423f160e5304aa6684e7bffd2df6ac1d36d6e76c00505659da46658b"
+  },
+  "prior_qualification": "bortus-encrypted-sqlite-archive-qualification-20261011.json",
+  "prior_40_helper_tests_not_reexecuted": true,
+  "reason": "Only Node open flags and actual Linux fixture harness changed; the new regression executes that exact reader",
+  "actual_failure": {
+    "console_records": [
+      "964bd4",
+      "0e4ec7"
+    ],
+    "exit_code": 1,
+    "tests": 2,
+    "errors": 1,
+    "elapsed_seconds": 11.548,
+    "case": "FIFO sidecar blocks before fstat using O_RDONLY|O_NOFOLLOW",
+    "timeout_seconds": 5,
+    "source_before_correction": "d09038f",
+    "original_owned_container": "bortus-reader-fixture-5ae06a520b68",
+    "exact_owned_container_removed_and_absent": true
+  },
+  "correction": "Add O_NONBLOCK to open so fstat rejects FIFO without waiting for a writer",
+  "corrected_actual_qualification": {
+    "console_record": "0ab875",
+    "exit_code": 0,
+    "tests": 2,
+    "fixture_cases": 8,
+    "elapsed_seconds": 7.104,
+    "installed_linux_node_image_config_id": "sha256:f628f5688b3fafb391d8d99c9b16aee4d9162aa5aaa121c3ae340f5bc8c2a678",
+    "reader_changed_for_test": false,
+    "all_owned_child_processes_exited": true,
+    "all_owned_containers_absent": true,
+    "timeout_cleanup_fences_label_then_removes_exact_container_id": true
+  },
+  "limitations": {
+    "production_data_or_operator_key_or_native_secret_read": false,
+    "concurrent_file_change_tested": false,
+    "integrated_capture_or_nas_transfer_proven": false,
+    "sqlite_integrity_or_complete_rows_proven": false,
+    "independent_native_volume_restore_proven": false,
+    "final_release_image_or_preload_qualified": false
+  }
+}

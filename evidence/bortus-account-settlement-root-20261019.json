@@ -1,0 +1,181 @@
+{
+  "scope": "Bounded account-worker successful settlement source qualification; not performance, image or live acceptance",
+  "observedUTC": "2026-10-19 03:56:40 UTC",
+  "applicationCheckpoint": "d6867ba1990e3e025c6eb3c9a169db1e75362993",
+  "testedSourceCommit": "be5585d3c3ec5434a6f47cb5f95f5ad4addcd635",
+  "runtimeSourceCommit": "f946bf63b774b52a18328a5d23bef0d49ed9b3f6",
+  "sourceParent": "b0802b9944c94cbca77c2550ed73d46dc8c5f879",
+  "applicationBranch": "codex/bortus-parent-stat-a15-evaluation",
+  "testedFrontendTree": "21eb2b17035822532129240b6180fdf971bc6d9d",
+  "checkpointFrontendEqualsTestedTree": true,
+  "applicationRemoteMatches": true,
+  "checkpointClean": true,
+  "behavior": {
+    "successSkipsIdleAwait": true,
+    "nullIsSuccessfulSettlement": true,
+    "refusalAlwaysDrainsBeforeIdentityAndAcknowledgement": true,
+    "coreClearsOwnerBeforeSuccessfulResolution": true,
+    "workerSerializesCoreReads": true
+  },
+  "regressions": [
+    "Successful row/null settles after both real yields without entering refusal drain",
+    "Held deadline enters drain with active owner; identity/settlement/discard/close acknowledgements remain withheld until actual release",
+    "Existing cancellation/close/environment/schema/filesystem/SQL/queue/transport controls retained"
+  ],
+  "review": {
+    "rootReviewedAllChanges": true,
+    "focusedFrontendPayloadsVerified": 394,
+    "finalFrontendUnchangedPayloads": 392,
+    "subsequentFrontendChanges": "Two reviewed source-provenance manifests only",
+    "provenanceOnlyDigests": 3,
+    "allOtherManifestFieldsIdentical": true,
+    "oldAndNewReceiptReconstructionVerified": true,
+    "coreParentPackageLockWorkflowAndOriginalAuditUnchanged": true,
+    "all44OriginalAcceptanceClausesPreserved": true,
+    "originalAuditBlob": "33471d6ec5491d480467a620146e231716a9ecb3",
+    "workflowBlob": "f8b7ec07d69dcd1806ca44f6c566685108639cb3",
+    "originalWorkloadsRunnersMutantsAssertionsLimitsAndThresholdsUnchanged": true
+  },
+  "focused": {
+    "pinnedRuntime": "node@sha256:c4d5523090a817b7aa86d2111241fdd4f66d1e27782b44160e6aa63b357ecb2d",
+    "generationExit": 0,
+    "tests": 43,
+    "pass": 43,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "affectedLintExit": 0,
+    "packageAndLockMatchRetainedDependencies": true,
+    "sourceUnchanged": true,
+    "bothExactContainerNamesAbsent": true,
+    "recordedFocusedContainerIDAbsent": true,
+    "processBirthIdentityProofClaimed": false,
+    "logSHA256": "95ef2d99acd02e48b8265f184aaf6fa29747db8e6e372ea10ef07b822b867f2a"
+  },
+  "retainedFailures": {
+    "initialWSLPathPreparation": "Before actor; no runtime/container created",
+    "rootUNCManifestRead": "Failed path read; no independent verification accepted until corrected WSL reader verified all394 payloads",
+    "firstPushCI": {
+      "id": 39195995995,
+      "source": "f946bf63b774b52a18328a5d23bef0d49ed9b3f6",
+      "conclusion": "failure",
+      "cause": "Previous worker provenance pin rejected changed source before DB sensitivity workload",
+      "buildLintTypes355UnitsAndFiveSensitivitiesPassed": true,
+      "laterStagesSkipped": true,
+      "rawLogBytes": 439849,
+      "rawLogSHA256": "591de6b9af0a82da6e83909475fea1c20bc09b4e73db4d7a8dcdb36ae7175479"
+    },
+    "firstPRCI": {
+      "id": 39196001212,
+      "conclusion": "failure"
+    }
+  },
+  "ci": {
+    "id": 39196459270,
+    "event": "push",
+    "source": "be5585d3c3ec5434a6f47cb5f95f5ad4addcd635",
+    "status": "completed",
+    "conclusion": "success",
+    "pullRequestRun": 39196463144,
+    "pullRequestConclusion": "success",
+    "unitTests": 355,
+    "unitPass": 355,
+    "unitFail": 0,
+    "unitSkipped": 0,
+    "unitCancelled": 0,
+    "integrationTests": 8,
+    "integrationPass": 8,
+    "integrationFail": 0,
+    "integrationSkipped": 0,
+    "integrationCancelled": 0,
+    "originalSensitivityPairs": 8,
+    "compiledPodsSmokePassed": true,
+    "rawLogBytes": 523916,
+    "rawLogSHA256": "347b8f57b162cc14c5cce9c9767d4fc0f844d95c2480e51fa5c9b0199c1b16e2",
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "conclusion": "success"
+      },
+      {
+        "name": "Locked install and native/standalone build in pinned compiler image",
+        "conclusion": "success"
+      },
+      {
+        "name": "Original lint, type and unit checks with isolated runtime network",
+        "conclusion": "success"
+      },
+      {
+        "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+        "conclusion": "success"
+      },
+      {
+        "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+        "conclusion": "success"
+      },
+      {
+        "name": "Separate-process SQL writer-lock regression sensitivity",
+        "conclusion": "success"
+      },
+      {
+        "name": "Original strict integration and process controls",
+        "conclusion": "success"
+      },
+      {
+        "name": "Acquire locked browser CI tools (no app dependency change)",
+        "conclusion": "success"
+      },
+      {
+        "name": "Finite compiled Pods browser smoke",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success"
+      }
+    ],
+    "note": "Deliberate mutant failures belong to passing sensitivity controls; first failed CI remains separate"
+  },
+  "docs": [
+    "USER-PERMS.md",
+    "TECH-STACK.md",
+    "BORTUS-IMPLEMENTATION.md",
+    "BORTUS-CONTROLLED-PERFORMANCE.md",
+    "implementation-evidence/README.md"
+  ],
+  "productionChanged": false,
+  "charts": {
+    "commit": "835dabebd97a7691311b2c6748fd3cfa4db17f44",
+    "changed": false,
+    "draft": true,
+    "merged": false,
+    "helmSuspended": true,
+    "guardedAdoption": false
+  },
+  "performanceMeasured": false,
+  "speedupClaimed": false,
+  "newImmutableImageBuilt": false,
+  "newWelcomeOrSettlementImageQualified": false,
+  "priorImage": "sha256:7b03b4b8d40fc3014822212aa9db4c24dfcc4a5781b9b5e5632cbc33fb9ff276",
+  "priorImageSource": "d6382450ba9064c79f7bbcac23c1d27c9c179610",
+  "priorImageStillContainsOldWelcomeCopy": true,
+  "rejectedSecurityOrRecoveryActionsRetried": false,
+  "overallAcceptance": false,
+  "remaining": [
+    "Original A07 no-warm-regression gate; prior d638 fails3/10",
+    "Security acceptance; prior scan1/12Medium/zero secrets",
+    "Actual assistive technology",
+    "Compatible independent full-row/native recovery and rollback",
+    "Fresh backup/quiescence/effective RBAC/admission/schema/data preservation",
+    "Live native values/history/CAS/rotation and guarded adoption"
+  ],
+  "nextFeature": "One original frozen A07 qualification for the actually changed settlement candidate; independent complete summary recomputation; no unchanged replay or gate relaxation"
+}

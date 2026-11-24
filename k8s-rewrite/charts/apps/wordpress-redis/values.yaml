@@ -1,0 +1,125 @@
+enabled: false
+replicaCount: 0
+image: redis:alpine@sha256:2afba59292f25f5d1af200496db41bea2c6c816b059f57ae74703a50a03a27d0
+environmentSecret: wordpress-redis-runtime
+migration:
+  verified: false
+  state: private-accepted-production-reconciled
+  sources:
+  - wordpress_redis-db
+  requiredEnvironmentKeys:
+  - PATH
+  storageSizingVerified: true
+  nativeSecretsImported: true
+  applicationChecksPassed: true
+  dataCopies: []
+  sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: wordpress-redis
+    namespace: wordpress
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: wordpress-redis
+    template:
+      metadata:
+        labels:
+          app: wordpress-redis
+        annotations: {}
+      spec:
+        securityContext:
+          fsGroup: 999
+        containers:
+        - name: wordpress-redis
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p6379-tcp
+            containerPort: 6379
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+          - name: data
+            mountPath: /data
+        volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: wordpress-redis-data
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: wordpress-redis
+    namespace: wordpress
+  spec:
+    selector:
+      app: wordpress-redis
+    ports:
+    - name: p6379-tcp
+      port: 6379
+      targetPort: 6379
+      protocol: TCP
+    type: ClusterIP
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: redis-db
+    namespace: wordpress
+  spec:
+    type: ClusterIP
+    selector:
+      app: wordpress-redis
+    ports:
+    - name: tcp
+      port: 6379
+      targetPort: 6379
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: wordpress-redis-data
+    namespace: wordpress
+    annotations:
+      helm.sh/resource-policy: keep
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: wordpress-redis-published
+    namespace: wordpress
+    labels:
+      app.kubernetes.io/managed-by: Helm
+    annotations:
+      meta.helm.sh/release-name: wordpress-redis
+      meta.helm.sh/release-namespace: wordpress
+  spec:
+    type: ClusterIP
+    externalIPs:
+    - 192.168.0.4
+    - 192.168.0.5
+    - 192.168.0.6
+    selector:
+      app: wordpress-redis
+    ports:
+    - name: p6379-tcp
+      port: 6379
+      targetPort: 6379
+      protocol: TCP

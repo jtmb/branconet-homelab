@@ -1,0 +1,76 @@
+# Radarr Samba PVs + PVCs (CSI SMB driver)
+# Separate PV per subdirectory to avoid CSI SMB subPath bug
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: radarr-movies-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - noserverino
+    - cache=none
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: radarr-movies
+    volumeAttributes:
+      source: "//192.168.0.8/plex_smb_share/movies"
+      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: plex
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: radarr-downloads-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - noserverino
+    - cache=none
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: radarr-downloads
+    volumeAttributes:
+      source: "//192.168.0.8/plex_smb_share/downloads"
+      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: plex
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-movies-pvc
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: radarr-movies-pv
+  storageClassName: ""
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radarr-downloads-pvc
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: radarr-downloads-pv
+  storageClassName: ""

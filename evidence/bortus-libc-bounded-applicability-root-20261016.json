@@ -1,0 +1,60 @@
+{
+  "status": "BOUNDED_PUBLIC_LIBC_APPLICABILITY_REVIEW_NO_SECURITY_ACCEPTANCE",
+  "reportSHA256": "201f20a5665fab673a29e4147887cdcab6a5b82d5fc65f699e3609883133ee02",
+  "installedPackage": "libc6 2.39-0ubuntu8.9",
+  "scannerRows": [
+    {
+      "id": "CVE-2026-18374",
+      "severity": "MEDIUM",
+      "reportedFixedVersion": null,
+      "status": "affected"
+    },
+    {
+      "id": "CVE-2026-89092",
+      "severity": "MEDIUM",
+      "reportedFixedVersion": null,
+      "status": "affected"
+    }
+  ],
+  "findings": {
+    "CVE-2026-18374": {
+      "requiredPrecondition": "Attacker-controlled effectively empty character-set suffix of the C fopen mode argument",
+      "reviewedNodePaths": "Numeric filesystem flags or fixed stdio modes on selected reviewed paths; no whole-image exposure conclusion",
+      "untraced": [
+        "Prisma and other opaque native consumers",
+        "SWC/libvips",
+        "operator or transitive consumers"
+      ],
+      "DebianUnstableFirstFixed": "2.43-5",
+      "source": "https://security-tracker.debian.org/tracker/CVE-2026-18374",
+      "upstreamAnnouncement": "https://www.openwall.com/lists/oss-security/2026/08/27/6"
+    },
+    "CVE-2026-89092": {
+      "requiredPrecondition": "Enabled nscd service receiving oversized malicious DNS answers",
+      "qualifiedFilesystemNscdPathCount": 0,
+      "configuredFixture": "Fixed entrypoint starts Prisma/Node, no nscd daemon/socket mounts in reviewed fixture",
+      "scopeLimit": "Missing server precondition for configured fixture only; no universal unreachability assertion",
+      "DebianUnstableFirstFixed": "2.43-7",
+      "source": "https://security-tracker.debian.org/tracker/CVE-2026-89092",
+      "upstreamAnnouncement": "https://www.openwall.com/lists/oss-security/2026/09/11/2"
+    }
+  },
+  "UbuntuReferences": [
+    "https://ubuntu.com/security/CVE-2026-18374",
+    "https://ubuntu.com/security/CVE-2026-89092"
+  ],
+  "primaryVerification": "ROOT web open of both Debian trackers; delegated Ubuntu indexed/upstream review. Web content bodies not retained as raw authenticated patch artifacts.",
+  "filesystemInventorySHA256": "f347778914b9b65b9603beaa16ed99948fd69b2c50cd4b200a44ce805cc0cc61",
+  "gaps": [
+    "Exact authenticated Noble source/patch correspondence still missing",
+    "Maintained fix bodies and applicability not qualified",
+    "Debian unstable fixes do not qualify a Noble replacement"
+  ],
+  "newSourceOrPackageBytesAcquiredForThisReview": false,
+  "targetOrExploitOrBuildRun": false,
+  "scannerLiteralExit": 1,
+  "totalMediumFindingsUnchanged": 12,
+  "noSuppressionOrWaiver": true,
+  "securityAccepted": false,
+  "productionAndOriginalDataUnchanged": true
+}

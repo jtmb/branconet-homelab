@@ -1,0 +1,959 @@
+# Immutable image export and sequential preload
+
+## Read-only compiled-overlay execution-receipt auditor qualified - 2026-10-20 (Toronto)
+
+`scripts/migration/bortus-compiled-overlay-receipt-audit.py` adds separate closed
+formats `bortus-compiled-overlay-receipt-selection/v1` and
+`bortus-compiled-overlay-receipt-audit/v1`. Independent contract/selection and
+per-record SHA256 pins bind exporter, controller and three persisted node records.
+The exact contract a47ea88d, saved archive27bc0016/991697920bytes, direct manifest
+73aecec9, separate rawconfigd19974d6, source7940e9e1, reviewed module-source pins,
+unique owners and fixed hosts/ordinals must agree. Packaging records, planned
+envelopes, old protocols and source qualification results cannot replace receipts.
+Duplicate keys, extra/missing fields, type confusion, bad exit codes, altered
+recipe/contract/layers/labels and pin/host/order/scope drift refuse validation.
+
+Missing, validating, pending, refused and uncertain records remain incomplete;
+controller/node disagreements remain visible, including a completed node whose
+controller reply was lost. Final-persistence failures carrying completed fields
+remain uncertain. No historical record is written, repaired, upgraded or adopted.
+The auditor never opens an archive path from a receipt. POSIX file reads are
+bounded, regular/current-owner/single-link, nofollow, with ancestor and descriptor
+identity checks. There is no transport, subprocess, credential or runtime API.
+
+Evidence class is an unauthenticated external caller claim, separately matched
+to the pinned selection: public-synthetic inputs cannot satisfy a request labeled
+externally-observed. Fabricated bytes with a matching externally supplied claim
+cannot be authenticated by JSON or hashes. Even completed-content-consistent
+means content consistency only: actual_transport_proven, provenance_authenticated,
+current_node_state_proven, archive_bytes_reverified, execution_authorized,
+runtime_qualified and deployed always remain false. Original A01-A22 acceptance
+stays unchanged; all44clauses and21 separately named delivery gates remain.
+
+First36 frozen PUBLIC controls pass0.251s. Root source review adds explicit
+final-persistence uncertainty handling and three controls; all39 final frozen
+controls pass0.258s, no skips, under60s wall/30CPU-seconds/512MiB address space.
+Saved-evidence review passes2989 checks and rehashes1936 retained selected proofs.
+Its initial blanket AST guard rejected harmless string replace in CLI option
+normalization; that checker/refusal is preserved. Corrected checker only passes;
+source/tests unchanged and no controls replayed during saved review.
+Initial passing source/tests remain frozen. Tests use hand-built public receipt
+fixtures and protected POSIX temporary files; subprocess/network calls are blocked.
+No old suite, archive parser, adapter CLI export/preload, Docker/SSH/sudo/ctr,
+application runtime, graph walk, operatorDB, private-native/recovery, scan/CI,
+publication or production execution occurs. Root review is not independent-person
+or runtime acceptance. [Evidence](../evidence/bortus-compiled-overlay-receipt-audit-root-20261020.json) records the finite source scope.
+
+All190 existing docs/evidence files were read for impact; four operational docs
+and PLAN/status are updated with exact original-byte inverses retained. RootdocsLOCAL;
+four new/prior32/earlierone findings, all original failures and preceding security,
+performance/actualAT/native/recovery/backup/quiescence/schema/effectiveRBAC/admission/
+data gates remain unresolved. OverallCIQualified=false; the three retained successful
+CI scopes remain distinct. Full goal ACTIVE/no budget. PRDdeployment AND actual
+verification remain FINAL REQUIRED after all original preceding gates.
+
+### Auditor input and exit contract
+
+The API accepts contract bytes/pin, selection bytes/pin, a fixed five-slot bytes
+map (`export`, `preload`, `node-1`, `node-2`, `node-3`) and the independent expected
+evidence class. The selection has exactly `format`, `evidence_class`,
+`contract_sha256`, `export_sha256`, `preload_sha256`, `nodes`,
+`runtime_qualified:false`, `deployed:false`. `nodes` is exactly the three fixed
+hosts in order with integer ordinals1/2/3 and `sha256`. A null pin selects a missing
+slot; supplying bytes for it refuses. A selected pin requires matching supplied
+bytes. All receipt and selection JSON reject duplicate keys and nonfinite numbers.
+No arbitrary path, credential, raw config Env or command belongs in a selection.
+
+The read-only CLI requires `--contract`, `--contract-sha256`, `--selection`,
+`--selection-sha256`, and `--evidence-class public-synthetic|externally-observed`.
+Supply only the separately selected files with `--export`, `--preload`,
+`--node-1`, `--node-2`, `--node-3`. Use protected POSIX paths for input files and
+reviewed tooling. Receipt files are read once with stability checks; this is no
+continuous custody or atomic multi-file snapshot claim. Exit0 means completed
+content consistency only, exit2 emits a valid incomplete report, exit1 emits a
+fixed redacted refusal. Argparse usage errors also exit2 without a report.
+Only stdout contains the report; the auditor has no receipt-output writer.
+No actual observed receipt bundle was audited during source qualification.
+
+## Compiled-overlay staging adapters source qualified - 2026-10-20 (Toronto)
+
+Separate `stage-bortus-compiled-overlay.py`, `bortus-compiled-overlay-node.py`
+and `bortus-compiled-overlay-io.py` implement the distinct
+`bortus-compiled-overlay-adapter/v1` execution protocol, consuming the exact
+compiled-overlay compatibility contract SHA256
+`a47ea88d868bc99e0007ca78af7f393a616db4cbbfd03fd59f62c69c4c397ca1`.
+The read-only validator, exact contract and legacy v1/release-v2 files are unchanged.
+Expected packaging records and planned envelopes cannot satisfy the separate
+completed export execution receipt. Manifest/local73aecec9 and rawconfigd19974d6
+remain different identities; exact saved archive27bc0016/991697920bytes remains
+required. Source and node identity checks do not adopt old execution receipts.
+
+Export inspects the exact local Docker tag before/after its bounded save, checks
+the entire archive and records a distinct execution outcome. Preload verifies a
+pinned completed export, copies protected inputs and calls ONLY the fixed three
+SSH targets in order, port2002/strict host keys/no agent forwarding. The fixed
+launcher injects reviewed copied source modules in memory; credentials and image
+bytes enter stdin only. The exact contract pin is checked independently on each
+node, before authorization. The separate node protocol refuses legacy envelopes,
+checks both tag spellings absent before receipt and immediately before import,
+verifies the entire exact archive hash/size, then queries the direct OCI manifest
+and separate config after import. Config Env is never persisted or returned.
+Both exporter and node recheck retained archive stability after final metadata.
+
+Exclusive deterministic0700 runs and0600 files, nofollow non-writable ancestor
+and regular/single-link input checks, descriptor identity fences, and fsynced
+pending records precede dispatch. Lost/invalid replies or failures after dispatch
+remain uncertain; later nodes stop, earlier completed nodes remain. No resume,
+adoption, rollback, automatic replay or automatic retry exists. Any future
+execution needs protected Linux tooling/input locations and separate authority.
+External exclusive source/tag/import ownership is required; tag operations are
+not atomic CAS. Child stdout is bounded, raw stderr discarded, failures fixed
+and redacted, and only the owned child PID is killed/waited on timeout. Remote
+operations may outlive lost SSH replies; no remote cancellation is attempted.
+Python cannot promise password zeroization or power-loss durability.
+
+The first31 frozen public controls pass in2.932s. Review adds final archive
+stability fences and two concurrent-write controls; all33 final frozen controls
+pass in3.001s under60s wall/30CPU-seconds/512MiB address space. Initial passing
+source/test snapshots remain frozen. Controls use public synthetic archives,
+protected POSIX fixture files, fake child processes and mocked transports only;
+the existing public archive generator is reused, without running its old suite.
+No actual adapter CLI export/preload, Docker/SSH/sudo/ctr command, runtime,
+publication or production operation occurred. This is source qualification only.
+[Reviewed evidence](../evidence/bortus-compiled-overlay-adapter-root-20261020.json) records the scope and retained failures.
+
+All189 existing docs/evidence files were read for documentation impact; four
+operational docs plus plan/status are updated with original suffixes preserved.
+RootdocsLOCAL; four new/prior32/earlierone findings, all44originalclauses/failures,
+and original security/performance/actualAT/compatible independentrecovery/fresh
+backup/quiescence/schema/effectiveRBAC/admission/data gates remain unresolved.
+Three successful CI scopes stay separate; overallCIQualified=false. No new scan,
+manualCI/workflow, app source/build/install/download, graph/oldcorpus/benchmark,
+operatorDB/private-native/recovery replay, remote mutation or promotion. Fullgoal
+ACTIVE/no budget; PRDdeployment AND actualverification remain FINAL REQUIRED.
+
+
+## Distinct compiled-overlay source compatibility contract - 2026-10-20 (Toronto)
+
+`scripts/migration/bortus-compiled-overlay-contract.py` is a separate read-only
+contract validator. Its version is `bortus-compiled-overlay-staging/v1`, recipe
+`compiled-overlay-v1`. The exact public contract is
+`scripts/migration/contracts/compiled-overlay-7940e9e1-v1.json`. An independent
+SHA256 pin is required to load a contract. It binds source7940e9e1/BuildID
+6L__Bb3L8GTj93JRhod5U, manifest/local image73aecec9, distinct raw configd19974d6,
+actual saved archive27bc0016/991697920bytes, all20 ordered layer descriptors and
+diff IDs, all eight labels, retained base4a84c0b5 and eight separate authority
+hashes. Raw-Git296, current-source333 and compiled/dependency41723 authorities
+remain separate; checking authority file bytes does not rewalk the graph.
+
+The Python API validates saved archive bytes using the original bounded archive
+primitives plus this recipe's direct OCI manifest/index and exact eight-label
+contract. It verifies export-record identities, constructs credential-free planned
+preload envelopes for the three fixed hosts in order, and checks supplied node
+inventory/manifest/config bytes against the exact image. Constructing an expected
+export record or envelope is not proof that an export or import happened. Config
+Env fields are never returned. The open regular-file identity must remain stable
+through archive verification; acquisition/transport ownership remains external.
+The only CLI operation validates a contract file;
+there is no Docker/SSH/sudo/import/export/transfer/publication/deployment dispatch.
+Future transport integration and actual execution require their own reviewed scope.
+Legacy v1/release-v2 exporter and per-node source/protocol are unchanged and keep
+refusing this recipe. The new protocol cannot be sent to the legacy node helper.
+
+The source contract is complete and reviewed. Twenty initial frozen public
+controls pass; after a stable-file review correction, all22 final controls pass
+in0.774s under the60s wrapper. The original passing source/test snapshots remain.
+A saved-evidence review passes223 checks; its initial Windows path-separator
+refusal is preserved and corrected without repeating the controls. One read-only
+verification of the exact retained991697920-byte archive passes in3.722s under
+30CPU-seconds/512MiB address-space/60s wall limits, including all20 ordered blob
+and expanded diff IDs, exact OCI/index/config metadata and stable file identity.
+No Docker/SSH/sudo/import/export transport or application runtime is invoked.
+[Reviewed evidence](../evidence/bortus-compiled-overlay-contract-root-20261020.json) records the finite scope. The contract-only
+CLI requires the exact contract-file SHA256
+`a47ea88d868bc99e0007ca78af7f393a616db4cbbfd03fd59f62c69c4c397ca1`.
+
+No actual export/preload was run for this tooling task. RootdocsLOCAL;
+four new/prior32/earlierone findings, all original44clauses/failures and all security,
+performance/actualAT/compatible independent recovery/fresh backup/quiescence/schema/
+effectiveRBAC/admission/data gates remain unresolved. No acceptance is inferred
+from a packaging contract. PRD deployment AND actual verification remain FINAL.
+
+## Exact-image public browser assessment reviewed - 2026-10-20 (Toronto)
+
+The [finite exact-image assessment](../evidence/bortus-exact-image-public-browser-root-20261020.json) is complete and reviewed on unchanged application7940e9e1/BuildID6L__Bb3L8GTj93JRhod5U, image73aecec9 and separate configd19974d6. The first run reaches welcome, login keyboard order and invalid-login feedback, then fails with ChunkLoadError because the bridge excludes parentheses in actual dashboard static paths. Its screenshot/log/failed result remain literal. A separately frozen continuation uses170 exact retained static paths, passes12 route controls and completes the remaining selected flow. No compiled graph walk, rebuild, dependency install or source change occurs.
+
+Saved-evidence review passes154 checks across26 DOM/AX captures, eight inspected screenshots and19 exact static-byte transactions. Writer/readonly account metadata and visible mutation controls, dialog labels/disabled submission, keyboard focus/trap/return and both sign-outs are verified. The original I11 oracle expected protected navigation to login; actual post-sign-out /users redirects to /welcome, matching current middleware. The oracle remains unchanged and mismatched. Continuation producer passed means task completion only; there is no uninterrupted all-expected-states pass. Four explicit503 API scope refusals and five502 page-prefetch refusals remain unforwarded; they are bridge evidence, not application responses or native acceptance. The continued browser warn/error capture is empty. A closed-tab observer refusal is retained without browser replay.
+
+Both fresh synthetic tmpfs runtimes use the unchanged normal entrypoint/11 migrations and original2CPU/1GiB/no-extra-swap/PID256/network-none/read-only/1800s maximum, with the original total phase deadline retained. Runtime durations66.8s and93.4s, actor/tool exits0; both exact container IDs/names, four sampled runtime births and recorded tool/supervisor births are independently absent. Linux/Windows4401 is absent. Closure is finite. No operatorDB, private/native/recovery handler forwarding, old corpus/benchmark replay, scan/newCI/workflow, preload or production action. ActualAT/truezoom/fullbrowser/security/performance and every original delivery gate remain open. RootdocsLOCAL; fournew/prior32/earlierone findings and all44clauses/failures remain. Three successful CI scopes stay separate; overallCIQualified=false. Full goal ACTIVE/no budget; PRD deployment AND actual verification FINAL.
+
+
+## Current-source image assembled and public HTTP qualified - 2026-10-20 (Toronto)
+
+The current-source image is assembled and locally exported with a distinct
+`compiled-overlay-v1` recipe. [Saved evidence](../evidence/bortus-current-source-compiled-image-root-20261020.json) binds application
+7940e9e1 and BuildID `6L__Bb3L8GTj93JRhod5U` to manifest/local ID
+`sha256:73aecec9018cfc0634828a1def4a78c58410054a5fa51f7aa340493e2bef804c`
+and separate raw config `d19974d641cec360ca457abf0f82810947642e8c5686559cadae2851e7ce3053`.
+The actual Docker export is991697920bytes/SHA256
+`27bc001603e397ad5c9c14d82ceb8c62a17ab23459cf9ab745aed3076bdde337`.
+All20 ordered layers,183 installed production packages and28258 application
+payload entries verify. Actual inert Docker exports prove all933 entries outside
+`/app` unchanged and the complete new payload exact, with stale application
+entries absent. Both inert containers are removed. No application rebuild,
+dependency install/download or native/private recovery replay occurred.
+
+The296 raw-Git context,333 current raw inputs and41723 compiled/dependency records
+remain separate authorities. ONE new-lane graph comparison completed before the
+first invalid LF/CRLF equality assertion;284 raw source files differ from Git only
+by CRLF. That pre-Docker failure is retained; the reviewed continuation does not
+repeat the graph walk. Actual assembly uses4CPU/4GiB/no-extra-swap/PID256,
+network-none/read-only-root and900s; Docker daemon operations are separately
+bounded, without a daemon-wide resource-cap claim. Worker exit0 is separate from
+controller exit1 at post-load tag lookup. The exact generated digest was then
+verified and the absent canonical local alias created in a separate operator
+step. Assembly/load were not replayed; both original failures remain literal.
+
+Twenty-one synthetic packaging controls and25 saved-evidence review checks pass.
+One focused actual-image public runtime passes12 semantic groups/26 HTTP requests:
+normal entrypoint applies11 migrations to a fresh synthetic tmpfs DB; liveness,
+public pages/redirect/static bytes, bootstrap/login/session, readonly permissions,
+logout cookie and tampered-signature checks pass. Readiness correctly503 without
+Kubernetes access. Runtime retains2CPU/1GiB/no-extra-swap/PID256/network-none,
+read-only-root and1800s maximum. Runtime/tool exit0, exact CID/name and two sampled
+runtime births are absent; nine runtime/tool/supervisor and12 assembly-tool births
+are independently absent. Closure is finite. Both SQLite experimental warnings
+remain recorded. No populated-data preservation/schema-compatibility claim follows.
+
+This completes only the bounded assembly/export/public-HTTP task. No image browser,
+actualAT/truezoom, security/performance, native values/history/CAS/rotation/recovery,
+effective RBAC/admission or production acceptance is added. Original v1/release-v2
+exporter/preloader contracts remain unchanged and REFUSE this new recipe; source
+contract compatibility remains a separate prerequisite before any future preload.
+No scan/newCI/workflow/preload/merge/promotion/production change. RootdocsLOCAL;
+four new/prior32/earlierone findings, A07five-of-ten warm failures, all44clauses and
+original failures remain. Three CI scopes remain distinct; overallCIQualified=false.
+Full objective ACTIVE/no budget; PRD deployment AND actual verification remain FINAL.
+
+## Current-source compiled overlay assembly preparation - 2026-10-20 (Toronto)
+
+A distinct `compiled-overlay-v1` lane is being prepared in
+`scripts/migration/assemble-bortus-compiled-release.py`. It packages the existing
+7940e9e1 compiled BuildID `6L__Bb3L8GTj93JRhod5U`; it does not run npm, install,
+recompile, or execute migrations. The 296-file raw-Git context, 333 current source
+inputs, 41723 compiled/dependency records, native/worker packaging and qualified
+runtime base remain separate authorities. The exact lock selects installed
+production packages, including the Prisma CLI absent from standalone output.
+Public/static files, schema/migrations, native selector and account worker are
+preserved. Only the copied entrypoint receives the existing CRLF-to-LF treatment.
+
+The proposed OCI layer makes `/app` opaque, replacing stale application assets
+while retaining the base layers and runtime configuration. Packaging is intended
+for a read-only container with 4CPU/4GiB/no-extra-swap/PID256/network-none and a
+900-second maximum. Docker save/load metadata operations are separate daemon
+operations; those container limits do not assert a daemon-wide CPU/memory cap.
+Input review/freeze, one NEW integrity comparison, actual constrained assembly,
+independent archive/filesystem review, exact local image inspection and focused
+public startup/auth/permission qualification remain pending. Original
+`release-v2` builder/exporter/preload contracts and all receipts remain unchanged;
+they refuse this new recipe. No preload authority is established by its archive.
+
+No image has yet been assembled in this lane. No new scan, CI replay/workflow,
+private native/recovery replay, production mutation or publication is authorized.
+Root documentation stays LOCAL; four new/prior32/earlierone findings and all
+original performance/security/actualAT/recovery/schema/RBAC/admission/data gates
+remain unresolved. Full objective ACTIVE/no budget; PRD deployment AND actual
+verification remain FINAL after the original preceding gates.
+
+## Final source image staged — 2026-10-18
+
+Current app source `5aba82c` builds through release-v2 over the explicitly pinned maintained runtime. The exact saved image and its ordered layers are verified, and all three supplied nodes import the same runtime index `sha256:bfc78b697373727aebccf50c70ef1944c76691cc435da0ad3bcc4e44670ff211`. A separate operator cache correction adds the absent exact `docker.io/library/bortus@sha256:…` alias without force or changing the release tag; source and alias targets agree on every node. This operator step is recorded separately and is not attributed to the preload helper. Its exact executed source is retained in [bortus-5aba-cache-alias.py](../scripts/migration/operations/bortus-5aba-cache-alias.py); it is specific to this source/image/preload receipt, consumes sudo authorization only through stdin and never forces replacement of an existing alias.
+
+All12 existing isolated public runtime checks pass. The original wrapper exit1 from capitalization of Docker's absent-object message remains recorded; separate exact-ID/name absence checks prove cleanup without rerunning the application. Fresh default Trivy reports12 Medium findings and zero secrets, with no suppression or accepted residual. The first export refusal led to a v2-only repeated-layer fix: duplicate tar members remain forbidden, all22 ordered references/21 unique blobs and diff IDs are checked, and every position counts toward expansion bounds. The build was not repeated. Current [release evidence](../evidence/bortus-current-release-staging-root-20261018.json) and [post-staging cluster health](../evidence/bortus-post-staging-health-root-20261018.json) record the actual scope. No production image, schema, credentials, PVC or adoption setting was changed. Private recovery/security policy blocks and the retained performance/AT/live gates remain unresolved.
+
+
+The opt-in `release-v2` builder receipt is now supported alongside the original
+five-label SSH build. Its source-verified `Dockerfile.release`, exact supplied
+runtime reference/local inspect ID and before/after runtime checks stay in the pinned
+build receipt. Only this explicit local-transport contract exports from the
+operator's local Docker daemon; original receipts still use the fixed SSH host.
+All five original source/context/owner labels plus the exact base-name label are
+verified in both source inspections, the complete saved archive and every node's
+actual content. Preload remains sequential on the same three fixed nodes with
+unchanged authorization, content/platform/digest checks and no runtime/deployment
+acceptance. Other or incomplete label/recipe shapes refuse. An earlier ad-hoc
+two-label image cannot be adopted as either completed build contract.
+
+For v2 export, use `--local-image-id` instead of `--config-image-id`. The saved
+`index.json` must identify that exact OCI root; its authenticated descriptors must
+select one Linux/amd64 manifest and its linked attestation. The actual selected
+config and ordered layers must match Docker's saved manifest, and the original
+complete archive verifier still checks their bytes, labels and diff IDs. The
+export receipt records local index, selected manifest and raw config separately;
+attestation bytes/references do not qualify attestation semantics. Preload then
+uses `--config-image-id` with that resolved raw config, rechecks the saved chain
+and sends that raw identity to the unchanged per-node content checks. No layer,
+platform, label, source or node check is replaced by a Docker inspect ID.
+
+The v2 chain permits repeated references to the same content-addressed layer:
+every ordered descriptor, size, blob digest and expanded diff ID must still match
+the selected manifest and config, including repeated positions. Duplicate outer
+archive members remain forbidden and every position counts against the existing
+layer/expanded-byte bounds. The legacy v1 verifier retains its original unique
+layer-reference requirement. The first strict Oct18 export saved successfully but
+refused this legitimate 22-position/21-blob composition; its failed record is
+retained. A corrected export uses a fresh owned parent, not an adopted old run.
+
+`stage-bortus-release-image.py` consumes the completed receipt from the
+[immutable builder](BORTUS-RELEASE-IMAGE.md), pinned by its SHA-256, exact full
+source commit and exact `sha256:` config image ID. Pending/failed receipts,
+source-label mismatches and any runtime-accepted claim refuse. Export and
+preload use separate deterministic, exclusive mode-0700 run directories under
+the operator-owned runtime parent, which may be mode 0755 without group/world
+write. Their files are exclusive mode 0600. Pinned nofollow directory/file
+identities and file/directory/parent fsyncs precede dispatch. Existing runs are
+never reopened, overwritten, adopted or replayed.
+
+After manual inspection of a retained failed attempt, the migration owner may
+explicitly authorize a fresh preload with `--attempt-id <unique-lowercase-12hex>`.
+This optional preload-only ID appends `-attempt-<id>` to both the root run and
+each remote stage, and is bound in the closed request, reply and receipts. It
+does not change the immutable image/tag or bypass tag absence checks. Reusing
+the same attempt, an existing stage or a destination release tag still refuses.
+There is no automatic retry; the omitted-ID default paths remain unchanged.
+
+Export first checks the exact Docker tag's config ID and all five source/owner
+labels on `james@192.168.0.4:2002`. A durable pending receipt precedes Docker
+save of that tag. Received archive chunks are bounded and written directly to
+the new protected `image.tar`; export errors, timeouts or lost replies leave
+an unaccepted partial and pending/uncertain outcome. The helper verifies the
+complete regular-file/directory tar inventory, manifest's sole exact tag,
+selected config hash/labels/Linux amd64 platform, and ordered layer diff IDs.
+Opaque gzip layer bytes are streamed through bounded decompression to verify
+their uncompressed diff IDs; raw blob digests are retained separately. Config
+environment fields are never returned or put in metadata logs. It re-inspects
+the source Docker identity after save before completing the export receipt.
+No source tag creation or Docker image running is performed.
+
+Archive bounds are 4 GiB compressed/plain total and aggregate expanded layers,
+4,096 members, 1,024 selected layers, 8 MiB manifest/config metadata and 8 KiB
+PAX path extensions. Paths, links, unsupported extensions, duplicate members,
+unexpected metadata or nonzero trailing tar payload refuse. Selected-platform
+resolution is limited to one Linux/amd64 manifest from at most 64 index
+descriptors. Unsupported/ambiguous image formats fail closed. These are image
+staging bounds, separate from native Secret request ceilings.
+
+```sh
+python3 scripts/migration/stage-bortus-release-image.py export \
+  --build-receipt /approved/runtime/bortus-release-<commit>/record.json \
+  --receipt-sha256 <pinned-build-receipt-sha256> \
+  --source-commit <full-lowercase-40hex> \
+  --config-image-id sha256:<exact-64hex-config-id> \
+  --runtime-parent /home/brajam/.local/share/branconet-migration
+```
+
+For `preload`, additionally supply `--export-receipt` and its independently
+pinned `--export-sha256`. The caller supplies only a bounded JSON line with
+`sudo_password` through its existing protected stdin pipe; never place that
+value in arguments, shell history, files, reports or logs. This tool does not
+read operator credential files. The password passes only in memory through
+SSH stdin to `sudo -S -p '' -v`; subsequent containerd commands use `sudo -n`.
+Authorization and those commands share the remote Python session so sudo's
+session-scoped timestamp remains usable. Timeouts kill only the newly owned
+command PID; they never signal the shared session/process group. SSH's own
+local process ownership remains separate. A successful authorization does not
+prove that a later policy/expiry check will permit a command.
+No interactive prompt or alternate auth fallback is offered. Python cannot
+guarantee zeroization of immutable password objects; no such claim is made.
+
+Preload copies and independently re-verifies the pinned export, then handles
+only `james@192.168.0.4`, `.5`, `.6`, port 2002, strictly in that order. All SSH
+uses BatchMode=yes, StrictHostKeyChecking=yes and ForwardAgent=no. Each node
+creates a fresh `.bortus-release-preload-<fullcommit>` stage directly under its
+verified owned home, mode 0700, with parent/anchor checks. Either exact tag
+spelling (`bortus:release-<commit>` or `docker.io/library/…`) already present
+refuses; unrelated images do not block it. The inventory is bounded and must
+have the actual expected ctr header. It rechecks tag absence after receiving
+the exclusive mode-0600 archive, verifies size/SHA, flushes the file/directory,
+and saves a durable remote pending record before import. An existing remote
+stage also refuses. No adoption or automatic retry is performed.
+
+The fixed runtime command is `/opt/containerd-k8s/bin/ctr`, address
+`/run/containerd-k8s/containerd.sock`, namespace `k8s.io`. After import, the
+helper verifies actual root index/manifest content hashes, unique platform
+selection, selected manifest's config and ordered raw layer digests, then the
+config ID, labels and ordered diff IDs. Metadata captures are bounded in memory;
+whole image config/Env objects are not saved as logs. Complete import stdout
+and stderr remain separately protected on the node. Fixed reasons are returned
+on failure. All three root runtime digests must agree; the config ID is retained
+as a **different identity**, never substituted for a runtime/manifest digest.
+
+Local intent precedes each SSH call; remote intent precedes import. Lost reply,
+invalid/partial metadata, import error or a durability failure stops the
+remaining nodes and retains pending/uncertain receipts. The coordinator must
+inspect those outcomes explicitly; rerunning this tool cannot resolve them.
+Successful earlier node imports are retained and are not undone. Each owned
+SSH/import child is waited/reaped; query timeouts are 30 seconds and save/import
+operations are limited to 1,200 seconds. A remote operation may outlive a lost
+SSH reply. No remote cancellation or cleanup is attempted.
+
+Docker and containerd tags provide no atomic compare-and-set. The coordinator
+must hold exclusive source/tag and destination import ownership, exclude
+concurrent writes to protected stages and inputs, and recheck source/controller
+requirements at release. Checks around dispatch detect drift but do not make
+these operations atomic. This tooling never runs an image, deploys a workload,
+qualifies a holder, grants admission/RBAC, or proves application/data/migration
+recovery. It records `runtime_qualified=false` and `deployed=false`. Historical
+fixed-image distribution/recovery receipts remain historical.
+
+Local fixtures exercise public archives and actual POSIX persistence with
+mocked Docker, SSH, sudo and ctr responses. They establish tooling behavior,
+not a real export/import, power-loss durability or runtime acceptance.
+
+The first actual immutable holder preload stopped before transfer/import when
+the old remote commands created new sessions after sudo authorization. Its
+protected root/node refused or uncertain records remain retained. Local Python
+child tests reproduce the session mismatch and qualify shared-session handling;
+they do not execute sudo, SSH, ctr or an operator password. Actual new preload
+and holder/runtime acceptance remain with the migration owner. The later actual
+three-node result and its limited runtime scope are recorded below.
+
+Root independently verifies selected native commit `15fb94ba`: seven exact raw
+files/modes, 86 original artifacts, both unchanged dependencies and the final
+26 focused/64 combined release cases. After integration, all 249 current
+`test_bortus*.py` migration-helper cases pass under WSL without skips. Source
+and test inputs remain unchanged through execution. The [integration receipt](../evidence/bortus-release-staging-integration-20261011.json)
+records the exact scope; it grants no actual export, preload or runtime acceptance.
+
+The actual `7e30b9b4` holder export completed at 09:19:37 UTC on 2026-10-11.
+The protected 1,150,322,688-byte archive has verified config/source/layer bindings;
+its [receipt](../evidence/bortus-holder-source-image-7e30-20261011.json) records
+export separately from the later three-node preload and public-fixture runtime.
+Admission and production-holder/data qualification remain pending.
+A pinned Trivy 0.75.0 default image and image-config scan completed with zero
+Secret findings and 346 vulnerability entries (67 High, one Critical). Scanner
+exit 1 represents findings, not an accepted clean image. Four fixable High entries
+are in bundled kubectl's Go/x/net dependencies. Its production remediation and
+the inert Node-only holder reachability review remain open; no app entrypoint ran.
+
+The fresh explicit preload completed on all three nodes at 10:03:40 UTC on
+2026-10-11. The [actual staging/runtime receipt](../evidence/bortus-holder-preload-runtime-7e30-20261011.json)
+binds every node to source/config/layers and the same OCI manifest. The first
+public runtime probe exposed `ErrImageNeverPull`: ctr import had retained the
+release tag without a digest image-name alias. Root separately created each
+absent exact `docker.io/library/bortus@sha256:…` name, without force or changing
+the source, and verified its target plus source/config/layers before and after.
+This is a recorded operator cache correction, not a capability of the preload helper.
+
+The actual kubelet Pod spec and status.imageID use that exact digest, while
+status.image displays the verified source release tag. The failed strict display-name
+comparison remains recorded. Current production-reader/consumer fencing still
+needs a narrow immutable-imageID correction; a display name cannot replace digest proof.
+
+The final public-fixture attempt completed at 10:21:15 UTC: Node 22.23.3,
+Prisma 6.19.3, two public SQLite rows and integrity, plus the unchanged bounded
+Node reader's 8,192-byte framing passed on every node. The image entrypoint was
+overridden; token automount was disabled, root filesystem was read-only and
+only an owned writable memory emptyDir held the fixture. Each Pod was deleted
+with current UID/RV preconditions and complete-list absence; the original writer
+UID/image remained unchanged. No production PVC/Secret data was read. This
+qualifies that inert public runtime, not a read-only production PVC holder,
+active admission, application startup, fresh checkpoint or independent recovery.
+
+Three failed attempts remain retained. The third was a private launcher quoting
+error: the WSL default shell expanded dollar-prefixed Prisma methods before SQL.
+The final launcher used base64 plus `--exec` and verified decoded source SHA
+before execution. Source/log/terminal identities and the exact cleanup of each
+failed fixture remain in protected records. The image vulnerability findings
+and final application performance acceptance stay separate and unresolved.
+
+The [actual fresh BORTUS cold checkpoint](../evidence/bortus-cold-checkpoint-b473091bebef-20261011.json)
+completed at 10:45:09 UTC on 2026-10-11. The immutable inert reader mounted the
+original claim read-only; SQLite bytes went directly into authenticated age
+ciphertext and the NAS copy matched. A cold snapshot and full encrypted 1 GiB
+Longhorn NAS backup completed. Complete raw PodList name/UID checks prove reader
+absence; the original writer is Ready on workernode2, its volume is healthy, and
+Deployment/HelmRelease/Kustomization fields are restored. Capture exposed a
+cross-node RWO resume-order defect; exact owned-reader removal and explicit
+same-journal recovery completed without recapturing data or repeating creates.
+All failed setup, transient-detach and controller-default-label attempts remain
+recorded. A fresh read-only source preflight validates this closed checkpoint and
+an absent masternode restore target. Complete SQLite row equality, independent
+restoration, active admission and the final application release remain pending.
+
+## Exact c29fc application image qualification
+
+The [c29fc image receipt](../evidence/bortus-app-source-image-c29fc-20261011.json)
+records the single source-bound build (12:06:21 UTC) and export (12:10:33 UTC)
+on 2026-10-11. Its 265 production entries match independently verified raw Git
+sources and the tested build context. The Docker config ID is
+`sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c`;
+this is not a qualified OCI manifest or runtime digest. The archive's ordered
+layers/config/labels match the completed receipt. Exact child owners are closed.
+
+A fresh pinned Trivy 0.75.0 default image and image-config scan completed at
+12:11:00 UTC with exit 1: zero Secret findings, 346 vulnerability entries
+(125 Low, 142 Medium, 67 High, 11 Unknown, one Critical). Nineteen fixable entries
+are in bundled kubectl, including four High. The Critical zlib finding has
+scanner status `will_not_fix`; no suppression or application reachability
+acceptance follows from that status. The earlier inert-holder assessment cannot
+qualify the application image. At that scan checkpoint, runtime/schema fixtures were pending; the later
+disposable fixture below records their scoped result. Kubectl remediation and
+security review, A07/A21 performance, three-node runtime qualification, active guards,
+independent complete-row recovery and final live acceptance stay open.
+This qualification dispatched no application rollout, cluster mutation or
+production data read; the original writer and data remain preserved.
+
+## Disposable c29fc image runtime and synthetic forward migration
+
+The [runtime receipt](../evidence/bortus-app-disposable-runtime-c29fc-20261011.json)
+records one reviewed run completed at 12:18:51 UTC on 2026-10-11. Exact config
+and five source labels matched before execution. Three disposable stages ran
+with no network, read-only root, UID/GID1000, 2CPU/1GiB/128PID limits and bounded
+tmpfs mounts: package inventory, fresh schema/restart and legacy1438 forward
+migration/restart. Liveness returned 200; native-unavailable readiness returned503.
+All11 migrations completed with zero schema drift and the expected account lock,
+legacy principal and write/admin versus readonly/nonadmin policy bridge.
+
+The legacy fixture uses the exact historical schema and seven raw migrations,
+with every original application table populated. The unchanged comparator
+checked all14 original tables, all original columns and complete row multisets:
+21 source rows survived unchanged, including both users and the alias with an
+underscored key. Added migration rows are separately recorded. SQLite integrity,
+foreign keys, terminal migration state and new sessionVersion default0 passed.
+These are synthetic rows; the fixture's arbitrary hashes do not establish login
+behavior, and this is not production preservation or independent storage recovery.
+
+Root freshly checked absence of all20 owned Linux process identities, the exact
+Windows launcher and the complete owner-labelled Docker container list. Fixture
+database frames remained in memory/tmpfs and cleanup completed. No production
+PVC/database/native credentials, Kubernetes operation, image preload or rollout
+was used. Application security, A07/A21, full-row production recovery, admission,
+actual auth/UI/consumer acceptance and final live release remain separate gates.
+
+## c29fc three-node preload completed
+
+The [single current preload receipt](../evidence/bortus-app-preload-c29fc-20261011.json)
+records actual exit0 on 192.168.0.4/.5/.6, completed at12:37:08 UTC on
+2026-10-11. All three nodes match the exact archive, config, five source labels
+and OCI manifest `sha256:068254f38c47f99fd35604185a806a92147d934010329638b32adb5c19802c90`.
+That manifest differs from the Docker config ID `sha256:b147db1da11fc66634954e12f15a4ef19fb3eb5e06b8b4e7d9676212caf39b4c`.
+The original receipt and owned launcher terminal agree; root freshly verifies
+launcher absence. This stages the image only. At this12:37 checkpoint, exact
+digest-name cache aliases and public-fixture runtime were pending; their later
+completed qualification is recorded below.
+No new app Pod, admission guard, PVC consumer or production schema was deployed.
+
+
+## c29fc digest aliases and inert Kubernetes runtime completed
+
+The [actual three-node runtime receipt](../evidence/bortus-app-three-node-runtime-c29fc-20261011.json)
+records the separate alias-only operation at12:55:18 UTC and inert public
+runtime at12:56:45 UTC on2026-10-11, both actual exit0. Each node verifies the
+same config, five source labels, ordered layers and OCI manifest068254f3;
+absent digest cache names were created without force or image replacement.
+The image is referenced by its manifest digest, never its Docker config ID.
+
+All three nodes ran Node22.23.3/Prisma6.19.3 against two public SQLite rows in
+an8-MiB memory volume, with integrity and an8192-byte reader frame checked.
+Pods used UID1000, read-only root, dropped capabilities and no service-account
+token, production PVC or application entrypoint. Six owned execs completed.
+UID/resourceVersion-preconditioned deletion and a fresh complete PodList prove
+all three probe names/UIDs and the owner label absent. Root independently
+verified all seven runtime process identities and the exact Windows launcher
+absent, plus all24 frozen helper hashes unchanged. The original Deployment and
+Ready writer retain their exact UIDs, resourceVersions and1438 image.
+
+This qualifies c29fc as an inert public-fixture runtime only. The newer ab8d
+application source needs its own final image qualification. No production-row
+restore, active admission, original PVC schema migration, app rollout, security,
+performance or live auth/UI/consumer acceptance follows from these probes.
+
+
+## Accepted legacy image digest-cache maintenance prerequisite
+
+The [actual legacy cache receipt](../evidence/bortus-legacy-digest-cache-20261011.json)
+binds the retained1438 archive/config and15 ordered layers to manifest3b076
+on all three nodes. Source1438 is recorded historical provenance only; this
+older build is not retroactively granted the new five-label qualification.
+The first operation retained actual exit1 after its first node's tag succeeded:
+a second verification reused an exclusive journal filename. Root inspected its
+remote intent/source-after verification and local/remote wrapper closure;
+the partial receipt was never adopted as three-node success or replayed.
+
+A reviewed corrected wrapper used distinct source/alias stage names and a fresh
+owner. Actual exit0 at13:28:52 UTC verified the first exact existing alias and
+created the two absent aliases without force. Each source and alias retained
+config/platform/layer identity. All four Linux identities and exact Windows
+launcher are absent; all45 frozen preparation files were independently rehashed.
+There was no import, application startup, production schema or Secret operation.
+
+At the pre-rollout checkpoint, the original Ready writer reported literal
+config imageIDa8f40 with a mutable tag. That is not normalized into the required repo@3b076 runtime proof. A
+separate disposable public-fixture qualification is required before CI/Flux
+pins the same accepted legacy bytes. This is a pre-schema maintenance step;
+1438 cannot be a final KV rollback image and must leave every active allowlist
+before a forward-schema entrypoint can touch the original claim. Full-row
+production restoration, final image/performance/security and live acceptance
+remain separate requirements.
+
+
+## Accepted legacy digest inert runtime completed
+
+The [actual legacy runtime receipt](../evidence/bortus-legacy-digest-runtime-20261011.json)
+records one public-only Kubernetes qualification completed at13:33:19 UTC,
+actual exit0. All three Pods used literal repo@3b076 spec and actual imageID;
+Node22.23.3/Prisma6.19.3, two public SQLite rows, integrity and8192-byte reader
+framing pass. It uses the same frozen fixture/reader contract with no token,
+production PVC, native Secret value or application entrypoint. Exact cleanup
+uses UID/resourceVersion deletion plus independently fresh complete PodList
+absence. Root verifies all seven Linux processes/exact Windows launcher absent
+and all27 helper inputs unchanged. The original Deployment/Ready writer's UIDs,
+resourceVersions and mutable spec image remain identical before and after.
+
+This is current accepted-artifact runtime proof for the proposed pre-schema
+legacy digest pin. Historical source qualification and modern five-label
+provenance remain distinct. At this13:33 checkpoint, CI/Flux publication and
+observation of the replacement writer, storage/controller identities and
+credential references were pending; the subsequent completed rollout is below. It is not production-row preservation, schema-forward, active
+admission or final KV/performance/security acceptance.
+
+
+## 2026-10-11 13:48 UTC: legacy digest CI→Flux rollout verified
+
+The [actual rollout receipt](../evidence/bortus-legacy-digest-flux-rollout-20261011.json)
+records PR #2 merged as `182eafd4da4cda56b2a846d0c5f067e527eb79c4`.
+Its tree exactly equals reviewed head `f15f1e03`; main run `38144292988`
+completed validation and promotion successfully. Flux source and migration
+owner are Ready at that exact validated revision with prune/force false.
+BORTUS HelmRelease is resumed, UpgradeSucceeded at generation9. Its sole Ready
+writer is `bortus-5c55f6d5b5-67mnk` on workernode2, with literal spec and
+actual imageID `docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879`.
+The complete PodList shows the previous writer name and UID absent. This
+supersedes the earlier mutable-tag/config-only writer observation.
+
+Deployment, Flux owner/source, HelmRelease, PVC/PV and external principal UIDs
+are preserved. The claim remains Bound, its PV Retain, and Longhorn is encrypted
+and healthy with two running replicas. Existing credential references and the
+legacy service account remain unchanged. The external `bortus-kv` principal
+still has zero grants and automount false; all six guard objects remain absent.
+All three nodes and the other33 releases are Ready with current observed
+generations. No manual reconcile, native Secret value or production DB read was
+used. This is accepted-artifact maintenance, not production-row restoration,
+schema-forward, new KV adoption, final app security/performance or live auth/UI
+acceptance. Next guard publication must separately resuspend BORTUS and retain
+both accepted legacy and qualified inert images only for pre-schema restoration;
+legacy must leave all allowlists before any forward-schema entrypoint.
+
+
+## 2026-10-11: actual legacy schema metadata qualification
+
+The [root live schema receipt](../evidence/bortus-current-legacy-schema-20261011.json)
+passes against the sole Ready legacy digest writer. Seven migration names,
+finished/non-rolled-back history and all thirteen application table column layouts
+match; writer UID/RV, owner/template and claim/PV identities match before and after.
+The fixed Node program opens SQLite read-only and selects only migration ledger
+and schema metadata. It runs through stdin; no app entrypoint, application rows
+or credential values are read. Separate reads and name-based exec are non-atomic.
+
+The first actual check failed because raw Git SQL checksums differ from deployed
+SQL file bytes. Actual ledger hashes match all seven files in the immutable legacy
+image: six are exact Git LF-to-CRLF conversions; the seventh is exact Git LF. The
+new manifest pins this exact mixed history. It does not accept arbitrary alternate
+checksums. Original failure and diagnostic receipts remain retained. An earlier
+local launcher used Windows CRLF reader bytes instead of the already qualified
+embedded LF program; that failure and its non-causal negative checks are retained.
+
+The [callable producer](../scripts/migration/schema-current-writer-v1/current-schema-producer.py)
+is source-bound with its fixed reader, exact image migration manifest and controls.
+Six actual disposable Node fixtures and sixteen local producer controls pass,
+including identity/RV/storage drift, forward schema refusal, FIFO nonblocking open,
+selector-constructor failure child reaping and bounded output/deadline cleanup.
+The actual producer uses fresh verified mTLS metadata and an exclusive fsynced
+0600 receipt in a 0700 directory. Receipt names match the phase-one callback ABI.
+Invoke it fresh under the callback's shared deadline each time; this observed
+receipt is historical evidence. Guard publication, actual admission probes,
+independent whole-row restoration and final app/image/performance remain open.
+
+## 2026-10-11: coordinator review and subagent ownership
+
+Coordination now uses this migration coordinator and the two existing application
+and native/recovery subagents. The seven old BORTUS chats are archived; no new
+chats or chat messages are part of this orchestration. Application edits remain
+in the isolated application worktree, and the recovery module in its own branch.
+
+The [independent FIFO review](../evidence/bortus-account-fifo-root-review-20261011.json)
+verifies 338 raw source Git blobs/modes, 16 raw qualification blobs/modes, 37
+private originals, all 351 ZIP members, 337 executed source files and the 4,262
+compiled hash inventory. The retained five stages have actual zero exits, with
+235 unit tests and four original strict HTTP tests passing. The default scanner's
+actual exit remains one: all 159 selected public checksum/prose byte spans were
+independently rehashed; two historical provenance findings remain open. This
+receipt covers a48601a/b6fde8d only, not the subsequent shell-error correction,
+final image, live application acceptance or performance.
+
+Automatic approval review rejected the combined guard chart push/PR command,
+stating "blocked by policy", before execution. The
+[rejection record](../evidence/bortus-phase1-publication-review-rejection-20261011.json)
+leaves guard publication, live admission probes and independent whole-row restore
+open. Existing source, storage, credentials and running writer are preserved.
+The active goal remains incomplete; local recovery and app qualification continue.
+
+## 2026-10-11: guards delivered through CI and Flux
+
+[Charts PR #3](https://github.com/jtmb/branconet-charts/pull/3) merged the
+reviewed guard chart. Main CI run 38150613416 passed validation and promotion;
+Flux source and `migration-releases` both applied the exact validated merge
+commit. All six Fail/Deny guard specs match their reviewed renders, and all
+three policies report current-generation type checking with no warnings.
+
+Fresh actual checks preserve the original controller/storage/principal identities,
+sole Ready legacy writer, credential references, encrypted healthy two-replica
+Longhorn volume, three Ready nodes and the other 33 Ready releases. The BORTUS
+HelmRelease is suspended with the same legacy image; its running Deployment
+remains at one replica. The external `bortus-kv` principal still has no grants.
+
+The earlier combined-command approval rejection remains historical evidence.
+Separate exact branch push, PR creation and reviewed-head merge commands succeeded.
+No manual Flux reconciliation was used. The
+[publication evidence](../evidence/bortus-phase1-guard-publication-20261011.json)
+records actual publication and metadata checks. It does not prove the 43 admission
+probes or independent whole-row restore; neither had run at that publication
+checkpoint. The subsequent actual attempts are recorded below. Review identified
+an additional typed collection item-header assumption in probe cleanup; its
+qualified correction is required before fixture creation. No forward schema or
+new application entrypoint has started. Two subagents and the migration coordinator
+continue the active goal; the seven old BORTUS chats remain archived.
+
+## 2026-10-11: continuous source-control preparation
+
+The [quiescent checkpoint](BORTUS-QUIESCENT-SOURCE.md) composes capture, full
+backup and owned-holder removal while the source stays at zero writers. Its
+[control observer](BORTUS-QUIESCENT-WATCH.md) owns three concurrent verified TLS
+streams and fsynced metadata; a caller must check the actual prerequisite before
+and after mutation dispatch and independently close the borrowed resources.
+Only the explicit once-only owner transition resumes `migration-releases` so
+validated Flux can withdraw the legacy image from the guards. The BORTUS
+HelmRelease remains suspended and Deployment remains zero throughout that future
+transition. This preparation has not run against the live source.
+
+Independent root mTLS fixtures reproduced a deadline-renewal defect in the first
+immutable observer: three late bookmarks left its readers live after the absolute
+lease. The corrected source refreshes the remaining original budget before each
+read; the same root fixture now observes sticky deadline failure and zero live
+readers. The original handoff and failing observation are retained. The corrected
+handoff passes 86 scoped local controls; root combined integration qualification
+now passes all 524 test_bortus*.py cases with zero failures/errors/skips and 151
+frozen inputs, including the required JSON fixture. The initial fixture-omitting
+staging run is retained; production Python sources did not change between runs. These checks grant no live restore, forward-schema, image, rollback
+or whole-row acceptance. The deadline-aware encrypted archive callback and
+actual source/image/schema/guard producers must still be wired before live use.
+
+See the [root integration evidence](../evidence/bortus-quiescent-root-integration-20261011.json).
+
+
+## 2026-10-11: actual admission attempts and explicit fixture recovery
+
+The [actual probe progress](../evidence/bortus-admission-progress-20261011.json)
+retains the first 12-case refusal. Its inert Pod and replicas-zero Deployment
+were explicitly deleted with their confirmed creation UIDs, fresh RVs, full
+semantic specs and complete LIST/name absence checks. The original uncertain
+PUT journal remains unchanged. Kubernetes added the standard Secret-volume
+mode 420; the exact strict matcher correction and cleanup composition pass 58
+root controls against the current frozen dependencies.
+
+A distinct new probe reached 25 completed cases before a generic probe refusal.
+All six recorded fixture mutations were confirmed; its inert Pod and zero-replica
+Deployment were subsequently explicitly recovered (see the current evidence below). A separate actual dry-run
+for the next scaleIO-reference case returns a correctly attributed guard denial.
+That diagnostic does not prove the earlier failure's cause or a full 43-case pass.
+No whole-row restore, forward schema or new app entrypoint has run.
+
+The [independent process-group review](../evidence/bortus-operator-group-root-review-20261011.json)
+checks 341 raw frontend files, 364 retained artifacts, a successful fresh build,
+six HTTP/process controls and thirteen enabled-shell controls. Root also verifies
+340 actual retained source files and 4262 compiled files. The selected eight-file
+default scan returns one finding: an exact unchanged public prose span,
+independently reviewed with zero untriaged findings; it is not a clean scan or
+resolution of the two historical provenance findings. This proof covers the
+prior process-group source only. All six recorded fixture mutations were confirmed; its inert Pod and zero-replica
+Deployment were subsequently explicitly recovered (see the current evidence below).
+
+
+## 2026-10-11: current admission and private-resource evidence
+
+The [current admission receipt](../evidence/bortus-admission-current-20261011.json)
+records successful explicit cleanup of both the 25-case and subsequent one-case
+fixtures, preserving each original refusal. An earlier distinct run completed
+all 40 protection cases, then refused a legacy ReplicaSet dry-run response. Its
+two persistent inert fixtures were subsequently explicitly recovered. A separate
+actual HTTP201 dry-run response has a valid UID and no resourceVersion; its name
+remains absent. This diagnostic does not reconstruct the earlier reply or grant
+the missing three-case, whole-row restore, schema or application acceptance.
+
+Flux metadata independently showed Ready=Unknown while Reconciling=True, both
+Progressing at the unchanged chart revision. The root read-only provider now
+waits at most ten seconds for that exact current-generation state within the
+original absolute deadline. A fresh Ready=True proof is still required; other
+failures refuse, and mutations are not retried. The current dependency and
+readiness composition passes 79 local controls.
+
+The [private-resource review](../evidence/bortus-private-resource-root-review-20261011.json)
+binds candidate f27cfa10 to 342 raw Git files, 416 retained artifacts, 341 actual
+source files and 4262 compiled files; three focused controls, a fresh build, six
+HTTP/process controls and six browser checks pass. Two mixed-line-ending
+bindings explicitly run from working bytes to raw Git bytes; both directions
+were independently verified. The selected default scan still reports one
+individually reviewed unchanged public prose finding. Historical findings,
+performance and final live-image acceptance remain open. This candidate is not
+deployed.
+
+## 2026-10-11: completed admission stage and current verification preparation
+
+The [current admission receipt](../evidence/bortus-admission-current-20261011.json)
+records a distinct completed operator run: 40 policy outcomes plus three legacy
+positive dry-run checks, all eleven operations confirmed, and 135.613 seconds
+within the original 300-second budget. The original writer stays Ready with the
+same template. Both inert fixtures have named404 and complete LIST/name/UID
+absence proof. Six guard UID/RV/spec pins and chart/CI/Flux stable fields remain
+exact. The Flux owner's status RV may advance during normal reconciliation,
+with fresh Ready/current-generation proof at the same UID/revision.
+
+The root reporting wrapper incorrectly expected 43 entries in the policy-only
+array and exited 1 after operator completion. Independent read-only verification
+checks the original unchanged completed transcript, strict attribution, separate
+three positives, all confirmed deletes and fresh current closure; it exits 0.
+Its first overly strict full Flux owner RV equality assertion is also retained.
+No admission probes were replayed or lost responses reconstructed.
+
+The [pinned current-verification proposal](../evidence/bortus-pinned-current-root-20261011.json)
+passes 117 local controls with isolated exact-source suite copies. The original
+shared fixture-directory setup failure remains retained. This separately qualified
+private callback reuses the completed 43 transcript as labelled static evidence,
+with fresh six exact guard UID/RV/spec GETs, source/image/publication fences and
+two distinct schema receipts inside each callback floor. All six callbacks share
+one absolute 300-second deadline. Actual producer wiring, independent whole-row
+restore, final checkpoint, schema upgrade, rollback and release acceptance remain
+open. No live callback or application entrypoint was dispatched.
+
+The [log-choice candidate review](../evidence/bortus-log-container-root-review-20261011.json)
+verifies 342 raw Git files, 192 original artifacts and 341 retained source and 4262
+compiled files. Six focused controls, fresh types/lint/build and six HTTP/process
+checks pass. Eight browser checks belong to an overall failed attempt; three
+complementary checks pass on the same immutable build with exact compiled shared
+focus-refresh attribution. This is not one uninterrupted 11-pass run. The selected
+ten-file default scan retains one independently reviewed unchanged public prose
+finding, zero untriaged findings and two historical provenance findings still
+open. This candidate is not deployed; performance and whole-audit gates stay open.
+
+## 2026-10-11: deployment-action coercion fix reviewed
+
+The [root review](../evidence/bortus-deployment-action-root-review-20261011.json)
+verifies source 42f2f864/final evidence dbc3c2a9: 343 exact raw Git files, 29
+original artifacts, eight executed source/dependency bindings and 22 checked
+document originals. The actual transpiled route previously accepted an array
+action and returned 200 after dispatching rollout restart; that negative result
+is retained. The corrected handler requires one literal supported string and
+returns fixed 400 for coerced/inherited/unknown shapes before command dispatch.
+
+Six focused route controls, fresh noEmit types and selected zero-warning lint
+pass. The first test-only getter oracle failure remains retained. All four valid
+actions retain their exact structured arguments/15-second timeout, authorization
+and typed failures. The selected six-file default scan reports one independently
+reviewed unchanged public prose span, zero untriaged findings and two historical
+provenance findings still open. This candidate has no fresh production build/HTTP,
+real kubectl/cluster, image or performance qualification; broad A04/A05 acceptance
+remains open. It is not deployed.
+
+The [root current metadata assembler qualification](../evidence/bortus-current-assembler-root-20261011.json) passes 130 local controls on the frozen dependency composition; all seven owned children exited and every selected source remained unchanged. It borrows the operator transport and source fence, requires fresh publication/guard observations, two distinct schema receipts per callback, and image/source verification before and after assembly under the original shared 300-second deadline. Completed43 probe evidence stays explicitly static. Actual three-node image/source transport wiring and independent whole-row restore remain pending; this local result grants no application startup or forward migration.
+
+The [root current source/image verification receipt](../evidence/bortus-current-image-root-20261011.json) records 154 local controls and one actual isolated read-only callback passing in 17.731 seconds. Twelve sequential SSH inspections freshly verify manifest/config hashes, source labels, ordered descriptors and cache blob presence on the three Ready nodes; all owned SSH children are absent. Two new schema receipts and exact current writer/storage/guard pins accompany the explicitly reused completed43 transcript. Layer bytes and the prior inert runtime fixture are not reexecuted. The timing-only callback trace correctly remains incomplete/refused because only one of six calls ran; its graph and deadline are never reused. This establishes timing and current prerequisites, not independent whole-row recovery or application startup. The initial v19 missing fixture-directory failure is retained; frozen v20 suites passed on unchanged exact sources.
+
+The [actual independent b473 recovery proof](../evidence/bortus-independent-live-b473-20261011.json) completed at 17:41:44 UTC in 189.566 seconds under the original 300-second deadline. The separately restored encrypted Longhorn volume passed the complete SQLite recovery-row comparison against the authenticated cold archive. Both tmpfs copies were cleaned; all four operations, six callbacks, 72 fresh SSH inspections and twelve schema receipts completed. Same-UID watch evidence records restore flags true/true at RV1220694 then true/false at RV1220836, with no later regression. The inert reader is absent by fresh named404 and complete PodList UID/name checks; its StorageClass remains retained and its PVC remains Bound. Fresh post-run metadata confirms the original Ready writer/template/storage and six guard UID/RV/spec pins, plus current Ready Flux revision. The first post-review used the wrong lowercase standby key and refused; the corrected exact Longhorn `Standby` review passed without replaying restoration. Static completed43 outcomes and prior image runtime proof remain explicitly reused. Exact schema invocation floors are enforced by executed source, not separately reconstructed from retained scalar fields. Original coordinator overall flags remain false; this separate receipt accepts the cold-baseline recovery gate only. Latest-data capture, updated app build/performance/image, forward schema migration and final rollback/live acceptance remain pending. Gluster/Vault/Consul originals are retained.
+
+## 2026-10-11: mutation lifetime source review
+
+The [root lifecycle review](../evidence/bortus-lifecycle-root-review-20261011.json)
+binds the successive resource, YAML and Settings fixes through candidate
+`4ae9f5c`. Independent byte review verifies 379 unique Git blobs, 1,032
+frontend bindings, 143 retained originals and 66 documentation relations.
+The final affected controls pass 11, 14 and 7 respectively, alongside fresh
+types and corrected selected lint. Resource callbacks reject stale targets,
+navigation and permissions; YAML replacement and close/reopen cannot inherit
+an old save; Settings permission withdrawal and restoration cannot revive
+an earlier mutation or retry it automatically.
+
+Original negative and fixture/lint failures remain retained. The exact source
+snapshot for one intermediate three-test Settings run is missing; the final
+four Settings/seven affected controls have verified source bindings. Each
+selected default scan retains one independently reviewed unchanged prose
+finding, and two historical provenance findings remain unresolved. This accepts
+source-local behavior only. A fresh production build, affected browser checks,
+unchanged paired performance, final image and live upgrade remain pending.
+The original running application and data have not been changed by this review.
+
+The separately prepared [4ae9 release context](../evidence/bortus-release-context-4ae9-20261011.json) contains 267 production files and eleven migrations. Every archived byte, Git blob and mode independently matches the final raw-source receipt. The full production-source default credential scan returns zero findings; this excludes docs/tests and does not resolve historical provenance findings. No image was built or deployed, and functional/performance acceptance remains separate.
+
+The fresh [4ae9 Linux functional qualification](../evidence/bortus-functional-4ae9-root-20261011.json) passed its production build, 262 unit tests without skips, whole-source lint, fresh type checking and six existing HTTP/process controls. Root independently rehashed 344 executed sources, 77 test/helpers, 4,262 compiled files and all five original stage logs against the final 345 raw Git frontend bindings. All observed owned processes and containers are absent. The first read-only root count assertion accidentally included 22 doc rows; the corrected frontend-only check passed without rerunning qualification. Browser lifecycle, universal action, paired performance, immutable final image and live release gates remain separate and pending. Production remains unchanged.
+
+
+The [actual immutable 4ae9 image receipt](../evidence/bortus-app-source-image-4ae9-20261011.json) records build0 at18:28:26 UTC, export0, exact five source labels, complete independently verified linux/amd64 archive/config/ordered-layer hashes and observed owned-process closure. Default Trivy0.75 scanning completed with exit1:346 findings (1critical,67high), including four fixable high findings in kubectl, and zero secrets. The critical zlib1g finding is individually classified using Debian's Bookworm binary-package assessment and actual archive package/library contents; its original count remains retained. This does not accept the entire image. No application/image runtime or deployment occurred. Patched CLI selection, remaining security/performance, latest-data capture and final schema/admission/principal/live/rollback gates remain open.
+
+## 2026-10-12 05:31 UTC: actual custom kubectl build and component scan
+
+The [actual root receipt](../evidence/bortus-kubectl-actual-build-root-20261012.json) records all12 build stages with exit0, completed at05:18:10UTC. The 61,960,354-byte binary is a custom `v1.37.1-bortus.security.1-dirty`, built with Go1.26.9 and x/net0.60.0; SHA-256 `a3c4741294f061550b30bd2e3f357197ffbac37eefc5a45d686fe9cd29032b75`. All observed build command, helper and supervisor PIDs are absent.
+
+Root independently verifies34 transferred originals, complete CRC-valid original/diff ZIPs and32,084 changed-file byte identities. All31,916 paths remain retained, including31,723 generated cache paths; faithful archive modes eliminate artificial mode-only changes. The detailed sidecar is12,741,184bytes while the main completion record is8,902bytes. Source changes outside generated cache are module records and x/* vendor files, including upstream-selected sync/tools/mod transitives.
+
+Default Trivy0.75 component scan returns0 with zero vulnerability or secret findings and explicitly analyzes the kubectl Go binary and90 packages. The first protected copy had mode600 and yielded no Go analysis; that report is retained and rejected. A new owned scan uses the unchanged binary with its original0755 mode inside a private directory, confirms Go1.26.9/x/net0.60.0, retains all severities and uses no suppressions. The original image scan remains346 findings (1Critical/67High). This component result does not accept a final image, deployment, performance, schema migration or live engine. Source-linked image injection, full image/runtime gates and the latest-data cutover remain open.
+
+
+A separate [patched ELF image adapter](BORTUS-PATCHED-KUBECTL-IMAGE.md) can bind a
+completed custom kubectl receipt and exact ELF to a named BuildKit context while
+keeping the raw Git source tar and five source labels. Its protected injection
+sidecar is required for root qualification; existing export/preload alone does
+not qualify the patch. Default builder and frontend Dockerfile stay unchanged;
+actual binary/image/security/runtime acceptance remains separately required.
+
+## 2026-10-12: integrated patched-binary image adapter
+
+The [root qualification](../evidence/bortus-patched-kubectl-image-root-20261012.json) independently verifies all10 raw native files,50 retained originals and1,879 CRC-valid ZIP members. Three source/test files and the dedicated image-adapter doc are integrated; later root build/scan sections are preserved. All21 POSIX orchestration controls pass without skips in2.510s (2.620s wall), with seven original sources unchanged and the owned test child reaped. The first root freeze check incorrectly counted newly generated test-fixture copies as original sources; that failed harness result remains retained, and no source/test behavior was altered.
+
+Root separately validates all six actual compiled artifacts in3.138s: complete247,076,441-byte source diff ZIP,12,741,184-byte metadata sidecar/all31,916 paths, ELF, completed build receipt, actual version and Go build metadata. Their identities and bytes remain unchanged. These checks call no build, transfer, SSH or Docker operation. The default builder/export/five-label contracts and frontend Dockerfile remain unchanged.
+
+A future source-linked build must carry both completed image and injection receipts, exact owner/config/context identities and actual launcher terminal0. The adapter supplies the separately verified kubectl through a named BuildKit context and checks its SHA in the image consumer; interrupted or mismatched outcomes cannot qualify. Actual consumer/source image construction, full image/runtime/performance, latest-data and live schema/RBAC/admission/rollback gates remain open.
+
+## 2026-10-12: actual e50 export and effective image contents verified
+
+The [independent root export review](../evidence/bortus-patched-app-export-e50-root-20261012.json) records actual export/supervisor exit 0 in 66.877 seconds. Root verifies the complete 1,197,207,552-byte archive SHA, 71 outer members, Linux/amd64 config and exact five source labels, all 17 ordered layer hashes/diff IDs and 41,240 layer entries. Effective final files contain the exact reviewed custom kubectl and native selector ELF, all eleven canonical migrations, Prisma schema/support files and entrypoint. Source content and nonroot runtime/entrypoint settings match. Owned supervisor/helper/observed children are absent. The config image ID remains distinct from an OCI runtime digest.
+
+Full-image security scanning is separate and in progress; image/application runtime, performance, latest-data, guarded schema/RBAC/admission and live/rollback acceptance remain open. This export neither executes the image nor deploys it.
+
+The [root retained-master preload controls](../evidence/bortus-retained-master-preload-controls-root-20261012.json) verify26 selected raw artifacts,58 closed archive members (57 originals plus exact manifest) and14 current executed source hashes. All11 public POSIX controls pass once in0.393 seconds; the gated supervisor exits0 in0.589 seconds under its original30-second bound. Default17-file scan exits0 with no findings, and fresh root checks prove all five test/supervisor/shim/scanner identities absent. V3 changes the fixture socket binding only; production helper/composer stay exactV2. The setup bootstrap and packaging failures and syntax warning remain visible. These controls exercise validators and actual public Python child/file primitives, not full privileged root_entry or image postconditions. The current retained server archive remains unobserved; a separate fixed-master caller and independent journal reader must qualify before server-side inspection/import. No image/import/Pod/policy operation is accepted here.
+
+## 2026-10-12: observed retained archive; import held
+
+The [current master inspection](../evidence/bortus-retained-master-inspection-root-20261012.json) confirms the exact retained c29 tar stat metadata and historical receipt, with independent reader closure. This is current inspection authority only; the full archive remains unverified and no image import/alias was performed. Successful retained import restores the source release tag; the required utility digest alias needs its own separately reviewed stage. The earlier unprivileged diagnostic and cache-alias refusal are preserved.
+
+## 2026-10-12: fixed master import verified
+
+The [master import](../evidence/bortus-retained-master-import-root-20261012.json) completed once under its original600s shared lease in148.136s. Full tar/ordered-layer validation and source-tag cache checks passed, all six actual image jobs exited0, and independent UID/start closure passed. The current utility digest alias is still absent by this stage design; it needs a separate reviewed no-force alias-only owner. No transfer, pull, worker preload or application resource changed. Original archive and failed owners remain preserved.
+
+## 2026-10-14: saved current6e/newa7 image independently resolved
+
+The [saved-image qualification](../evidence/bortus-current6e-image-export-qualified-root-20261014.json) records one export/save at exit zero and an independent zero recomputation of the complete archive and descriptor chain. The 277117952-byte archive has SHA-256 2737b45f; local index 270b1b49 resolves to Linux/amd64 manifest 04d53895 and config 41bb5099, with thirteen ordered layers checked against their blob hashes and expanded diff IDs. Exact source labels, seven public config environment entries and attestation reference bytes are checked; attestation semantics and registry publication are not qualified. Nineteen original metadata files and two exporter sources remain current, four original process births and the independent reader are absent, and the later archive hash matches. Default seven-file exporter and combined five-file independent-source scans pass. No image is resaved, imported, pushed or run. Full filesystem comparison, fresh image security scan, application/native/TLS behavior, performance and guarded live acceptance remain pending.
+
+The first controller preflight stopped at an invalid raw-byte equality between
+raw-Git LF and compiled-workspace CRLF inputs, before any Docker command.
+All296 source bindings differ only by CRLF in284 files; no other delta was
+observed. The original333/41723 comparison is retained and is not repeated;
+a distinct reviewed continuation uses that exact comparison and validates the
+line-ending relationship separately. Original failure and controller remain.
+
+
+The single constrained assembly completed and its20-layer archive verified.
+Local Docker load returned0, but the following tag-name inspection refused.
+Read-only lookup by the exact generated manifest found the image and original
+tag. The controller failure is retained; its exact container was removed.
+A separate digest verification/local canonical-alias correction and export are
+being prepared, without rebuilding, reloading or replaying the assembly.

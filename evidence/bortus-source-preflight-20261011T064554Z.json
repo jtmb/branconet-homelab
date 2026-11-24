@@ -1,0 +1,108 @@
+{
+  "scope": "Fresh read-only metadata preflight; no cold capture or independent restoration",
+  "root_tool_terminal": "efd478",
+  "report_sha256": "b2087ffda772e15e7e64001810481ff37694217b6c3662c2447e48c6a95ddd1d",
+  "protected_original_report": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-source-preflight-20261011\\metadata-report.json",
+  "source_working_sha256": "dcf77da688549ada8c62205b9cfc89490f5aa1176d80e1545a432f0589e3c284",
+  "metadata": {
+    "scope": "Read-only BORTUS checkpoint prerequisites; no capture or recovery acceptance",
+    "identities": {
+      "claim": {
+        "name": "bortus-data",
+        "uid": "19cc4b60-4536-4d80-8789-e27b5ad48b79",
+        "resourceVersion": "43233",
+        "namespace": "bortus"
+      },
+      "pv": {
+        "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+        "uid": "89b8b6ec-c932-4686-9890-26df90a5c799",
+        "resourceVersion": "10369",
+        "namespace": null
+      },
+      "longhorn_volume": {
+        "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+        "uid": "74acb150-7031-4fab-9868-86f3f3a30e16",
+        "resourceVersion": "689326",
+        "namespace": "longhorn-system"
+      },
+      "deployment": {
+        "name": "bortus",
+        "uid": "4deedc67-038a-4f82-a2d4-a83af316f2f6",
+        "resourceVersion": "91492",
+        "namespace": "bortus"
+      },
+      "helmrelease": {
+        "name": "bortus",
+        "uid": "bed3008a-474f-411e-9956-1248e3718220",
+        "resourceVersion": "957149",
+        "namespace": "flux-system"
+      },
+      "kustomization": {
+        "name": "migration-releases",
+        "uid": "f3757d64-04bd-46db-8b40-ae666999449c",
+        "resourceVersion": "957049",
+        "namespace": "flux-system"
+      },
+      "backup_target": {
+        "name": "default",
+        "uid": "999fe7cd-e073-4a52-ba62-87db1857f876",
+        "resourceVersion": "956875",
+        "namespace": "longhorn-system"
+      },
+      "replica_set": {
+        "name": "bortus-d69b559bb",
+        "uid": "eed90242-aa20-4690-84d4-9e932032eb93",
+        "resourceVersion": "80503",
+        "namespace": "bortus"
+      }
+    },
+    "writer": {
+      "name": "bortus-d69b559bb-7rs2r",
+      "uid": "7b839282-19d0-40c0-a288-ec8aef68db1b",
+      "resourceVersion": "80498",
+      "namespace": "bortus",
+      "nodeName": "masternode"
+    },
+    "physical_volume_pv_inventory": {
+      "items": 53,
+      "resourceVersion": "957201",
+      "sole_original_longhorn_pv": true
+    },
+    "checks_passed": true,
+    "active_claim_consumers": 1,
+    "encrypted_replicas": 2,
+    "preserve_reconcile_state": {
+      "helmrelease_suspend": false,
+      "kustomization_suspend": false
+    },
+    "mutations": 0,
+    "database_or_secret_reads": 0,
+    "cold_capture_proven": false,
+    "independent_restore_proven": false,
+    "separate_resource_reads_are_atomic": false,
+    "collection_started_at_utc": "2026-10-11T06:45:54.348728+00:00",
+    "collection_completed_at_utc": "2026-10-11T06:45:56.411369+00:00"
+  },
+  "artifacts": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-source-preflight-20261011\\metadata-report.json",
+      "bytes": 2387,
+      "sha256": "b2087ffda772e15e7e64001810481ff37694217b6c3662c2447e48c6a95ddd1d"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-source-preflight-20261011\\preflight.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-source-preflight-20261011\\preflight.stdout",
+      "bytes": 91,
+      "sha256": "c7809fb71d4e3ace7539c60ce0e400ed6ac17df68695b7050fd6ba3a0c05c5a8"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-source-preflight-20261011\\preflight.terminal.json",
+      "bytes": 570,
+      "sha256": "fa74185d7f25ba6741afb440b76a89798473b5991241261902d6d3c2292d6b18"
+    }
+  ]
+}

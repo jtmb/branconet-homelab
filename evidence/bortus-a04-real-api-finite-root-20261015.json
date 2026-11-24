@@ -1,0 +1,374 @@
+{
+  "scope": "Finite actual compiled application and patched kubectl against a disposable real Kubernetes API server; not full A04, performance, recovery or production acceptance",
+  "productCommit": "ea628d2411238a6776acf3cf742adb03cbe5d6af",
+  "actor": {
+    "tool": "b5adf7",
+    "actualExit": 0,
+    "elapsedSeconds": 40.766,
+    "wholeSeconds": 300,
+    "cleanupReserveSeconds": 30,
+    "operatorInputsUsed": false,
+    "realAPIVersion": "v1.37.1",
+    "actualEtcdVersion": "3.7.0",
+    "fullEtcdReleaseSupportMatrixClaimed": false,
+    "CLIJobs": 52,
+    "allCLIJobsExit0": true,
+    "fiveContainersRemoved": true,
+    "inspectProfilesVerified": true,
+    "APIOnlyNET_BIND_SERVICEAdded": true,
+    "productionCapabilitiesChanged": false
+  },
+  "finiteChecks": [
+    {
+      "label": "namespace invalid 0",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "namespace invalid 1",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "namespace invalid 2",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "namespace invalid 3",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "namespace invalid 4",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "namespace invalid 5",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "readonly YAML /api/cluster/pods/apps/public-pod",
+      "noChild": true,
+      "status": 403
+    },
+    {
+      "label": "readonly YAML /api/cluster/deployments/apps/public-deployment",
+      "noChild": true,
+      "status": 403
+    },
+    {
+      "label": "readonly YAML /api/cluster/ingresses/apps/public-ingress",
+      "noChild": true,
+      "status": 403
+    },
+    {
+      "label": "readonly YAML /api/cluster/services/apps/public-service",
+      "noChild": true,
+      "status": 403
+    },
+    {
+      "label": "readonly YAML /api/cluster/volumes/apps/public-pvc",
+      "noChild": true,
+      "status": 403
+    },
+    {
+      "label": "readonly YAML /api/cluster/namespaces/apps",
+      "noChild": true,
+      "status": 403
+    },
+    {
+      "label": "readonly YAML /api/cluster/nodes/public-node",
+      "noChild": true,
+      "status": 403
+    },
+    {
+      "exactArgv": true,
+      "label": "writer real Namespace YAML",
+      "status": 200
+    },
+    {
+      "label": "readonly real Pod detail query cannot select raw/server/credential/resource",
+      "status": 200
+    },
+    {
+      "label": "pods writer YAML invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "pods writer PUT invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "deployments writer YAML invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "deployments writer PUT invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "ingresses writer YAML invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "ingresses writer PUT invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "services writer YAML invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "services writer PUT invalid",
+      "noChild": true,
+      "status": 405
+    },
+    {
+      "label": "volumes writer YAML invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "volumes writer PUT invalid",
+      "noChild": true,
+      "status": 405
+    },
+    {
+      "label": "pods delete invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "deployments delete invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "ingresses delete invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "namespace delete invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "scale invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "deployment restart",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "deployment rollback",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "deployment pause",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "deployment resume",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "node cordon",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "node uncordon",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "node drain",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "pod logs invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "pod exec invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "PV batch all names before any spawn",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "Flux kustomization invalid",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "Flux opaque absent ID DELETE",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "Flux opaque absent ID POST",
+      "noChild": true,
+      "status": 400
+    },
+    {
+      "label": "Flux detail validated resource name",
+      "noChild": true,
+      "status": 400
+    }
+  ],
+  "exactArgv": [
+    {
+      "args": [
+        "--kubeconfig",
+        "/scratch/operator kubeconfig/config",
+        "get",
+        "namespace",
+        "apps",
+        "-o",
+        "yaml"
+      ],
+      "containerPid": 134,
+      "namespacePidOnly": true
+    },
+    {
+      "args": [
+        "--kubeconfig",
+        "/scratch/operator kubeconfig/config",
+        "get",
+        "pods",
+        "-A",
+        "-o",
+        "json"
+      ],
+      "containerPid": 145,
+      "namespacePidOnly": true
+    }
+  ],
+  "decoyHitsAfterBaseline": 0,
+  "namespacePIDsComparedToHost": false,
+  "unsupportedMethods": {
+    "count": 2,
+    "status": 405,
+    "limitation": "Services/volumes PUT checks prove method rejection without child admission; they do not qualify handler input validation"
+  },
+  "pendingFamilies": [
+    "Flux create/stored-name-validator runtime",
+    "remaining positive write-handler business cases",
+    "fixed Flux list/status real CLI cases"
+  ],
+  "independent": {
+    "sourceReview": "3f737d",
+    "stage": "423cda",
+    "actualTool": "b44259",
+    "actualExit": 0,
+    "elapsedSeconds": 19.14,
+    "sourceFilesCurrent": 4,
+    "actorRecordsCurrent": 285,
+    "fullRawSourceFiles": 374,
+    "fullCompiledObjects": 5383,
+    "fullDependencyObjects": 40635,
+    "treesBeforeAndAfterCurrent": true,
+    "originalHostBirthsAbsent": 57,
+    "exactContainerIDAndNameQueries": 10,
+    "allQueriesExit0AndAbsent": true,
+    "rootOwnTool": "898625",
+    "rootFreshTool": "1899c7",
+    "postAndQueryBirthsAbsent": 11,
+    "currentPostRecords": 54,
+    "threeWindowsDispatchersNoLive": true,
+    "rootReaderAbsent": true,
+    "ownReceiptSHA256": "8da65a3d434a538d804e5614482a74f6a7e648b943975cf97443f00f51cac46f"
+  },
+  "retainedFailures": {
+    "previousThreeReceipt": "bortus-a04-failed-harness-closure-root-20261015.json",
+    "V1_5": {
+      "tool": "a9e700",
+      "actualExit": 1,
+      "cause": "Inspect expected NET_BIND_SERVICE but Docker returns CAP_NET_BIND_SERVICE",
+      "APIContainerStarted": false,
+      "independentPostExit": 0,
+      "rootOwnTool": "3579b7",
+      "rootFreshTool": "21715c",
+      "actorRecordsCurrent": 70,
+      "actorBirthsAbsent": 14,
+      "postBirthsAbsent": 7,
+      "currentPostRecords": 34,
+      "twoWindowsDispatchersNoLive": true
+    },
+    "firstSuccessObserver": {
+      "tool": "71cd63",
+      "actualExit": 1,
+      "stage": 1,
+      "type": 5,
+      "ownerCreated": false,
+      "queriesStarted": false,
+      "groundedCurrentMismatch": "Flat versions result was compared to full versions.json envelope; actual historical caught line was not recorded",
+      "correctedReaderPreservesEnvelopeFlags": true
+    }
+  },
+  "authorities": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-a04-real-control-plane-20261015-v1-6\\terminal.json",
+      "bytes": 6410,
+      "sha256": "02333b68081da6b5f382b02b2ff10af007a9757bead975379ffa1773e77a9bf1"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-a04-real-control-plane-20261015-v1-6\\result.json",
+      "bytes": 4885,
+      "sha256": "aae23209147508bcceb1251af61177e0ac1fd7c3e9c57f2285c04b0d73c8b778"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-a04-real-control-plane-20261015-v1-6\\observed-owners.json",
+      "bytes": 20886,
+      "sha256": "ad11cd3a782a49991b3ba46dcf71b5b31be0f046adbd53ccf3340f1ba4210605"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-a04-real-success-independent-20261015-v1-2\\terminal.json",
+      "bytes": 1474,
+      "sha256": "c0dcccf302f3b31f018f112f4fec172dbfe09b99f3e3e8496bc2fdd99c561876"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-a04-real-success-independent-20261015-v1-2\\result.json",
+      "bytes": 1409,
+      "sha256": "5dbfd3ff6c8704b2d7e5d7de62076a405210dfd60de3d44550f849f761122b8c"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a04-real-success-final-fresh-20261015-v1.json",
+      "bytes": 257,
+      "sha256": "95ff059c9ff0a2c1816a7bc1e725a5d03d0cd34d08645eaab059d24682167299"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a04-capadd-failure-final-fresh-20261015-v1.json",
+      "bytes": 257,
+      "sha256": "1782e69f02db578c2c667d1c878dfed49d9c5c86829ee407637a64125b9c11e5"
+    }
+  ],
+  "all44OriginalAcceptanceClausesUnchanged": true,
+  "fullA04Accepted": false,
+  "performanceAccepted": false,
+  "homeClusterChanged": false,
+  "originalDataRetired": false
+}

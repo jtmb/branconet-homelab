@@ -1,0 +1,114 @@
+{
+  "scope": "Local cold-checkpoint ordering, complete Pod inventory and runtime identity correction; no live acceptance",
+  "parent_commit": "01ae8dfd0b37e4be2e40788ad4a58757c8540044",
+  "sources_and_tests": {
+    "scripts/migration/checkpoint-bortus-volume.py": {
+      "raw_git_sha256": "a2a0969d2b62766032f8490f116903b9542327fb6ac978d6fca0e0fd04625b07",
+      "bytes": 36372,
+      "mode": "100644",
+      "blob": "db550c0e35c2f3ac5af80981fefe81bcdca20700",
+      "working_sha256": "a2a0969d2b62766032f8490f116903b9542327fb6ac978d6fca0e0fd04625b07",
+      "working_equal_raw_or_literal_lf_to_crlf": true
+    },
+    "scripts/migration/inspect-bortus-checkpoint.py": {
+      "raw_git_sha256": "95b4fe7d67f3a9a818d7cca4cf539b11a06f3cfc54e39a6e403d61e4836d1de5",
+      "bytes": 18290,
+      "mode": "100644",
+      "blob": "88ddec36399cb702a86f72130b1cae3aad2306b7",
+      "working_sha256": "95b4fe7d67f3a9a818d7cca4cf539b11a06f3cfc54e39a6e403d61e4836d1de5",
+      "working_equal_raw_or_literal_lf_to_crlf": true
+    },
+    "scripts/migration/tests/test_bortus_checkpoint_preflight.py": {
+      "raw_git_sha256": "b29fa89bb322d7af838725931d44c21622c9a79e3ce88e57250db56daa22d7fb",
+      "bytes": 9589,
+      "mode": "100644",
+      "blob": "e11c3b4350320d8528198f79f6f3b4ef5a014272",
+      "working_sha256": "b29fa89bb322d7af838725931d44c21622c9a79e3ce88e57250db56daa22d7fb",
+      "working_equal_raw_or_literal_lf_to_crlf": true
+    },
+    "scripts/migration/tests/test_bortus_cold_checkpoint.py": {
+      "raw_git_sha256": "425870422a7a03c2c4c7a1c31cd14b7194485c450271904d019b3f69a75becb5",
+      "bytes": 19448,
+      "mode": "100644",
+      "blob": "387778598345557bfe86711eafbafe44ac7368be",
+      "working_sha256": "425870422a7a03c2c4c7a1c31cd14b7194485c450271904d019b3f69a75becb5",
+      "working_equal_raw_or_literal_lf_to_crlf": true
+    },
+    "scripts/migration/tests/test_bortus_cold_resume_order.py": {
+      "raw_git_sha256": "80344fe8ed746440c714cc14eb3bc5fefa099c24adf8a8390e815f3d295d9ea3",
+      "bytes": 14964,
+      "mode": "100644",
+      "blob": "941ce7cad3ea3f11909068a6324ed216b4c3e0a9",
+      "working_sha256": "80344fe8ed746440c714cc14eb3bc5fefa099c24adf8a8390e815f3d295d9ea3",
+      "working_equal_raw_or_literal_lf_to_crlf": true
+    }
+  },
+  "first_failure": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\cold-resume-order-final\\originals\\cold-resume-order-v1",
+    "tests": 1,
+    "exit_code": 1,
+    "duration_seconds": 0.022,
+    "reason": "Cross-node writer wait expired while read-only RWO holder remained; no API calls"
+  },
+  "intermediate_qualification": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\cold-resume-order-final\\originals\\cold-resume-order-v2",
+    "tests": 59,
+    "exit_code": 0,
+    "duration_seconds": 0.2
+  },
+  "final_qualification": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\cold-resume-order-final\\originals\\cold-resume-order-v3",
+    "tests": 60,
+    "exit_code": 0,
+    "duration_seconds": 0.409,
+    "skips": 0,
+    "frozen_inputs": true,
+    "groups": [
+      "cold_resume_order",
+      "cold_checkpoint",
+      "checkpoint_preflight",
+      "cold_delete_intent",
+      "cold_journal",
+      "physical_volume_fence"
+    ],
+    "log_sha256": "451ad71744e320600202fa85c3965b452446dd58277ce8559c77997353f9e9ee",
+    "terminal_sha256": "7bdf81e48d68b904dbbd7aae1a5c56c4b717fab7694da35de6594b67c876399c"
+  },
+  "changes": [
+    "Delete only owned holder with once-only durable UID/RV intent and complete namespace PodList name+UID absence before original writer resumes; interrupted failures independently attempt conditional restoration",
+    "Normal detached/detaching/attaching unknown only under resume observation/CAS; Ready success and backup require healthy; cold/read/snapshot/release stay healthy",
+    "Raw complete bounded PodList mandatory; 10000 distinct name/UIDs, opaque RV, no continuation/remaining count; item TypeMeta optional only when absent",
+    "Cold Running holder exact spec digest and literal imageID with display-only runtime name, single Ready running zero-restart container",
+    "Existing capture attempts cannot be replayed or adopted"
+  ],
+  "preserved_contracts": [
+    "Original UID/PVC/PV/Longhorn mapping",
+    "Retain/keep/encrypted/two replicas",
+    "Complete sole physical volumeHandle inventory",
+    "No faulted/deleting/source drift",
+    "Fresh CAS controlled field and journal durability",
+    "Uncertain DELETE never retried; resume never deletes",
+    "Unchanged encrypted archive helper"
+  ],
+  "limitations": [
+    "Tests use synthetic Kubernetes callbacks and actual disposable POSIX journal files; no Node/Docker/SSH/API/operator credentials",
+    "Complete list and individual GETs are separate non-atomic observations",
+    "8MiB subprocess output check is after capture, unchanged, not an RSS limit",
+    "Holder absence has no admission barrier against later re-creation",
+    "Shared finally restoration cannot guarantee Ready after foreign consumer, API/journal failure or ambiguous delete; retains evidence without completed backup",
+    "No whole-row/image/preload/admission/independent restore/performance acceptance"
+  ],
+  "initial_default_scan": {
+    "files": 6,
+    "exit_code": 0,
+    "findings": 0,
+    "input_path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\cold-resume-order-final\\scan-input-v1",
+    "log_sha256": "a8db5fa79803a4d541a2f8129b05b54c2e2e9499f351fb5f1c6c13aa98c10c48",
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "terminal_sha256": "d3f7c46e9ff3c9f3df1d9e914dfc7b6cac67eecc2131c0aac2977d451444a3e4",
+    "exclusions": false
+  },
+  "actual_live_capture_accepted": false,
+  "independent_restore_accepted": false,
+  "performance_accepted": false
+}

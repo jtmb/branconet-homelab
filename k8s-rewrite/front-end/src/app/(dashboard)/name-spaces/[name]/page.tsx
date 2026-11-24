@@ -3,9 +3,10 @@
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { FolderTree, Loader2, ChevronRight } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useQuery } from "@/lib/use-query";
+import { QueryStatus } from "@/components/ui/query-status";
 import ViewportWrapper from "../../viewport-wrapper";
-import ResourceActionsMenu from "../../resource-actions-menu";
+import ResourceActionsMenu from "../../resource-actions-trigger";
 
 function formatAge(ms: number): string {
   const s = Math.floor(ms / 1000);
@@ -22,30 +23,14 @@ function formatAge(ms: number): string {
 export default function NamespaceDetailPage() {
   const router = useRouter();
   const { name } = useParams<{ name: string }>();
-  const [ns, setNs] = useState<any>(null);
-  const [pods, setPods] = useState<any[]>([]);
-  const [deployments, setDeployments] = useState<any[]>([]);
-  const [services, setServices] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-
-  const fetchNs = useCallback(async () => {
-    try {
-      const res = await fetch(`/api/cluster/namespaces/${name}`);
-      if (res.status === 404) { setNotFound(true); setLoading(false); return; }
-      const data = await res.json();
-      setNs(data.namespace);
-      setPods(data.pods || []);
-      setDeployments(data.deployments || []);
-      setServices(data.services || []);
-    } catch {
-      setNotFound(true);
-    } finally {
-      setLoading(false);
-    }
-  }, [name]);
-
-  useEffect(() => { fetchNs(); }, [fetchNs]);
+  const query = useQuery<any>(`/api/cluster/namespaces/${encodeURIComponent(name)}`);
+  const ns = query.data?.namespace;
+  const deployments = query.data?.deployments ?? [];
+  const services = query.data?.services ?? [];
+  const pods = query.data?.pods ?? [];
+  const loading = query.loading;
+  const notFound = query.status === 404;
+  const fetchNs = query.refetch;
 
   if (loading) {
     return (
@@ -59,8 +44,8 @@ export default function NamespaceDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <FolderTree className="w-12 h-12 text-zinc-600" />
-        <h2 className="text-lg font-semibold text-zinc-300">Namespace Not Found</h2>
-        <p className="text-sm text-zinc-500">{name}</p>
+        <h2 className="text-lg font-semibold text-zinc-300">{notFound ? "Namespace Not Found" : "Namespace Unavailable"}</h2>
+        <QueryStatus query={query} /><p className="text-sm text-zinc-500">{name}</p>
         <Link href="/name-spaces" className="text-indigo-400 hover:underline text-sm">← Back to Namespaces</Link>
       </div>
     );
@@ -70,7 +55,7 @@ export default function NamespaceDetailPage() {
     <div className="flex flex-col min-h-0">
 
       <ViewportWrapper>
-      <main className="px-3 sm:px-4 lg:px-6 py-6">
+      <main className="px-3 sm:px-4 lg:px-6 py-6"><QueryStatus query={query} />
         {/* Breadcrumb */}
         <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
           <Link href="/name-spaces" className="hover:text-zinc-300 transition-colors">Namespaces</Link>

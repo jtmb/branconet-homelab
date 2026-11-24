@@ -1,0 +1,141 @@
+---
+# Extend the node02 kubelet-serving CSR controller to node01/node03, one
+# machine at a time. The controller stays on node02; only its enrollment list
+# grows. Each machine has its own approve switch (watch-only until qualified).
+#
+# Usage (re-runnable; only the switch list changes between stages):
+#   ansible-playbook -i inventory/production.ini playbooks/csr-controller-multinode.yml \
+#     -e '{"csr_approve_nodes": ["node02"]}'                    # node01/03 watch-only
+#     -e '{"csr_approve_nodes": ["node02","node01"]}'           # after node01 qualifies
+#     -e '{"csr_approve_nodes": ["node02","node01","node03"]}'  # after node03 qualifies
+# Rollback: -e '{"csr_approve_nodes": ["node02"]}' (or [] for manual-only).
+- name: Multi-node kubelet-serving CSR enrollment
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    csr_code: /usr/local/libexec/bortus-csr-controller
+    csr_enrollment_path: /etc/bortus-csr-controller/enrollment.json
+    # Public identities only (kubectl get nodes, 2026-11-17).
+    csr_nodes:
+      - {name: node01, uid: 43885b4e-b1cf-46db-a31a-fcc767e2feac, ips: [192.168.0.4], dns: [node01]}
+      - {name: node02, uid: 003da3e8-14e0-459d-945e-df0895d30ccf, ips: [192.168.0.6], dns: [node02]}
+      - {name: node03, uid: 62bc8408-436e-4576-985c-5b409264fdb8, ips: [192.168.0.5], dns: [node03]}
+    # before = installed checkpoint (2026-11-17), after = this change.
+    csr_sources:
+      - name: kubelet_csr_controller.py
+        before: 31d99030976e0533a0635cae1bd9db2974374aec6a469d68b729b8156ba983bf
+      - name: run-kubelet-csr-controller.py
+        before: 2481511ccdb167a3bcc25fd8ab7875bcef14cdc5d8ddeda2608f6e49d02aa7b7
+  tasks:
+    - name: Require node02 and an explicit switch list
+      ansible.builtin.assert:
+        that:
+          - kubernetes_node_name == 'node02'
+          - csr_approve_nodes is defined
+          - csr_approve_nodes | difference(['node01', 'node02', 'node03']) | length == 0
+
+    - name: Hash installed sources
+      ansible.builtin.stat:
+        path: "{{ csr_code }}/{{ item.name }}"
+        checksum_algorithm: sha256
+      loop: "{{ csr_sources }}"
+      loop_control: {label: "{{ item.name }}"}
+      register: csr_stat
+
+    - name: Refuse unexpected installed sources (accept reviewed before or this change)
+      ansible.builtin.assert:
+        that:
+          - item.stat.exists
+          - >-
+            item.stat.checksum in [item.item.before,
+            lookup('ansible.builtin.file', playbook_dir ~ '/../../../scripts/migration/' ~ item.item.name, rstrip=false) | hash('sha256')]
+      loop: "{{ csr_stat.results }}"
+      loop_control: {label: "{{ item.item.name }}"}
+
+    - name: Read the current enrollment
+      ansible.builtin.slurp:
+        src: "{{ csr_enrollment_path }}"
+      register: csr_enrollment_raw
+
+    - name: Refuse an enrollment that is neither the original node02 file nor ours
+      vars:
+        current: "{{ csr_enrollment_raw.content | b64decode | from_json }}"
+        node02: "{{ csr_nodes | selectattr('name', 'equalto', 'node02') | first }}"
+      ansible.builtin.assert:
+        that:
+          - >-
+            (current.version == 1 and current.name == 'node02' and current.uid == node02.uid
+             and current.ips == node02.ips and current.dns == node02.dns)
+            or (current.version == 2 and (current.nodes | map(attribute='name') | sort) == ['node01', 'node02', 'node03'])
+
+    - name: Keep a root-only copy of the previous enrollment
+      ansible.builtin.copy:
+        content: "{{ csr_enrollment_raw.content | b64decode }}"
+        dest: /var/backups/bortus-csr-controller-enrollment.previous.json
+        owner: root
+        group: root
+        mode: "0600"
+
+    - name: Install reviewed sources
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../scripts/migration/{{ item.name }}"
+        dest: "{{ csr_code }}/{{ item.name }}"
+        owner: root
+        group: root
+        mode: "0644"
+      loop: "{{ csr_sources }}"
+      loop_control: {label: "{{ item.name }}"}
+
+    - name: Write the per-machine enrollment
+      vars:
+        nodes: >-
+          {%- set out = [] -%}
+          {%- for n in csr_nodes -%}
+          {%- set _ = out.append(n | combine({'approve': n.name in csr_approve_nodes})) -%}
+          {%- endfor -%}
+          {{ out }}
+      ansible.builtin.copy:
+        content: "{{ {'version': 2, 'nodes': nodes} | to_nice_json }}\n"
+        dest: "{{ csr_enrollment_path }}"
+        owner: root
+        group: bortus-csr-controller
+        mode: "0640"
+
+    - name: Check sources parse with the host interpreter
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, -B, -c, "import ast,sys;[ast.parse(open(f).read()) for f in sys.argv[1:]]",
+               "{{ csr_code }}/kubelet_csr_controller.py", "{{ csr_code }}/run-kubelet-csr-controller.py"]
+      changed_when: false
+
+    - name: Restart the controller
+      ansible.builtin.systemd_service:
+        name: bortus-csr-controller.service
+        state: restarted
+
+    # The first cycle takes ~20s under the unit's 5% CPU cap, so poll for a
+    # cycle line from *this* invocation rather than sleeping a fixed time.
+    - name: Wait for one completed cycle with the new enrollment
+      ansible.builtin.shell: >-
+        systemctl is-active bortus-csr-controller.service &&
+        journalctl _SYSTEMD_INVOCATION_ID=$(systemctl show -p InvocationID --value bortus-csr-controller.service)
+        -o cat --no-pager | grep -E '"mode"|controller-unavailable' | tail -1
+      changed_when: false
+      register: csr_after
+      retries: 18
+      delay: 5
+      until: csr_after.stdout_lines | length > 1
+
+    - name: Require an active controller with a normal cycle
+      ansible.builtin.assert:
+        that:
+          - csr_after.stdout_lines[0] == 'active'
+          - "'\"mode\": \"approve\"' in csr_after.stdout"
+          - "'controller-unavailable' not in csr_after.stdout"
+        fail_msg: "{{ csr_after.stdout }}"
+
+    - name: Show the result
+      ansible.builtin.debug:
+        msg: "{{ csr_after.stdout_lines }}"

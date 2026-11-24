@@ -1,0 +1,15 @@
+# qBittorrent Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbittorrent-webui
+  namespace: plex
+spec:
+  type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8112
+      targetPort: 8112
+      name: http
+  selector:
+    app: qbittorrent-vpn

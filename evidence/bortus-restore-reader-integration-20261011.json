@@ -1,0 +1,327 @@
+{
+  "scope": "Pinned inert holder reader integration; local fixture qualification only",
+  "captured_at_utc": "2026-10-11T09:06:38.000274+00:00",
+  "immutable_native_reader_commit": "b6340aeb6ccbce8a166016d8d366d5dba1a72d3a",
+  "native_handoff_sha256": "21b407e4c53c5a55ad526d7164e7a9940b0918636161971c9803c864955be41f",
+  "test_count": 437,
+  "reader_cases": 29,
+  "test_results": [
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--cd",
+        "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+        "--",
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/migration/tests",
+        "-p",
+        "test_bortus*.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-11T08:57:59.303946+00:00",
+      "completed_at_utc": "2026-10-11T08:58:35.112728+00:00",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "7c18e8390feede399ff3a3109a2e93c355f2ed0a96c586a48191d01cfacd18b5",
+      "source_manifest_sha256": "c1bebbdd0bfcdc7b9a7da494fcde70b2c8d39dde35c2db09ea25301deb6bf451",
+      "input_source_unchanged": true,
+      "scope": "Pure/POSIX/local TLS/disposable age/SQLite fixtures; no Node/Docker/SSH/production calls",
+      "test_count": 405,
+      "elapsed_test_seconds": 33.985
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--cd",
+        "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+        "--",
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/migration/tests",
+        "-p",
+        "test_database_preservation.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-11T08:58:35.153789+00:00",
+      "completed_at_utc": "2026-10-11T08:58:35.865286+00:00",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "37ce0bf4bb957644ed22dd6b5a073e68852a201b6ff980d735bb8f0f38c14e59",
+      "source_manifest_sha256": "c1bebbdd0bfcdc7b9a7da494fcde70b2c8d39dde35c2db09ea25301deb6bf451",
+      "input_source_unchanged": true,
+      "scope": "Pure/POSIX/local TLS/disposable age/SQLite fixtures; no Node/Docker/SSH/production calls",
+      "test_count": 13,
+      "elapsed_test_seconds": 0.36
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--cd",
+        "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+        "--",
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/migration/tests",
+        "-p",
+        "test_sqlite_archive_normalization.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-11T08:58:35.898330+00:00",
+      "completed_at_utc": "2026-10-11T08:58:36.669129+00:00",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "b4f06307bf7a11d0268f5a6a3b92ef8f23f10f1f458fc7b879a0c041b77e4d04",
+      "source_manifest_sha256": "c1bebbdd0bfcdc7b9a7da494fcde70b2c8d39dde35c2db09ea25301deb6bf451",
+      "input_source_unchanged": true,
+      "scope": "Pure/POSIX/local TLS/disposable age/SQLite fixtures; no Node/Docker/SSH/production calls",
+      "test_count": 11,
+      "elapsed_test_seconds": 0.405
+    },
+    {
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu",
+        "-u",
+        "brajam",
+        "--cd",
+        "/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration",
+        "--",
+        "python3",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "scripts/migration/tests",
+        "-p",
+        "test_sqlite_encrypted_archive.py",
+        "-v"
+      ],
+      "started_at_utc": "2026-10-11T08:58:36.705162+00:00",
+      "completed_at_utc": "2026-10-11T08:58:37.256253+00:00",
+      "actual_exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "932f90b854b708fd7a9a12c2251eeea562b9a71a4aff719f6b3106c2f0bdd78c",
+      "source_manifest_sha256": "c1bebbdd0bfcdc7b9a7da494fcde70b2c8d39dde35c2db09ea25301deb6bf451",
+      "input_source_unchanged": true,
+      "scope": "Pure/POSIX/local TLS/disposable age/SQLite fixtures; no Node/Docker/SSH/production calls",
+      "test_count": 8,
+      "elapsed_test_seconds": 0.192
+    }
+  ],
+  "source_manifest_sha256": "c1bebbdd0bfcdc7b9a7da494fcde70b2c8d39dde35c2db09ea25301deb6bf451",
+  "all_test_inputs_unchanged": true,
+  "selected_default_scan": {
+    "actual_exit_code": 0,
+    "findings": 0,
+    "command": [
+      "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-native-window-tools-70320914\\bin\\gitleaks.exe",
+      "dir",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-coordinator-20261011\\scan-reader-v1\\input",
+      "--redact",
+      "--no-banner",
+      "--report-format",
+      "json",
+      "--report-path",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-coordinator-20261011\\scan-reader-v1\\report.json"
+    ],
+    "scanner_sha256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "bc07dcd9679e4c16f2ce24fae77849dc78bae6005bafd070ecae74b9f4a67116",
+    "inputs": [
+      {
+        "path": "scripts/migration/bortus-restore-reader.py",
+        "bytes": 14030,
+        "sha256": "4c91bd5ded784acf8e28fae16408c1d79bda549166385aeb7ac841dfb1471a05"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_restore_reader.py",
+        "bytes": 14530,
+        "sha256": "2a8a36bb4248be4b720672e3941706acdf270372d6fa293e3b68c07a80d5bf87"
+      },
+      {
+        "path": "scripts/migration/inspect-bortus-independent-restore.py",
+        "bytes": 11205,
+        "sha256": "01c5102e789d1eca00dac8543d4d4be4e47de03584092518d987ce1429cfdbe0"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_independent_restore_preflight.py",
+        "bytes": 13055,
+        "sha256": "14b0a49da0dcf51cc36e9235818a52582ef30db9984130aed40ea83f1891a562"
+      },
+      {
+        "path": "scripts/migration/tests/test_bortus_restore_source.py",
+        "bytes": 12068,
+        "sha256": "3607ee7c79f20d86a1339b01d75dfb2978e718838f81925ee54419d4f71c2bdf"
+      },
+      {
+        "path": "docs/BORTUS-RESTORE-READER.md",
+        "bytes": 3795,
+        "sha256": "e0f42d3cf78910aeb4b5dbd1712d511ce9b64203d733f994742877943270b365"
+      },
+      {
+        "path": "docs/BORTUS-RESTORE-DATA.md",
+        "bytes": 6847,
+        "sha256": "57acbc96b6a9b7df42496b3ce6a4359cc93d9d2397f43745202fafa636fb7315"
+      },
+      {
+        "path": "docs/BORTUS-OPERATOR-MTLS.md",
+        "bytes": 10184,
+        "sha256": "553670585b75a0e9deff924e48c94ce141ca584aaa3ff9770d3b826df63e5753"
+      },
+      {
+        "path": "docs/MIGRATION-OPERATIONS.md",
+        "bytes": 100232,
+        "sha256": "99679e1c139048f2846d2adf3c0ecaa4657fc9db0708f185277966a05148c203"
+      },
+      {
+        "path": "docs/implementation-evidence/bortus-restore-reader/qualification.json",
+        "bytes": 5909,
+        "sha256": "1952eb6786b08457082d48773819edbf79ed4caceb4c11cbd48c4f41c8165f95"
+      },
+      {
+        "path": "docs/implementation-evidence/bortus-restore-reader/scan-review.json",
+        "bytes": 546,
+        "sha256": "469b4c469f577a5175f565b2da77dd89a903cf15c7e06db6f8351a90896994f1"
+      },
+      {
+        "path": "MIGRATION_STATUS.md",
+        "bytes": 92109,
+        "sha256": "dc8ce7fbf01261cdb4fa643520ad2625cd623a32558a1e35861850b411dfea2b"
+      }
+    ],
+    "configuration": "Pinned default rules, no exclusions or allowlists; twelve selected inputs"
+  },
+  "raw_integration_verification": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-coordinator-20261011\\verified-reader-v1",
+  "docs_checked": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "sha256": "d161d3821709befb6a55b5aafefd4395765a7b2895d099d048e85a8bdd39c5b7"
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "sha256": "7a99b284806bc5b19f815e9e74fb2bb8124be167e62104b566bcb5af8da3b83e"
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "sha256": "710672848ed1cbef5b618a0aa7c507dd0335d9947526f02c11c47736f0cd9995"
+    },
+    {
+      "path": "docs/BORTUS-OPERATOR-MTLS.md",
+      "sha256": "553670585b75a0e9deff924e48c94ce141ca584aaa3ff9770d3b826df63e5753"
+    },
+    {
+      "path": "docs/BORTUS-PHYSICAL-VOLUME-FENCE.md",
+      "sha256": "89cd19cf4b4717ed2d6f2c2ea4b61f74c9b9c0cd19eb5b9ba2dda6dcf6a4455e"
+    },
+    {
+      "path": "docs/BORTUS-RELEASE-IMAGE.md",
+      "sha256": "c6bef853b17792edd455ecfec88fd63d5bf88aa882a4b1a4df35cdc8c76a5190"
+    },
+    {
+      "path": "docs/BORTUS-RELEASE-STAGING.md",
+      "sha256": "a154e9c1cc48507f56497aaf69b83bdfa32a4ba44c67453111cba0d42f542446"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-COMPLETION.md",
+      "sha256": "ca5ab7c38a0b481baea277cd04d7c9c1744486c58db3c3ed5e97a6e9e8f4bd72"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-DATA.md",
+      "sha256": "57acbc96b6a9b7df42496b3ce6a4359cc93d9d2397f43745202fafa636fb7315"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-MUTATIONS.md",
+      "sha256": "1a5df282805b886eb48f4952c13d8734ab0e468d56ca49c9b3bb213b0854dc4c"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-READER.md",
+      "sha256": "e0f42d3cf78910aeb4b5dbd1712d511ce9b64203d733f994742877943270b365"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-WATCH.md",
+      "sha256": "6d2152910c7f0639bb45f2b8a37903fd645e0018ec8cbdec15167e0488b77c9e"
+    },
+    {
+      "path": "docs/BORTUS-RESTORED-CONSUMER-FENCE.md",
+      "sha256": "7e3737d60d44f0ee5d33a30736e6f02f87bac1562aa9d836455e1f9c84dea03a"
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "sha256": "2af9884b0fb41b91a586c59401a3de4c86ee3da41e9fc235dd61e98f678507a9"
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "sha256": "53b1a4878c66750a9399d3a3d19b2b4e8ee2654b92235191f14efddc5453f8e4"
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "sha256": "f40afd26e66aec05f9acfe0ac5f054b20c8437f6ee44bae43a730ca738111158"
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "sha256": "fab19db188ba6b8189dab2d5449bde7e594194849dad20cadecf96309c6ce06a"
+    },
+    {
+      "path": "docs/MIGRATION-OPERATIONS.md",
+      "sha256": "99679e1c139048f2846d2adf3c0ecaa4657fc9db0708f185277966a05148c203"
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "sha256": "187a69bf8b5b9e397d7824925372f13b4bcc41dab088350d24dfdf747508f004"
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "sha256": "635e9b492444a036f84513a26d75a761824a12b702e42108065b5e123dc67fbd"
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "sha256": "ac7b52960426f91dbc914bca41883d2b05bafea64bf407b1ceaab6f9750e48c5"
+    }
+  ],
+  "protected_artifacts": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-restore-coordinator-20261011",
+  "production_access_or_mutation": false,
+  "acceptance": {
+    "local_reader_launcher": true,
+    "actual_restore": false,
+    "image_runtime_admission": false,
+    "production_release": false,
+    "goal_complete": false
+  },
+  "limits": [
+    "Python fixture children accepted production Node reader bytes without executing Node/kubectl",
+    "GET and name-based exec are not atomic; post-read source, UID, spec and watch fences remain mandatory",
+    "Three malformed-input/privacy findings in shared predicates/source_node_name remain tracked for a separately qualified correction",
+    "Full coordinator, fresh checkpoint, qualified holder and actual recovery remain open",
+    "Default scan covers twelve selected inputs; excludes this later receipt, full repository/history and image",
+    "Prior failed qualification artifacts and original source bindings remain retained",
+    "Original Gluster/Vault/Consul/volumes/backups retained"
+  ]
+}

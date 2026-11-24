@@ -1,0 +1,15 @@
+# Traefik IngressRoute for Plex
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: plex-ingress
+  namespace: plex
+spec:
+  entryPoints:
+  - web
+  routes:
+  - match: Host(`plex.branconet.local`)
+    kind: Rule
+    services:
+    - name: plex
+      port: 32400

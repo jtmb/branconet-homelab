@@ -1,0 +1,35 @@
+{
+  "actual_exit_code": 0,
+  "docs_review_sha256": "242dab39a8fd9ebd123a5a27f2deb91765846e516c968939d423dc03bd7b0312",
+  "local_controls": 53,
+  "original_probe_exit": 1,
+  "prior51_plus2_causal_tests": true,
+  "probe_scope": "current public TCP connections and inert etcd image cache; no snapshot/data/Secret read",
+  "production_checkpoint_accepted": false,
+  "scoped_probe_review_sha256": "3b8ca0ecb706fb5e535e3c18123ef000204266bbd99e1450dfbcd2bd3482a9c0",
+  "separate_explicit_cleanup_exit": 0,
+  "source_unchanged": true,
+  "source_working_sha256": {
+    "docs/BORTUS-ETCD-RECOVERY.md": "b5b51a0f7d76a4a3e0e0de3a019d04862c8da65ad800d26b93adcb154005c70f",
+    "scripts/migration/backup-etcd.py": "cd8ad1b19f2915c4814ad9b41b14f1874131eea12f6fb4ebd147073b7efb8e7a",
+    "scripts/migration/tests/test_etcd_checkpoint.py": "1a86c34ac3e072a120692c8375596340cc658f83fc67e2b30f9615f91e9f5cf9"
+  },
+  "stages": [
+    {
+      "actual_exit_code": 0,
+      "pid": 2245946,
+      "reaped": true,
+      "start_ticks": "29638205"
+    },
+    {
+      "actual_exit_code": 0,
+      "pid": 2246473,
+      "reaped": true,
+      "start_ticks": "29638883"
+    }
+  ],
+  "terminal": {
+    "bytes": 352,
+    "sha256": "00ad9325d574fed9165e4b08b337e753dbbd6189fdf7a930124477240ac9a1a7"
+  }
+}

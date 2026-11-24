@@ -1,0 +1,14 @@
+# http-echo Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: http-echo
+  namespace: http-echo
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+    name: http
+  selector:
+    app: http-echo

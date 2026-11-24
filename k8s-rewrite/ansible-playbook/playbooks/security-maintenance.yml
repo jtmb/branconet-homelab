@@ -1,0 +1,18 @@
+---
+# Opt-in maintenance of an existing cluster. Never use site.yml as an upgrade.
+- name: Patch workers one at a time
+  hosts: worker
+  serial: 1
+  order: inventory
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  roles: [security_maintenance]
+
+- name: Patch the single control plane after workers recover
+  hosts: master
+  serial: 1
+  become: true
+  any_errors_fatal: true
+  vars_files: [../group_vars/all.yml]
+  roles: [security_maintenance]

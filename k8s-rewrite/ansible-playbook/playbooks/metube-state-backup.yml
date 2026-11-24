@@ -1,0 +1,7 @@
+---
+- name: Preserve original MeTube state separately from YTPTube acceptance
+  hosts: master
+  gather_facts: false
+  become: false
+  roles:
+    - metube_state_backup

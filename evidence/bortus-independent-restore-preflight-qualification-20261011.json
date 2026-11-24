@@ -1,0 +1,92 @@
+{
+  "scope": "Local fresh-checkpoint independent-restore preflight and complete helper regression; no live restore acceptance",
+  "qualified_source_commit": "8caa445fb04fd86368fbefeb95053dc74ad898ef",
+  "recorded_utc": "2026-10-11T04:32:29.846125+00:00",
+  "raw_git_blobs_equal_qualified_working_bytes": true,
+  "source_sha256": {
+    "scripts/migration/bortus-sqlite-archive.py": "61e0ef9a1bf81a738aa5fc732f73dc372b55128b5c6e62264220ad23cba7492e",
+    "scripts/migration/checkpoint-bortus-volume.py": "b242b6d79016b124fc187992e0d78265cdb2f993f4afe40c9abef2c73122955f",
+    "scripts/migration/compare-bortus-databases.py": "427a52f9162101da3a5dd24aae6dc254f138558d7967f2976e43acee1b4f2066",
+    "scripts/migration/inspect-bortus-checkpoint.py": "0b5826747d3fea6a01c1353be7d3a25eafee455c1040f5be483ac5576bc5443b",
+    "scripts/migration/inspect-bortus-independent-restore.py": "27b0a075de3cdd055012c5fbb20d10c691cde3f81c1c36c4d511afc274a503f7",
+    "scripts/migration/inspect-bortus-release-rbac.py": "0c72eb4e8f87c5377f3416c3c255016415490d5791003294cb562d9e93ae90cb",
+    "scripts/migration/normalize-bortus-sqlite-archive.py": "44ab159936dc114c050625e78acca4b05228e0282ccaefeef79656be3fffa2f3",
+    "scripts/migration/tests/test_bortus_checkpoint_preflight.py": "8376dbfbd0fd76aab78e30f7b75466252b14c658a7b976d4d196b43f8d0cfc58",
+    "scripts/migration/tests/test_bortus_cold_checkpoint.py": "25df7b17d4bfe8d3b755b7fbbb0bba2ad4f0db0ca2ad1ad2b89722c05ae95a84",
+    "scripts/migration/tests/test_bortus_independent_restore_preflight.py": "a4aa7aa315d22f37db342f0aa1907ee5294d57effc7a3c3ea0736fcc767e0902",
+    "scripts/migration/tests/test_database_preservation.py": "87ce1f374331eeef39aaba934710112e2f87abeb76e3c129de83ea829ffed29a",
+    "scripts/migration/tests/test_node_sqlite_reader.py": "8fc064bc423f160e5304aa6684e7bffd2df6ac1d36d6e76c00505659da46658b",
+    "scripts/migration/tests/test_release_rbac_inventory.py": "4defacd56a55711c3f5e4aa6b9b251f7c9ba43a3f5449b1ed8c07bc34e2d048f",
+    "scripts/migration/tests/test_sqlite_archive_normalization.py": "7b4c94d58c914711610f2ac515a2f3c6fab7e14b15889671a07c521b6c3bb8c0",
+    "scripts/migration/tests/test_sqlite_encrypted_archive.py": "a38ba705ef74678681ec574342a0cc13ac3335f170787074958df55a259fe3ed"
+  },
+  "focused_attempts": [
+    {
+      "console_record": "49104e",
+      "exit_code": 0,
+      "tests": 8,
+      "elapsed_seconds": 0.148
+    },
+    {
+      "console_record": "9d7237",
+      "exit_code": 0,
+      "tests": 8,
+      "elapsed_seconds": 0.142,
+      "delta": "Refuse malformed target-list entries as well as name collisions and collection limit"
+    }
+  ],
+  "complete_helper_suite": {
+    "console_record": "47ce7a",
+    "exit_code": 0,
+    "tests": 58,
+    "elapsed_seconds": 7.155,
+    "command": "python3 -B -m unittest discover -s scripts/migration/tests -p test_*.py -v",
+    "runtime": "Ubuntu WSL Python 3.14.4",
+    "actual_linux_node_reader_fixture_cases": 8,
+    "actual_age_normalization_cases": 8
+  },
+  "coverage": [
+    "Only completed cold full NAS backup plus authenticated archive accepted",
+    "Source claim/PV/Longhorn/Deployment/Flux identities and snapshot/backup UIDs fenced",
+    "Backup volume/snapshot/target/1-GiB capacity/NAS URL checked",
+    "Credential-bearing or foreign URLs refused before proposal export",
+    "Exact encrypted two-replica Retain CSI StorageClass reviewed parameters required",
+    "Alternate Ready schedulable node and unique separate restore target required",
+    "Three inert independent retained proposals, read-only holder and exact protected-reference requirements",
+    "Incomplete or ambiguous checkpoint, recreated resources, malformed/unbounded target inventory and existing restore name refused",
+    "Unrelated private journal values omitted; API errors fixed and evidence overwrite refused"
+  ],
+  "metadata_inspections": {
+    "storageclass_console_record": "c5da6a",
+    "installed_longhorn_storageclass_uid": "48c9bbe8-16b9-4780-bc9d-ae51f2513c7c",
+    "installed_crd_fields_console_record": "612d02",
+    "historical_backup_capacity_console_record": "77203e",
+    "source_capacity": "1Gi",
+    "historical_completed_bortus_backup_count": 1,
+    "historical_backup_is_not_fresh_kv_checkpoint": true,
+    "native_secret_or_database_reads": 0,
+    "mutations": 0
+  },
+  "cleanup": {
+    "actual_linux_reader_owned_processes_and_named_containers_absent_checked_by_tests": true,
+    "normalizer_owned_decryptors_and_tmpfs_copies_closed_checked_by_tests": true,
+    "operator_private_key_used_in_tests": false,
+    "generated_disposable_identity_only": true,
+    "production_mounts_used": false
+  },
+  "documentation_review": {
+    "root_docs_checked": 11,
+    "behavior_update": "docs/MIGRATION-OPERATIONS.md",
+    "application_behavior_changed": false
+  },
+  "limitations": {
+    "live_fresh_checkpoint_journal_evaluated": false,
+    "proposals_server_dry_run_or_created": false,
+    "guarded_image_preload_and_admission_proven": false,
+    "independent_native_longhorn_restore_proven": false,
+    "live_whole_row_and_current_history_etcd_preservation_proven": false,
+    "final_image_or_live_adoption_proven": false,
+    "separate_api_reads_atomic": false,
+    "restore_coordinator_execution_completed": false
+  }
+}

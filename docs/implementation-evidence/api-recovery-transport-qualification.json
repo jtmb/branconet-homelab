@@ -1,0 +1,72 @@
+{
+  "abi": 1,
+  "scope": "explicit callable API recovery transport; PUBLIC local Python shims/mTLS file validation only",
+  "qualified_run": {
+    "owner": "native-api-transport-v2-4136305881f6",
+    "terminal": {
+      "terminal": true,
+      "actual_exit_code": 0,
+      "test_exit_code": 0,
+      "expired": false,
+      "elapsed_seconds": 3.9399517799611203,
+      "sources_unchanged": true,
+      "source_count": 176,
+      "child_reaped": true,
+      "completed_utc": "2026-10-12T13:55:05.276242+00:00",
+      "scope": "public local Python tool/mTLS fixtures only; no live transport or recovery acceptance"
+    },
+    "log_sha256": "a9be43528e1f8ef95a3f9472ef67c721a9fd5b385be0da22e5e660813f2f07d8",
+    "terminal_sha256": "c4ae9c5a259b4bd089a170be693f0c9aa82b01a94f6f59ca4f5a72b2abc04a1f",
+    "processes_independently_absent": true
+  },
+  "retained_failure_run": {
+    "owner": "native-api-transport-v1-14a95104b5b5",
+    "terminal": {
+      "terminal": true,
+      "actual_exit_code": 1,
+      "test_exit_code": 1,
+      "expired": false,
+      "elapsed_seconds": 3.84034191101091,
+      "sources_unchanged": true,
+      "source_count": 176,
+      "child_reaped": true,
+      "completed_utc": "2026-10-12T13:54:10.885699+00:00",
+      "scope": "public local Python tool/mTLS fixtures only; no live transport or recovery acceptance"
+    },
+    "log_sha256": "9cc9165dce95b48905047e6213b8e262d030c6e7049ad5c69010f939a1efce52",
+    "terminal_sha256": "013d7abd3ea08c25c9c257dcbfd0120eb5477d5d034d63332b260fa7be89dd41",
+    "processes_independently_absent": true
+  },
+  "controls": 14,
+  "root_live_dispatch": false,
+  "Node_AES_oracle_executed_in_this_suite": false,
+  "actual_cluster_defaulting_CNI_cache_API_recovery_accepted": false,
+  "unchanged_default_dependency": {
+    "path": "scripts/migration/backup-etcd.py",
+    "sha256": "cd8ad1b19f2915c4814ad9b41b14f1874131eea12f6fb4ebd147073b7efb8e7a"
+  },
+  "source_manifest": [
+    {
+      "path": "scripts/migration/bortus-api-recovery-transport.py",
+      "sha256": "8d1655b7ccba06b3a01f420336c41da5c0d63797bfddd58300f18d6aa19a47e9"
+    },
+    {
+      "path": "scripts/migration/tests/test_api_recovery_transport.py",
+      "sha256": "9e125a3dda6af5ac49146b9ef7c0c489134ab0c1f9e667a8f6f739be444eadd8"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "originals.zip",
+      "sha256": "bb4efdda17ab15d1dc3faa1ddd88e28d816a65b19da3f212a8204911d7ba7a31",
+      "bytes": 1295001,
+      "members": 372
+    }
+  ],
+  "limits": [
+    "No live calls or material access",
+    "Runtime public generated fixture keys/state excluded from original ZIP; exact test/control source retained",
+    "Root must qualify cached ELF/TLS readiness/defaulting/resource closure and actual oracle",
+    "Borrowed exported backup class graph is required"
+  ]
+}

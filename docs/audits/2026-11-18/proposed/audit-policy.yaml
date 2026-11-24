@@ -1,0 +1,13 @@
+# SUPERSEDED 2026-11-19 — do not apply this draft.
+#
+# The applied policy is
+#   k8s-rewrite/ansible-playbook/playbooks/files/kube-apiserver-audit-policy.yaml
+# rolled out by scripts/migration/run-apiserver-audit-logging.py; see
+# docs/API-AUDIT-LOGGING.md.
+#
+# This draft recorded create/update/patch/delete of `secrets` and
+# `serviceaccounts` at RequestResponse. That writes every Secret value, and
+# every token issued through serviceaccounts/token, into a plaintext log file
+# on each node. The applied policy keeps Secrets, ConfigMaps, token requests
+# and TokenReviews at Metadata, above the only body-recording rule (RBAC
+# writes). The original draft is in git history (commit cb87a777).

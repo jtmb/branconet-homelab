@@ -1,0 +1,224 @@
+# Callable independent restore coordinator
+
+`scripts/migration/bortus-independent-restore.py` is locally qualified as a callable
+composition over immutable root `8f69b51`, with no CLI. Its exported reader is
+loaded once and supplies the exact MutationAPI/Collector/data/credentials classes.
+SourceFence constructs its own exact read-only MetadataAPI. Validated typed lists
+infer only absent item type headers; named reads and conflicting explicit headers
+remain strict. The original live preflight refused headerless PodList items before
+any mutation. Current-source qualification is recorded below. Use
+`restore(run_directory, checkpoint_journal, checkpoint_sha256, original_archive,
+holder_image, alternate_node, kubeconfig_path, options, qualify_image, *, age,
+recipient_file, identity_file, deadline)` with one absolute monotonic deadline at
+most 300 seconds ahead; no phase resets it.
+
+Root's `qualify_image(image, target_name, deadline)` returns exactly holder_image,
+source_commit, config_image_id, sorted three node_names, protected_claim_names
+(`bortus-data`, exact target), qualification_receipt_sha256,
+admission_receipt_sha256 and literal current_validation=true. This is trusted
+caller metadata, not evidence by itself. Root must separately wire actual current
+source/image/three-preload/runtime/guard checks. Boolean shortcuts refuse; the
+binding is rechecked before later mutations/data/delete and cannot change. A
+config image ID is not a registry manifest digest.
+
+The separate [admission validator and callable probe collector](BORTUS-ADMISSION-QUALIFICATION.md)
+check six-object identity/spec/type-check metadata and forty actual dry-run
+outcomes. Root publishes through the existing Flux owner after a fresh completed
+cold checkpoint and resumed Ready writer, then supplies current revision/pin
+verification to the bounded collector. Disposable inert Pod and replicas-zero
+Deployment fixture mutations have durable ownership and complete-list absence
+checks. Local HTTPS fixtures and returned metadata cannot grant the restore
+callback's live admission acceptance; separate actual root receipts are required.
+
+Exclusive fsynced intent/journal bind checkpoint, qualification and helper source
+hashes before mutation. The actual Collector starts before creates. SC/PVC/holder
+creates require durable pending intent and fresh full admitted-spec GET validation
+before confirmation. Binding waits for real same-UID watch observations. Sealing
+waits for true/true to true/false and exact latest watched GET RV; missing history
+never causes a relist or speculative irreversible seal. Current full health must
+prove the sole inert read-only Running/Ready holder and exact engine/two RW replicas.
+
+ReaderLauncher returns the exact owned exec child; only data.execute sends the
+fixed reader via stdin. It directly encrypts, authenticates both archives,
+normalizes in tmpfs, compares complete recovery rows and independently cleans both
+copies/child under the shared deadline. Source/image/watch/health fences surround
+the read. Fresh UID/RV durable holder deletion must be followed by complete LIST
+absence of both owned UID and name; replacements refuse. There is no failed-watch
+cleanup mutation, retry, replay, adoption or target/cipher removal.
+
+Collector, SourceFence and journal close independently. A duplicated pinned run
+directory FD supports exclusive file+directory-fsynced final receipt after closure.
+Failures retain intent, journals, targets and ciphertext for review. Receipts and
+results always leave overall live restore and image/runtime/admission acceptance
+false. Separate reads and name-based exec are non-atomic. Callback fixtures cannot
+open actual release gates; fault injection is not power-loss proof.
+
+Twelve controlled local cases pass against the retained exact source: fresh
+loopback TLS source/admitted-resource requests, durable watch and journal
+composition, Python child execution in place of Node, disposable age encryption,
+SQLite/tmpfs whole-row matching and mismatch, target collision/replay refusal,
+watch ERROR, qualification drift, fsync failure and independent closure. The
+watch response is controlled in this composition fixture; standalone collector
+TLS qualification remains separate. All first failures are retained. No operator
+credentials, Kubernetes APIs, Node, Docker or live restore were used.
+
+Related: [watch](BORTUS-RESTORE-WATCH.md), [mutations](BORTUS-RESTORE-MUTATIONS.md),
+[consumer](BORTUS-RESTORED-CONSUMER-FENCE.md), [reader](BORTUS-RESTORE-READER.md),
+[data](BORTUS-RESTORE-DATA.md).
+
+Root selected integration independently verifies the seven raw files, 25 retained
+artifacts and 16 unchanged dependencies. The [scoped integrated suite](../evidence/bortus-independent-restore-integration-20261011.json)
+passes 423 `test_bortus*.py` cases with no skips or changed source. Five differently
+named modules are outside this run; no live restore is established.
+
+The [actual fresh BORTUS cold checkpoint](../evidence/bortus-cold-checkpoint-b473091bebef-20261011.json)
+completed at 10:45:09 UTC on 2026-10-11. The immutable inert reader mounted the
+original claim read-only; SQLite bytes went directly into authenticated age
+ciphertext and the NAS copy matched. A cold snapshot and full encrypted 1 GiB
+Longhorn NAS backup completed. Complete raw PodList name/UID checks prove reader
+absence; the original writer is Ready on workernode2, its volume is healthy, and
+Deployment/HelmRelease/Kustomization fields are restored. Capture exposed a
+cross-node RWO resume-order defect; exact owned-reader removal and explicit
+same-journal recovery completed without recapturing data or repeating creates.
+All failed setup, transient-detach and controller-default-label attempts remain
+recorded. A fresh read-only source preflight validates this closed checkpoint and
+an absent masternode restore target. Complete SQLite row equality, independent
+restoration, active admission and the final application release remain pending.
+
+Root integrated the selected admission collector, exact runtime imageID checks
+and cold holder-release ordering fix through immutable handoffs, preserving the
+actual earlier checkpoint evidence. The [combined local receipt](../evidence/bortus-admission-cold-helper-integration-20261011.json)
+records 474 passing current test_bortus*.py cases, zero failures/errors/skips,
+144 frozen Python source files and reaped exact process owners. This discovery
+scope excludes differently named test modules. Loopback/fake API and disposable
+local data checks do not prove live guard enforcement or independent recovery.
+The corrected helper has not recaptured live data; the completed checkpoint
+remains bound to its original executed source and explicit recovery journal.
+
+The [root maintenance/preflight review](../evidence/bortus-maintenance-preflight-review-20261011.json)
+verifies 37 offline proposal payloads, 20 raw committed source blobs/modes, six
+exact canonical guard renders, the grant-free externally Flux-owned bortus-kv
+ServiceAccount and the BORTUS-only declarative suspension. The actual 11:15 UTC
+metadata-only preflight using the corrected helpers passed against the unchanged
+completed checkpoint: original writer/storage are healthy, the target remains
+absent and masternode is the alternate. It reads no database or native Secret
+values and makes no mutation. Neither offline renders nor this preflight prove
+admission, independent restoration or application acceptance.
+
+Keep Deny activation held until a qualified compatible app image permits the
+planned recovery route. An inert-only allowlist would deny legacy writer
+replacement even with its HelmRelease suspended. With prune:false, removing
+guard files/references does not remove live Deny bindings. The reviewed
+pre-adoption withdrawal alternative explicitly changes all three existing
+bindings to Audit through validated Flux, requires fresh observation and owned
+holder absence, then resumes the unchanged legacy release through another
+validated revision. Audit is not enforcement acceptance. That withdrawal path
+is forbidden after forward schema/principal migration or KV adoption; retain
+guards and recover with an approved compatible image and current accepted data.
+Actual invocation still needs the root's current image/runtime and admission
+proof callback; complete probes before creating the isolated restore target.
+
+
+## 2026-10-11: actual legacy schema metadata qualification
+
+The [root live schema receipt](../evidence/bortus-current-legacy-schema-20261011.json)
+passes against the sole Ready legacy digest writer. Seven migration names,
+finished/non-rolled-back history and all thirteen application table column layouts
+match; writer UID/RV, owner/template and claim/PV identities match before and after.
+The fixed Node program opens SQLite read-only and selects only migration ledger
+and schema metadata. It runs through stdin; no app entrypoint, application rows
+or credential values are read. Separate reads and name-based exec are non-atomic.
+
+The first actual check failed because raw Git SQL checksums differ from deployed
+SQL file bytes. Actual ledger hashes match all seven files in the immutable legacy
+image: six are exact Git LF-to-CRLF conversions; the seventh is exact Git LF. The
+new manifest pins this exact mixed history. It does not accept arbitrary alternate
+checksums. Original failure and diagnostic receipts remain retained. An earlier
+local launcher used Windows CRLF reader bytes instead of the already qualified
+embedded LF program; that failure and its non-causal negative checks are retained.
+
+The [callable producer](../scripts/migration/schema-current-writer-v1/current-schema-producer.py)
+is source-bound with its fixed reader, exact image migration manifest and controls.
+Six actual disposable Node fixtures and sixteen local producer controls pass,
+including identity/RV/storage drift, forward schema refusal, FIFO nonblocking open,
+selector-constructor failure child reaping and bounded output/deadline cleanup.
+The actual producer uses fresh verified mTLS metadata and an exclusive fsynced
+0600 receipt in a 0700 directory. Receipt names match the phase-one callback ABI.
+Invoke it fresh under the callback's shared deadline each time; this observed
+receipt is historical evidence. Guard publication, actual admission probes,
+independent whole-row restoration and final app/image/performance remain open.
+
+The current reader passes 57 scoped metadata/source/checkpoint preflight tests
+with frozen inputs and an actual reaped child. Fresh actual SourceFence.prepare
+also passes using the same metadata bytes: original storage/controller identities,
+completed backup and unused restore target are confirmed. This is read-only
+preflight evidence; admission publication, actual probes and whole-row restoration
+remain open. The earlier metadata_shape refusal is retained. See the
+[typed-collection evidence](../evidence/bortus-typed-collection-preflight-20261011.json).
+
+## 2026-10-11: continuous source-control preparation
+
+The [quiescent checkpoint](BORTUS-QUIESCENT-SOURCE.md) composes capture, full
+backup and owned-holder removal while the source stays at zero writers. Its
+[control observer](BORTUS-QUIESCENT-WATCH.md) owns three concurrent verified TLS
+streams and fsynced metadata; a caller must check the actual prerequisite before
+and after mutation dispatch and independently close the borrowed resources.
+Only the explicit once-only owner transition resumes `migration-releases` so
+validated Flux can withdraw the legacy image from the guards. The BORTUS
+HelmRelease remains suspended and Deployment remains zero throughout that future
+transition. This preparation has not run against the live source.
+
+Independent root mTLS fixtures reproduced a deadline-renewal defect in the first
+immutable observer: three late bookmarks left its readers live after the absolute
+lease. The corrected source refreshes the remaining original budget before each
+read; the same root fixture now observes sticky deadline failure and zero live
+readers. The original handoff and failing observation are retained. The corrected
+handoff passes 86 scoped local controls; root combined integration qualification
+now passes all 524 test_bortus*.py cases with zero failures/errors/skips and 151
+frozen inputs, including the required JSON fixture. The initial fixture-omitting
+staging run is retained; production Python sources did not change between runs. These checks grant no live restore, forward-schema, image, rollback
+or whole-row acceptance. The deadline-aware encrypted archive callback and
+actual source/image/schema/guard producers must still be wired before live use.
+
+See the [root integration evidence](../evidence/bortus-quiescent-root-integration-20261011.json).
+
+The [root current metadata assembler qualification](../evidence/bortus-current-assembler-root-20261011.json) passes 130 local controls on the frozen dependency composition; all seven owned children exited and every selected source remained unchanged. It borrows the operator transport and source fence, requires fresh publication/guard observations, two distinct schema receipts per callback, and image/source verification before and after assembly under the original shared 300-second deadline. Completed43 probe evidence stays explicitly static. Actual three-node image/source transport wiring and independent whole-row restore remain pending; this local result grants no application startup or forward migration.
+
+The [root current source/image verification receipt](../evidence/bortus-current-image-root-20261011.json) records 154 local controls and one actual isolated read-only callback passing in 17.731 seconds. Twelve sequential SSH inspections freshly verify manifest/config hashes, source labels, ordered descriptors and cache blob presence on the three Ready nodes; all owned SSH children are absent. Two new schema receipts and exact current writer/storage/guard pins accompany the explicitly reused completed43 transcript. Layer bytes and the prior inert runtime fixture are not reexecuted. The timing-only callback trace correctly remains incomplete/refused because only one of six calls ran; its graph and deadline are never reused. This establishes timing and current prerequisites, not independent whole-row recovery or application startup. The initial v19 missing fixture-directory failure is retained; frozen v20 suites passed on unchanged exact sources.
+
+The [actual independent b473 recovery proof](../evidence/bortus-independent-live-b473-20261011.json) completed at 17:41:44 UTC in 189.566 seconds under the original 300-second deadline. The separately restored encrypted Longhorn volume passed the complete SQLite recovery-row comparison against the authenticated cold archive. Both tmpfs copies were cleaned; all four operations, six callbacks, 72 fresh SSH inspections and twelve schema receipts completed. Same-UID watch evidence records restore flags true/true at RV1220694 then true/false at RV1220836, with no later regression. The inert reader is absent by fresh named404 and complete PodList UID/name checks; its StorageClass remains retained and its PVC remains Bound. Fresh post-run metadata confirms the original Ready writer/template/storage and six guard UID/RV/spec pins, plus current Ready Flux revision. The first post-review used the wrong lowercase standby key and refused; the corrected exact Longhorn `Standby` review passed without replaying restoration. Static completed43 outcomes and prior image runtime proof remain explicitly reused. Exact schema invocation floors are enforced by executed source, not separately reconstructed from retained scalar fields. Original coordinator overall flags remain false; this separate receipt accepts the cold-baseline recovery gate only. Latest-data capture, updated app build/performance/image, forward schema migration and final rollback/live acceptance remain pending. Gluster/Vault/Consul originals are retained.
+
+
+## Current recovery tooling, 2026-11-14
+
+Current driver `scripts/migration/execute-bortus-independent-restore.py` binds the completed fresh da37c4f713e8 checkpoint, actual three-node private image import proof and the 42-case live guard transcript plus its exact cleanup reconciliation. It verifies current guard identities/spec hashes, node readiness/image availability and chart revision. Production remains the original suspended legacy release. Separate readonly recovery attempts retain their failures and retire only verified regenerable derivative resources before a fresh attempt. No production application, schema or guarded-adoption acceptance is claimed by preparation or metadata health.
+
+
+## Current BORTUS release progress, 2026-11-14
+
+The saved node administrator credential source was found in the existing native vault and authenticated sudo on all three nodes. Credential values were not printed or saved. The unchanged qualified private image is published and fully imported/unpacked on all three Ready nodes. Private guard-only chart revision `eb3921c6fed7db8718d4256fb367d68da208ebac` is validated and reconciled; Actions remains off. All 42 live guard cases passed, with the original transcript and exact fixture-removal reconciliation retained.
+
+Fresh checkpoint `da37c4f713e8` passed authenticated encrypted H/NAS preservation and cold Longhorn backup. Its separate-volume restore completed with the new image on Node Two, a complete original-row comparison, cleanup of both private tmpfs copies and confirmed holder removal. The subsequent schema rehearsal on that derivative applied the release Prisma migrations and passed forward preservation of every original row, including account data; its holder and plaintext copies are absent. This is real recovery/schema evidence, not production application/native-KV or actual screen-reader acceptance.
+
+The original recovery tooling rejected the installed Longhorn 1.13.0 engine and the previously migrated H-backed kubectl path. Explicit version/digest and native-mount/tool-hash support corrected those mismatches without changing shared H permissions or credentials. The two earlier readonly derivative attempts were retired only after authenticating the preserved source and checking recorded resource UIDs; their failed records remain. Existing legacy consumer/transition suites passed 56 cases, two new version-specific controls passed, reader tests passed 29 and data tests passed 28. Data tests emitted a retained Python ResourceWarning; they did not fail.
+
+Prepared chart rendering preserves Recreate, original PVC, digest/pullNever, suspended reconciliation and adoption=false. Server dry-run reached only the expected two missing `bortus-history` namespace references: dry-running namespace creation does not persist it for subsequent Role/RoleBinding requests. Ordered real namespace creation remains part of the gated release; no production namespace, role or application was changed by that check.
+
+Current evidence remains under the existing H operator-recovery root: `qualified-node-imports.json`, `guard-probes-da37c4f713e8-publication-settle/{record.json,completion-reconciliation.json}`, `independent-restore-da37c4f713e8-lh113-h-tool/{restore-receipt.json,data.json}`, and `schema-rehearsal-da37c4f713e8/state.json`. The original writer is still Ready on its old image; no forward migration or native adoption has run against production.
+
+Remaining acceptance: attended actual screen-reader confirmation of “Configuration saved.” in the existing local review at http://127.0.0.1:21087 remains unverified. DOM/AX evidence does not substitute. After that, recapture a current checkpoint immediately before the controlled production transition, verify quiescence and legacy-image withdrawal, publish/resume only BORTUS through private CI/Flux, then perform the required actual native-KV/auth/CAS/restart/preservation checks. Local review container/image remains required until production verification, then its exact owned resources are removed. No additional deployment approval is requested.
+
+The completed CI export cleanup stopped before deletion because the surviving operator tool directory has no gitleaks copy. Exact source stage `local-charts-publish-5aaf249dd68d4150a1e6d8f92d068101/source` remains retained (178110464 allocated bytes at inspection), including its tool input for the final publisher; no alternate deletion was attempted. Its Git export and tools matched the prepare manifest, and all small prepare/check/publish receipts remain intact. Empty test scratch is confirmed. H-only/Linux measurements do not claim Windows C recovery.
+
+Cleanup reconciliation: the completed CI stage’s empty `home` and `tmp` siblings were removed (4096 allocated bytes each). Its `source` remains unchanged and now has a concrete additional consumer: the existing Veyra coordinator was given the pinned existing tools for its independent Ingenium-only controlled publication. Do not retire that source/tool stage while the shared consumer is active. The BORTUS local review health and synthetic sign-in both returned HTTP 200.
+
+
+## Fresh transition prerequisites, 2026-11-14
+
+`check-bortus-current-legacy-transition.py` collected a fresh metadata-only receipt from the sole Ready original writer: all seven legacy migrations and original table/column layouts match. Exact full-template dry-runs passed for zero-replica Deployment UPDATE, ReplicaSet CREATE and Pod CREATE, while the original writer/storage identities and six guard specs remained unchanged. These supplement the 42-case live transcript; they are three additional positive cases, not a claim that the earlier transcript contained 45 cases.
+
+`verify-bortus-current-node-image.py` freshly checks the exact image alias, content-addressed manifest/config/source and all nine cached blob identities plus fully downloaded/unpacked state through the existing saved administrator source on every node. It does not rehash the already verified large blob bodies, transfer/import an archive or change the runtime. Original full import/hash receipts remain explicitly separate. An initial readonly remote snippet lacked its outer JSON import; it exited before receipt creation and was corrected without runtime mutation.
+
+The current qualifier now requires two distinct fresh schema receipts bracketing the runtime/guard checks for each invocation. A real read-only invocation passed with all three node observations. An intervening expected revision mismatch was caused by the independently owned Ingenium cold-checkpoint publication; reviewed descendant 44420b74ff814af7b15eb6442d5464a15b53c823 changes only Ingenium replicaCount 1 to 0 and its documentation, leaving BORTUS manifests/guards unchanged. The current qualifier explicitly pins that reviewed descendant. Earlier completed recovery evidence stays bound to eb3921 and its original executed helper hashes; later source improvements do not retroactively alter it. No second restore or application rollout was dispatched during this check.
+
+The remaining attended reader acceptance and subsequent immediate fresh checkpoint/quiescence/legacy withdrawal/validated production rollout sequence remain as above. No extra approval is required. Existing operator credentials, Actions state, production data and source ownership remain unchanged.

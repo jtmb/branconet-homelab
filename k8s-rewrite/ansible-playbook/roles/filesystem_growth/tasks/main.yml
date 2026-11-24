@@ -1,0 +1,98 @@
+---
+- name: Require the exact reviewed existing worker1 filesystem scope
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname == 'workernode1'
+      - ansible_host == '192.168.0.6'
+      - filesystem_growth_apply is boolean
+      - filesystem_growth_output_dir == '/home/james/.local/share/branconet-migration/fs-growth-worker1-20261023'
+      - filesystem_growth_helper_sha256 == '18be77a60ee7d0a183afa623711a33fe2d845cf2e7036f3eace3a71dd9e95a6b'
+      - not ansible_check_mode
+    fail_msg: Use the dedicated default inspection mode on only workernode1; generic check mode and altered pins are refused.
+
+- name: Require the independently reviewed inspection receipt before apply
+  ansible.builtin.assert:
+    that:
+      - filesystem_growth_reviewed_preflight is match('^/home/james/\.local/share/branconet-migration/fs-growth-worker1-20261023/[A-Za-z0-9-]+\.json$')
+      - filesystem_growth_reviewed_preflight_sha256 is match('^[0-9a-f]{64}$')
+    fail_msg: Explicit apply requires the reviewed remote inspection receipt and exact SHA256.
+  when: filesystem_growth_apply | bool
+
+- name: Inspect the controller helper bytes
+  ansible.builtin.stat:
+    path: "{{ role_path }}/files/worker1_ext4_grow_guard.py"
+    checksum_algorithm: sha256
+  delegate_to: localhost
+  become: false
+  register: filesystem_growth_controller_source
+
+- name: Verify the exact reviewed helper source
+  ansible.builtin.assert:
+    that:
+      - filesystem_growth_controller_source.stat.checksum == filesystem_growth_helper_sha256
+
+- name: Inspect the protected remote receipt directory
+  ansible.builtin.stat:
+    path: "{{ filesystem_growth_output_dir }}"
+    follow: false
+  register: filesystem_growth_existing_directory
+
+- name: Preserve any unexpected existing receipt directory
+  ansible.builtin.assert:
+    that:
+      - not filesystem_growth_existing_directory.stat.exists or (filesystem_growth_existing_directory.stat.isdir and not filesystem_growth_existing_directory.stat.islnk and filesystem_growth_existing_directory.stat.uid in [0, 1000])
+
+- name: Prepare the private operator receipt directory
+  ansible.builtin.file:
+    path: "{{ filesystem_growth_output_dir }}"
+    state: directory
+    owner: james
+    group: james
+    mode: '0700'
+
+- name: Inspect any previously staged helper without following symlinks
+  ansible.builtin.stat:
+    path: "{{ filesystem_growth_output_dir }}/guard.py"
+    follow: false
+    checksum_algorithm: sha256
+  register: filesystem_growth_existing_helper
+
+- name: Refuse to overwrite any differing or unexpected helper
+  ansible.builtin.assert:
+    that:
+      - not filesystem_growth_existing_helper.stat.exists or (filesystem_growth_existing_helper.stat.isreg and not filesystem_growth_existing_helper.stat.islnk and filesystem_growth_existing_helper.stat.checksum == filesystem_growth_helper_sha256)
+    fail_msg: Existing helper differs; preserve it and obtain a separate reviewed source identity.
+
+- name: Stage the actual checksum-pinned helper file without replacing prior bytes
+  ansible.builtin.copy:
+    src: worker1_ext4_grow_guard.py
+    dest: "{{ filesystem_growth_output_dir }}/guard.py"
+    force: false
+    owner: root
+    group: root
+    mode: '0500'
+
+- name: Verify staged helper bytes
+  ansible.builtin.stat:
+    path: "{{ filesystem_growth_output_dir }}/guard.py"
+    follow: false
+    checksum_algorithm: sha256
+  register: filesystem_growth_staged_helper
+
+- name: Require the staged reviewed helper identity
+  ansible.builtin.assert:
+    that:
+      - filesystem_growth_staged_helper.stat.isreg
+      - not filesystem_growth_staged_helper.stat.islnk
+      - filesystem_growth_staged_helper.stat.checksum == filesystem_growth_helper_sha256
+
+- name: Inspect by default or apply only the reviewed online growth
+  ansible.builtin.command:
+    argv: "{{ ['/usr/bin/python3', filesystem_growth_output_dir ~ '/guard.py'] + (['--apply', '--reviewed-preflight', filesystem_growth_reviewed_preflight, '--reviewed-preflight-sha256', filesystem_growth_reviewed_preflight_sha256] if filesystem_growth_apply else []) }}"
+  register: filesystem_growth_result
+  changed_when: (filesystem_growth_result.stdout | from_json).state == 'online_filesystem_growth_verified'
+  failed_when: filesystem_growth_result.rc != 0
+
+- name: Report only the metadata receipt location and state
+  ansible.builtin.debug:
+    msg: "{{ filesystem_growth_result.stdout | from_json }}"

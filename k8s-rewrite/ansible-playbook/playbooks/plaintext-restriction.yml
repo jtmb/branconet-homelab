@@ -1,0 +1,55 @@
+---
+# Fixed host-input restriction for three reviewed node-IP ports. Preflight by default.
+- name: Restrict reviewed plaintext node-IP ports to admin and cluster sources
+  hosts: k8s_nodes
+  gather_facts: false
+  serial: 1
+  any_errors_fatal: true
+  become: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    restriction_action: check
+    restriction_profile: core
+    restriction_helper: /usr/local/libexec/branconet-plaintext-restriction
+  tasks:
+    - name: Require a reviewed bounded action
+      ansible.builtin.assert:
+        that:
+          - restriction_action in ['check', 'apply', 'remove']
+          - inventory_hostname in ['masternode', 'workernode1', 'workernode2']
+
+    - name: Read the current host input firewall state without changing it
+      ansible.builtin.command:
+        argv: [ufw, status, numbered]
+      changed_when: false
+      register: restriction_ufw
+
+    - name: Install the fixed helper only for apply or remove
+      when: restriction_action != 'check'
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../scripts/migration/plaintext_restriction.py"
+        dest: "{{ restriction_helper }}"
+        owner: root
+        group: root
+        mode: "0755"
+        validate: /usr/bin/python3 -B %s {{ restriction_profile }} check
+
+    - name: Check or apply the restriction
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, -B, "{{ restriction_helper }}", "{{ restriction_profile }}", "{{ restriction_action }}"]
+      register: restriction_result
+      changed_when: restriction_action == 'apply'
+
+    - name: Read back the owned table after a change
+      when: restriction_action in ['apply', 'remove']
+      ansible.builtin.command:
+        argv: [nft, -a, list, tables, inet]
+      changed_when: false
+      failed_when: false
+      register: restriction_listing
+
+    - name: Report the resulting state
+      ansible.builtin.debug:
+        msg:
+          helper: "{{ restriction_result.stdout }}"
+          table: "{{ (restriction_listing.stdout | default(''))[:600] }}"

@@ -1,0 +1,9 @@
+[Unit]
+Description=Watch for replacement Traefik CRI logs
+After=fail2ban.service
+
+[Path]
+PathChanged=/var/log/containers
+
+[Install]
+WantedBy=multi-user.target

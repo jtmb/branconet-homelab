@@ -1,0 +1,176 @@
+{
+  "status": "AUTHENTICATED_NOBLE_SOURCE_AND_EXACT_FIX_CONTEXTS_ONLY",
+  "sourcePackage": "glibc",
+  "version": "2.39-0ubuntu8.9",
+  "archiveSigningFingerprint": "F6ECB3762474EDA9D21B7022871920D1991BC93C",
+  "independentReview": {
+    "actualExit": 0,
+    "manifest48FilesCurrent": 48,
+    "signatureChecks": [
+      {
+        "file": "current-noble-updates-InRelease",
+        "exit": 0,
+        "stdoutSHA256": "0638bcde7fa7624e1ecc233abba4c24b69062bfad361214448d17d9c7c856a4b"
+      },
+      {
+        "file": "retained-binary-noble-updates-InRelease",
+        "exit": 0,
+        "stdoutSHA256": "9a2124e60889e1f6f082a66b404e03311c09a5eafcd557c497d6c073ccce945b"
+      }
+    ],
+    "signedSourcesAndFourArchiveDigestsMatched": true,
+    "selected13FilesEqualAuthenticatedArchives": true,
+    "declaredDistroPatches": 116,
+    "affectedFilesTouchedByDistroPatches": 0,
+    "maintainedContexts": [
+      {
+        "patch": "18374-sourceware.patch",
+        "file": "libio/fileops.c",
+        "uniqueOrderedExactOldLines": [
+          305
+        ]
+      },
+      {
+        "patch": "89092-sourceware.patch",
+        "file": "nscd/aicache.c",
+        "uniqueOrderedExactOldLines": [
+          93,
+          164,
+          336,
+          391,
+          410,
+          488,
+          514
+        ]
+      },
+      {
+        "patch": "89092-sourceware.patch",
+        "file": "nscd/hstcache.c",
+        "uniqueOrderedExactOldLines": [
+          15,
+          187,
+          201,
+          215,
+          227,
+          244,
+          270,
+          282,
+          307,
+          334,
+          362,
+          393
+        ]
+      }
+    ],
+    "firstCheckerRefusal": {
+      "tool": "fdd1c3",
+      "exit": 1,
+      "reason": "Suffix lookup is ambiguous for configure.ac; exact archive prefix fixes only selection.",
+      "diagnosticTool": "994b24",
+      "configureAcSuffixMatches": 55
+    },
+    "sourceEdited": false,
+    "patchApplied": false,
+    "targetExecuted": false,
+    "securityAccepted": false
+  },
+  "independentReviewPin": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-glibc-source-independent-review-20261016-v1-1.json",
+    "bytes": 1708,
+    "sha256": "721975994a460859b5a29433819521a4d532810a2c7170592a3bf63977850f96"
+  },
+  "sourceCorrespondencePin": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\glibc-noble-source-correspondence-20261016-v1-1\\SOURCE-CORRESPONDENCE.json",
+    "bytes": 18260,
+    "sha256": "088c772bfaa888a97034fc37e9d60615ceb15c8f4fcb4f5a32a4743475d94f42"
+  },
+  "originalManifestSHA256": "9636e7522f614d8e2a82ff7b8a18dd6d22257acf68a200adfa4d69b567346a35",
+  "correctedManifestSHA256": "dbcc264d0af6a583ade1e76d01f2b92707df8c1ebb3aaf5be619c21e6d119d78",
+  "sourceArchivePins": [
+    {
+      "name": "glibc_2.39.orig.tar.xz",
+      "bytes": 18520988,
+      "sha256": "f77bd47cf8170c57365ae7bf86696c118adb3b120d3259c64c502d3dc1e2d926"
+    },
+    {
+      "name": "glibc_2.39.orig.tar.xz.asc",
+      "bytes": 833,
+      "sha256": "2cce427ef7933c17379f5514e4f0ccf8dffae5bf8c72f0f7e0bf8b8401f34be5"
+    },
+    {
+      "name": "glibc_2.39-0ubuntu8.9.debian.tar.xz",
+      "bytes": 491440,
+      "sha256": "d6114f2302896a3c8612453e1bf1d0e61603e3029ba4a7c246fbb1ab4c48d2b0"
+    },
+    {
+      "name": "glibc_2.39-0ubuntu8.9.dsc",
+      "bytes": 9387,
+      "sha256": "1b73a89e0910eb3e5920cde639ac7eb606256d8ee809688ff9b5912b67002711"
+    }
+  ],
+  "sourceIndex": {
+    "InRelease": {
+      "bytes": 126125,
+      "sha256": "a56ebb3502e6d15ea5f447657b7e48a509a8a2f5d39df932abb7d1eb41d3078a"
+    },
+    "SourcesXZ": {
+      "bytes": 552824,
+      "sha256": "6405f29cd5c122de82e56f25158521a7c990f8cea6abdcc15fdf0ed697506286"
+    },
+    "decodedSources": {
+      "bytes": 2861719,
+      "sha256": "3c18434598e3d9e00da36650046c2c376f575d609babb5f9e015400a5908a7cc"
+    },
+    "streams": [
+      {
+        "compressedBytes": 552824,
+        "decodedBytes": 2861719
+      }
+    ]
+  },
+  "sourceScans": [
+    {
+      "receipt": {
+        "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-glibc-authsource-packet-scan-20261016-v1-latest.json",
+        "bytes": 13530,
+        "sha256": "b68de370c4b8d560d92781ce68dac3850950ed5bd0ee00a4c8ee60d0fb56a2f2"
+      },
+      "actualExit": 0,
+      "findings": 0,
+      "selectedFiles": 49
+    },
+    {
+      "receipt": {
+        "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-glibc-authsource-correction-scan-20261016-v1-latest.json",
+        "bytes": 1312,
+        "sha256": "ae9222e33fcfce14f28ebd12e34476ab32c4f3fe2d6f8e03eed3dc167a78ea8e"
+      },
+      "actualExit": 0,
+      "findings": 0,
+      "selectedFiles": 4
+    }
+  ],
+  "primaryFixes": [
+    {
+      "id": "CVE-2026-18374",
+      "commit": "9765a538ebf8661a6e5578e01e35a3dd30db7eb4",
+      "sha256": "c71993977990875b74db3aa4bac1ca88def380b5ca8c98fc5194f5dd95eed19b"
+    },
+    {
+      "id": "CVE-2026-89092",
+      "commit": "cbf59b836645b6ac69ad8c47a560598bc4942ecc",
+      "sha256": "e34d96db3a10ea2e75812b7ea9ceb6eb7faf0103df744a908d7d344d3c6f1767"
+    }
+  ],
+  "limits": [
+    "Ubuntu archive keyring is the retained local trust anchor; no uploader or upstream detached-signature verification claimed.",
+    "Official HTTPS patch bodies and exact context correspondence; no Git object or maintainer signature authentication claimed.",
+    "Mirrors differ in metadata; original overbroad mirror wording remains retained with a separate explicit correction.",
+    "No patch application, compiled replacement, ELF equivalence or target execution credited by this receipt.",
+    "Opaque native consumer exposure, replacement ABI/runtime qualification and final image security remain open."
+  ],
+  "scannerImageLiteralExit": 1,
+  "scannerImageMediumCount": 12,
+  "securityAccepted": false,
+  "productionAndOriginalDataUnchanged": true
+}

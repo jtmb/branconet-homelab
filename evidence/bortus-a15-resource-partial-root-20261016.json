@@ -1,0 +1,98 @@
+{
+  "scope": "Two additional original A15 resource modes passed; failed edit-ring observer retained and independently closed",
+  "source": "6b254b2c042d86177ab64686623f23a3077532f0",
+  "frontendTree": "7a0b7142ef5f437502bc992ce199598648974751",
+  "actualActorExit": 1,
+  "resourcesBrowserExit": 1,
+  "completedFullCases": [
+    "pod-logs:Logs for selected Pod/container",
+    "resource-yaml:View YAML"
+  ],
+  "completedFullCaseCount": 2,
+  "nativeValueRequests": 0,
+  "productMutationRequests": 0,
+  "priorAdministrationFullCases": 10,
+  "priorScopedHistoryEntry": 1,
+  "priorAdministrationNotReplayed": true,
+  "unrunPhases": [
+    "native",
+    "kv",
+    "flux"
+  ],
+  "failedPartialCase": "resource-yaml:Edit YAML",
+  "partialEditCaseAccepted": false,
+  "actualFailure": {
+    "phase": "resources",
+    "classification": "AssertionError",
+    "sourceLocations": [
+      {
+        "module": "a15-keyboard-check",
+        "line": 92,
+        "column": 3
+      },
+      {
+        "module": "a15-keyboard-check",
+        "line": 102,
+        "column": 15
+      },
+      {
+        "module": "a15-keyboard-check",
+        "line": 138,
+        "column": 4
+      },
+      {
+        "module": "browser",
+        "line": 43,
+        "column": 5
+      }
+    ]
+  },
+  "observedEditEntryFocus": "Connected DIV with dialog role after Edit button removal",
+  "observedLast64Tabs": "All remain in dialog and alternate Close button and YAML textarea",
+  "diagnosis": "Ring helper anchored a non-tabbable dialog container; unchanged wrapping assertion cannot revisit it. Next observer must first reach textarea through real keyboard navigation.",
+  "productFocusEscapeEstablished": false,
+  "currentPublicRecords": 259,
+  "actorRecords": 219,
+  "sourceFiles": 392,
+  "inputFiles": 18,
+  "compiledObjects": 5388,
+  "installedObjects": 40635,
+  "originalAndPostLinuxBirthsAbsent": 72,
+  "originalWindowsBirthsAbsent": 14,
+  "exactCIDNameQueries": 2,
+  "newQueriesInFinal": false,
+  "graphsRewalkedInFinal": false,
+  "extraOwnAbsenceClaim": false,
+  "exactTool": "8294c4",
+  "freshTool": "1f6fd6",
+  "windowsFreshTool": "e67ec0",
+  "finalTool": "a6d5c2",
+  "postSourceScanExit": 0,
+  "postSourceScanFindings": 0,
+  "wholeA15Qualified": false,
+  "actualATQualified": false,
+  "performanceAccepted": false,
+  "productionAdopted": false,
+  "records": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-a15-remainder-final-current-20261016-v1.json",
+      "bytes": 105356,
+      "sha256": "0654e3d5f70578c31ce5d587863143b040fdba11a5ba10ea6d9e57539f0455ff"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-a15-remainder-failure-postcheck-20261016-v1\\legacy-review-result.json",
+      "bytes": 154617,
+      "sha256": "08f3b1f1ca61aed9c38a0cdadb01759dd4e30029061086a782bb411351cbdb17"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-a15-remainder-failure-postcheck-20261016-v1\\fresh-result.json",
+      "bytes": 161996,
+      "sha256": "a7fd57aa81a6880b1d91b6e05a2f517fd4b1549a5dea569a82693205fbcdf588"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a15-four-phase-remainder-20261016-v1\\output\\resources\\browser-report.json",
+      "bytes": 140811,
+      "sha256": "b0c31058d94564a1709cd06f22512bc364c81eda0be0608613caa437bf8a4c37"
+    }
+  ]
+}

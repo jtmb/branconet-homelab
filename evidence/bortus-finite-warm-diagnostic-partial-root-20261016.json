@@ -1,0 +1,307 @@
+{
+  "schemaVersion": 1,
+  "scope": "Finite warm diagnostic: all72 functional requests complete; only50 have complete stage joins; aggregate diagnostic inconclusive",
+  "baselineCommit": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "candidateCommit": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+  "actorLiteralExit": 1,
+  "clientLiteralExits": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "lanes": [
+    {
+      "lane": "baseline",
+      "intent": "serial25",
+      "bodyOracleRequests": 14,
+      "completeStageJoins": true
+    },
+    {
+      "lane": "candidate",
+      "intent": "serial25",
+      "bodyOracleRequests": 14,
+      "completeStageJoins": true
+    },
+    {
+      "lane": "baseline",
+      "intent": "concurrent3",
+      "bodyOracleRequests": 22,
+      "completeStageJoins": true
+    },
+    {
+      "lane": "candidate",
+      "intent": "concurrent3",
+      "bodyOracleRequests": 22,
+      "completeStageJoins": false,
+      "actualWorkerOperations": 22,
+      "mainRecordPublished": false
+    }
+  ],
+  "missingMainFailure": {
+    "reviewFile": "review-joins.cjs",
+    "line": 9,
+    "type": "AssertionError",
+    "rule": "Candidate requires both one main and one worker record",
+    "historicalExactCauseProven": false
+  },
+  "sourceReviewFinding": "The observer captures ambient HTTP identity at Worker post time. Actual queued reads are later posted from the worker completion callback, so post-time context need not belong to the originating request. A separate unrun proposal captures only numeric origin at admission.",
+  "graphAuthority": {
+    "originalCaptureExit": 1,
+    "originalCaptureFailure": "Manifest path order comparison; path-key contents matched",
+    "independentQualificationExit": 0,
+    "qualifiedGraphSHA256": "e63ceecb503f0f69db362e99ace13e610692bf15d2cdb5db4686d91d07729800",
+    "graphRows": 86676,
+    "criticalActualCodeGuards": 8,
+    "fullContentCaptureRepeated": false
+  },
+  "bounds": {
+    "controllerSeconds": 300,
+    "closureReserveSeconds": 60,
+    "stageSeconds": 180,
+    "sharedFourLaneChildSeconds": 150,
+    "CPUs": 2,
+    "memoryBytes": 1073741824,
+    "swapBytes": 0,
+    "pids": 256,
+    "network": "none"
+  },
+  "observerPrerequisite": "evidence/bortus-finite-warm-observer-controls-root-20261016.json",
+  "descriptiveSequentialSamples": {
+    "baseline": {
+      "clientFullBodyUs": {
+        "n": 12,
+        "untrimmed": [
+          11293,
+          14082,
+          27485,
+          4360,
+          3784,
+          6276,
+          4770,
+          3604,
+          3555,
+          3036,
+          3598,
+          2913
+        ],
+        "median": 4072.0,
+        "minimum": 2913,
+        "maximum": 27485
+      },
+      "serverStartToFinishUs": {
+        "n": 12,
+        "untrimmed": [
+          10291,
+          11025,
+          12044,
+          3665,
+          3128,
+          5640,
+          3815,
+          2937,
+          2453,
+          2574,
+          3018,
+          2409
+        ],
+        "median": 3396.5,
+        "minimum": 2409,
+        "maximum": 12044
+      },
+      "responseConstructionUs": {
+        "n": 12,
+        "untrimmed": [
+          124,
+          353,
+          110,
+          97,
+          77,
+          168,
+          97,
+          70,
+          61,
+          60,
+          94,
+          58
+        ],
+        "median": 95.5,
+        "minimum": 58,
+        "maximum": 353
+      },
+      "actualEdgeInvocationUs": {
+        "n": 12,
+        "untrimmed": [
+          1659,
+          2041,
+          8409,
+          876,
+          810,
+          1208,
+          1019,
+          820,
+          640,
+          553,
+          754,
+          539
+        ],
+        "median": 848.0,
+        "minimum": 539,
+        "maximum": 8409
+      }
+    },
+    "candidate": {
+      "clientFullBodyUs": {
+        "n": 12,
+        "untrimmed": [
+          6982,
+          7231,
+          17187,
+          4877,
+          4332,
+          8696,
+          4908,
+          20302,
+          17393,
+          11793,
+          3048,
+          3094
+        ],
+        "median": 7106.5,
+        "minimum": 3048,
+        "maximum": 20302
+      },
+      "serverStartToFinishUs": {
+        "n": 12,
+        "untrimmed": [
+          5704,
+          5712,
+          4742,
+          4892,
+          4159,
+          7758,
+          4047,
+          16156,
+          16022,
+          3372,
+          2419,
+          2453
+        ],
+        "median": 4817.0,
+        "minimum": 2419,
+        "maximum": 16156
+      },
+      "responseConstructionUs": {
+        "n": 12,
+        "untrimmed": [
+          114,
+          66,
+          57,
+          136,
+          56,
+          57,
+          129,
+          108,
+          104,
+          48,
+          35,
+          44
+        ],
+        "median": 61.5,
+        "minimum": 35,
+        "maximum": 136
+      },
+      "workerPostToReceiveUs": {
+        "n": 12,
+        "untrimmed": [
+          1352,
+          467,
+          1184,
+          563,
+          439,
+          2245,
+          665,
+          7041,
+          12580,
+          588,
+          414,
+          429
+        ],
+        "median": 626.5,
+        "minimum": 414,
+        "maximum": 12580
+      },
+      "workerReceiveToSettlementUs": {
+        "n": 12,
+        "untrimmed": [
+          717,
+          348,
+          568,
+          400,
+          336,
+          2146,
+          530,
+          392,
+          445,
+          380,
+          286,
+          290
+        ],
+        "median": 396.0,
+        "minimum": 286,
+        "maximum": 2146
+      }
+    }
+  },
+  "observationLimits": [
+    "Instrumentation timings include observer overhead and are not the unchanged original benchmark.",
+    "Nested asynchronous spans overlap; do not sum them into exclusive CPU shares.",
+    "Main filesystem event IDs remain ambiguous under ambient asynchronous context.",
+    "Client body completion may precede the server finish callback; no added cross-stage ordering gate.",
+    "No source optimization is qualified by these traces alone."
+  ],
+  "closure": {
+    "actualExit": 0,
+    "currentPublicRecords": 182,
+    "actorRecords": 134,
+    "originalAndPostBirthsAbsent": 36,
+    "exactCIDNameQueriesRetained": 2,
+    "noNewDockerQueries": true,
+    "graphsRewalkedHere": false,
+    "noWindowsJob": true
+  },
+  "finalProof": {
+    "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-finite-warm-diagnostic-final-current-20261016-v1.json",
+    "bytes": 76021,
+    "sha256": "99b3050a4069c7b08d77c6811bfa400f0aa8a64d13a126499b5ebe999dcaca7f",
+    "tools": {
+      "actor": "99f40a\u21923c07b1/1",
+      "exact": "fafc1e/0",
+      "fresh": "8fb566/0",
+      "oneFiniteFinal": "167eed/0"
+    }
+  },
+  "preWorkFailures": [
+    {
+      "tool": "f19dee/1",
+      "scope": "Windows UNC fstat unsupported before staging; distinct bounded native-path reader corrected staging only"
+    },
+    {
+      "tool": "bbd008/1",
+      "scope": "Dispatcher refused missing intent argv before gate release; required exact hash supplied on actual dispatch"
+    }
+  ],
+  "defaultSourceScan": {
+    "literalExit": 1,
+    "findings": 2,
+    "classifiedPublicCodeHashes": 2,
+    "unresolved": 0,
+    "field": "nextApiSHA256",
+    "noRescan": true,
+    "noSuppression": true
+  },
+  "diagnosticComplete": false,
+  "originalBenchmarkVerdictChanged": false,
+  "performanceAcceptance": false,
+  "productionAdoption": false
+}

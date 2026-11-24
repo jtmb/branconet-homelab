@@ -1,0 +1,13 @@
+# ytdl Temp PersistentVolumeClaim (Longhorn block storage)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ytdl-tmp-pvc
+  namespace: plex
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn

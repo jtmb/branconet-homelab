@@ -1,0 +1,69 @@
+---
+# Read-only kubeadm/kubelet certificate expiry check for all control-plane nodes.
+# kubeadm leaf certificates are valid for one year and are only renewed by
+# `kubeadm upgrade` or `kubeadm certs renew`; nothing else in this cluster
+# renews them. Fails when any certificate is inside the renewal window.
+# Renewal runbook: docs/CLUSTER-TLS.md. Launch with
+# scripts/migration/run-control-plane-cert-check.py.
+- name: Control-plane certificate expiry
+  hosts: k8s_nodes
+  gather_facts: false
+  become: true
+  serial: 1
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    cert_expiry_min_days: 90
+  tasks:
+    - name: Read kubeadm certificate expiration
+      ansible.builtin.command: /usr/local/bin/kubeadm certs check-expiration -o json
+      register: kubeadm_expiry
+      changed_when: false
+
+    - name: Read kubelet serving certificate expiry
+      # serverTLSBootstrap (playbooks/kubelet-serving-tls.yml): cluster-CA signed,
+      # rotated by kubelet via a kubelet-serving CSR that must be approved.
+      ansible.builtin.command: openssl x509 -noout -enddate -issuer -in /var/lib/kubelet/pki/kubelet-server-current.pem
+      register: kubelet_serving
+      changed_when: false
+
+    - name: Summarize residual lifetime
+      ansible.builtin.set_fact:
+        # super-admin.conf exists only on the first kubeadm control plane;
+        # joined control planes report it as missing, which is expected.
+        cert_expiry_report: >-
+          {{ (kubeadm_expiry.stdout | from_json).certificates
+             | rejectattr('missing')
+             | map(attribute='name')
+             | zip((kubeadm_expiry.stdout | from_json).certificates
+                   | rejectattr('missing')
+                   | map(attribute='residualTime'))
+             | list }}
+        missing_certificates: >-
+          {{ (kubeadm_expiry.stdout | from_json).certificates
+             | selectattr('missing') | map(attribute='name') | list }}
+        ca_expiry_report: >-
+          {{ (kubeadm_expiry.stdout | from_json).certificateAuthorities
+             | map(attribute='name')
+             | zip((kubeadm_expiry.stdout | from_json).certificateAuthorities
+                   | map(attribute='residualTime'))
+             | list }}
+        kubelet_serving_not_after: "{{ kubelet_serving.stdout_lines[0] | regex_replace('^notAfter=', '') }}"
+
+    - name: Report
+      ansible.builtin.debug:
+        msg:
+          node: "{{ kubernetes_node_name }}"
+          earliest_leaf_days: "{{ ((cert_expiry_report | map('last') | map('int') | min) / 86400) | int }}"
+          earliest_ca_days: "{{ ((ca_expiry_report | map('last') | map('int') | min) / 86400) | int }}"
+          missing: "{{ missing_certificates }}"
+          kubelet_serving_not_after: "{{ kubelet_serving_not_after }}"
+          kubelet_serving_issuer: "{{ kubelet_serving.stdout_lines[1] }}"
+
+    - name: Fail inside the renewal window
+      ansible.builtin.assert:
+        that:
+          - (cert_expiry_report | map('last') | map('int') | min) > cert_expiry_min_days * 86400
+          - kubelet_serving.stdout_lines[1] == 'issuer=CN = kubernetes'
+          - ((kubelet_serving_not_after | to_datetime('%b %d %H:%M:%S %Y %Z')) - now(utc=true).replace(tzinfo=None)).days > cert_expiry_min_days
+        fail_msg: "Certificates on {{ kubernetes_node_name }} expire within {{ cert_expiry_min_days }} days; follow docs/CLUSTER-TLS.md"
+        success_msg: "All certificates on {{ kubernetes_node_name }} have more than {{ cert_expiry_min_days }} days remaining"

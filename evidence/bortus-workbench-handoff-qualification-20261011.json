@@ -1,0 +1,77 @@
+{
+  "scope": "Independent raw immutable app handoff verification; not root app integration or live qualification",
+  "app_commit": "6fb0104329bec4ad6a5f25fcadf40713b38c4b51",
+  "base_commit": "7f7a3e7983237404647c356fd83f9e4b23879d58",
+  "raw_git_archive_sha256": "7e8cea6bf27b4c2b02161f24a18e71f2f6a1106904d02c45bed49647d528c376",
+  "manifest_sha256": "36d7ae09764acaa97aa021838570e47cbbf083ac28a7121d30a91c98d181e74b",
+  "raw_git_blob_mode_count_verified": 937,
+  "qualified_test_artifacts_verified": 75,
+  "qualification_raw_git_sha256": "debb779010c945b7dace4b2965cbab697827ad8ec717f7091078ab1354c60c25",
+  "independent_verification": {
+    "initial_tool_chunk": "e6fcbd",
+    "terminal_tool_chunk": "92e713",
+    "actual_exit_code": 0,
+    "raw_stdout_saved_to_file": false,
+    "method": "every archived blob byte/hash/length/mode matched immutable Git; each qualification artifact hash/length matched raw Git"
+  },
+  "owner_qualification": {
+    "buildUnits": "Combined full run fresh production build/196 units/lint/types exit0; overall terminal1 only on test oracle",
+    "http": "Three unchanged suites exit0 in combined run; corrected affected strict native KV suite/lint/types exit0, jointly four suites",
+    "browser": "11 actual production-route checks/terminal0",
+    "expiryMs": 15077,
+    "hiddenPolls": 0,
+    "mobileWidths": [
+      320,
+      390,
+      768
+    ],
+    "accessibility": {
+      "passes": 30,
+      "violations": 0,
+      "incomplete": 1,
+      "manualReview": "Source-confirmed Radix modal hiding/trap; live specific focus and AT review open"
+    },
+    "cleanup": {
+      "launcher": 1776,
+      "fixture": 44432,
+      "chrome": 20656,
+      "terminalExit": 0,
+      "chromeExit": 0,
+      "fixtureExit": 0,
+      "ownedPidsIndependentlyAbsent": true
+    }
+  },
+  "reviewed_code": [
+    "shared status/history query ownership and independent error expiry",
+    "frozen metadata capture drift checks",
+    "raw SHA and pinned Next15.5.27 CJS/ESM middleware finalize await backport"
+  ],
+  "scanner": {
+    "actual_exit_code": 1,
+    "finding_count": 316,
+    "report_sha256": "2cb7e2a434495b93774b9f7c871019810a09d3d3c6eb34fb5128a03e9ac0d2a3",
+    "terminal_sha256": "24b6c74a40cafe51633637e7822996bf008b784a3ed402bdf0d2871872fc62dc",
+    "classification_in_progress": true,
+    "scan_pass": false,
+    "historical_mixed_ending_provenance_limitations": 2,
+    "independent_native_subset_review": {
+      "review_path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\workbench-6fb01043-native-scan-review\\review-final.json",
+      "sha256": "665c1450dec5016b1c14f34fd61161550e65fff1b9da0b45609ec76e06fa9c0b",
+      "finding_entries": 165,
+      "verified": 165,
+      "unresolved": 0,
+      "manifest_mismatches": [],
+      "proof_kind_counts": {
+        "exact public raw Git source": 110,
+        "exact retained instrumented diagnostic source": 52,
+        "exact retained diagnostic package bytes": 3
+      },
+      "remaining_findings": 151,
+      "original_exit_code_unchanged": 1
+    }
+  },
+  "root_application_source_integrated": false,
+  "final_combined_browser_acceptance": false,
+  "performance_acceptance": false,
+  "final_image_or_live_acceptance": false
+}

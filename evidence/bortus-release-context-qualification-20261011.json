@@ -1,0 +1,217 @@
+{
+  "scope": "Prepare-only immutable app context; real Git fixture tests and default scan of selected raw context",
+  "parent_root_commit": "689c83486ebb2722d81ff89bc5b67dda089d3d06",
+  "helper_source_sha256": {
+    "scripts/migration/prepare-bortus-release-context.py": "3b0c0c7b66468a78b91a001373675031b341ab804fa9b511029231e740f638db",
+    "scripts/migration/tests/test_bortus_release_context.py": "f99f1b2b08c54ad52c9ed2412e0dc1c743ff0a3e988168c15c13119bf7943d6e",
+    "docs/MIGRATION-OPERATIONS.md": "4be67ef22bdf855bb789f685523719dbe5d0b0f978ab8f19b535f747060965f3",
+    "docs/BORTUS-DEPLOYMENT.md": "31fac04ae367c378f3e424644713a689e4539a576c8a0678648530fcb6d6ab19"
+  },
+  "posix_fixture_tests": {
+    "actual_exit_code": 0,
+    "tests": 13,
+    "skips": 0,
+    "reported_seconds": 0.767,
+    "tool_chunk": "9ca50b",
+    "tool_output_retention": "Original commentary tool result; no separately saved raw runner log claimed"
+  },
+  "windows_fixture_tests": {
+    "actual_exit_code": 0,
+    "tests": 13,
+    "passed": 12,
+    "skipped": 1,
+    "reported_seconds": 8.185,
+    "skip_reason": "Actual POSIX dangling-symlink case; passed separately on POSIX"
+  },
+  "context": {
+    "source_commit": "4bea97aa870df95fb58c9ec0b3a7f406f6b1b515",
+    "application_tree": "88ced0ca70efb50a611bec3a4604d67793cfd5e4",
+    "context_sha256": "9135ee275ccec55b44531ff19768d3f49f9d2221fe0ced43711bcbe4e17b5882",
+    "context_bytes": 410240,
+    "source_bytes": 1440223,
+    "included_files": 263,
+    "excluded_entries": 63,
+    "working_tree_read": false,
+    "excluded_payloads_read": false,
+    "image_built": false,
+    "cluster_mutations": 0,
+    "live_acceptance": false
+  },
+  "migrations": [
+    {
+      "path": "prisma/migrations/20260614204135_init/migration.sql",
+      "mode": "100644",
+      "git_blob": "fc954cbd5fc7e6c1e635d1433158b1724ccb274f",
+      "bytes": 3322,
+      "sha256": "a3038f518902e6dcd2a6fa6a3dfadf536bed536487015517b380241efba9f90d"
+    },
+    {
+      "path": "prisma/migrations/20260615042521_add_gitrepos/migration.sql",
+      "mode": "100644",
+      "git_blob": "fbb65cbd98d1a61014b7eb18c163a73c20e1319b",
+      "bytes": 618,
+      "sha256": "39ca2d40aa429d7668c559d8c05056a909a261cb1c4909b905f464b8c519a457"
+    },
+    {
+      "path": "prisma/migrations/20260615170328_add_namespace_to_gitrepos/migration.sql",
+      "mode": "100644",
+      "git_blob": "454fd519ba592077572bf0738c257f167866b8dd",
+      "bytes": 1858,
+      "sha256": "e5f57ec33813ea47d8e82c63a0fc39526298e58188254a8e5ebad08e2f4927d0"
+    },
+    {
+      "path": "prisma/migrations/20260616050858_add_user_model/migration.sql",
+      "mode": "100644",
+      "git_blob": "489a2783687f769b802cce28e853e8f5f6d4ecb3",
+      "bytes": 282,
+      "sha256": "6457847e80514a46d025f2cf77ad177163a5fa5b459446d7690eecde229d4671"
+    },
+    {
+      "path": "prisma/migrations/20260616130024_add_app_settings/migration.sql",
+      "mode": "100644",
+      "git_blob": "a31bd919be8a0b2a20b96d5d89d776a2f2bafcee",
+      "bytes": 220,
+      "sha256": "45b166e19315914fe099a077ea9a4e9d92ccdc2b7ca42c73410b3523de89e990"
+    },
+    {
+      "path": "prisma/migrations/20260616132006_add_user_role/migration.sql",
+      "mode": "100644",
+      "git_blob": "9330fded6d11f304f4f2a47bae885e38a6b65bf5",
+      "bytes": 630,
+      "sha256": "1c674838ea7ea71867e0e9ceb94320da482616f71e2e0bc5ad9854296015e353"
+    },
+    {
+      "path": "prisma/migrations/20261009150000_native_secret_references/migration.sql",
+      "mode": "100644",
+      "git_blob": "f2236462b6aa3d2bb745db20714e2ff85fd28d78",
+      "bytes": 229,
+      "sha256": "274aa4b2dd3c90c7222971d138a9c83632ef56e4c2b285890c34f5472a129157"
+    },
+    {
+      "path": "prisma/migrations/20261010160000_account_invariants/migration.sql",
+      "mode": "100644",
+      "git_blob": "6f31a9c3d0bc75b238ceae25b71552eaf4466c16",
+      "bytes": 243,
+      "sha256": "ff958b6affffc291ea8a79c81d02fa3d254e2cb60eb48e5085568b691468809a"
+    },
+    {
+      "path": "prisma/migrations/20261010210000_kv_metadata/migration.sql",
+      "mode": "100644",
+      "git_blob": "1e983c2cf6234134202cee93bfa7fe76cac8a1f6",
+      "bytes": 5420,
+      "sha256": "355511fb7ad0a1cc27da19cf6cbc97d64cf15d09c815f78dbc1ad694ac5a2bd3"
+    },
+    {
+      "path": "prisma/migrations/20261010220000_rotation_consumer_identity/migration.sql",
+      "mode": "100644",
+      "git_blob": "83e2142474cbc01da667a538cf0230eb5c6ecddc",
+      "bytes": 288,
+      "sha256": "a3c698ee1a5e00c365a592910d37d763c6d7a72f8863512251b0c377ef83a099"
+    },
+    {
+      "path": "prisma/migrations/20261010230000_legacy_access_audit/migration.sql",
+      "mode": "100644",
+      "git_blob": "15c172fadf8b902f8bfa378b91d598e19c4b63f4",
+      "bytes": 224,
+      "sha256": "770556733c0b165a97ceb42790abd703b5d4bdd4572e9a06234252fd0dc77ff1"
+    }
+  ],
+  "default_scan": {
+    "started_at_utc": "2026-10-11T06:01:10.810718+00:00",
+    "completed_at_utc": "2026-10-11T06:01:11.343021+00:00",
+    "actual_exit_code": 0,
+    "command": [
+      "C:\\Users\\james\\AppData\\Local\\Temp\\bortus-native-window-tools-70320914\\bin\\gitleaks.exe",
+      "dir",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\raw-context",
+      "--redact",
+      "--report-format",
+      "json",
+      "--report-path",
+      "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\default-context-scan.json",
+      "--exit-code",
+      "1",
+      "--no-banner"
+    ],
+    "binary_sha256": "17157e2ee8b76fc8b1d8bee607a250e34b8a8023c8bc81822d4b5ee4d78fcb7c",
+    "finding_count": 0,
+    "source_commit": "4bea97aa870df95fb58c9ec0b3a7f406f6b1b515",
+    "source_files": 263,
+    "context_sha256": "9135ee275ccec55b44531ff19768d3f49f9d2221fe0ced43711bcbe4e17b5882",
+    "context_members_independently_verified": true,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "241e9838232dea58345bcd97b14198d4ec581194236bcf6aea7ec04ae4927e72",
+    "report_sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "scope": "Exact selected263 raw committed application context files; no rule/path suppression; not whole repository/image/runtime qualification"
+  },
+  "artifacts": {
+    "context-manifest.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\context-manifest.json",
+      "sha256": "b6a78d93a8650543cce9ae295df1574299c8aa366bd58ea5688b459a25d33e9f",
+      "bytes": 73165
+    },
+    "context-stderr.log": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\context-stderr.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "context-stdout.jsonl": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\context-stdout.jsonl",
+      "sha256": "46a2e6eb3a27792b6a8eb7fa3c18bd74016d452aa6a341d4d7c7979b6c01d351",
+      "bytes": 242
+    },
+    "context-terminal.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\context-terminal.json",
+      "sha256": "77bc36e3dcfd178f926353883e3b3c80f4b98703991aa8045544f40a8f93f48c",
+      "bytes": 1620
+    },
+    "context.tar.gz": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\context.tar.gz",
+      "sha256": "9135ee275ccec55b44531ff19768d3f49f9d2221fe0ced43711bcbe4e17b5882",
+      "bytes": 410240
+    },
+    "default-context-scan.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\default-context-scan.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "bytes": 3
+    },
+    "scan-stderr.log": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\scan-stderr.log",
+      "sha256": "241e9838232dea58345bcd97b14198d4ec581194236bcf6aea7ec04ae4927e72",
+      "bytes": 79
+    },
+    "scan-stdout.log": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\scan-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "scan-terminal.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\scan-terminal.json",
+      "sha256": "9db18773c4241d5c0014c647daba32853ce5963db8a615e87ff6b09c0f3d5f06",
+      "bytes": 1381
+    },
+    "windows-tests-stderr.log": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\windows-tests-stderr.log",
+      "sha256": "96cfdc7da07e8fead93a82c2b09c8baf3db5e0495bc92b03dbae1b156e73b474",
+      "bytes": 2253
+    },
+    "windows-tests-stdout.log": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\windows-tests-stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "windows-tests-terminal.json": {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-release-context-20261011\\windows-tests-terminal.json",
+      "sha256": "aa4ec9246c6c58d98f548cfa00ba5b4e992991f482238570d04539fd67c11cd6",
+      "bytes": 753
+    }
+  },
+  "limitations": [
+    "Current app terminal checkpoint only, not final coherent source freeze",
+    "Scan covers263 selected committed application files, not entire repository, embedded archives, dependencies, image or runtime",
+    "Historical full-source scan two unresolved findings remain unresolved",
+    "No build, dependency installation, container, Kubernetes mutation, schema/adoption or production-data acceptance",
+    "File flush only; no directory durability or Windows ACL claim",
+    "Git subprocess output bounds occur after capture; not RSS limits"
+  ]
+}

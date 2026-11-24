@@ -1,0 +1,49 @@
+{
+  "completed_at": "2026-10-09T18:19:38.819008+00:00",
+  "source": "pi_pihole",
+  "chart": "apps/pihole",
+  "namespace": "pihole",
+  "release": "pihole",
+  "source_writers_stopped": true,
+  "originals_retained": true,
+  "target_started": false,
+  "application_accepted": false,
+  "copies": [
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 2,
+      "manifest_sha256": "9ac80e0bc9ae7a869bcf0952273afb21580ee5b780d88d73a42173ce0ba7c84f",
+      "file_bytes": 48,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.5",
+      "sourcePath": "/mnt/migration-gluster-read/dnsmasq.d",
+      "destinationPVC": "pihole-data-0-retry1",
+      "mountPath": "/etc/dnsmasq.d",
+      "measuredBytes": 4144,
+      "allocatedGiB": 1,
+      "uid": 1000,
+      "gid": 65534,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    },
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 90,
+      "manifest_sha256": "aa9c8920211700db1c985ac0411db22987dbe301e5cc1754d48db9cfe75a9cdb",
+      "file_bytes": 1082807430,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.5",
+      "sourcePath": "/mnt/migration-gluster-read/pihole",
+      "destinationPVC": "pihole-data-1-retry1",
+      "mountPath": "/etc/pihole",
+      "measuredBytes": 1082836076,
+      "allocatedGiB": 3,
+      "uid": 1000,
+      "gid": 1000,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    }
+  ],
+  "source_desired_before": 1,
+  "source_restart_on_success": false
+}

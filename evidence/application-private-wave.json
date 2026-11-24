@@ -1,0 +1,58 @@
+[
+  {
+    "chart": "apps/mealie",
+    "private_passed": false,
+    "exit": 1,
+    "diagnostic": "Traceback (most recent call last):\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 91, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 63, in main\n    restarted=pod();second=http()\n                           ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 51, in http\n    raise RuntimeError('Private HTTP endpoint did not pass')\nRuntimeError: Private HTTP endpoint did not pass\n"
+  },
+  {
+    "chart": "media-stack/jackett",
+    "private_passed": false,
+    "exit": 1,
+    "diagnostic": "Traceback (most recent call last):\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 91, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 60, in main\n    initial=pod();first=http()\n                        ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 51, in http\n    raise RuntimeError('Private HTTP endpoint did not pass')\nRuntimeError: Private HTTP endpoint did not pass\n"
+  },
+  {
+    "chart": "media-stack/bazarr",
+    "private_passed": false,
+    "exit": 1,
+    "diagnostic": "Traceback (most recent call last):\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 91, in <module>\n    if __name__=='__main__':main()\n                            ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 60, in main\n    initial=pod();first=http()\n                        ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 51, in http\n    raise RuntimeError('Private HTTP endpoint did not pass')\nRuntimeError: Private HTTP endpoint did not pass\n"
+  },
+  {
+    "chart": "media-stack/tautulli",
+    "private_passed": false,
+    "exit": 1,
+    "diagnostic": "Traceback (most recent call last):\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 91, in <module>\n    release_path=ROOT/'k8s-rewrite/flux/migration-releases'/(name+'.yaml')\n                    ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 60, in main\n    except subprocess.TimeoutExpired:forward.kill()\n                    ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 51, in http\n    forward=subprocess.Popen([*kube,'port-forward','-n',ns,'service/'+name,str(port)+':'+str(args.port),'--address','127.0.0.1'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Private HTTP endpoint did not pass\n"
+  },
+  {
+    "chart": "media-stack/radarr",
+    "private_passed": false,
+    "exit": 1,
+    "diagnostic": "Traceback (most recent call last):\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 91, in <module>\n    release_path=ROOT/'k8s-rewrite/flux/migration-releases'/(name+'.yaml')\n                    ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 60, in main\n    except subprocess.TimeoutExpired:forward.kill()\n                    ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 51, in http\n    forward=subprocess.Popen([*kube,'port-forward','-n',ns,'service/'+name,str(port)+':'+str(args.port),'--address','127.0.0.1'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Private HTTP endpoint did not pass\n"
+  },
+  {
+    "chart": "media-stack/sonarr",
+    "private_passed": false,
+    "exit": 1,
+    "diagnostic": "Traceback (most recent call last):\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 91, in <module>\n    release_path=ROOT/'k8s-rewrite/flux/migration-releases'/(name+'.yaml')\n                    ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 60, in main\n    except subprocess.TimeoutExpired:forward.kill()\n                    ^^^^^^\n  File \"/mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/private-app-proof.py\", line 51, in http\n    forward=subprocess.Popen([*kube,'port-forward','-n',ns,'service/'+name,str(port)+':'+str(args.port),'--address','127.0.0.1'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Private HTTP endpoint did not pass\n"
+  },
+  {
+    "chart": "media-stack/ytdl",
+    "private_passed": true,
+    "exit": 0
+  },
+  {
+    "chart": "apps/xteve",
+    "private_passed": true,
+    "exit": 0
+  },
+  {
+    "chart": "media-stack/plex",
+    "private_passed": true,
+    "exit": 0
+  },
+  {
+    "chart": "apps/pihole",
+    "private_passed": true,
+    "exit": 0
+  }
+]

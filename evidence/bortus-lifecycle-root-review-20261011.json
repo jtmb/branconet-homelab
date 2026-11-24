@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "kind": "root-source-lifecycle-review",
+  "createdUtc": "2026-10-11T17:56:40.9531026Z",
+  "candidateCommit": "4ae9f5c28dcf64ebda019bc40f7b27b3524e61db",
+  "nativeReviewSha256": "296dc6790646bf0f4214b0eddd8add216af22372f46ab76b66110828a1e6261d",
+  "packages": [
+    {
+      "name": "resource-mutation-lifecycle",
+      "sourceCommit": "59ce91978d7d53dd0c5ca4443ac367f7d5c79408",
+      "handoffSha256": "38fc8d44a0f7bf739a3472291797d098f9fd67bc7bb934da812fd5904e0c9b74",
+      "rawGitFiles": 343,
+      "retainedOriginalArtifacts": 67,
+      "checkedDocs": 22,
+      "selectedScanner": {
+        "actualExitCode": 1,
+        "rawFiles": 8,
+        "defaultRules": true,
+        "noAllowlist": true,
+        "findingCount": 1,
+        "untriaged": 0,
+        "independentlyVerifiedPublicProseSpanSha256": "6d55e097f1c50b3fef8a222bfd51b9ab2a6ff357a5c0687abe0732669acaab84",
+        "historicalCommit": "a48601ae69dfacd3812ba72c3b668ccb891ed552",
+        "twoHistoricalUnresolvedProvenanceFindingsRemainOpen": true
+      },
+      "intermediateSourceLimit": null
+    },
+    {
+      "name": "yaml-save-render-identity",
+      "sourceCommit": "2c46747c7e75251209d26fb70d2ce879894c4f1c",
+      "handoffSha256": "026201287c37fc15003164a9a4abdd543fbb3b8a840445c21cd3b96d47d69dc3",
+      "rawGitFiles": 344,
+      "retainedOriginalArtifacts": 31,
+      "checkedDocs": 22,
+      "selectedScanner": {
+        "actualExitCode": 1,
+        "rawFiles": 6,
+        "defaultRules": true,
+        "noAllowlist": true,
+        "findingCount": 1,
+        "untriaged": 0,
+        "independentlyVerifiedPublicProseSpanSha256": "6d55e097f1c50b3fef8a222bfd51b9ab2a6ff357a5c0687abe0732669acaab84",
+        "historicalCommit": "a48601ae69dfacd3812ba72c3b668ccb891ed552",
+        "twoHistoricalUnresolvedProvenanceFindingsRemainOpen": true
+      },
+      "intermediateSourceLimit": null
+    },
+    {
+      "name": "settings-mutation-lifetime",
+      "sourceCommit": "4ae9f5c28dcf64ebda019bc40f7b27b3524e61db",
+      "handoffSha256": "17da51a897f7809e62119bfb6d96c1275b94390e0b045046273a80cf958b4a9b",
+      "rawGitFiles": 345,
+      "retainedOriginalArtifacts": 45,
+      "checkedDocs": 22,
+      "selectedScanner": {
+        "actualExitCode": 1,
+        "rawFiles": 7,
+        "defaultRules": true,
+        "noAllowlist": true,
+        "findingCount": 1,
+        "untriaged": 0,
+        "independentlyVerifiedPublicProseSpanSha256": "6d55e097f1c50b3fef8a222bfd51b9ab2a6ff357a5c0687abe0732669acaab84",
+        "historicalCommit": "a48601ae69dfacd3812ba72c3b668ccb891ed552",
+        "twoHistoricalUnresolvedProvenanceFindingsRemainOpen": true
+      },
+      "intermediateSourceLimit": {
+        "sourceRecord": "focused-corrected-source.json",
+        "testSha256": "234b70c0fb79316210211593c608add5c4c7318fc9217e179eb6975d7f00d441",
+        "exactIntermediateTestBytesRetainedInDeclaredArtifacts": false,
+        "focusedCorrectedPassCount": 3,
+        "finalSettingsCases": 4,
+        "finalAffectedPassCount": 7,
+        "finalTestAndProductionSourceMapsMatchCapturedBytes": true
+      }
+    }
+  ],
+  "independentlyReviewedBehavior": [
+    "Resource callbacks reject stale target, route and permission lifetimes",
+    "YAML render identity fences replacement and close/reopen ABA; callback function identity stays excluded",
+    "Settings enabled-owner lifetime fences permission withdrawal and ABA without automatic retry"
+  ],
+  "retainedFocusedPasses": [
+    11,
+    14,
+    7
+  ],
+  "nativeByteReview": {
+    "rawFrontendBindings": 1032,
+    "docBindings": 66,
+    "originalArtifacts": 143,
+    "listedArtifactHashes": 55,
+    "selectedScanFilesAcrossStages": 21
+  },
+  "docsCheckedBeforeUpdate": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "sha256": "d161d3821709befb6a55b5aafefd4395765a7b2895d099d048e85a8bdd39c5b7"
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "sha256": "ee6b875eb0e82efabc4cb7dee03f7ee6560c19ea8ef8e6fed43398461b9616ac"
+    },
+    {
+      "path": "docs/BORTUS-ADMISSION-QUALIFICATION.md",
+      "sha256": "aad2567270c36f998c713f2760647906b7a6452eba34f0b89d6a9c67195e1632"
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "sha256": "18d409db63f2d6d04915a374197ab3fe06775e633ceacdfbdffc53ce5464716b"
+    },
+    {
+      "path": "docs/BORTUS-INDEPENDENT-RESTORE.md",
+      "sha256": "c8a5fad41da61bde2563668c8b0437daf855ee5a624df23907798536f4d69f20"
+    },
+    {
+      "path": "docs/BORTUS-OPERATOR-MTLS.md",
+      "sha256": "bd332013ea6de37571f820549767babd4d00326dc01616eacf4c675a306f8250"
+    },
+    {
+      "path": "docs/BORTUS-PHYSICAL-VOLUME-FENCE.md",
+      "sha256": "89cd19cf4b4717ed2d6f2c2ea4b61f74c9b9c0cd19eb5b9ba2dda6dcf6a4455e"
+    },
+    {
+      "path": "docs/BORTUS-QUIESCENT-ARCHIVE.md",
+      "sha256": "2b6bf97aa964523bf093bf885b80dbd2c0934637bb08c43451d52299aa7692a7"
+    },
+    {
+      "path": "docs/BORTUS-QUIESCENT-SOURCE.md",
+      "sha256": "2b5eb981372b99ff9b1aa3c79c00a9fe82c8c44ebba1112077c7df4313b51699"
+    },
+    {
+      "path": "docs/BORTUS-QUIESCENT-WATCH.md",
+      "sha256": "9341f61698df3b21f5f27b605fb6079e65d6ac93c0c3513d05e3185616db8f68"
+    },
+    {
+      "path": "docs/BORTUS-RELEASE-IMAGE.md",
+      "sha256": "2f1195e1790201a7f5d2cc4fc0db17025be13c1c91cb3f3d8c0bac21a3f2278b"
+    },
+    {
+      "path": "docs/BORTUS-RELEASE-STAGING.md",
+      "sha256": "0a8b6aec403fb9bf82b216e0d77e453550dc1d0d64d0657724e7acec6abd5386"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-COMPLETION.md",
+      "sha256": "ca5ab7c38a0b481baea277cd04d7c9c1744486c58db3c3ed5e97a6e9e8f4bd72"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-DATA.md",
+      "sha256": "4c0e1d7dab38ae7c4413d4482b1181a8066999f2a127e0c47b61402054b2b107"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-MUTATIONS.md",
+      "sha256": "43e7cb42bdf569017373792731e2c56d547d58a818802de492fd6f15e6ff9e3e"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-READER.md",
+      "sha256": "e6b5c63975929663c50ffcfe1c4cca27f972586b5e849e5ff7c785d9558863a2"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-WATCH.md",
+      "sha256": "0de7b8f748c2d8bdc6293f67a8e76d383b5d826652682cfdea967bbbfb9b4cf0"
+    },
+    {
+      "path": "docs/BORTUS-RESTORED-CONSUMER-FENCE.md",
+      "sha256": "0d843635d19dd9b015e4601ccfbd008a6335b60ce6ce3d96564be076d0a7f671"
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "sha256": "2af9884b0fb41b91a586c59401a3de4c86ee3da41e9fc235dd61e98f678507a9"
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "sha256": "53b1a4878c66750a9399d3a3d19b2b4e8ee2654b92235191f14efddc5453f8e4"
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "sha256": "0e2753c43c53fbef44eb606cd444e82f719c4da5a09cbc659c9c1088d1bac9cc"
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "sha256": "fab19db188ba6b8189dab2d5449bde7e594194849dad20cadecf96309c6ce06a"
+    },
+    {
+      "path": "docs/MIGRATION-OPERATIONS.md",
+      "sha256": "166c9e728e732925cc1595a59de287eab12e909a8f1f919e9c31cd4628b3715f"
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "sha256": "187a69bf8b5b9e397d7824925372f13b4bcc41dab088350d24dfdf747508f004"
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "sha256": "e48b94baaa8ad4f7839d2778476205716a363244f85c89da699d565a75190da8"
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "sha256": "9e873e2e170572794070b8d3b388b5a553ab8df3a6b4405906841b3feef6383e"
+    }
+  ],
+  "limitations": [
+    "Final source-local qualification only; no current production build/browser/performance/image/live acceptance",
+    "Settings intermediate three-test exact source snapshot missing; final four Settings/seven affected source bindings verified",
+    "Selected default scans retain one unchanged public prose finding each; two historical provenance findings unresolved",
+    "Universal 27-action A05 acceptance remains pending"
+  ],
+  "deployed": false
+}

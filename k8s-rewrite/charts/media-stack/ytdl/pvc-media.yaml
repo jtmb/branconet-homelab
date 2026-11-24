@@ -1,0 +1,38 @@
+# ytdl Samba PV + PVC (CSI SMB driver)
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ytdl-downloads-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:
+    - noserverino
+    - cache=none
+  csi:
+    driver: smb.csi.k8s.io
+    volumeHandle: ytdl-downloads
+    volumeAttributes:
+      source: "//192.168.0.8/plex_smb_share/downloads"
+      options: "uid=1000,gid=1000,forceuid,forcegid,file_mode=0755,noserverino,cache=none"
+    nodeStageSecretRef:
+      name: smb-creds
+      namespace: plex
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ytdl-downloads-pvc
+  namespace: plex
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: ytdl-downloads-pv
+  storageClassName: ""

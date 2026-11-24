@@ -1,0 +1,1071 @@
+{
+  "abi": 1,
+  "scope": "local_etcd_default_transport_only",
+  "actual_exit_code": 0,
+  "controls": 38,
+  "seconds": 6.321,
+  "source_unchanged_during_tests": true,
+  "no_live_operations": true,
+  "no_operator_credentials_read": true,
+  "dependencies_unchanged_from_v5": [
+    {
+      "path": "scripts/migration/add-native-dns-records.py",
+      "sha256": "5efa1a49557ac37de3ed1cef745f38844e96341bf819087638669918ab69351a",
+      "bytes": 1431
+    },
+    {
+      "path": "scripts/migration/application-proof-wave.py",
+      "sha256": "72fb1544f20e5762b735d929d1fc122caa6a39c2cba1239e13b7db39f2f18036",
+      "bytes": 1723
+    },
+    {
+      "path": "scripts/migration/application-wave.py",
+      "sha256": "f67f9795222fcd430dcf41dfbbd5fd3a4eb2e20c98a1e8008eaa3e074759ac93",
+      "bytes": 1756
+    },
+    {
+      "path": "scripts/migration/backup-bortus-image.py",
+      "sha256": "579ee154dca679a270c297b0113d5f2ed5a0c7328793739d5c2cd86c136af66f",
+      "bytes": 3417
+    },
+    {
+      "path": "scripts/migration/backup-config.py",
+      "sha256": "174ed7ece84f8be50ba25d555b1b9b0dc3fdf12d4c3d67d4d71675f965ea88fa",
+      "bytes": 5544
+    },
+    {
+      "path": "scripts/migration/backup-current-redis.py",
+      "sha256": "74e989de8a794ba94bea2bdbf048aa680be4d5f11b1d5df835a37530d33387f2",
+      "bytes": 3408
+    },
+    {
+      "path": "scripts/migration/backup-data.py",
+      "sha256": "7f6d4937cb44e95bfa2f67c08ad4adb7e8dc9c3a7399d23df2ba030075b26dae",
+      "bytes": 14387
+    },
+    {
+      "path": "scripts/migration/backup-monitor-state.py",
+      "sha256": "eb89ccd94deb3cc3a07bbadeda22f5f7171c721dc65d254b249233474d5b2897",
+      "bytes": 4581
+    },
+    {
+      "path": "scripts/migration/backup-native-volumes.py",
+      "sha256": "a92bee71430a53cc6166f73efe7408096840ca1a0734a54a6ef9cc9eeca30768",
+      "bytes": 8225
+    },
+    {
+      "path": "scripts/migration/backup-traefik-logs.py",
+      "sha256": "613a868aa807fdd5a71c77238ff430353ee8c2c57852b0126594d14baed2a25b",
+      "bytes": 3096
+    },
+    {
+      "path": "scripts/migration/bortus-admission-operator.py",
+      "sha256": "d3eaa607f18a8592bbb1e656c2ee94871b7d483b979da55c442739d2efe5db55",
+      "bytes": 37864
+    },
+    {
+      "path": "scripts/migration/bortus-admission-qualification.py",
+      "sha256": "1dee5e381b53b34fea495676d332bcb172331b98068f72cb4c26123609c1ebeb",
+      "bytes": 17153
+    },
+    {
+      "path": "scripts/migration/bortus-dashboard-proof.py",
+      "sha256": "a87f280748882a48f1fcb8a1fdd2e91e258e4449aa7c9371052b409a87eb6d3e",
+      "bytes": 5722
+    },
+    {
+      "path": "scripts/migration/bortus-dashboard-rbac.py",
+      "sha256": "95502aba34af78d44710aa5426c7bbb5af31d5757c39b411b041c86d6677396f",
+      "bytes": 5550
+    },
+    {
+      "path": "scripts/migration/bortus-independent-restore.py",
+      "sha256": "c513e1a46174656f41c23427ea861970261d5c548253e4b2beab8f216b0f9112",
+      "bytes": 19434
+    },
+    {
+      "path": "scripts/migration/bortus-kubectl-image-remote.py",
+      "sha256": "56354456d69b40c592030c017b1767b2ca575ca4e8c17f0d653111e2b4098738",
+      "bytes": 10571
+    },
+    {
+      "path": "scripts/migration/bortus-live-proof.py",
+      "sha256": "db483105b9f0c2efc971a277f29da97b37e9a96e17bc240116e2942a5387ced2",
+      "bytes": 9034
+    },
+    {
+      "path": "scripts/migration/bortus-operator-mtls.py",
+      "sha256": "ff4b44fd76362890ef86cd80cef28d3f1f36ffd6d999da40f30add883ed2ac9d",
+      "bytes": 10539
+    },
+    {
+      "path": "scripts/migration/bortus-quiescent-archive.py",
+      "sha256": "40cfa4189be9814185661ae3e7b734e5fc88b3e23efeadeb9187b86b9cd9b158",
+      "bytes": 21473
+    },
+    {
+      "path": "scripts/migration/bortus-quiescent-interval.py",
+      "sha256": "c2e8b600825c77e6b4eece4d41fb8f28023b5a5650d6dc58305859af80579caf",
+      "bytes": 19783
+    },
+    {
+      "path": "scripts/migration/bortus-quiescent-source.py",
+      "sha256": "81a11106422da2e221174359b7b16cce494e41919181498b14654dc86f2dee61",
+      "bytes": 22397
+    },
+    {
+      "path": "scripts/migration/bortus-quiescent-watch.py",
+      "sha256": "8d9998ffab2c4fe26b60e7e466c42b5b239d485cc6732f5084a969fc17997928",
+      "bytes": 23823
+    },
+    {
+      "path": "scripts/migration/bortus-release-preload-node.py",
+      "sha256": "84c941ac96ee97e836d2680936f017e63574e1fd9fc095dd6591b8af83375172",
+      "bytes": 16450
+    },
+    {
+      "path": "scripts/migration/bortus-restore-admitted.py",
+      "sha256": "b54218c52d5b83302316c6bd294ebe9dc8cbc813e4bfa809e6f283378c4bfc30",
+      "bytes": 5512
+    },
+    {
+      "path": "scripts/migration/bortus-restore-completion.py",
+      "sha256": "4c5274f42dd55850ecdf42fa9b80a44a20fc96139a006a54218e893c752d3763",
+      "bytes": 10499
+    },
+    {
+      "path": "scripts/migration/bortus-restore-data.py",
+      "sha256": "3e69f9fa7a4d358aa9fe2ff11817c0ce825955af6f3ba7144ecc4a2eaad43cb7",
+      "bytes": 19998
+    },
+    {
+      "path": "scripts/migration/bortus-restore-journal.py",
+      "sha256": "e90b25b1a7226e072f3d3b1b3c872f38cbf2f05797270e9100a60dfa83a12f18",
+      "bytes": 12724
+    },
+    {
+      "path": "scripts/migration/bortus-restore-metadata.py",
+      "sha256": "998df4a25d538001a2079634ef57394d00fc188a9acae049954e019fb056dac9",
+      "bytes": 10720
+    },
+    {
+      "path": "scripts/migration/bortus-restore-mutations.py",
+      "sha256": "12195e009f90af1cfeed42f274e5293b0b36d35d809c0abbe1763d5c30b903ff",
+      "bytes": 15921
+    },
+    {
+      "path": "scripts/migration/bortus-restore-reader.py",
+      "sha256": "a0bda80a01ba6fab6c79fab988da7536cc9413a52eb098a4a9b65b19b3262351",
+      "bytes": 14564
+    },
+    {
+      "path": "scripts/migration/bortus-restore-source.py",
+      "sha256": "98c59678fbdb00c18f64183e67ed6f43b8da47b0a4b7645ab216ff8d66a15872",
+      "bytes": 8777
+    },
+    {
+      "path": "scripts/migration/bortus-restore-watch.py",
+      "sha256": "e33315fd0b0802cf1ff4e14c8ef3c822f944ea214afb6e6eb07b7047268a0e95",
+      "bytes": 34472
+    },
+    {
+      "path": "scripts/migration/bortus-restored-consumer-fence.py",
+      "sha256": "eb1e754069d68a895b4ac3a66f024035ef1b067bcf497e6e2881d962784fe8a4",
+      "bytes": 19995
+    },
+    {
+      "path": "scripts/migration/bortus-sqlite-archive.py",
+      "sha256": "690d44eb0024469f5e45197707d0e957db62b817cbd7b5f6d53c9f69e6eb67d0",
+      "bytes": 14123
+    },
+    {
+      "path": "scripts/migration/build-bortus-image.py",
+      "sha256": "e83ef517847885cc4243dc45cee8956f2afa03fd79ec8e0e7972f310c3064dca",
+      "bytes": 2901
+    },
+    {
+      "path": "scripts/migration/build-bortus-kubectl-security.py",
+      "sha256": "ad5c958e3c90f1f3db4f7b8996dced0e2cb4c5b6f70ff8681982a26d46f40fee",
+      "bytes": 24264
+    },
+    {
+      "path": "scripts/migration/build-bortus-patched-kubectl-image.py",
+      "sha256": "150fc0dff1454ace7d3c48394c2aa5cb023b37996cfe248f70d10cb4a089e793",
+      "bytes": 20175
+    },
+    {
+      "path": "scripts/migration/build-bortus-release-image.py",
+      "sha256": "9b7765fd6295eeb64bd0661a070fb9100fbaa58411916257f937e9068aa8f27f",
+      "bytes": 20225
+    },
+    {
+      "path": "scripts/migration/chartify.py",
+      "sha256": "cc5478af1361502a28f58c72f372448093198796aef7a89a51b907cc704bc206",
+      "bytes": 4472
+    },
+    {
+      "path": "scripts/migration/check-source-dns.py",
+      "sha256": "c8a18b3f085badf445bb86e2b9001126991b0c2535d077b3380ddc1ddee6c273",
+      "bytes": 1870
+    },
+    {
+      "path": "scripts/migration/checkpoint-bortus-volume.py",
+      "sha256": "a2a0969d2b62766032f8490f116903b9542327fb6ac978d6fca0e0fd04625b07",
+      "bytes": 36372
+    },
+    {
+      "path": "scripts/migration/compare-bortus-databases.py",
+      "sha256": "7bd68c3da31fd41065dc8add101ef6003e74ba3b2475c3e4aaeaf850cfb536d3",
+      "bytes": 11807
+    },
+    {
+      "path": "scripts/migration/complete-live-charts.py",
+      "sha256": "650cc4da957599f044e9aecc440b904dc4698b3b97f089b12e511e6966b979d7",
+      "bytes": 11000
+    },
+    {
+      "path": "scripts/migration/configure-longhorn-backup.py",
+      "sha256": "676b0ca197f1105f7ae6a9886559e610bd795fb0e958bee1374dcdc573a37ade",
+      "bytes": 2929
+    },
+    {
+      "path": "scripts/migration/copy-application-data.py",
+      "sha256": "f101e8b49b7203591e6dc768deabf860a4e27bf09fa0792ee173c12e4458f781",
+      "bytes": 10787
+    },
+    {
+      "path": "scripts/migration/cutover-application-ports.py",
+      "sha256": "7e1d7169c513020e405caf59fadc11cc045546ee037d03cf98415ced42b8e39b",
+      "bytes": 5776
+    },
+    {
+      "path": "scripts/migration/cutover-network-ports.py",
+      "sha256": "d03dbeef03450f7e108671379c1ae5310abca28b5eb1bd358d54ff6d20ea3671",
+      "bytes": 6096
+    },
+    {
+      "path": "scripts/migration/database-aliases.py",
+      "sha256": "33da7579441b933071459fa35ab3fdf48c933fc19153b798b56a6965b71983d5",
+      "bytes": 1580
+    },
+    {
+      "path": "scripts/migration/database-proof.py",
+      "sha256": "773fe82db1d25ebdef54ea11c4e6c17d03914f463f1ec97b9083a419b2e19ffe",
+      "bytes": 2867
+    },
+    {
+      "path": "scripts/migration/deploy-bortus-staging.py",
+      "sha256": "e64ee12ff90c49cb2e9c430f8f4e13b731ee7832d7c03d9a6edf0c2f0ee370c8",
+      "bytes": 2840
+    },
+    {
+      "path": "scripts/migration/distribute-bortus-image.py",
+      "sha256": "671ab0164c76347f3b1a21ba5387a6e84381f5814da42809eaeed4ae4de9b828",
+      "bytes": 5344
+    },
+    {
+      "path": "scripts/migration/ets2-query-proof.py",
+      "sha256": "4ec6f5cf24a6bb90ff399aeeadff796a2a2637e76d15967c0d056e2065c7d2b3",
+      "bytes": 1359
+    },
+    {
+      "path": "scripts/migration/final-routing-proof.py",
+      "sha256": "1687ffe911e903331569f2fbf8e946e8e2582100dbc25e87a5114ac38667e364",
+      "bytes": 3366
+    },
+    {
+      "path": "scripts/migration/fix-worker-dns.py",
+      "sha256": "594c015a575820198019f1837abae2da9a0752b04d41f73787ee283d6d6e6e00",
+      "bytes": 1769
+    },
+    {
+      "path": "scripts/migration/fresh-gluster-reader.py",
+      "sha256": "27a8e23be9c5a46502d9100cd2ff13734b40c1341f7257faa9e3322338588ceb",
+      "bytes": 1508
+    },
+    {
+      "path": "scripts/migration/gluster-audit.py",
+      "sha256": "16f0abc41d732d34b6f5dda4b71267c713372023419d2333f86ee1dc6f57baa9",
+      "bytes": 2977
+    },
+    {
+      "path": "scripts/migration/import-ingress-certificates.py",
+      "sha256": "26f82edc0f98cce801071ff04a929da11538f6b666d1b321cc495eafe2178e91",
+      "bytes": 2787
+    },
+    {
+      "path": "scripts/migration/import-redis-snapshot.py",
+      "sha256": "da51e1453c2802322b36f010c17a503591005c20f249377ba024ad436a3adaa7",
+      "bytes": 3768
+    },
+    {
+      "path": "scripts/migration/import-secrets.py",
+      "sha256": "f3c3e9575af7fdb5c77a978f817a490fbd924f20ca02f7062905e20687683d43",
+      "bytes": 11010
+    },
+    {
+      "path": "scripts/migration/inspect-bortus-checkpoint.py",
+      "sha256": "95b4fe7d67f3a9a818d7cca4cf539b11a06f3cfc54e39a6e403d61e4836d1de5",
+      "bytes": 18290
+    },
+    {
+      "path": "scripts/migration/inspect-bortus-independent-restore.py",
+      "sha256": "01c5102e789d1eca00dac8543d4d4be4e47de03584092518d987ce1429cfdbe0",
+      "bytes": 11205
+    },
+    {
+      "path": "scripts/migration/inspect-bortus-release-rbac.py",
+      "sha256": "eac458832d9567a154dc59515d3f1d690625232b61f4cf8282bc260619baf897",
+      "bytes": 7164
+    },
+    {
+      "path": "scripts/migration/inspect-copy-differences.py",
+      "sha256": "e1111f274de6fb9b56b48f0fdc6d3d812cca2b4faf29ac2d9850b1b55d503e86",
+      "bytes": 3255
+    },
+    {
+      "path": "scripts/migration/install-tools.py",
+      "sha256": "ea35a315ba060a2f9f9b459dd59836f274b2176f8cd7c1479c38a591675bfe02",
+      "bytes": 2118
+    },
+    {
+      "path": "scripts/migration/inventory.py",
+      "sha256": "0b4ce1f15d33326fef17cf986ad5fc18bc80eea9dcc4987813fe8d707c4fef17",
+      "bytes": 4626
+    },
+    {
+      "path": "scripts/migration/measure-storage.py",
+      "sha256": "c8056e668b38c2b2ceeb7138fba740de2b11d4d046b69d478039761bfc222767",
+      "bytes": 2898
+    },
+    {
+      "path": "scripts/migration/media-activity-proof.py",
+      "sha256": "f2f72fbfb0fe87d93be3629238ad3a3bd90ead7624e98e77a547128b2a47259d",
+      "bytes": 9780
+    },
+    {
+      "path": "scripts/migration/media-download-import-proof.py",
+      "sha256": "745a73ecb888c525dc1150f8f38563976eac68ab324689ece5cc5679df3b2dcb",
+      "bytes": 9942
+    },
+    {
+      "path": "scripts/migration/media-fixture-cleanup.py",
+      "sha256": "8c067fd6eda90332c94674a913842e5a67d002134d90f8bd058c6bd919b1f7f8",
+      "bytes": 7453
+    },
+    {
+      "path": "scripts/migration/media-import-prerequisites.py",
+      "sha256": "7a2d33fd74ada73975b8e83e5a2be01566d175519fdc63dcc3a7663e58a897ac",
+      "bytes": 2411
+    },
+    {
+      "path": "scripts/migration/media-indexer-proof.py",
+      "sha256": "d7c96e46112c503c9eb355d40fdb057048b96ab97841f4bd769f1cd97ca5a702",
+      "bytes": 6574
+    },
+    {
+      "path": "scripts/migration/migrate-traefik-dashboard.py",
+      "sha256": "35aea4e653938d3238894e93e807ea8f25ff8d810858b848aea6f1d3c3dfed27",
+      "bytes": 4911
+    },
+    {
+      "path": "scripts/migration/native-dns-proof.py",
+      "sha256": "e8118fb968f57d7c0fdf0f3b1b591f8b912fbb1402eb901770f1bfb192018e50",
+      "bytes": 3036
+    },
+    {
+      "path": "scripts/migration/network-proof.py",
+      "sha256": "d3026e001fc6184b32625200d8d1e6cc43736f2f85f86d2be9e50be3a68e87b3",
+      "bytes": 2866
+    },
+    {
+      "path": "scripts/migration/normalize-bortus-sqlite-archive.py",
+      "sha256": "770f430da8fe8373a7931ade6e37040b0af25d007ba88b9d3a4ab3d54fa750dc",
+      "bytes": 11487
+    },
+    {
+      "path": "scripts/migration/operator-kubeconfig.py",
+      "sha256": "7abefb5559909490960181fc1905e7a70d08e3754a7873413095e4e49b2e4af0",
+      "bytes": 1774
+    },
+    {
+      "path": "scripts/migration/persist-network-cutover.py",
+      "sha256": "ab88f9f9c11263ba59bb8ba9043756c535b5a89586ca3af74cf63460978f0564",
+      "bytes": 3635
+    },
+    {
+      "path": "scripts/migration/pipeline-rollback-proof.py",
+      "sha256": "f7fbb0dcabfd8e0fc7fc328fda126ca7b16317bed9ddc34bc0a526718bbf3493",
+      "bytes": 5682
+    },
+    {
+      "path": "scripts/migration/plex-library-proof.py",
+      "sha256": "7c42ae91947bcb95af65d7be4994f7bc374c377e6d09950eedb63f94bae9dc29",
+      "bytes": 3948
+    },
+    {
+      "path": "scripts/migration/plex-playback-proof.py",
+      "sha256": "80cbbf21b922c84ece67ab1d9957152904ced53fe2a71815fdba30ac9c5642fd",
+      "bytes": 3507
+    },
+    {
+      "path": "scripts/migration/plex-relocation-proof.py",
+      "sha256": "09c7d68d26b4a00fffddf000298047fbe58ebd5bea13ff5267655cba3f86f5bd",
+      "bytes": 2771
+    },
+    {
+      "path": "scripts/migration/prepare-application-routing.py",
+      "sha256": "ad87bc7d15970e6716a6646962c8279151189f4384555d7e51f60c65e6afc252",
+      "bytes": 5736
+    },
+    {
+      "path": "scripts/migration/prepare-bortus-chart.py",
+      "sha256": "103d08082f2588a58696859a8341168d227193a007ba6492ef910f5959b322a6",
+      "bytes": 4159
+    },
+    {
+      "path": "scripts/migration/prepare-bortus-release-context.py",
+      "sha256": "3b0c0c7b66468a78b91a001373675031b341ab804fa9b511029231e740f638db",
+      "bytes": 7376
+    },
+    {
+      "path": "scripts/migration/prepare-flux-releases.py",
+      "sha256": "b5a71fee82fa3df56b81b30371bbba48c152f84ceded827927dc50dafd887c35",
+      "bytes": 3766
+    },
+    {
+      "path": "scripts/migration/prepare-homepage-native.py",
+      "sha256": "19b67598ec49e266fd69edfea516dc8edc551c43639a78582a5976b2eac62002",
+      "bytes": 4422
+    },
+    {
+      "path": "scripts/migration/prepare-repository-apps.py",
+      "sha256": "ccfccdb2324f945e34ac9ea3d3ee2942f1e153361159f5e4d3d82333c379435b",
+      "bytes": 3344
+    },
+    {
+      "path": "scripts/migration/prepare-website-routing.py",
+      "sha256": "4c33e3a4670b7a8d9515d026224b72e4647ce290550dbc7bd38d305af261c912",
+      "bytes": 2665
+    },
+    {
+      "path": "scripts/migration/private-app-proof.py",
+      "sha256": "f2a56b5bb5e1e00318631ea400ca02e65fdbcd64a3200024ff422071b53caee8",
+      "bytes": 8158
+    },
+    {
+      "path": "scripts/migration/qbit-monitor-proof.py",
+      "sha256": "68e4e4d4f2403de909b6a22a354441c09a4dc1f53d2c1b9b36a655ea02d1e7aa",
+      "bytes": 2829
+    },
+    {
+      "path": "scripts/migration/qbittorrent-api-proof.py",
+      "sha256": "04b0fb3926ee118a02bd5ecdb4707d6a167fdfc3ca32edf1e08bc1d0fe53b060",
+      "bytes": 1992
+    },
+    {
+      "path": "scripts/migration/redis-audit.py",
+      "sha256": "fb6e308c80d8a3abd064572fee7d1b21a87e98f2bbdf36e185212f27ffc02e7b",
+      "bytes": 2581
+    },
+    {
+      "path": "scripts/migration/refresh-migration-state.py",
+      "sha256": "2b3f121356c3ea3f7a60c394f1e663d20023864cfc32723ae5ff6349e2ea1da7",
+      "bytes": 3240
+    },
+    {
+      "path": "scripts/migration/register.py",
+      "sha256": "085ff704b2ea96fa4b4384075a89b636b87796a79d86a7a3500f24b5e79cc793",
+      "bytes": 6629
+    },
+    {
+      "path": "scripts/migration/restore-native-bortus-backup.py",
+      "sha256": "5d675e3a1da2943455fc678ee8c7a677155d2cfc54438dbc75fb95b87eef0731",
+      "bytes": 4011
+    },
+    {
+      "path": "scripts/migration/retirement-readiness.py",
+      "sha256": "8a4925fa4df15a35ce8082db8a28bd3d752f393d9567b7f171f38f747690077e",
+      "bytes": 5605
+    },
+    {
+      "path": "scripts/migration/review-live-integration.py",
+      "sha256": "5a4906beacab7452efa09fc1c3b6d90274d255d24cd5afb3623de5e3383670b3",
+      "bytes": 7604
+    },
+    {
+      "path": "scripts/migration/review-qbittorrent-credentials.py",
+      "sha256": "8bdc7c3bc0fabad4673ccf33406ce3c6bda261c83e86689ac66936bf8f97385c",
+      "bytes": 4407
+    },
+    {
+      "path": "scripts/migration/review-whoami-port.py",
+      "sha256": "f9bbcc0fb28ffb8ca1393ac39c944f6be6722ff956f54f079213513addb6c94d",
+      "bytes": 1217
+    },
+    {
+      "path": "scripts/migration/run-ansible.py",
+      "sha256": "2a696655dcfd1d73db351f30f1f753d71c97cca241fe47f7d5bba7182dea431a",
+      "bytes": 3465
+    },
+    {
+      "path": "scripts/migration/sonarr-archive-import-proof.py",
+      "sha256": "cc11970adf4d655bd531c9e92ddbedfdd26dc8300b4336353bc3999d9d53897a",
+      "bytes": 11028
+    },
+    {
+      "path": "scripts/migration/sonarr-fixture-cleanup.py",
+      "sha256": "2ccc8378874793f0ce5078f226aa1d6f2187a25f88029a7a42c8a412dbacd860",
+      "bytes": 8415
+    },
+    {
+      "path": "scripts/migration/sonarr-seed-cleanup.py",
+      "sha256": "b1224ab57ff8b41c10dd225ada498510691e517c20a886061b6f85a017a82b58",
+      "bytes": 2545
+    },
+    {
+      "path": "scripts/migration/source-status.py",
+      "sha256": "308b6aec5d3dffce6488541f829a706cc0279b8c5dcb5b4fe882944ba394d825",
+      "bytes": 3309
+    },
+    {
+      "path": "scripts/migration/stage-bortus-release-image.py",
+      "sha256": "69a5fcb70984fca647f8014e5f37bcd3bc6d7c6ced34011016085ea92ca02d41",
+      "bytes": 22689
+    },
+    {
+      "path": "scripts/migration/standalone-autostart-proof.py",
+      "sha256": "a1923a2145293a4d106e87298ae1427d56428ec414cdf59a13cebab9ef4339be",
+      "bytes": 4907
+    },
+    {
+      "path": "scripts/migration/start-ets2.py",
+      "sha256": "9815391c316f5755f17417b7c7f22e6d3a12f4fe3b73841e84fa7b1db5570ac6",
+      "bytes": 1882
+    },
+    {
+      "path": "scripts/migration/storage-proof.py",
+      "sha256": "f48781d8153962eb0be2fedd4ef5324260de74578bb0315526be6e49d8cd8e00",
+      "bytes": 6048
+    },
+    {
+      "path": "scripts/migration/temporary-dns.py",
+      "sha256": "17b2967976bdcd93096d9e6dfee84f61b67ac27f0ceb2ee4110efc7d284035da",
+      "bytes": 3048
+    },
+    {
+      "path": "scripts/migration/traefik-dashboard-proof.py",
+      "sha256": "cf9175b5625fbfd7509d1d46e135b16c6591047d2ef8932300f5f99af0ff8cec",
+      "bytes": 5829
+    },
+    {
+      "path": "scripts/migration/unpackerr-extraction-proof.py",
+      "sha256": "f04612b78f5923308a703a1119125c6e32abf8b9c9a110eb61d67c924e70fab4",
+      "bytes": 4156
+    },
+    {
+      "path": "scripts/migration/unpackerr-integration-proof.py",
+      "sha256": "68dca80b4b3f535641f3b76a91393e09fafe565b2222a5189ef5274bcd8af5e8",
+      "bytes": 2069
+    },
+    {
+      "path": "scripts/migration/update-acceptance-register.py",
+      "sha256": "5e57a57f12d5a1055fcabb2cc3050af8a9413db874c366a66df076b8175ef548",
+      "bytes": 16020
+    },
+    {
+      "path": "scripts/migration/validate-charts.py",
+      "sha256": "3e714de3d5b26056d603c6ae0d06fba1f9b4804498f7b1d5efc5228da54f8440",
+      "bytes": 4737
+    },
+    {
+      "path": "scripts/migration/vault-status.py",
+      "sha256": "0ffb7b8acd7c5d11dd623a74bebf263cdda6379d980ec860747f36379b998936",
+      "bytes": 2566
+    },
+    {
+      "path": "scripts/migration/verify-archives.py",
+      "sha256": "ff72d3bfd60e4b8fef5312cafed5bfe66968888bed5c6dc23198c9830520e48c",
+      "bytes": 2689
+    },
+    {
+      "path": "scripts/migration/verify-secret-encryption.py",
+      "sha256": "a70edeec5dc4d77aa3af87938204e89ca6025ef80dfbabb22efaa03b478a24ac",
+      "bytes": 2366
+    },
+    {
+      "path": "scripts/migration/vpn-proof.py",
+      "sha256": "c8f1002c1efd995e2cb0ed33f1153e3b5bd418439f5fe74b54c5f052ca79bbc0",
+      "bytes": 2583
+    },
+    {
+      "path": "scripts/migration/website-ingress-proof.py",
+      "sha256": "16d9ed92dd1012e8724a4ad4d5e021ad76848593f4da3b6d42e87ec07c805aba",
+      "bytes": 1678
+    },
+    {
+      "path": "scripts/migration/xteve-ssdp-proof.py",
+      "sha256": "b978a74ef00cabc7ed746ba74e3e9eff884f3f28b569f23501522d7da2e66a54",
+      "bytes": 7356
+    }
+  ],
+  "selected_sources": [
+    {
+      "path": "scripts/migration/backup-etcd.py",
+      "sha256": "86b053b1267a9bf48a66f12fb231ee0845cfe23149c7f076b732e363c4ade4d6",
+      "bytes": 47602
+    },
+    {
+      "path": "scripts/migration/tests/test_etcd_checkpoint.py",
+      "sha256": "b7edbab9f7523ca9bf0173b9f7e07c4bee57fd6f87191a197da723b974f065d8",
+      "bytes": 18991
+    },
+    {
+      "path": "scripts/migration/tests/test_etcd_transport.py",
+      "sha256": "6aaccb7e2f9be8726b5df1412c1941ad65cc419e95216b85ce1b3027105f6533",
+      "bytes": 15903
+    },
+    {
+      "path": "docs/BORTUS-ETCD-RECOVERY.md",
+      "sha256": "7a6033e78fdb07a2566264c6ed6819b60f5e641d56c328f79c62be5b715a9682",
+      "bytes": 10361
+    }
+  ],
+  "originals": [
+    {
+      "path": "originals/v10/handle.json",
+      "sha256": "ef1c7c0e9ac954ee243e87507ffbec43b0179ff31eb20ed8c8c1f4fbab1a43f4",
+      "bytes": 43
+    },
+    {
+      "path": "originals/v10/stderr.log",
+      "sha256": "8a8cadcda29c93e4688ed37e83257d2ba63dde894c0befdf64b2b1c87aefea28",
+      "bytes": 5905
+    },
+    {
+      "path": "originals/v10/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "originals/v10/terminal.json",
+      "sha256": "e4b658094c373810ff3cca4ae1ec45819629a0e4b7857c85d576270b37957a8c",
+      "bytes": 213
+    },
+    {
+      "path": "originals/v11/handle.json",
+      "sha256": "74fcfd7505a6fcce7c7fdc04fee88bc885568c4fed066abbf114c0ab66bf05e1",
+      "bytes": 43
+    },
+    {
+      "path": "originals/v11/stderr.log",
+      "sha256": "733cebf7f79810f5c1a40499f641ac49db4369270ccdd6197b6ded2f88902af3",
+      "bytes": 6064
+    },
+    {
+      "path": "originals/v11/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "originals/v11/terminal.json",
+      "sha256": "cc44915f7aa17585eeb576049cd68ecbcc8a900e6fd2d2a46b6980d2598838b7",
+      "bytes": 213
+    },
+    {
+      "path": "originals/v6/handle.json",
+      "sha256": "7d5817504c8da0818adbcb6a914a5a7f0f78fce923d911bd2e77f2f098dbd288",
+      "bytes": 43
+    },
+    {
+      "path": "originals/v6/stderr.log",
+      "sha256": "3a716665c2117dcf8b193eb373dcdb6f8c29c4764e0a1d016bd9d7be0864183b",
+      "bytes": 5674
+    },
+    {
+      "path": "originals/v6/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "originals/v6/terminal.json",
+      "sha256": "6272634495dd658f90f26c565e6b9286074fee7ad59ab9aa3ec65f10723523ff",
+      "bytes": 213
+    },
+    {
+      "path": "originals/v7/handle.json",
+      "sha256": "360b9473f8d28c8c45675ddfd6b183600a6de19e15609f0869cb92959b52c742",
+      "bytes": 43
+    },
+    {
+      "path": "originals/v7/stderr.log",
+      "sha256": "059484dbd5a4d5861e5f6b9de35422bca0486fa23848e10555183af007e5f637",
+      "bytes": 5905
+    },
+    {
+      "path": "originals/v7/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "originals/v7/terminal.json",
+      "sha256": "d135275be3cfd06f7cd33bc1d497f53b425146bdd05aac55d2759d7eb8372222",
+      "bytes": 213
+    },
+    {
+      "path": "originals/v8/handle.json",
+      "sha256": "626f47ef38531fe408bb59ec9158ebe1f3abefb364d15a675f9e9dcbfe57b79e",
+      "bytes": 43
+    },
+    {
+      "path": "originals/v8/stderr.log",
+      "sha256": "c6c2614e0c20e359cbb02b1d53728deaeee295d42c24bf9dd9369c53b6bc7f40",
+      "bytes": 7190
+    },
+    {
+      "path": "originals/v8/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "originals/v8/terminal.json",
+      "sha256": "43ebc8efbb5e48c3938a9c4d6fb307a6f99042bc7b58967b0569314db06907b9",
+      "bytes": 213
+    },
+    {
+      "path": "originals/v9/handle.json",
+      "sha256": "1765b42eef3eeb58955a28e783a83033a4a790bafed5b3cda4e551706bd7e341",
+      "bytes": 43
+    },
+    {
+      "path": "originals/v9/stderr.log",
+      "sha256": "3c60a140b2cf0b68b4fdee5a54813f275d231e2d59e335c13952ad79426dcef4",
+      "bytes": 7190
+    },
+    {
+      "path": "originals/v9/stdout.log",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "originals/v9/terminal.json",
+      "sha256": "0a59a9e9c2ad6afbc22c3c8c9a3d58fa03318c58741926066325c9419c01090f",
+      "bytes": 213
+    },
+    {
+      "path": "originals/v10/source/docs/BORTUS-ETCD-RECOVERY.md",
+      "sha256": "5a3524b45a71450280d9ad5a0d0491a01951141885608f6ddcb7c47adab7ba75",
+      "bytes": 9189
+    },
+    {
+      "path": "originals/v10/source/scripts/migration/backup-etcd.py",
+      "sha256": "b624c37ac07d76d4f4c02e21968025db2090c2fe9f3569a9d700a7bf8030d0d0",
+      "bytes": 47367
+    },
+    {
+      "path": "originals/v10/source/scripts/migration/tests/test_etcd_checkpoint.py",
+      "sha256": "b7edbab9f7523ca9bf0173b9f7e07c4bee57fd6f87191a197da723b974f065d8",
+      "bytes": 18991
+    },
+    {
+      "path": "originals/v10/source/scripts/migration/tests/test_etcd_transport.py",
+      "sha256": "4ca88eec6a1f583fc84979090d138a6c5491d419aab9148e970310ef28478436",
+      "bytes": 15225
+    },
+    {
+      "path": "originals/v11/source/docs/BORTUS-ETCD-RECOVERY.md",
+      "sha256": "7847d76d988a16684b655c470c12270f7177367f34928b6a31b317986dd355d9",
+      "bytes": 9532
+    },
+    {
+      "path": "originals/v11/source/scripts/migration/backup-etcd.py",
+      "sha256": "86b053b1267a9bf48a66f12fb231ee0845cfe23149c7f076b732e363c4ade4d6",
+      "bytes": 47602
+    },
+    {
+      "path": "originals/v11/source/scripts/migration/tests/test_etcd_checkpoint.py",
+      "sha256": "b7edbab9f7523ca9bf0173b9f7e07c4bee57fd6f87191a197da723b974f065d8",
+      "bytes": 18991
+    },
+    {
+      "path": "originals/v11/source/scripts/migration/tests/test_etcd_transport.py",
+      "sha256": "6aaccb7e2f9be8726b5df1412c1941ad65cc419e95216b85ce1b3027105f6533",
+      "bytes": 15903
+    },
+    {
+      "path": "originals/v6/source/docs/BORTUS-ETCD-RECOVERY.md",
+      "sha256": "f32b21bb85527ebf5182712d7e76f4c55e5049ec8e7372a4444135c71b16c868",
+      "bytes": 8042
+    },
+    {
+      "path": "originals/v6/source/scripts/migration/backup-etcd.py",
+      "sha256": "557b2bc6ea528f83ab9849a916056fa891aca263b1747196bfe56024bfdf595c",
+      "bytes": 46358
+    },
+    {
+      "path": "originals/v6/source/scripts/migration/tests/test_etcd_checkpoint.py",
+      "sha256": "b7edbab9f7523ca9bf0173b9f7e07c4bee57fd6f87191a197da723b974f065d8",
+      "bytes": 18991
+    },
+    {
+      "path": "originals/v6/source/scripts/migration/tests/test_etcd_transport.py",
+      "sha256": "afa61ce768b69991db4b54c0edd5e8d08b8a29ad1cb6e5f05932a2c59b6c271a",
+      "bytes": 11601
+    },
+    {
+      "path": "originals/v7/source/docs/BORTUS-ETCD-RECOVERY.md",
+      "sha256": "86518175f53d6c65ab13aa622c7b8cca38e592289e0b025142cbf3a31151b270",
+      "bytes": 8430
+    },
+    {
+      "path": "originals/v7/source/scripts/migration/backup-etcd.py",
+      "sha256": "5b174558acfcd926a5c8e87105ad201f011046fc97ac9a6ec3f97ab1b8486011",
+      "bytes": 46358
+    },
+    {
+      "path": "originals/v7/source/scripts/migration/tests/test_etcd_checkpoint.py",
+      "sha256": "b7edbab9f7523ca9bf0173b9f7e07c4bee57fd6f87191a197da723b974f065d8",
+      "bytes": 18991
+    },
+    {
+      "path": "originals/v7/source/scripts/migration/tests/test_etcd_transport.py",
+      "sha256": "c02cf6014d8f4a7676e848ad51d8a599fb45ee0a62dc8e8a4863ea7f47b04f0b",
+      "bytes": 14365
+    },
+    {
+      "path": "originals/v8/source/docs/BORTUS-ETCD-RECOVERY.md",
+      "sha256": "86518175f53d6c65ab13aa622c7b8cca38e592289e0b025142cbf3a31151b270",
+      "bytes": 8430
+    },
+    {
+      "path": "originals/v8/source/scripts/migration/backup-etcd.py",
+      "sha256": "5b174558acfcd926a5c8e87105ad201f011046fc97ac9a6ec3f97ab1b8486011",
+      "bytes": 46358
+    },
+    {
+      "path": "originals/v8/source/scripts/migration/tests/test_etcd_checkpoint.py",
+      "sha256": "b7edbab9f7523ca9bf0173b9f7e07c4bee57fd6f87191a197da723b974f065d8",
+      "bytes": 18991
+    },
+    {
+      "path": "originals/v8/source/scripts/migration/tests/test_etcd_transport.py",
+      "sha256": "4ca88eec6a1f583fc84979090d138a6c5491d419aab9148e970310ef28478436",
+      "bytes": 15225
+    },
+    {
+      "path": "originals/v9/source/docs/BORTUS-ETCD-RECOVERY.md",
+      "sha256": "56056baec309310f88d3b0d347f9a51a9ae52ddfd7dc7925c02511bc23f5e0f8",
+      "bytes": 8786
+    },
+    {
+      "path": "originals/v9/source/scripts/migration/backup-etcd.py",
+      "sha256": "d76f6efc8fa3e48bcd59ab7bce99063be297e8e8000709b0e78e12f3f43b0e52",
+      "bytes": 46480
+    },
+    {
+      "path": "originals/v9/source/scripts/migration/tests/test_etcd_checkpoint.py",
+      "sha256": "b7edbab9f7523ca9bf0173b9f7e07c4bee57fd6f87191a197da723b974f065d8",
+      "bytes": 18991
+    },
+    {
+      "path": "originals/v9/source/scripts/migration/tests/test_etcd_transport.py",
+      "sha256": "4ca88eec6a1f583fc84979090d138a6c5491d419aab9148e970310ef28478436",
+      "bytes": 15225
+    },
+    {
+      "path": "v10-source-manifest.json",
+      "sha256": "d133e366802016b7b25e13fe38cbf292120133332019f4cd7e5082694c0ea4e4",
+      "bytes": 21945
+    },
+    {
+      "path": "v10-windows-handle.json",
+      "sha256": "f3e84abb4517c808f9bf8946bc28c7d8ba0cfa916f5e7e41155c62fb51d1a3a7",
+      "bytes": 63
+    },
+    {
+      "path": "v10-windows-terminal.json",
+      "sha256": "e80e470c0939f1728abeccb358676b32dc77ac9abbb6ba6d20be22e9e2bb17a3",
+      "bytes": 47
+    },
+    {
+      "path": "v10.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "v10.stdout",
+      "sha256": "ea7e1b3349d5602b0f82a406d812320f7d4b1f744d079e95821f283d82dd9e17",
+      "bytes": 6208
+    },
+    {
+      "path": "v11-source-manifest.json",
+      "sha256": "0952b27fce021ac3b2c7d324bee38c422589204e97c296c31d937296d41075bd",
+      "bytes": 21945
+    },
+    {
+      "path": "v11-windows-handle.json",
+      "sha256": "0ad6c47431bc7a363a883f74c527a0a8fa345240968ff9e511375fbee2daf476",
+      "bytes": 64
+    },
+    {
+      "path": "v11-windows-terminal.json",
+      "sha256": "e80e470c0939f1728abeccb358676b32dc77ac9abbb6ba6d20be22e9e2bb17a3",
+      "bytes": 47
+    },
+    {
+      "path": "v11.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "v11.stdout",
+      "sha256": "d94e8ef7c7b1b660c00891b83c770d87fc1b668be15c0c8e8ed369ecea359b89",
+      "bytes": 6367
+    },
+    {
+      "path": "v6-source-manifest.json",
+      "sha256": "4d2ea6db6c9d6d27b7e84281242e1a4ea6000ad66bda855f4c7164bb2d6ff0de",
+      "bytes": 21945
+    },
+    {
+      "path": "v6-windows-handle.json",
+      "sha256": "cae908d394bbf9f77768a88baf8a14982ce412b5ee6e5c475385ea37b95ad0ba",
+      "bytes": 64
+    },
+    {
+      "path": "v6-windows-terminal.json",
+      "sha256": "e80e470c0939f1728abeccb358676b32dc77ac9abbb6ba6d20be22e9e2bb17a3",
+      "bytes": 47
+    },
+    {
+      "path": "v6.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "v6.stdout",
+      "sha256": "47e0f93034bb4ee6697e17cb7e43686054c754557e2d3f45fa2246f2a8a82a25",
+      "bytes": 5976
+    },
+    {
+      "path": "v7-source-manifest.json",
+      "sha256": "9cd09ea0a033e4eff7be6564aff660b16366efa0d19877fcccaa48224ff75482",
+      "bytes": 21945
+    },
+    {
+      "path": "v7-windows-handle.json",
+      "sha256": "9c98df692cd74e8d59c3858f3171965825f2219710e3ef60cdcd6da70bb3df9a",
+      "bytes": 64
+    },
+    {
+      "path": "v7-windows-terminal.json",
+      "sha256": "e80e470c0939f1728abeccb358676b32dc77ac9abbb6ba6d20be22e9e2bb17a3",
+      "bytes": 47
+    },
+    {
+      "path": "v7.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "v7.stdout",
+      "sha256": "5542eaced4cd0f70a54a744021fc79ccf96104b1d57103fb3ed25b97684508d1",
+      "bytes": 6207
+    },
+    {
+      "path": "v8-source-manifest.json",
+      "sha256": "b662049e13f77eda9cc93fd02576ca592a135f0083b3109e78a41ebf58efc9f2",
+      "bytes": 21945
+    },
+    {
+      "path": "v8-windows-handle.json",
+      "sha256": "e1135dd6db576a69a3a0a8cc086674736c021d6ea470c160a4dbd82203d1f05c",
+      "bytes": 64
+    },
+    {
+      "path": "v8-windows-terminal.json",
+      "sha256": "e80e470c0939f1728abeccb358676b32dc77ac9abbb6ba6d20be22e9e2bb17a3",
+      "bytes": 47
+    },
+    {
+      "path": "v8.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "v8.stdout",
+      "sha256": "dea913d5b5ad921f6f7de51d8893c364ba37509553c832cefc252e7084f9f599",
+      "bytes": 7492
+    },
+    {
+      "path": "v9-source-manifest.json",
+      "sha256": "cc2acf9ec162d934ee2a8053ed776e1890d57bc30a777f006fbe69188f7353d6",
+      "bytes": 21945
+    },
+    {
+      "path": "v9-windows-handle.json",
+      "sha256": "9157493d284db56f9b69db20195b5f2f08cef4ad1435ac530cff1046d8a5a987",
+      "bytes": 64
+    },
+    {
+      "path": "v9-windows-terminal.json",
+      "sha256": "e80e470c0939f1728abeccb358676b32dc77ac9abbb6ba6d20be22e9e2bb17a3",
+      "bytes": 47
+    },
+    {
+      "path": "v9.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    {
+      "path": "v9.stdout",
+      "sha256": "5fb93882d7b808428891fce1b401d929cc472b4cb063925f04280c4b0b2f499e",
+      "bytes": 7492
+    },
+    {
+      "path": "process-review-final.json",
+      "sha256": "addd8df557fcac95ef90c4d20f850f6bcd89321355d5e3e7955717fdc139de54",
+      "bytes": 34642
+    }
+  ],
+  "retained_attempts": [
+    {
+      "version": 6,
+      "actual_exit_code": 1
+    },
+    {
+      "version": 7,
+      "actual_exit_code": 0
+    },
+    {
+      "version": 8,
+      "actual_exit_code": 1
+    },
+    {
+      "version": 9,
+      "actual_exit_code": 1
+    },
+    {
+      "version": 10,
+      "actual_exit_code": 0
+    },
+    {
+      "version": 11,
+      "actual_exit_code": 0
+    }
+  ],
+  "closure": {
+    "pid_start_identities": 286,
+    "all_absent": true,
+    "report_sha256": "addd8df557fcac95ef90c4d20f850f6bcd89321355d5e3e7955717fdc139de54"
+  },
+  "v5_handoff_sha256": "1b195211ba5392700e2ade3d21ba7ae48ad9b17e8fb99c60629040b231d658a8",
+  "v5_original_zip_sha256": "46140c66fd38207d39dfda0249a660737fc31209bf1ab0ebcdd8e68a6e6e7a38",
+  "documentation_only_after_tests": "Final dedicated doc appends actual38 result; inherited deployment/operations docs preserve post-v5-test corrections in d553, not overlaid",
+  "limits": [
+    "No actual SSH/sudo/API/etcd execution",
+    "TLS fixture validation constructs SSL context; no remote handshake",
+    "Continuous source history and API-decryption/LUKS recovery unqualified",
+    "Matching actual launcher terminal0 required; visible record alone insufficient"
+  ]
+}

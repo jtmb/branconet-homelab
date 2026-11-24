@@ -1,0 +1,252 @@
+{
+  "scope": "Exact typed-list metadata adapter and bounded read-only source preflight",
+  "raw_source": [
+    {
+      "path": "scripts/migration/bortus-restore-metadata.py",
+      "sha256": "664d0920b856ff1455dd1da41617c27e485145ee1956a263bce5f1f0e62aef73"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restore_metadata.py",
+      "sha256": "e49e2cf0e94e345c20708800a7693e28d0ea7ad8b930c74c66c3df18deed953d"
+    }
+  ],
+  "retained_original_refusal": {
+    "actual_exit": 1,
+    "source": "/home/brajam/.local/share/branconet-migration/phase1-list-shape-6fc0da9bdb5b",
+    "error": "Phase1 source preflight refused",
+    "mutations": 0,
+    "application_or_secret_values_read": false,
+    "fixed_source_frames": [
+      {
+        "file": "inspect-bortus-independent-restore.py",
+        "line": 117,
+        "function": "prepare"
+      },
+      {
+        "file": "inspect-bortus-independent-restore.py",
+        "line": 70,
+        "function": "validate_source"
+      },
+      {
+        "file": "inspect-bortus-checkpoint.py",
+        "line": 269,
+        "function": "inspect"
+      },
+      {
+        "file": "bortus-restore-source.py",
+        "line": 70,
+        "function": "get"
+      },
+      {
+        "file": "bortus-restore-metadata.py",
+        "line": 191,
+        "function": "list"
+      }
+    ],
+    "exception_type": "MetadataRefused",
+    "failure_code": "metadata_shape",
+    "list_item_shapes": [
+      {
+        "resource": "pod",
+        "object_is_dict": true,
+        "apiVersion_present": false,
+        "kind_present": false,
+        "metadata_is_dict": true
+      }
+    ]
+  },
+  "local_qualification": {
+    "actual_exit": 0,
+    "child_exit": 0,
+    "timed_out": false,
+    "frozen_inputs": true,
+    "source_count": 139,
+    "owner": "/home/brajam/.local/share/branconet-migration/metadata-typed-list-0f0e195578b7",
+    "elapsed_seconds": 13.565,
+    "child_pid": 2020688,
+    "child_reaped": true,
+    "stderr_sha256": "a0a3753fa40c8fe12d1da9d35e02fdfbc264e976bc7180d4998961636b33f361",
+    "result_tail": "..................../mnt/c/Users/james/OneDrive/Documents/ChatGPT/kubernetes migration/scripts/migration/tests/test_bortus_restore_metadata.py:213: DeprecationWarning: ssl.TLSVersion.TLSv1 is deprecated\n  if check == 'minimum': context.minimum_version = ssl.TLSVersion.TLSv1\n.....................................\n----------------------------------------------------------------------\nRan 57 tests in 12.604s\n\nOK\n"
+  },
+  "actual_live_preflight": {
+    "actual_exit": 0,
+    "source": "/home/brajam/.local/share/branconet-migration/phase1-source-ready-e77b0a80771d",
+    "source_manifest_sha256": "5e2c40e6d866762d53db2105d88a2f18cd184868544bd2489c79f3110ed90aa3",
+    "prepared_sha256": "0e38bd0abfbd5318bbfa484aeb7264cb9e537671927235c4ccb0cbaa53b44f1d",
+    "prepared_keys": [
+      "alternate_node_identity",
+      "backup_identity",
+      "checkpoint_run_id",
+      "checks_passed",
+      "database_or_secret_reads",
+      "holder_image_qualification_proven",
+      "holder_preload_and_actual_admission_proven",
+      "independent_restore_proven",
+      "mutations",
+      "original_ciphertext_sha256",
+      "proposals",
+      "required_protected_claim_names",
+      "required_qualified_holder_image",
+      "restore_target_name",
+      "scope",
+      "separate_resource_reads_are_atomic",
+      "snapshot_identity",
+      "source_identities",
+      "source_node_name",
+      "storageclass_identity",
+      "whole_row_preservation_proven"
+    ],
+    "source_identities": {
+      "claim": {
+        "name": "bortus-data",
+        "uid": "19cc4b60-4536-4d80-8789-e27b5ad48b79",
+        "resourceVersion": "1126355",
+        "namespace": "bortus"
+      },
+      "pv": {
+        "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+        "uid": "89b8b6ec-c932-4686-9890-26df90a5c799",
+        "resourceVersion": "10369",
+        "namespace": null
+      },
+      "longhorn_volume": {
+        "name": "pvc-19cc4b60-4536-4d80-8789-e27b5ad48b79",
+        "uid": "74acb150-7031-4fab-9868-86f3f3a30e16",
+        "resourceVersion": "1126504",
+        "namespace": "longhorn-system"
+      },
+      "deployment": {
+        "name": "bortus",
+        "uid": "4deedc67-038a-4f82-a2d4-a83af316f2f6",
+        "resourceVersion": "1126483",
+        "namespace": "bortus"
+      },
+      "helmrelease": {
+        "name": "bortus",
+        "uid": "bed3008a-474f-411e-9956-1248e3718220",
+        "resourceVersion": "1152292",
+        "namespace": "flux-system"
+      },
+      "kustomization": {
+        "name": "migration-releases",
+        "uid": "f3757d64-04bd-46db-8b40-ae666999449c",
+        "resourceVersion": "1152243",
+        "namespace": "flux-system"
+      },
+      "backup_target": {
+        "name": "default",
+        "uid": "999fe7cd-e073-4a52-ba62-87db1857f876",
+        "resourceVersion": "1152302",
+        "namespace": "longhorn-system"
+      },
+      "replica_set": {
+        "name": "bortus-5c55f6d5b5",
+        "uid": "d6eada7c-eb76-401d-9799-56d82549fb2d",
+        "resourceVersion": "1126482",
+        "namespace": "bortus"
+      }
+    },
+    "restore_target": "bortus-restore-b473091bebef",
+    "mutations": 0,
+    "application_or_secret_values_read": false
+  },
+  "docs_checked": [
+    {
+      "path": "docs/ANSIBLE-2-API-INTERACTION.md",
+      "sha256_before_update": "d161d3821709befb6a55b5aafefd4395765a7b2895d099d048e85a8bdd39c5b7"
+    },
+    {
+      "path": "docs/API-USAGE.md",
+      "sha256_before_update": "ee6b875eb0e82efabc4cb7dee03f7ee6560c19ea8ef8e6fed43398461b9616ac"
+    },
+    {
+      "path": "docs/BORTUS-ADMISSION-QUALIFICATION.md",
+      "sha256_before_update": "62c884740b3629b1bee82be9674be249501cfd738db1019964c903723c38056d"
+    },
+    {
+      "path": "docs/BORTUS-DEPLOYMENT.md",
+      "sha256_before_update": "6c0e1def6eb1eea498118e4fe2d466dae05e05bc8bcb328dafaf41fd95b78344"
+    },
+    {
+      "path": "docs/BORTUS-INDEPENDENT-RESTORE.md",
+      "sha256_before_update": "474939c029f57ef82225a4fa2a74ebf258da37f93b068c4c5b8a561af7b62db4"
+    },
+    {
+      "path": "docs/BORTUS-OPERATOR-MTLS.md",
+      "sha256_before_update": "ad0853686afd95fbd39a6769efc880a152d74105f6342af17b0edb7a2034dae8"
+    },
+    {
+      "path": "docs/BORTUS-PHYSICAL-VOLUME-FENCE.md",
+      "sha256_before_update": "89cd19cf4b4717ed2d6f2c2ea4b61f74c9b9c0cd19eb5b9ba2dda6dcf6a4455e"
+    },
+    {
+      "path": "docs/BORTUS-RELEASE-IMAGE.md",
+      "sha256_before_update": "2f1195e1790201a7f5d2cc4fc0db17025be13c1c91cb3f3d8c0bac21a3f2278b"
+    },
+    {
+      "path": "docs/BORTUS-RELEASE-STAGING.md",
+      "sha256_before_update": "4391e1d3c15005a53740ddf0c17609ec40e65068342c0e1ab37445018f0c0685"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-COMPLETION.md",
+      "sha256_before_update": "ca5ab7c38a0b481baea277cd04d7c9c1744486c58db3c3ed5e97a6e9e8f4bd72"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-DATA.md",
+      "sha256_before_update": "6bb7a375bf98fd6f09ebf81c30fd4f6c1da8efb99c58e26e429cc81f7b040b61"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-MUTATIONS.md",
+      "sha256_before_update": "43e7cb42bdf569017373792731e2c56d547d58a818802de492fd6f15e6ff9e3e"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-READER.md",
+      "sha256_before_update": "e6b5c63975929663c50ffcfe1c4cca27f972586b5e849e5ff7c785d9558863a2"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-WATCH.md",
+      "sha256_before_update": "6d2152910c7f0639bb45f2b8a37903fd645e0018ec8cbdec15167e0488b77c9e"
+    },
+    {
+      "path": "docs/BORTUS-RESTORED-CONSUMER-FENCE.md",
+      "sha256_before_update": "0d843635d19dd9b015e4601ccfbd008a6335b60ce6ce3d96564be076d0a7f671"
+    },
+    {
+      "path": "docs/BOTRUS-WORKFLOW.md",
+      "sha256_before_update": "2af9884b0fb41b91a586c59401a3de4c86ee3da41e9fc235dd61e98f678507a9"
+    },
+    {
+      "path": "docs/CONNECTING-TO-A-CLUSTER.md",
+      "sha256_before_update": "53b1a4878c66750a9399d3a3d19b2b4e8ee2654b92235191f14efddc5453f8e4"
+    },
+    {
+      "path": "docs/FLUX-GITOPS.md",
+      "sha256_before_update": "d22c9747dcb5971a4d1368fe9bb22971489a660a83ed481b75889bc8497a1e4f"
+    },
+    {
+      "path": "docs/kubectl-cheatsheet.md",
+      "sha256_before_update": "fab19db188ba6b8189dab2d5449bde7e594194849dad20cadecf96309c6ce06a"
+    },
+    {
+      "path": "docs/MIGRATION-OPERATIONS.md",
+      "sha256_before_update": "fa0b3dc4af7f046626be998432cc9a4bf993601bf5022f8c25e961fe8b53eed7"
+    },
+    {
+      "path": "docs/SECRETS-ENGINE.md",
+      "sha256_before_update": "187a69bf8b5b9e397d7824925372f13b4bcc41dab088350d24dfdf747508f004"
+    },
+    {
+      "path": "docs/TECH-STACK.md",
+      "sha256_before_update": "e48b94baaa8ad4f7839d2778476205716a363244f85c89da699d565a75190da8"
+    },
+    {
+      "path": "docs/USER-PERMS.md",
+      "sha256_before_update": "9e873e2e170572794070b8d3b388b5a553ab8df3a6b4405906841b3feef6383e"
+    }
+  ],
+  "mutations": 0,
+  "application_or_secret_values_read": false,
+  "whole_row_restore_proven": false,
+  "admission_publication_proven": false,
+  "overall_goal_complete": false
+}

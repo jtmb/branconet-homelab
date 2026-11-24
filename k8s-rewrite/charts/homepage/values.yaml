@@ -1,0 +1,213 @@
+enabled: false
+replicaCount: 0
+image: ghcr.io/gethomepage/homepage:latest@sha256:b129cb0f674bd6d204e215bde2c2fc3f11d6ad0e82f6d20007cf80f74e1acbb1
+environmentSecret: homepage-runtime
+migration:
+  verified: false
+  state: private-accepted-production-reconciled
+  sources:
+  - ws_homepage
+  requiredEnvironmentKeys:
+  - HOMEPAGE_ALLOWED_HOSTS
+  - HOSTNAME
+  - NODE_ENV
+  - NODE_VERSION
+  - PATH
+  - PORT
+  - YARN_VERSION
+  storageSizingVerified: true
+  nativeSecretsImported: true
+  applicationChecksPassed: true
+  hostDockerDependencies: []
+  dataCopies:
+  - sourceHost: 192.168.0.5
+    sourcePath: /mnt/container-program-files/homepage/app
+    destinationPVC: homepage-data-1
+    mountPath: /app/config
+    measuredBytes: 5447199
+    allocatedGiB: 1
+    uid: 1000
+    gid: 65534
+  sourceCommandArgumentsRequireReview: false
+  launchSecretKeys: []
+resources:
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    name: homepage
+    namespace: homepage
+  spec:
+    replicas: 0
+    strategy:
+      type: Recreate
+    selector:
+      matchLabels:
+        app: homepage
+    template:
+      metadata:
+        labels:
+          app: homepage
+        annotations: {}
+      spec:
+        containers:
+        - name: homepage
+          image: '{{ .Values.image }}'
+          envFrom:
+          - secretRef:
+              name: '{{ .Values.environmentSecret }}'
+          ports:
+          - name: p3000-tcp
+            containerPort: 3000
+            protocol: TCP
+          volumeMounts:
+          - name: data-1
+            mountPath: /app/config
+            readOnly: false
+          - name: native-config
+            mountPath: /app/config/kubernetes.yaml
+            subPath: kubernetes.yaml
+            readOnly: true
+          - name: native-config
+            mountPath: /app/config/docker.yaml
+            subPath: docker.yaml
+            readOnly: true
+          - name: native-config
+            mountPath: /app/config/services.yaml
+            subPath: services.yaml
+            readOnly: true
+          - name: native-config
+            mountPath: /app/config/widgets.yaml
+            subPath: widgets.yaml
+            readOnly: true
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
+          env: []
+          imagePullPolicy: IfNotPresent
+        volumes:
+        - name: data-1
+          persistentVolumeClaim:
+            claimName: homepage-data-1
+        - name: native-config
+          secret:
+            secretName: homepage-rendered-config
+        nodeSelector: {}
+        serviceAccountName: homepage
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: homepage-data-1
+    namespace: homepage
+    annotations:
+      helm.sh/resource-policy: keep
+  spec:
+    storageClassName: longhorn
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 1Gi
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: homepage
+    namespace: homepage
+  spec:
+    selector:
+      app: homepage
+    ports:
+    - name: p3000-tcp
+      port: 3000
+      targetPort: 3000
+      protocol: TCP
+    type: ClusterIP
+- apiVersion: v1
+  kind: ServiceAccount
+  metadata:
+    name: homepage
+    namespace: homepage
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRole
+  metadata:
+    name: homepage-read
+  rules:
+  - apiGroups:
+    - ''
+    resources:
+    - namespaces
+    - pods
+    - nodes
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
+    verbs:
+    - get
+    - list
+    - watch
+  - apiGroups:
+    - metrics.k8s.io
+    resources:
+    - nodes
+    - pods
+    verbs:
+    - get
+    - list
+- apiVersion: rbac.authorization.k8s.io/v1
+  kind: ClusterRoleBinding
+  metadata:
+    name: homepage-read
+  roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: homepage-read
+  subjects:
+  - kind: ServiceAccount
+    name: homepage
+    namespace: homepage
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: homepage-http
+    namespace: homepage
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: web
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: homepage.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: homepage
+              port:
+                number: 3000
+- apiVersion: networking.k8s.io/v1
+  kind: Ingress
+  metadata:
+    name: homepage-https
+    namespace: homepage
+    annotations:
+      traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      traefik.ingress.kubernetes.io/router.tls: 'true'
+  spec:
+    ingressClassName: traefik
+    rules:
+    - host: homepage.branconet.lan
+      http:
+        paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: homepage
+              port:
+                number: 3000

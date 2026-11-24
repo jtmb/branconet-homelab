@@ -1,0 +1,13 @@
+# http-echo data PersistentVolumeClaim (Longhorn)
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: http-echo-data-pvc
+  namespace: http-echo
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: longhorn

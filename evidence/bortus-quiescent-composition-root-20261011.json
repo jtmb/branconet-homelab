@@ -1,0 +1,84 @@
+{
+  "kind": "root-integrated-local-quiescent-composition-qualification",
+  "rootSourceCommit": "1daea8fb9edca13bb87e0c4c456ded2135ecaf5a",
+  "nativeReviewedCommit": "1855955f93e206530101f9d7241b07ae99b4c341",
+  "actualExitCode": 0,
+  "actualTests": 65,
+  "skips": 0,
+  "seconds": 14.251,
+  "sourceFiles": 162,
+  "sourceManifestSha256": "46d8bdf0362146e08b69f34c395fb1f95d2d217789d2da4809f71df689e82fb4",
+  "workingSourcesUnchangedAfterQualification": true,
+  "run": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-quiescent-composition-tests-20261011-90e4d8",
+  "linuxRun": "/home/brajam/.cache/bortus-quiescent-composition/root-quiescent-composition-tests-20261011-90e4d8",
+  "independentReview": {
+    "terminal": {
+      "actualExitCode": 0,
+      "startUtc": "2026-10-11T18:22:07.365114+00:00",
+      "endUtc": "2026-10-11T18:22:22.115722+00:00",
+      "ownedChildReaped": true,
+      "sourceUnchanged": true
+    },
+    "handle": {
+      "pid": 2086426,
+      "start_ticks": "24205449",
+      "startUtc": "2026-10-11T18:22:07.365114+00:00"
+    },
+    "supervisorPidAbsent": true,
+    "logs": [
+      {
+        "name": "stdout.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0
+      },
+      {
+        "name": "stderr.log",
+        "sha256": "b8ebb8e5e2b19286816de4ec89976caab98042eb60a2c8e221e74edd772e868d",
+        "bytes": 10180
+      },
+      {
+        "name": "terminal.json",
+        "sha256": "a11f7a5748bfe140ede9c9028ea9e6b0f8419c4892db5af6718045bc1b76657c",
+        "bytes": 178
+      },
+      {
+        "name": "handle.json",
+        "sha256": "09d7d72c05272fad816f65a753ab8c52cfe3fbd2e67673be1c5369960d560c34",
+        "bytes": 91
+      }
+    ]
+  },
+  "docsChecked": [
+    "docs/ANSIBLE-2-API-INTERACTION.md",
+    "docs/API-USAGE.md",
+    "docs/BORTUS-ADMISSION-QUALIFICATION.md",
+    "docs/BORTUS-DEPLOYMENT.md",
+    "docs/BORTUS-INDEPENDENT-RESTORE.md",
+    "docs/BORTUS-OPERATOR-MTLS.md",
+    "docs/BORTUS-PHYSICAL-VOLUME-FENCE.md",
+    "docs/BORTUS-QUIESCENT-ARCHIVE.md",
+    "docs/BORTUS-QUIESCENT-SOURCE.md",
+    "docs/BORTUS-QUIESCENT-WATCH.md",
+    "docs/BORTUS-RELEASE-IMAGE.md",
+    "docs/BORTUS-RELEASE-STAGING.md",
+    "docs/BORTUS-RESTORE-COMPLETION.md",
+    "docs/BORTUS-RESTORE-DATA.md",
+    "docs/BORTUS-RESTORE-MUTATIONS.md",
+    "docs/BORTUS-RESTORE-READER.md",
+    "docs/BORTUS-RESTORE-WATCH.md",
+    "docs/BORTUS-RESTORED-CONSUMER-FENCE.md",
+    "docs/BOTRUS-WORKFLOW.md",
+    "docs/CONNECTING-TO-A-CLUSTER.md",
+    "docs/FLUX-GITOPS.md",
+    "docs/kubectl-cheatsheet.md",
+    "docs/MIGRATION-OPERATIONS.md",
+    "docs/SECRETS-ENGINE.md",
+    "docs/TECH-STACK.md",
+    "docs/USER-PERMS.md"
+  ],
+  "limits": [
+    "Public local mTLS/SQLite/age fixtures and mocked kubectl/SSH; no live API, operator reads or production writes.",
+    "The test supervisor was independently confirmed absent; closure of internal fixture resources is asserted by the passing controls.",
+    "Fresh-data capture, final image/schema/admission/principal qualification and forward/live/rollback acceptance remain pending."
+  ]
+}

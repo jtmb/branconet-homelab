@@ -1,0 +1,330 @@
+{
+  "scope": "Bounded registration lock heading/explanation alert semantics; full BORTUS delivery remains unaccepted",
+  "applicationCommit": "ac15e9cdd537c0be2d92b418bc30c85e7371cb43",
+  "frontendTree": "ef0764567f9cde744b4cdc1dc0c6fb1defa6af7c",
+  "rootIndependentSourceReview": {
+    "observedUnix": 1792390709.7881277,
+    "rootReviewed": true,
+    "base": "7b852b021e604f3c1190dbfad8b1a58f3a906286",
+    "commit": "ac15e9cdd537c0be2d92b418bc30c85e7371cb43",
+    "frontendTree": "ef0764567f9cde744b4cdc1dc0c6fb1defa6af7c",
+    "productionChange": "Exactly role=alert on existing locked heading/explanation wrapper, sign-in link outside",
+    "reversingOneAttributeRestoresEntirePriorPage": true,
+    "changedFiles": [
+      "docs/BOTRUS-WORKFLOW.md",
+      "docs/USER-PERMS.md",
+      "k8s-rewrite/front-end/src/app/auth/register/page.tsx",
+      "k8s-rewrite/front-end/tests/registration-availability.test.ts"
+    ],
+    "sameFinalRegistrationTestSHA256": "090246d3ba1622877f4a029aa898daefe73b0d5539ab7c8b1c2c6e7ada7fa1df",
+    "sameLoginTestSHA256": "24df777972bd64ae67414e17f92bd99bc0fd320f025f907ab51d6cfe175cdbcb",
+    "before": {
+      "exit": 1,
+      "pass": 31,
+      "fail": 14,
+      "skips": 0
+    },
+    "after": {
+      "exit": 0,
+      "pass": 45,
+      "fail": 0,
+      "skips": 0
+    },
+    "lint": {
+      "exit": 0,
+      "warnings": 0
+    },
+    "testScope": "Actual-page TSX/VM models; not browser/server auth/AT",
+    "held403Body": "Lock rendered while JSON promise held, retained after malformed settlement, no retry",
+    "allControlFlowStateFieldsMessagesNavigationServerAuthRolesUnchanged": true,
+    "actualAT": false,
+    "officialNext15": [
+      "https://nextjs.org/docs/15/app/getting-started/server-and-client-components",
+      "https://nextjs.org/docs/15/app/api-reference/components/link",
+      "https://nextjs.org/docs/15/architecture/accessibility"
+    ],
+    "W3C": "https://www.w3.org/WAI/ARIA/apg/patterns/alert/",
+    "noWorkloadReplay": true
+  },
+  "applicationFilesChanged": 4,
+  "applicationDocsChecked": 22,
+  "existingRootMarkdownDocsChecked": 46,
+  "newPortableHandoff": "docs/operations/handoffs/2026-10-19-bortus-registration-lock-successor.md",
+  "sameFinalRegistrationTestSHA256": "090246d3ba1622877f4a029aa898daefe73b0d5539ab7c8b1c2c6e7ada7fa1df",
+  "sameLoginTestSHA256": "24df777972bd64ae67414e17f92bd99bc0fd320f025f907ab51d6cfe175cdbcb",
+  "before": {
+    "exit": 1,
+    "pass": 31,
+    "fail": 14,
+    "skips": 0
+  },
+  "after": {
+    "exit": 0,
+    "pass": 45,
+    "fail": 0,
+    "skips": 0
+  },
+  "lint": {
+    "exit": 0,
+    "warnings": 0
+  },
+  "ci": [
+    {
+      "run": 39209058195,
+      "event": "push",
+      "commit": "ac15e9cdd537c0be2d92b418bc30c85e7371cb43",
+      "conclusion": "success",
+      "allStepsSuccess": true,
+      "stepCount": 12,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked install and native/standalone build in pinned compiler image",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original lint, type and unit checks with isolated runtime network",
+          "conclusion": "success"
+        },
+        {
+          "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+          "conclusion": "success"
+        },
+        {
+          "name": "Separate-process SQL writer-lock regression sensitivity",
+          "conclusion": "success"
+        },
+        {
+          "name": "Original strict integration and process controls",
+          "conclusion": "success"
+        },
+        {
+          "name": "Acquire locked browser CI tools (no app dependency change)",
+          "conclusion": "success"
+        },
+        {
+          "name": "Finite compiled Pods browser smoke",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "rawLogBytes": 566210,
+      "rawLogSHA256": "c9f4df04283187b795beaab2bd32c8fa6aa9d7fa568e5840975ca4cbf373f4b9",
+      "metadataSHA256": "7b03d905f661607e633830ae1616b5c514cdc0899a9e84c3bfb0f1ac47bda6b3"
+    },
+    {
+      "run": 39209064563,
+      "event": "pull_request",
+      "commit": "ac15e9cdd537c0be2d92b418bc30c85e7371cb43",
+      "conclusion": "failure",
+      "allStepsSuccess": false,
+      "stepCount": 12,
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Locked install and native/standalone build in pinned compiler image",
+          "conclusion": "failure"
+        },
+        {
+          "name": "Original lint, type and unit checks with isolated runtime network",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Separate-process SQL writer-lock regression sensitivity",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Original strict integration and process controls",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Acquire locked browser CI tools (no app dependency change)",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Finite compiled Pods browser smoke",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ],
+      "rawLogBytes": 24169,
+      "rawLogSHA256": "a972c61c658f632170f00c61f3607b0cd6e718634a898c9143932f1099bb2d34",
+      "metadataSHA256": "4bf9c69d98c72523e28a04ee9f5be1557cecd5afc072d6e0901fde6026f5f717",
+      "prevalidationCompilerImageRegistryFailure": true,
+      "remainingValidationStepsSkipped": 7,
+      "noProductFailureInferred": true,
+      "rerun": false
+    }
+  ],
+  "rootCheckedCIAllStepsMetadataAndRawLogs": true,
+  "unitTests": 406,
+  "originalSensitivityPairs": 8,
+  "integrations": 8,
+  "compiledPodsSmoke": true,
+  "build": {
+    "passed": true,
+    "buildId": "Msi330LZ8pF87ZYDxunjP",
+    "sourceRecords": 296,
+    "graphRecords": 41723,
+    "graphSHA256": "5651d273094efc1038d7c36c64e105bcb7cd97a8b4dae9d0d1fcd6763bfd9944",
+    "rawSourcesUnchanged": true,
+    "workerBindingsVerified": true,
+    "nativeLoadPassed": true,
+    "buildLimits": {
+      "cpu": 4,
+      "memory": 4294967296,
+      "swap": 0,
+      "pids": 256,
+      "deadlineSeconds": 900
+    },
+    "buildLogSHA256": "898ea90bc43eff666dffb219a50a7f192b58aca8a18a78f243f0ff200ea05c44",
+    "exporterSHA256": "5bcdb86fd8a795d72f195dbf5163a46ad09de79b54d0ead4dbba0eadb0743470"
+  },
+  "prelaunch": {
+    "sourceRecords": 296,
+    "compiledDependencyRecords": 41723,
+    "allCurrent": true,
+    "nativeBindings": true,
+    "workerBindings": true,
+    "graphSHA256": "5651d273094efc1038d7c36c64e105bcb7cd97a8b4dae9d0d1fcd6763bfd9944",
+    "frontendTree": "ef0764567f9cde744b4cdc1dc0c6fb1defa6af7c",
+    "observedUnix": 1792390771.158168,
+    "readonlyMountsRequired": true
+  },
+  "ui": {
+    "scope": "Seven finite integrated Codex IAB synthetic registration lock and preservation states",
+    "sourceCommit": "ac15e9cdd537c0be2d92b418bc30c85e7371cb43",
+    "frontendTree": "ef0764567f9cde744b4cdc1dc0c6fb1defa6af7c",
+    "buildId": "Msi330LZ8pF87ZYDxunjP",
+    "viewport": "1280x720 default",
+    "cases": [
+      "initialClosed",
+      "unknown500invalidJSON",
+      "open",
+      "validationMismatch",
+      "403HTMLafterValidation",
+      "403invalidJSON",
+      "403stringError"
+    ],
+    "screenshots": 7,
+    "DOMs": 7,
+    "nativeAXTexts": 10,
+    "lockCases": 4,
+    "contentScopedApplicationLockAlertsEach": 1,
+    "lockAlertContainsHeadingAndExplanation": true,
+    "signInLinkOutsideLockAlert": true,
+    "lockAlertHasNoTabIndex": true,
+    "formRemovedWhenLocked": true,
+    "unknownGuidancePreserved": true,
+    "openRoleNeutralFormPreserved": true,
+    "frameworkRouteAnnouncerSeparate": true,
+    "intentionalSubmitClicks": 4,
+    "interceptedPOSTRecords": 3,
+    "allPOSTsIntercepted": true,
+    "allForwarded": false,
+    "accountsCreated": 0,
+    "validationSendsNone": true,
+    "allOtherMutationsInterceptedByFixture": true,
+    "otherMutationObserverAbsent": true,
+    "returnedSignInRedactedFieldsExplicitlyCleared": true,
+    "initialFieldsBlank": true,
+    "exactPasswordEqualityUnobserved": true,
+    "tabClosed": true,
+    "actualAT": false,
+    "actualServerAuthentication": false,
+    "browserSuccessAuthentication": false,
+    "operatorStateUsed": false,
+    "performance": false,
+    "newImage": false,
+    "limitations": "Synthetic response and DOM/AX semantics only; no actual screen-reader, real outage, authentication/bootstrap, performance, image or live acceptance. No elapsed announcement or exact password equality measurement.",
+    "observedUTC": "2026-10-19T06:22:13.844212Z"
+  },
+  "closure": {
+    "observedUnix": 1792390931.880099,
+    "cleanupClosed": true,
+    "exactPreviewContainerIdAndNameAbsent": true,
+    "exactBuildContainerIdAndNameAbsent": true,
+    "supervisorBirthAbsent": true,
+    "linuxLoopback4401Absent": true,
+    "rawSourceFilesUnchanged": true,
+    "sourceRecords": 296,
+    "runtimeReadonlyGraphReliedOn": true,
+    "graphNotRewalked": true,
+    "actualNetworkNone": true,
+    "actualReadonlyRootfs": true,
+    "actualOnlySocketBindWritable": true,
+    "noRecursiveReaderChain": true
+  },
+  "windows4401Absent": true,
+  "retainedFailures": [
+    "Initial focused later-closure observer case-matched No such object while Docker returned lowercase; failed helper/record retained; corrected observer only,no workload replay",
+    "PR39209064563 compiler image pull registry502/Docker125 before install/build;7validation steps skipped,no product failure inferred,no rerun"
+  ],
+  "guardedRelease": {
+    "A07": "Failed five of ten original warm cases;no replay",
+    "actualAT": "Open",
+    "security": "Open;default image scan remains1/12Medium/zeroSecrets,no suppression or residual acceptance",
+    "compatibleIndependentRecovery": "Open",
+    "liveAcceptance": "Open",
+    "originalClausesPreserved": 44,
+    "chartsChanged": false,
+    "chartsDraftUnmerged": true,
+    "helmSuspended": true,
+    "guardedAdoption": false,
+    "productionChanged": false,
+    "newImage": false,
+    "rejectedActionsRemainStopped": true
+  },
+  "nextFeature": "Bounded login pending-submit status semantics review; preserve submission behavior and actual assistive-technology acceptance gate",
+  "fullGoalComplete": false,
+  "applicationOwnerReceiptSHA256": "1d3a28cb8c882076fd496d02b3c79110ea9d0f1cfa1029cbda3c70a1af19cd7a",
+  "independentAcceptance": {
+    "accepted": true,
+    "scope": "Bounded registration lock alert semantics source/model/compiledUI only",
+    "receiptSHA256": "035461e767a90c920b921a41ffca4a5af168847dbf81667aa4ba58abc0533afd",
+    "finiteManifestSHA256": "11c7766afb3db80135ca4af83ab2cb0a4b745f092bb65024216b8e974deb23d7",
+    "finitePins": 118,
+    "findings": 0,
+    "excludes": "Later root publication and root CI;no independent41723object rehash or new closure queries"
+  }
+}

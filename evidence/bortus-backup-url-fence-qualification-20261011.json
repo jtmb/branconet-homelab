@@ -1,0 +1,164 @@
+{
+  "scope": "Backup URL blank-field refusal; local synthetic regression only",
+  "qualified_source_commit": "0299079dc9371f523e0c76abe59d908559dcd9b3",
+  "recorded_utc": "2026-10-11T04:43:23.502093+00:00",
+  "source_bindings": {
+    "scripts/migration/checkpoint-bortus-volume.py": {
+      "tested_working_sha256": "a57609cc308b2d1968deb69322f609cc2ab15285756690a9c75a26b2ff0fb748",
+      "raw_git_sha256": "a57609cc308b2d1968deb69322f609cc2ab15285756690a9c75a26b2ff0fb748",
+      "raw_git_equals_working": true,
+      "checkout_eol_only_difference": false
+    },
+    "scripts/migration/inspect-bortus-independent-restore.py": {
+      "tested_working_sha256": "69b4e285288eded354172b1487d7971a666baa6084274391b5acf70d261e0326",
+      "raw_git_sha256": "69b4e285288eded354172b1487d7971a666baa6084274391b5acf70d261e0326",
+      "raw_git_equals_working": true,
+      "checkout_eol_only_difference": false
+    },
+    "scripts/migration/tests/test_bortus_cold_checkpoint.py": {
+      "tested_working_sha256": "d4552863c11bab36189c3aed6d12268631485609250df40dace48725b589bc4d",
+      "raw_git_sha256": "d4552863c11bab36189c3aed6d12268631485609250df40dace48725b589bc4d",
+      "raw_git_equals_working": true,
+      "checkout_eol_only_difference": false
+    },
+    "scripts/migration/tests/test_bortus_independent_restore_preflight.py": {
+      "tested_working_sha256": "4bad5bae8dfe2581fd82672ff8544f5e69b5b32796f1973364fe337f0fcf31fc",
+      "raw_git_sha256": "4bad5bae8dfe2581fd82672ff8544f5e69b5b32796f1973364fe337f0fcf31fc",
+      "raw_git_equals_working": true,
+      "checkout_eol_only_difference": false
+    }
+  },
+  "review_probe": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\restore-preflight-readonly-review-20261011.json",
+    "sha256": "9e8a9a4c5b6d9adf9df082c912f490f26783e9b786f97d7703b256684850e505",
+    "canonical_and_three_empty_extras_accepted_before_correction": true
+  },
+  "retained_tool_terminals": [
+    {
+      "id": "7b4163",
+      "actual_exit": 1,
+      "tests": 30,
+      "failures": 5,
+      "cause": "Original parsers discarded empty backup/volume/token extras",
+      "raw_file_artifact": null
+    },
+    {
+      "id": "60f1be",
+      "actual_exit": 1,
+      "tests": 30,
+      "errors": 4,
+      "cause": "Bounded parser ValueError not yet translated to fixed helper RuntimeError",
+      "raw_file_artifact": null
+    },
+    {
+      "id": "c7b849",
+      "actual_exit": 0,
+      "tests": 30,
+      "seconds": 0.188,
+      "raw_file_artifact": null
+    }
+  ],
+  "captured_corrected_run": {
+    "terminal": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-backup-url-fence-20261011\\terminal.json",
+    "terminal_sha256": "6337708eaee73f4c2b5dac2a23b0546e7f00e0f768c51483361010c0c49104fb",
+    "log": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-backup-url-fence-20261011\\focused30.log",
+    "log_sha256": "be49f1ac61e8cc4461741c97bd0aadf8bbd3344c305a5929df1c6d8a385b46a1",
+    "actual_exit": 0,
+    "tests": 30,
+    "source_hashes_equal": true
+  },
+  "parser_contract": "strict parsing, preserve empty values, max two fields, exact expected backup/volume dictionary, fixed query parsing failure",
+  "full58_after_correction": {
+    "actual_exit": 0,
+    "tests": 58,
+    "seconds": 7.33,
+    "terminal": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-backup-url-fence-20261011\\full58-terminal.json",
+    "terminal_sha256": "bf1b4ed51ea4d94aec1893f365a7f29bd3e3f15d79a72deaddd067464c4615da",
+    "log": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-backup-url-fence-20261011\\full58.log",
+    "log_sha256": "c2e3480d69a64d213832a4403c4f9d5c5911c91db644cf3b67d3c714be9b73da",
+    "bindings": {
+      "scripts/migration/bortus-sqlite-archive.py": {
+        "tested_working_sha256": "61e0ef9a1bf81a738aa5fc732f73dc372b55128b5c6e62264220ad23cba7492e",
+        "raw_git_sha256": "61e0ef9a1bf81a738aa5fc732f73dc372b55128b5c6e62264220ad23cba7492e"
+      },
+      "scripts/migration/checkpoint-bortus-volume.py": {
+        "tested_working_sha256": "a57609cc308b2d1968deb69322f609cc2ab15285756690a9c75a26b2ff0fb748",
+        "raw_git_sha256": "a57609cc308b2d1968deb69322f609cc2ab15285756690a9c75a26b2ff0fb748"
+      },
+      "scripts/migration/compare-bortus-databases.py": {
+        "tested_working_sha256": "427a52f9162101da3a5dd24aae6dc254f138558d7967f2976e43acee1b4f2066",
+        "raw_git_sha256": "427a52f9162101da3a5dd24aae6dc254f138558d7967f2976e43acee1b4f2066"
+      },
+      "scripts/migration/inspect-bortus-checkpoint.py": {
+        "tested_working_sha256": "0b5826747d3fea6a01c1353be7d3a25eafee455c1040f5be483ac5576bc5443b",
+        "raw_git_sha256": "0b5826747d3fea6a01c1353be7d3a25eafee455c1040f5be483ac5576bc5443b"
+      },
+      "scripts/migration/inspect-bortus-independent-restore.py": {
+        "tested_working_sha256": "69b4e285288eded354172b1487d7971a666baa6084274391b5acf70d261e0326",
+        "raw_git_sha256": "69b4e285288eded354172b1487d7971a666baa6084274391b5acf70d261e0326"
+      },
+      "scripts/migration/normalize-bortus-sqlite-archive.py": {
+        "tested_working_sha256": "44ab159936dc114c050625e78acca4b05228e0282ccaefeef79656be3fffa2f3",
+        "raw_git_sha256": "44ab159936dc114c050625e78acca4b05228e0282ccaefeef79656be3fffa2f3"
+      },
+      "scripts/migration/tests/test_bortus_checkpoint_preflight.py": {
+        "tested_working_sha256": "8376dbfbd0fd76aab78e30f7b75466252b14c658a7b976d4d196b43f8d0cfc58",
+        "raw_git_sha256": "8376dbfbd0fd76aab78e30f7b75466252b14c658a7b976d4d196b43f8d0cfc58"
+      },
+      "scripts/migration/tests/test_bortus_cold_checkpoint.py": {
+        "tested_working_sha256": "d4552863c11bab36189c3aed6d12268631485609250df40dace48725b589bc4d",
+        "raw_git_sha256": "d4552863c11bab36189c3aed6d12268631485609250df40dace48725b589bc4d"
+      },
+      "scripts/migration/tests/test_bortus_independent_restore_preflight.py": {
+        "tested_working_sha256": "4bad5bae8dfe2581fd82672ff8544f5e69b5b32796f1973364fe337f0fcf31fc",
+        "raw_git_sha256": "4bad5bae8dfe2581fd82672ff8544f5e69b5b32796f1973364fe337f0fcf31fc"
+      },
+      "scripts/migration/tests/test_database_preservation.py": {
+        "tested_working_sha256": "87ce1f374331eeef39aaba934710112e2f87abeb76e3c129de83ea829ffed29a",
+        "raw_git_sha256": "87ce1f374331eeef39aaba934710112e2f87abeb76e3c129de83ea829ffed29a"
+      },
+      "scripts/migration/tests/test_node_sqlite_reader.py": {
+        "tested_working_sha256": "8fc064bc423f160e5304aa6684e7bffd2df6ac1d36d6e76c00505659da46658b",
+        "raw_git_sha256": "8fc064bc423f160e5304aa6684e7bffd2df6ac1d36d6e76c00505659da46658b"
+      },
+      "scripts/migration/tests/test_release_rbac_inventory.py": {
+        "tested_working_sha256": "4defacd56a55711c3f5e4aa6b9b251f7c9ba43a3f5449b1ed8c07bc34e2d048f",
+        "raw_git_sha256": "4defacd56a55711c3f5e4aa6b9b251f7c9ba43a3f5449b1ed8c07bc34e2d048f"
+      },
+      "scripts/migration/tests/test_sqlite_archive_normalization.py": {
+        "tested_working_sha256": "7b4c94d58c914711610f2ac515a2f3c6fab7e14b15889671a07c521b6c3bb8c0",
+        "raw_git_sha256": "7b4c94d58c914711610f2ac515a2f3c6fab7e14b15889671a07c521b6c3bb8c0"
+      },
+      "scripts/migration/tests/test_sqlite_encrypted_archive.py": {
+        "tested_working_sha256": "a38ba705ef74678681ec574342a0cc13ac3335f170787074958df55a259fe3ed",
+        "raw_git_sha256": "a38ba705ef74678681ec574342a0cc13ac3335f170787074958df55a259fe3ed"
+      }
+    }
+  },
+  "live_checkpoint_or_restore": false,
+  "production_calls_or_mutations": false,
+  "docs_checked": [
+    "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\docs\\ANSIBLE-2-API-INTERACTION.md",
+    "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\docs\\API-USAGE.md",
+    "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\docs\\BORTUS-DEPLOYMENT.md",
+    "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\docs\\BOTRUS-WORKFLOW.md",
+    "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\docs\\CONNECTING-TO-A-CLUSTER.md",
+    "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\docs\\FLUX-GITOPS.md",
+    "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\docs\\kubectl-cheatsheet.md",
+    "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\docs\\MIGRATION-OPERATIONS.md",
+    "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\docs\\SECRETS-ENGINE.md",
+    "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\docs\\TECH-STACK.md",
+    "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\docs\\USER-PERMS.md"
+  ],
+  "limitations": [
+    "The first failed attempts are retained tool terminal outputs, not independently saved raw log artifacts",
+    "Image/admission/fresh checkpoint/independent NAS restore/full-row/live acceptance remains pending"
+  ],
+  "independent_corrected_review": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\restore-preflight-url-correction-review-20261011.json",
+    "sha256": "7548b7f5802b97834106e19aa073a1ade5ae6b6324265b5f63bb47cf1ef36fbb",
+    "public_parser_cases": 9,
+    "mocked_helper_url_tests": 2,
+    "production_calls_or_heavy_runtime": false
+  }
+}

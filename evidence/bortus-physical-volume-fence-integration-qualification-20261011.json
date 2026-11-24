@@ -1,0 +1,175 @@
+{
+  "scope": "Selected physical Longhorn PV alias fence integration over durable holder delete source; local tests and live read-only point-in-time preflight",
+  "native_commit": "c883869cd4458cdb1f6dd0eeb11252f88fc2e40a",
+  "native_import_parent_not_integrated": "a81bdc6069ba42824b31869271dd63195ebb0367",
+  "parent_root_commit": "7ff88ee835468267552af11f4e926fc98c456b02",
+  "native_verified_raw_files": [
+    {
+      "path": "docs/BORTUS-PHYSICAL-VOLUME-FENCE.md",
+      "git_blob": "d03e4bf32e2ed9396c5cd607dbd3e0a74c0e9e40",
+      "sha256": "7fe6573a87d02e81d5e21a2cb570b2dd0ceaf9d19ef0c420e675f325f764162e"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-COMPLETION.md",
+      "git_blob": "c25e7fddd1c45826956d9b4ad3e0965aeb6c70d3",
+      "sha256": "7a8d26694ac0cb88431f4a50bd5f6130d5b6ce986035b38a3c0c5e10e86a12e7"
+    },
+    {
+      "path": "docs/implementation-evidence/physical-volume-alias-qualification.json",
+      "git_blob": "da508236fa000a1461c738c0ec42688ff0d3102e",
+      "sha256": "684cc29a235183eeae391daba6593cbb7ae680a48ee444662ffce2c1233767ff"
+    },
+    {
+      "path": "scripts/migration/checkpoint-bortus-volume.py",
+      "git_blob": "9648f149fee62ab06e3192bff52a9e2e94beaa58",
+      "sha256": "484ab66f9ab8677a703557595064c71fedc7adec3623cd9dd98767caf6e93c75"
+    },
+    {
+      "path": "scripts/migration/inspect-bortus-checkpoint.py",
+      "git_blob": "4537a230642b4cee5430cb2c0ff948422b5910e5",
+      "sha256": "c77e26a60e9e7d5f2217ad04c4c0f1f33b58013e577476f1dfc0f3f0c10bbc9a"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_checkpoint_preflight.py",
+      "git_blob": "b7f141ef1401ae9b9226cbaac31622edf09d7721",
+      "sha256": "fa499a998cb439ed904c701375a990df47f37cd4e21fdd8301ab4d8436d4e062"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_cold_checkpoint.py",
+      "git_blob": "7c6dcf14dbef9aa2c7ff0453beccc361df377c9d",
+      "sha256": "b73876d68890598b876a7738a0bce31b16cb5b70779d7995d50d68e36a71af50"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_physical_volume_fence.py",
+      "git_blob": "43b9742dcbc223173d50364ff4254d82378dd319",
+      "sha256": "ed3a3f80d1e227caf3694cd1903d661a9844d94bddd8b117c847b8358ed89172"
+    }
+  ],
+  "native_tests": {
+    "tests": 84,
+    "actual_exit_code": 0,
+    "skips": 0,
+    "terminal_path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\physical-volume-alias-v1\\qualification-v2\\terminal.json",
+    "terminal_sha256": "1531ed312e8b6af4ce214713c12248c730837085b62e33c1a273b8faef0fcd2a",
+    "initial_typemeta_failure_retained": true
+  },
+  "native_default_scan": {
+    "files": 8,
+    "actual_exit_code": 0,
+    "findings": 0,
+    "terminal_path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\physical-volume-alias-v1\\scan-terminal.json",
+    "terminal_sha256": "afcb9d25b5c0235f83f8f7e2558460f7af8df4b3b4f6adf4f26c0f596977bda7",
+    "scope": "Exact selected rawfiles only; not fullapp/image scan"
+  },
+  "combined_root_tests": {
+    "tests": 100,
+    "actual_exit_code": 0,
+    "reported_seconds": 0.347,
+    "terminal_path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-physical-volume-fence-20261011\\terminal.json",
+    "terminal_sha256": "3ee8f4addd894092dfefd0d17aef640c24b417e474132a3601c8a75c02a8899c",
+    "source_sha256": {
+      "scripts/migration/backup-bortus-image.py": "4b9609b92656c56c3f48040d6750ab11e2fb77b170a66fbee0931475a067a07f",
+      "scripts/migration/bortus-dashboard-proof.py": "db8daab47664038afd0eabe1dccd227384d9678c8de517be85422faa0768825e",
+      "scripts/migration/bortus-dashboard-rbac.py": "a578729edc7ccf595d8b7fc83c903046a62fdc6aef824cd6aa69fc46d5210ee1",
+      "scripts/migration/bortus-live-proof.py": "4e83068974e950126197e3bd543c3a10900c128262a73badc2b8c9856d0f66ff",
+      "scripts/migration/bortus-restore-completion.py": "6e5c36ad8faaf4228e00ba608143317c4069a0e50a98a0fd760f5c5228e95ec4",
+      "scripts/migration/bortus-restore-journal.py": "e90b25b1a7226e072f3d3b1b3c872f38cbf2f05797270e9100a60dfa83a12f18",
+      "scripts/migration/bortus-sqlite-archive.py": "61e0ef9a1bf81a738aa5fc732f73dc372b55128b5c6e62264220ad23cba7492e",
+      "scripts/migration/build-bortus-image.py": "2c6410f13afee153d5141e66cdab06841075f5e8a7487e526091ddbb0a002847",
+      "scripts/migration/checkpoint-bortus-volume.py": "4208f8e62e1c32a432bc8a485981541fc06fecbaac7a094e7f2ebd0cd5f7d257",
+      "scripts/migration/compare-bortus-databases.py": "427a52f9162101da3a5dd24aae6dc254f138558d7967f2976e43acee1b4f2066",
+      "scripts/migration/deploy-bortus-staging.py": "7223db1a4fdcf1ff7af5ade64f7741360d32ee233f75a4f87adde4f2833792bc",
+      "scripts/migration/distribute-bortus-image.py": "483d21a14b313f4a3ae6f6a7a0c400f3fda6341b43dfde1d7d30c5ceae8f0839",
+      "scripts/migration/inspect-bortus-checkpoint.py": "dcf77da688549ada8c62205b9cfc89490f5aa1176d80e1545a432f0589e3c284",
+      "scripts/migration/inspect-bortus-independent-restore.py": "69b4e285288eded354172b1487d7971a666baa6084274391b5acf70d261e0326",
+      "scripts/migration/inspect-bortus-release-rbac.py": "0c72eb4e8f87c5377f3416c3c255016415490d5791003294cb562d9e93ae90cb",
+      "scripts/migration/normalize-bortus-sqlite-archive.py": "44ab159936dc114c050625e78acca4b05228e0282ccaefeef79656be3fffa2f3",
+      "scripts/migration/prepare-bortus-chart.py": "0df2bcaa9e84753ca0b469e1f6bf3211d2ba7447c5177143af25152da5176318",
+      "scripts/migration/restore-native-bortus-backup.py": "84e173424cb449ce3f47a282a9893e8779859a30e95b0aea49515fc136379dc9",
+      "scripts/migration/tests/test_bortus_checkpoint_preflight.py": "b26a68302e354b3b944761f4d7a8bf00938524960ea39a18f071002cfb4ed9a7",
+      "scripts/migration/tests/test_bortus_cold_checkpoint.py": "5022ed25378c859f6e08dcda8b8a385862c652a8c2ef9400a56fccc4a4f496fa",
+      "scripts/migration/tests/test_bortus_cold_delete_intent.py": "e68b734a7d636c7fe1d7b6e37e2b167e992f1caebe8943b48874645cc6e6614b",
+      "scripts/migration/tests/test_bortus_cold_journal.py": "a1cfa8ebac5ee32c21b3bda2a87601048f0ddac05f761486c5883348532d07dc",
+      "scripts/migration/tests/test_bortus_independent_restore_preflight.py": "4bad5bae8dfe2581fd82672ff8544f5e69b5b32796f1973364fe337f0fcf31fc",
+      "scripts/migration/tests/test_bortus_physical_volume_fence.py": "a4e9de6a236db8ab835a35f6ae451fa0e60835139689358d6dcd722f20f12b8b",
+      "scripts/migration/tests/test_bortus_restore_completion.py": "b78f8fd41ccd818a1675c5fd96da491a3ffeb36b36ef08cf1221e66efef69278",
+      "scripts/migration/tests/test_bortus_restore_journal.py": "f7362317b159e1a2259c26fc494d4d049f0498e8bd04a507c7c77c861836cf40"
+    },
+    "full_helper_suite_including_node_age_run": false
+  },
+  "delete_intent_independent_review": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\physical-volume-alias-v1\\root-delete-intent-independent-review.json",
+    "sha256": "912b412f540c5c6a8ede8a93ec735217cb811db446518d521ea777fe6aeb2c50",
+    "review_source": "022fd1eadd4bd8387211471f51b510ef2da7fec7",
+    "concrete_defects_found": false
+  },
+  "live_read_only": {
+    "terminal_path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-physical-volume-fence-20261011\\live-operator-terminal.json",
+    "terminal_sha256": "21e1b443c8a9d437b8a6a2afbe395b1eb36ec2de821b2678c8d0ea632ec55361",
+    "operator_report": {
+      "path": "/home/brajam/.local/share/branconet-migration/bortus-physical-pv-preflight-20261011-054941.json",
+      "sha256": "4e392fc049bd721557c9391aeb318845cd511551c77e35f00a31fd04eaebc26d"
+    },
+    "pv_inventory": {
+      "items": 53,
+      "resourceVersion": "934760",
+      "sole_original_longhorn_pv": true
+    },
+    "source_sha256": "dcf77da688549ada8c62205b9cfc89490f5aa1176d80e1545a432f0589e3c284",
+    "mutations": 0,
+    "database_or_secret_reads": 0,
+    "holder_image_supplied_or_qualified": false,
+    "reads_atomic": false
+  },
+  "retained_prior_output_failures": {
+    "first_main_exit_code": 1,
+    "second_main_exit_code": 1,
+    "third_main_exit_code": 1,
+    "root_observer_bug": "Second observer compared relative filename to actual absolute codefilename and captured noexception; corrected to actualmain code object",
+    "corrected_observer_exception": "FileNotFoundError errno2 at originalCLI report os.open line250; WindowsAppData outputparent absent fromWSL",
+    "unchanged_client_inspection_passed": true,
+    "resolution": "Use existingWSLoperator runtime output; unchanged actualmain then passed",
+    "artifacts": {
+      "live-attempt2-stderr.log": "e8f0039a3f89467b2b2efafc418cab47d2acd7c997a320fc80a1866bed2775b0",
+      "live-attempt2-stdout.log": "05cd764ff054ac2ab909051086b6caf6eaed67f3492421516d8541f9baf6a34e",
+      "live-attempt2-terminal.json": "5010934a8d699d10f3585f92666dc58f4ee3ac054ddfa7a086531e579d705d8c",
+      "live-attempt3-observer.py": "792792585df82705b57b5c2f776669dc051071daff17689598761b03baa88009",
+      "live-attempt3-stderr.log": "e8f0039a3f89467b2b2efafc418cab47d2acd7c997a320fc80a1866bed2775b0",
+      "live-attempt3-stdout.log": "3d08e3602ce6d09c3146f909b0a89bc7badfa46fdd42dd6ed98b3f45225babbc",
+      "live-attempt3-terminal.json": "07f9775b0c8113b36c54a9a384fed85e29916ac186dae648e79ebea69a33c50b",
+      "live-diagnostic-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "live-diagnostic-stdout.json": "b1c95da5e181d95c3a837b01b04513e2725984388b2256107771b77a2407ce77",
+      "live-diagnostic-terminal.json": "a4fd389dcf82836914171d2b931269814487bbb2df9cb8ec3ebd32d7a2276f1a",
+      "live-operator-stderr.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "live-operator-stdout.jsonl": "579248740106ccc63a431da4e4e44c4535e6495a91224e41e5ffd4fb2f6a5cb4",
+      "live-operator-terminal.json": "21e1b443c8a9d437b8a6a2afbe395b1eb36ec2de821b2678c8d0ea632ec55361",
+      "live-stderr.log": "e8f0039a3f89467b2b2efafc418cab47d2acd7c997a320fc80a1866bed2775b0",
+      "live-stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "live-terminal.json": "2aa1efa5c3bb87f05df61e37b0f2fdab1b89c921b89b45d49817aab211da4636",
+      "stderr.log": "da2a193c0ad05f301e76bf10bcb4cfc01e2d825d10bccfe30795534d12e4a2d7",
+      "stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "terminal.json": "3ee8f4addd894092dfefd0d17aef640c24b417e474132a3601c8a75c02a8899c"
+    }
+  },
+  "source_gate_limits": {
+    "pv_count": 10000,
+    "output_bytes_post_capture": 8388608,
+    "api_request_seconds": 20,
+    "subprocess_seconds": 25,
+    "identity_driver_handle_chars": 253,
+    "resource_version_chars": 256,
+    "reads_atomic": false,
+    "api_calls": 0,
+    "database_or_secret_reads": 0,
+    "mutations": 0
+  },
+  "actual_watch_or_restore_executor": false,
+  "cold_capture_or_independent_restore_data_acceptance": false,
+  "pending": [
+    "Actual bounded durableTLS/list/watch collector and confirmedrestoreUID chain",
+    "Qualified immutableimage/preload/admission/scopedRBAC",
+    "Repeatedexecution/source/consumer coordination",
+    "Freshencryptedindependentrestore/fullrowequality",
+    "FinalA01-A22/nativeKVperformance/liveacceptance"
+  ]
+}

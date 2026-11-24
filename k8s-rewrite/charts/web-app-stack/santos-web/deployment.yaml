@@ -1,0 +1,31 @@
+# Santos Web — Business website
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: santos-web
+  namespace: website-stack
+  labels:
+    app: santos-web
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: santos-web
+  template:
+    metadata:
+      labels:
+        app: santos-web
+        branconet.io/type: app
+    spec:
+      containers:
+        - name: santos-web
+          image: jtmb92/santos-web:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 300m
+              memory: 256Mi

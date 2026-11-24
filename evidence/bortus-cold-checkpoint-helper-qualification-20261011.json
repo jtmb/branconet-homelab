@@ -1,0 +1,75 @@
+{
+  "scope": "Local BORTUS-only checkpoint coordinator qualification; no live capture or restore",
+  "qualified_source_commit": "42b73242b2a5de57e91640a720361830a7f89305",
+  "source": {
+    "scripts/migration/checkpoint-bortus-volume.py": "1aaa77620b57da7d6a7c54cc28c2901341e1052749e155bd021f339c13ac9c7e",
+    "scripts/migration/tests/test_bortus_cold_checkpoint.py": "48d7549e2adabe2008f682951a5edf4ba461d17bcc7b868edec0e6f0b9db1922"
+  },
+  "independent_raw_git_verification": {
+    "console_record": "7d3ea7",
+    "all_working_bytes_equal_committed_blobs": true
+  },
+  "initial_failure_retained": {
+    "console_record": "e254d0",
+    "exit_code": 1,
+    "tests": 10,
+    "failures": 1,
+    "case": "A lost stop reply left the known original writer terminating during conditional resume",
+    "correction": "Wait boundedly for that exact original UID to disappear before restoring the writer; foreign UIDs still refuse restart",
+    "production_mutations": 0
+  },
+  "corrected_focused_tests": {
+    "console_record": "239692",
+    "exit_code": 0,
+    "tests": 10,
+    "elapsed_seconds": 0.016
+  },
+  "final_helper_suite": {
+    "console_record": "3388ff",
+    "command": "python3 -B -m unittest discover -s scripts/migration/tests -p test_*.py -v",
+    "runtime": "Ubuntu WSL Python 3.14.4",
+    "exit_code": 0,
+    "tests": 33,
+    "new_cold_checkpoint_tests": 12,
+    "elapsed_seconds": 0.402,
+    "coverage": [
+      "Cold-only snapshot creation, full NAS backup and actual resumed writer ownership",
+      "Original false and true reconciliation flags and scoped mutations only",
+      "Original claim/PV/Longhorn/writer identity refusal before mutation",
+      "UID/resourceVersion/control-field JSON Patch fencing and strict scalar types",
+      "Lost mutation outcomes before and after application with no blind replay",
+      "Ambiguous snapshot retains holder, restores writer and never starts a backup",
+      "Foreign consumers block both cold capture and unsafe restart",
+      "API holder defaults allowed but credential, writable, root and helper drift refused",
+      "Recreated controller and untouched reconciliation flag drift refuse resume",
+      "Exact tagless digest grammar with schemes/tags/incomplete references refused",
+      "Foreign or credential-bearing backup URL never persisted and prevents cleanup",
+      "Patch and UID/resourceVersion delete preconditions use stdin instead of argv",
+      "Existing run or process lock never overwrites retained journals"
+    ]
+  },
+  "read_only_live_contract_inspection": {
+    "console_records": ["85903c", "17ceca"],
+    "snapshot_and_backup_metadata_observed": true,
+    "longhorn_backup_defaults_and_added_labels_allowed": true,
+    "pod_termination_message_defaults_allowed": true,
+    "database_or_secret_values_read": false,
+    "mutations": 0
+  },
+  "documentation": {
+    "root_docs_checked": 11,
+    "affected_operations_guide_updated": true,
+    "pending_live_requirements_explicit": true
+  },
+  "limitations": {
+    "capture_executed_on_production": false,
+    "image_qualification_or_three_node_preload_proven": false,
+    "actual_admission_or_conditional_mutations_proven": false,
+    "fresh_native_nas_backup_complete": false,
+    "fresh_sqlite_encrypted_checkpoint_proven": false,
+    "fresh_native_etcd_checkpoint_proven": false,
+    "independent_restore_proven": false,
+    "whole_row_or_new_kv_preservation_proven": false,
+    "separate_api_reads_are_atomic": false
+  }
+}

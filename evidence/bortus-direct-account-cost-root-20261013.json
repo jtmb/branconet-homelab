@@ -1,0 +1,61 @@
+{
+  "scope": "One isolated public cost diagnostic; complete asynchronous file/schema/admission path, no HTTP acceptance",
+  "numeric": {
+    "observations": 24,
+    "untrimmedAlternatingPairs": 12,
+    "boundaryPairsPerObservation": 100,
+    "medianMsPerTwoReads": {
+      "prisma": 0.6094123149999996,
+      "direct": 0.5639928749999978
+    },
+    "savedMsPerTwoReads": 0.04541944000000171,
+    "descriptivePercentGain": 7.452990181204616,
+    "batchP95Definition": "Maximum of 12 batches; not individual HTTP p95",
+    "batchP95": {
+      "prisma": 69.38655200000017,
+      "direct": 64.78185900000005
+    },
+    "coldConnections": [
+      {
+        "backend": 0,
+        "elapsedMsIncludingClose": 2.780804999999873
+      },
+      {
+        "backend": 1,
+        "elapsedMsIncludingClose": 0.9884479999996074
+      }
+    ],
+    "coldDefinition": "New connection after controls; module and filesystem already exercised; includes close, not process startup",
+    "cpuMedianUsPer100Pairs": {
+      "0": 68493.5,
+      "1": 76249.5
+    },
+    "maxObservedProcessPeakRssKiB": 119156,
+    "maxTimerLatenessMs": 0.8584180000002561,
+    "allOwnersDrained": true,
+    "source": "94a0704b5b2057669c6475d255a4c7bec9a8ac0b",
+    "costStdoutSHA256": "f19d0783e754e21df892b0a1921d5078706cdebfdba5c71207af1b59776544ff",
+    "httpOrProductionAcceptance": false
+  },
+  "outerExit": 0,
+  "supervisorExit": 0,
+  "containerExit": 0,
+  "prerequisites": 6,
+  "freshIdentitiesAbsent": 17,
+  "exactContainerNameAndIDAbsent": true,
+  "allOriginalObservationsRetained": true,
+  "sourceDependenciesInputsUnchanged": true,
+  "wrongPREPDraftPreservedUnrun": true,
+  "freshReaderCorrectedBySinglePREPChange": true,
+  "rootTools": {
+    "dispatch": "b46f82",
+    "actualCompletion": "0357fb",
+    "recompute": "59ac99",
+    "freshSourceCorrection": "84039f",
+    "freshClosure": "97bd51"
+  },
+  "cpuTradeoff": "Median CPU per100pairs rises from68493.5 to76249.5 microseconds; about11.3percent.",
+  "next": "Frozen source94a functional/type/build and unchanged HTTP gates before adoption",
+  "productionAdoption": false,
+  "overallAcceptance": false
+}

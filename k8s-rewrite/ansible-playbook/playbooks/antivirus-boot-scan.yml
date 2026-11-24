@@ -1,0 +1,10 @@
+---
+# Scan each node's independently mounted local /boot filesystem serially.
+- name: Scan local boot filesystems without changing node contents
+  hosts: k8s_nodes
+  serial: 1
+  order: inventory
+  become: true
+  gather_facts: true
+  vars_files: [../group_vars/all.yml]
+  roles: [antivirus_boot_scan]

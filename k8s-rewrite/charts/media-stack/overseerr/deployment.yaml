@@ -1,0 +1,50 @@
+# Overseerr — Media request manager
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: overseerr
+  namespace: plex
+  labels:
+    app: overseerr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: overseerr
+  template:
+    metadata:
+      labels:
+        app: overseerr
+        branconet.io/type: app
+      annotations:
+        homepage.group: Media
+        homepage.name: Overseerr
+        homepage.icon: "https://static-00.iconduck.com/assets.00/overseerr-icon-2048x2048-5ncr26li.png"
+        homepage.href: "http://overseerr.branconet.local/"
+        homepage.description: Media request and discovery
+    spec:
+      containers:
+      - name: overseerr
+        image: lscr.io/linuxserver/overseerr:latest
+        ports:
+        - containerPort: 5055
+          name: http
+        env:
+        - name: LOG_LEVEL
+          value: "info"
+        - name: TZ
+          value: "America/New_York"
+        volumeMounts:
+        - name: config
+          mountPath: /config
+        resources:
+          requests:
+            cpu: 50m
+            memory: 256Mi
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+      volumes:
+      - name: config
+        persistentVolumeClaim:
+          claimName: overseerr-config-pvc

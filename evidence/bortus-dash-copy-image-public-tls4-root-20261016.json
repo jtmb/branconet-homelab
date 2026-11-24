@@ -1,0 +1,157 @@
+{
+  "status": "QUALIFIED_EXACT_NEW_IMAGE_PUBLIC_SDK_NODE_TLS4_ONLY",
+  "source": "9cb81363f33333ea00d6f5d7f71036c780d88e1c",
+  "compiledSource": "d901ccdd77d73981ca55708e124ab9699c8d79b4",
+  "compilationReplayed": false,
+  "dockerLocalImageId": "sha256:4a84c0b5fe1f2ca74ca6a0a812f943b2d739b9bf651c4cb13c4e005d9a332d67",
+  "rawConfigDigest": "sha256:79e6f768446193a008ccc6744765341e5ddfd380bd6649bd71bccaeab8c716ec",
+  "archiveSHA256": "36ba25de5c049bba72a55e299ce16584d8792fccdaffd261b7bf3d0594893b56",
+  "actorTool": "89f803",
+  "actorActualExit": 0,
+  "independentTool": "8c1fa4/session83628 then065cad",
+  "independentActualExit": 0,
+  "freshAndOneFinalTool": "132f6e",
+  "freshAndFinalActualExit": 0,
+  "cases": [
+    {
+      "case": "server",
+      "passed": true,
+      "requests": 1,
+      "tlsServerErrors": 0
+    },
+    {
+      "case": "badca",
+      "passed": true,
+      "requests": 0,
+      "tlsServerErrors": 0
+    },
+    {
+      "case": "badsan",
+      "passed": true,
+      "requests": 0,
+      "tlsServerErrors": 0
+    },
+    {
+      "case": "server-no-client",
+      "passed": true,
+      "requests": 0,
+      "tlsServerErrors": 1
+    }
+  ],
+  "expectedGETCounts": [
+    1,
+    0,
+    0,
+    0
+  ],
+  "originalLimitsAndAllLoopsUnchanged": true,
+  "sourceReviewTools": [
+    "9a0619",
+    "4ad1df",
+    "75a12a"
+  ],
+  "sourceFiles": 11,
+  "actorRecords": 76,
+  "runtimeBirthsAbsent": 15,
+  "originalRetainedCIDNameQueries": 2,
+  "finalCurrentRecords": 241,
+  "finalPriorBirthsAbsent": 37,
+  "noFinalGraphQueryOrSelfChain": true,
+  "materialSHA256": "2ba18bfb13713ce046a49a671cdcdd77107397b290b38899647da9a47e195432",
+  "full300SecondValidityGuardRetained": true,
+  "syntheticFixtureMaterialOnly": true,
+  "sourceScanner": {
+    "tool": "80bee1",
+    "literalExit": 1,
+    "findings": 4,
+    "files": 18,
+    "classification": {
+      "literalScannerExit": 1,
+      "findings": 4,
+      "allExactQualifiedPublicSyntheticTLSKeySpans": true,
+      "materialSHA256": "2ba18bfb13713ce046a49a671cdcdd77107397b290b38899647da9a47e195432",
+      "materialBytes": 12654,
+      "originalQualifiedMaterialUnchanged": true,
+      "positions": [
+        {
+          "role": "badca",
+          "rule": "private-key",
+          "startColumn": 1168,
+          "endColumn": 2897,
+          "syntheticSpanSHA256": "c42877c5fb54fe38f8b011d2514e81ee8243050147d642db544a7e2b9c1e362b"
+        },
+        {
+          "role": "badsan",
+          "rule": "private-key",
+          "startColumn": 4057,
+          "endColumn": 5786,
+          "syntheticSpanSHA256": "358f78812d23a7404a0c833cae0f8001e76a29590b1518841a4345d1318e3fc7"
+        },
+        {
+          "role": "client",
+          "rule": "private-key",
+          "startColumn": 8010,
+          "endColumn": 9739,
+          "syntheticSpanSHA256": "3c74bb20fdc62137fe7cba06b22118b4711d38d9d40659e6cce8e1d1ccf9c5e1"
+        },
+        {
+          "role": "server",
+          "rule": "private-key",
+          "startColumn": 10919,
+          "endColumn": 12648,
+          "syntheticSpanSHA256": "e41d321654d63df821729f23f1ff8eca2de974fa3a442acc617c6ffd6393bcf4"
+        }
+      ],
+      "rootBoundedFixtureParseOnly": true,
+      "operatorOrProductionMaterialRead": false,
+      "suppressionOrRescan": false,
+      "findingsRetained": true,
+      "classificationFirstRefusal": "df4bee assumed match included trailing escaped newline; exact PEM spans exclude only that final escaped LF; positions verified1bff12"
+    },
+    "classificationSHA256": "75dc2d69ac879988780cd12b75fa2b9def1b3e6d8db54828044db39b0ecff2b7",
+    "operatorOrProductionMaterialUsed": false,
+    "suppressionOrRescan": false
+  },
+  "postSourceScanner": {
+    "tool": "75a12a",
+    "literalExit": 0,
+    "findings": 0,
+    "files": 9
+  },
+  "preparationRefusalsRetained": [
+    "PartialV1 helper-count bookkeeping assertions before operation; all actual6nested function bodies remained raw exact.",
+    "df4bee initially included escaped trailing newline in classified PEM span; corrected exact columns via1bff12/356792.",
+    "d73bf2 ROOT checker assumed a dynamic basis program assignment was literal; corrected75a12a before any reader executed."
+  ],
+  "publicSDKAndNodeTLS4Qualified": true,
+  "productionSecretTransportQualified": false,
+  "newNodeWeak27RuntimeSemanticsQualified": false,
+  "nscdResidualCarriedForward": false,
+  "securityAccepted": false,
+  "performanceAccepted": false,
+  "productionChanged": false,
+  "originalDataPreserved": true,
+  "overallAcceptance": false,
+  "proofs": [
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-9cb-d901-dash-public-sdk-tls4-post-20261016-v1\\result.json",
+      "bytes": 4317,
+      "sha256": "91bcf7ae62b450d26ce779fdf562f3a497edb9debae91638c2dc3149f9164130"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-9cb-d901-dash-public-sdk-tls4-post-20261016-v1\\terminal.json",
+      "bytes": 4487,
+      "sha256": "99b3504eae9d514a4b248c14bd5be1d2bda7f72940b148c1f1ff1d21dd7f54ea"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-9cb-d901-dash-public-sdk-tls4-final-20261016-v1.json",
+      "bytes": 59572,
+      "sha256": "48e240faa8a732d974aa58524e552293aa2367700eb1781fc25c633fe8103c53"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-9cb-d901-dash-public-sdk-tls4-20261016-v1\\result.json",
+      "bytes": 4590,
+      "sha256": "6d6519ec4bc80b0f712e39c858140b2773a35b6c6cd0292773b4472496caac30"
+    }
+  ]
+}

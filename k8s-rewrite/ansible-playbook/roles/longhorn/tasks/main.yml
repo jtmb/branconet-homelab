@@ -1,0 +1,91 @@
+---
+- name: Download pinned Longhorn installation manifest
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/longhorn/longhorn/{{ longhorn_version }}/deploy/longhorn.yaml"
+    dest: /etc/kubernetes/longhorn-upstream.yaml
+    mode: '0644'
+
+- name: Configure retained encrypted two-replica volumes before creation
+  ansible.builtin.shell: |
+    python3 - <<'PY'
+    import pathlib
+    s=pathlib.Path('/etc/kubernetes/longhorn-upstream.yaml').read_text()
+    needle='numberOfReplicas: "3"'
+    if s.count(needle)!=1:raise SystemExit('Longhorn StorageClass manifest shape changed')
+    s=s.replace(needle,'numberOfReplicas: "{{ longhorn_replicas }}"\n      encrypted: "true"\n      csi.storage.k8s.io/provisioner-secret-name: "longhorn-crypto"\n      csi.storage.k8s.io/provisioner-secret-namespace: "longhorn-system"\n      csi.storage.k8s.io/node-publish-secret-name: "longhorn-crypto"\n      csi.storage.k8s.io/node-publish-secret-namespace: "longhorn-system"\n      csi.storage.k8s.io/node-stage-secret-name: "longhorn-crypto"\n      csi.storage.k8s.io/node-stage-secret-namespace: "longhorn-system"\n      csi.storage.k8s.io/node-expand-secret-name: "longhorn-crypto"\n      csi.storage.k8s.io/node-expand-secret-namespace: "longhorn-system"')
+    s=s.replace('reclaimPolicy: "Delete"','reclaimPolicy: "Retain"')
+    pathlib.Path('/etc/kubernetes/longhorn.yaml').write_text(s)
+    PY
+  changed_when: true
+
+- name: Install Longhorn using server-side apply for its CRDs
+  ansible.builtin.command: kubectl apply --server-side -f /etc/kubernetes/longhorn.yaml
+  register: longhorn_install
+  changed_when: "'created' in longhorn_install.stdout or 'configured' in longhorn_install.stdout"
+
+- name: Create the LUKS key once and import it directly into Kubernetes Secrets
+  ansible.builtin.shell: |
+    python3 - <<'PY'
+    import pathlib,os,secrets,json,subprocess
+    p=pathlib.Path('/etc/kubernetes/longhorn-crypto-key')
+    if not p.exists():p.write_text(secrets.token_urlsafe(48));os.chmod(p,0o600)
+    existing=subprocess.run(['kubectl','-n','longhorn-system','get','secret','longhorn-crypto'],capture_output=True)
+    if existing.returncode:
+      document={'apiVersion':'v1','kind':'Secret','metadata':{'name':'longhorn-crypto','namespace':'longhorn-system'},'type':'Opaque','stringData':{'CRYPTO_KEY_VALUE':p.read_text(),'CRYPTO_KEY_PROVIDER':'secret','CRYPTO_KEY_CIPHER':'aes-xts-plain64','CRYPTO_KEY_HASH':'sha256','CRYPTO_KEY_SIZE':'256','CRYPTO_PBKDF':'argon2i'}}
+      result=subprocess.run(['kubectl','create','-f','-'],input=json.dumps(document),text=True,capture_output=True)
+      if result.returncode:raise SystemExit('Native encryption Secret import failed')
+    PY
+  no_log: true
+
+- name: Require all Longhorn managers to be Ready
+  ansible.builtin.command: kubectl -n longhorn-system rollout status daemonset/longhorn-manager --timeout=900s
+  changed_when: false
+
+- name: Set the Longhorn default replica policy
+  ansible.builtin.command:
+    argv: [kubectl, -n, longhorn-system, patch, settings.longhorn.io, default-replica-count, --type=merge, -p, '{"value":"{{ longhorn_replicas }}"}']
+  changed_when: true
+
+- name: Require Longhorn driver deployment readiness
+  ansible.builtin.command: kubectl -n longhorn-system rollout status deployment/longhorn-driver-deployer --timeout=600s
+  changed_when: false
+
+- name: Require the intended Longhorn storage class
+  ansible.builtin.command: kubectl get storageclass longhorn -o json
+  register: longhorn_class
+  changed_when: false
+
+- name: Validate replica and encryption policy
+  ansible.builtin.assert:
+    that:
+      - (longhorn_class.stdout | from_json).parameters.numberOfReplicas == (longhorn_replicas | string)
+      - (longhorn_class.stdout | from_json).parameters.encrypted == 'true'
+      - (longhorn_class.stdout | from_json).reclaimPolicy == 'Retain'
+
+- name: Download pinned CSI snapshot CRDs and controller resources
+  ansible.builtin.get_url:
+    url: "https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/{{ snapshot_controller_version }}/{{ item }}"
+    dest: "/etc/kubernetes/{{ item | basename }}"
+    mode: '0644'
+  loop:
+    - client/config/crd/snapshot.storage.k8s.io_volumesnapshotclasses.yaml
+    - client/config/crd/snapshot.storage.k8s.io_volumesnapshotcontents.yaml
+    - client/config/crd/snapshot.storage.k8s.io_volumesnapshots.yaml
+    - deploy/kubernetes/snapshot-controller/rbac-snapshot-controller.yaml
+    - deploy/kubernetes/snapshot-controller/setup-snapshot-controller.yaml
+
+- name: Install CSI snapshot recovery support
+  ansible.builtin.command:
+    argv: [kubectl, apply, --server-side, -f, "/etc/kubernetes/{{ item }}"]
+  loop:
+    - snapshot.storage.k8s.io_volumesnapshotclasses.yaml
+    - snapshot.storage.k8s.io_volumesnapshotcontents.yaml
+    - snapshot.storage.k8s.io_volumesnapshots.yaml
+    - rbac-snapshot-controller.yaml
+    - setup-snapshot-controller.yaml
+  register: snapshot_install
+  changed_when: "'created' in snapshot_install.stdout or 'configured' in snapshot_install.stdout"
+
+- name: Require snapshot controller readiness
+  ansible.builtin.command: kubectl -n kube-system rollout status deployment/snapshot-controller --timeout=300s
+  changed_when: false

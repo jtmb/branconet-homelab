@@ -8,7 +8,7 @@ secrets/
 *.key
 *.crt
 
-# Auto-generated Ansible lookup references
+# Auto-generated Ansible vars (contains secrets from DB)
 group_vars/all.yml
 
 # Environment files
@@ -40,12 +40,3 @@ build/
 
 # Local overrides (use separate repo or Git subtree)
 local-overrides/
-
-# BORTUS runtime and generated artifacts
-node_modules/
-.next/
-*.db
-*.db-*
-*.tsbuildinfo
-.env.*
-!.env.example

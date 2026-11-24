@@ -1,0 +1,42 @@
+{
+  "scope": "Root integrated CIFS creator-close correction and streamed etcd consumer; local controls only",
+  "native_commits": [
+    "b5db3c385b2369fd8a2eeaf66553e6c3e410b6d1",
+    "a564c9d163379f54a7c804ef5d39758aa1764cc3"
+  ],
+  "root": {
+    "actual_exit_code": 0,
+    "wall_seconds": 17.9578016520245,
+    "tests_expected": 75,
+    "source_files": 165,
+    "source_unchanged": true,
+    "child_pid": 2225815,
+    "child_start_ticks": "29289824",
+    "reaped": true,
+    "live_calls": false,
+    "helper_sha256": "51475f6020747323047e33446a909c3f4669c7c9e4401e7f00f7d7bb9da2597d",
+    "factory_sha256": "31c5328320270170e73b7275ecab843c4e15a0ab5d077cd9ea742d2219bca146",
+    "tests": 75,
+    "skips": 0,
+    "resource_warnings": 0,
+    "stderr_sha256": "394f077404875cfe8751d72379fcc5b0bbba8c8a1bc4ec41795b937ace97fe9a",
+    "terminal_sha256": "947985ec528aed86759700051aa0502ed2548180ac703a86e09338321d6ffbb4",
+    "source_manifest_sha256": "01b5cb8865b54997a2e7b8e4cb6fe780686490fcf4d8c5c10cad88e2ac1fdad3"
+  },
+  "boundary_contract": {
+    "cifs_creator_close_timestamps_only": true,
+    "stable_dev_inode_uid_mode_nlink_size": true,
+    "immediate_full_reopened_fingerprint": true,
+    "full_readback_fingerprint_and_mount_stable": true,
+    "posix_full_fingerprint_unchanged": true,
+    "original_writer_fixture_still_refuses": true
+  },
+  "acceptance": {
+    "local_combined_controls": true,
+    "actual_fresh_config_capture": false,
+    "actual_etcd_checkpoint": false,
+    "api_decryption_restore": false,
+    "longhorn_restore": false,
+    "final_release": false
+  }
+}

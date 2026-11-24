@@ -1,0 +1,19 @@
+[Unit]
+Description=Branconet LAN DHCP (DNS remains independent)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStartPre=/usr/sbin/dnsmasq --test --conf-file=/etc/branconet-lan-dhcp.conf
+ExecStart=/usr/sbin/dnsmasq --keep-in-foreground --conf-file=/etc/branconet-lan-dhcp.conf
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/branconet-lan-dhcp
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

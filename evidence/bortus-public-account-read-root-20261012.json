@@ -1,0 +1,224 @@
+{
+  "qualified_handoff_sha256": "560ffb69498a48a9be15cded48808213489e53a5edb3272b70fbfb52afbd0e3e",
+  "originals_verified": 78,
+  "closed_zip_crc_verified": true,
+  "actual_outer_tool_exit": 0,
+  "actual_supervisor_exit": 0,
+  "controls_passed": 10,
+  "untrimmed_observations": 24,
+  "controls": [
+    {
+      "id": "initial-exact-two-boundary-rows",
+      "passed": true
+    },
+    {
+      "id": "revocation-between-independent-boundaries",
+      "passed": true
+    },
+    {
+      "id": "fresh-demotion-visible",
+      "passed": true
+    },
+    {
+      "id": "fresh-deletion-visible",
+      "passed": true
+    },
+    {
+      "id": "cross-process-concurrent-write-next-read-fence",
+      "passed": true
+    },
+    {
+      "id": "exclusive-lock-both-backends-refuse",
+      "passed": true
+    },
+    {
+      "id": "lock-release-fresh-recovery",
+      "passed": true
+    },
+    {
+      "id": "missing-column-schema-refusal",
+      "passed": true
+    },
+    {
+      "id": "read-permission-refusal",
+      "passed": true
+    },
+    {
+      "id": "replaced-db-no-stale-native-read",
+      "passed": true
+    }
+  ],
+  "actual_node": "v22.23.3",
+  "actual_sqlite": "3.51.3",
+  "experimental_warning_retained": true,
+  "busy": {
+    "native": {
+      "refused": true,
+      "code": "NATIVE_READ_REFUSED",
+      "durationMs": 0.10038000000000125
+    },
+    "prisma": {
+      "refused": true,
+      "code": "P1008",
+      "durationMs": 5010.115497000001
+    }
+  },
+  "replacement": {
+    "native": {
+      "refused": true,
+      "code": "NATIVE_READ_REFUSED",
+      "durationMs": 0.06401000000005297
+    },
+    "prismaGuardPresentInProduction": false,
+    "prismaExistingConnectionOldSnapshot": true
+  },
+  "summary": {
+    "prisma": {
+      "observations": 12,
+      "median100BoundaryPairsMs": 63.66756399999986,
+      "p95100BoundaryPairsMs": 70.06827299999986,
+      "min100BoundaryPairsMs": 60.8146999999999,
+      "max100BoundaryPairsMs": 70.06827299999986,
+      "medianTwoReadsMs": 0.6366756399999985,
+      "medianSelfCpuMicroseconds": 71407.5
+    },
+    "native": {
+      "observations": 12,
+      "median100BoundaryPairsMs": 5.902169999999387,
+      "p95100BoundaryPairsMs": 12.14173800000026,
+      "min100BoundaryPairsMs": 4.6239009999999325,
+      "max100BoundaryPairsMs": 12.14173800000026,
+      "medianTwoReadsMs": 0.05902169999999387,
+      "medianSelfCpuMicroseconds": 6720.0
+    }
+  },
+  "cold_connections_after_controls_two_reads_ms": {
+    "prisma": 2.742815000000519,
+    "native": 0.22428999999920052
+  },
+  "root_fresh_closure": {
+    "freshIdentities": [
+      {
+        "pid": 2549365,
+        "startTicks": "34181404",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549372,
+        "startTicks": "34181411",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549373,
+        "startTicks": "34181420",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549416,
+        "startTicks": "34182877",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549428,
+        "startTicks": "34182904",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549441,
+        "startTicks": "34182947",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549454,
+        "startTicks": "34182976",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549455,
+        "startTicks": "34182979",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549550,
+        "startTicks": "34183127",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549563,
+        "startTicks": "34183259",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549575,
+        "startTicks": "34183395",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549587,
+        "startTicks": "34183528",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549619,
+        "startTicks": "34183659",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549652,
+        "startTicks": "34183695",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549665,
+        "startTicks": "34183725",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549678,
+        "startTicks": "34183764",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549697,
+        "startTicks": "34183798",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549717,
+        "startTicks": "34183824",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549738,
+        "startTicks": "34184320",
+        "sameIdentityAbsent": true
+      },
+      {
+        "pid": 2549511,
+        "startTicks": "34183010",
+        "sameIdentityAbsent": true
+      }
+    ],
+    "exactContainerQueries": [
+      {
+        "reference": "16e1470b273fef2413217017c2df61d4e286baed2438079ba094ba9d9fb345a6",
+        "actualExit": 1,
+        "exactNotFound": true
+      },
+      {
+        "reference": "bortus-public-account-read-20261012-v1-read-diagnostic",
+        "actualExit": 1,
+        "exactNotFound": true
+      }
+    ],
+    "readOnly": true,
+    "signalsOrDeletes": false
+  },
+  "source_compiled_dependencies_and_inputs_unchanged": true,
+  "timing_scope": "Isolated public fixture, actual two fixed Prisma projections versus readonly prepared synchronous SQLite, with native file identity guards. Same process, no HTTP/worker/startup performance inference.",
+  "production_source_adopted": false,
+  "A07A21": "failed/open",
+  "all_existing_auth_boundaries_and_100_row_pages_preserved": true,
+  "followup": "Reviewable async worker source candidate authorized; requires actual async startup/cost, compiled middleware/handler ownership, all functional checks and unchanged original comparison before adoption.",
+  "metadata_reader_correction": "Original artifact manifest uses copy, not path; corrected reader only, no workload replay."
+}

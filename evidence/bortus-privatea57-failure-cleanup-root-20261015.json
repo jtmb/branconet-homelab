@@ -1,0 +1,131 @@
+{
+  "schemaVersion": 1,
+  "scope": "Failed retained-private recovery attempt and exact owned-resource cleanup",
+  "run": "a57e150c8696",
+  "actualTool": "a2082f/session40832 -> 126b88",
+  "actualToolExit": 1,
+  "outerExit": 1,
+  "callerExit": 1,
+  "elapsedSeconds": 453.22485174999747,
+  "originalSeconds": 600,
+  "sourceUnchanged": true,
+  "credentialDeliveredAfterIndependentForegroundNoEchoProof": true,
+  "promptObserverTool": "43bed7",
+  "privateFilesMayHaveBeenOpened": true,
+  "materialProjectorNotReached": true,
+  "numericFailure": {
+    "abi": 1,
+    "exceptions": [
+      [
+        1,
+        2,
+        true
+      ],
+      [
+        1,
+        0,
+        false
+      ]
+    ],
+    "failure_only": true,
+    "frames": [
+      [
+        0,
+        1,
+        1,
+        825
+      ],
+      [
+        0,
+        2,
+        5,
+        445
+      ],
+      [
+        1,
+        2,
+        5,
+        443
+      ],
+      [
+        1,
+        2,
+        7,
+        417
+      ],
+      [
+        1,
+        2,
+        2,
+        15
+      ]
+    ],
+    "guard_evaluated": false,
+    "overall_acceptance": false,
+    "truncated": false,
+    "unknown_source": false
+  },
+  "numericFailureSHA256": "a62f4d109b4362375414767f7a096e1bfc0e70b04abd900849f6447d5fa498f0",
+  "sourceMappedFailure": {
+    "file": "same-live-holder-gates.py",
+    "function": "_sample",
+    "line": 417,
+    "predicate": "listener is not None and listener.poll() is None",
+    "timerCapMilliseconds": 300000,
+    "timerExpiryExclusiveCauseProven": false,
+    "historical831CauseProven": false
+  },
+  "actorJobs": 5788,
+  "actorNonzeroJobs": 1,
+  "initialCleanup": {
+    "actualTool": "be69c2",
+    "actualExit": 1,
+    "stage": 1,
+    "type": 2,
+    "transportConstructed": false,
+    "deletesIssued": 0,
+    "staleManifestCount": 247,
+    "actualManifestCount": 249
+  },
+  "correctedCleanup": {
+    "actualTool": "c33e3f/session27061 -> 21ba8c",
+    "actualExit": 0,
+    "orderedDeletes": [
+      "pod",
+      "control0",
+      "control1",
+      "configmap",
+      "policy"
+    ],
+    "freshUIDAndResourceVersionCAS": true,
+    "naturalTermination": true,
+    "registeredJobs": 175,
+    "allJobsTypedZeroReapedAbsent": true
+  },
+  "independentCleanup": {
+    "actualTool": "344ac1",
+    "actualExit": 0,
+    "readOnlyGETs": 8,
+    "allFiveNamesAndRecordedUIDsAbsent": true
+  },
+  "finalClosure": {
+    "actorTool": "575a79",
+    "actorExit": 0,
+    "ownTool": "543d84",
+    "ownExit": 0,
+    "currentFDPathHashPins": 332,
+    "recordedBirthsAbsent": 5985,
+    "ownReceiptSHA256": "97622cb5768f14486c133e700b9e69c06f2d805b8363389a7adb9795ac43a7b1",
+    "ownReaderReturnedZeroNoSeparateRecursiveAbsenceClaim": true
+  },
+  "privateRecoveryAccepted": false,
+  "productionAdopted": false,
+  "originalDataRetired": false,
+  "initialReadOnlyObserver": {
+    "actualTool": "7c002c",
+    "actualExit": 0,
+    "readOnlyGETs": 8,
+    "allFiveNamesAndRecordedUIDsAbsent": false,
+    "cleanupRequired": true
+  }
+}

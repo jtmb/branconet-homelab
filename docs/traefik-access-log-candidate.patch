@@ -1,0 +1,19 @@
+diff --git a/flux/releases/foundation/ingress-deployment.yaml b/flux/releases/foundation/ingress-deployment.yaml
+--- a/flux/releases/foundation/ingress-deployment.yaml
++++ b/flux/releases/foundation/ingress-deployment.yaml
+@@ -32,6 +32,15 @@
+         - --api.dashboard=true
+         - --providers.file.directory=/etc/traefik/dynamic
+         - --providers.file.watch=true
++        - --accesslog=true
++        - --accesslog.format=json
++        - --accesslog.filters.statuscodes=401,403
++        - --accesslog.fields.defaultmode=drop
++        - --accesslog.fields.headers.defaultmode=drop
++        - --accesslog.fields.names.StartUTC=keep
++        - --accesslog.fields.names.ClientHost=keep
++        - --accesslog.fields.names.RouterName=keep
++        - --accesslog.fields.names.DownstreamStatus=keep
+         image: traefik:v2.11.60@sha256:9d21c49aab4a76eada128ab057dc2976a4e797aae4d3f5d33a23847adc9f99cf
+         imagePullPolicy: IfNotPresent
+         livenessProbe:

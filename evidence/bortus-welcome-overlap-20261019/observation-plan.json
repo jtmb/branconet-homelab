@@ -1,0 +1,25 @@
+{
+  "scope": "Exactly two explicit overlapping welcome clicks on unchanged compiled source",
+  "actions": [
+    "Click header Get Started with held registration JSON response",
+    "Click same enabled header Get Started with held login response while first unsettled",
+    "Set session-safe for destination-only registration mount",
+    "Release second lookup; observe login destination GET held and welcome status/busy still pending",
+    "Release first lookup; observe registration GET held and empty pending status/busy false",
+    "Release destination GETs; observe final actual registration route and clear any fields without submit",
+    "Close tab and owned preview; verify exact closure"
+  ],
+  "welcomeClicks": 2,
+  "formSubmissions": 0,
+  "sourceChanged": false,
+  "browser": "integrated Codex IAB default1280x720, no viewport override",
+  "fixtureOnlyChange": "GET navigation holds; existing session modes retained, finite hold180s; all mutations intercepted unchanged",
+  "limits": [
+    "Navigation responses held to retain welcome mount; destination request order and final arrival separate",
+    "No first visible login arrival claimed",
+    "No actual assistive technology or live authentication",
+    "No screenshot/AX/DOM simultaneity claim",
+    "No network-fallback replay or benchmark"
+  ],
+  "noBrowserWorkBegun": true
+}

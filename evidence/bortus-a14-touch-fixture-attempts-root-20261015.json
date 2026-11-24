@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "scope": "Preserved four failed touch fixture attempts and independently verified cleanup; no accepted touch case",
+  "compiledSource": "ab7c6867f20af434aed704d1644e8b08267eda0a",
+  "attempts": [
+    {
+      "attempt": "V1",
+      "browserExit": 1,
+      "serverExit": 1,
+      "acceptedTouchCases": 0,
+      "browserReportTerminal": true,
+      "failure": {
+        "type": "TimeoutError",
+        "module": "a14-touch-check",
+        "line": 20,
+        "column": 125
+      },
+      "sourceDiagnosis": "Services fixture is empty and renders empty-state text instead of requested table",
+      "actualHistoricalDOMRecorded": false,
+      "closureProof": 0
+    },
+    {
+      "attempt": "V1-1",
+      "browserExit": 1,
+      "serverExit": 1,
+      "acceptedTouchCases": 0,
+      "browserReportTerminal": true,
+      "failure": {
+        "type": "TimeoutError",
+        "module": "a14-touch-check",
+        "line": 32,
+        "column": 38
+      },
+      "sourceDiagnosis": "Radix modal hides background role lookup; source-supported inference only",
+      "actualHistoricalDOMRecorded": false,
+      "closureProof": 1
+    },
+    {
+      "attempt": "V1-2",
+      "browserExit": 1,
+      "serverExit": 1,
+      "acceptedTouchCases": 0,
+      "browserReportTerminal": true,
+      "failure": {
+        "type": "Error",
+        "module": "a14-touch-check",
+        "line": 33,
+        "column": 44
+      },
+      "sourceDiagnosis": "First action tap replaces lazy trigger; pre-tap handle is unsuitable for post-tap closest-table measurement",
+      "actualHistoricalDOMRecorded": false,
+      "closureProof": 2
+    },
+    {
+      "attempt": "V1-3",
+      "browserExit": 1,
+      "serverExit": 1,
+      "acceptedTouchCases": 0,
+      "browserReportTerminal": false,
+      "innerFailureUnknown": true,
+      "publicStderr": {
+        "bytes": 495,
+        "sha256": "0ac600e9de796cff54d7cc69d0ed824931106243b6fbe16ac651eb61fd6b8864"
+      },
+      "observedFailure": "Unhandled original YAML response promise rejects after context closes; no prior inner assertion retained",
+      "closureProof": 3
+    }
+  ],
+  "proofs": [
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-kv-success-touch-failure-own-20261015-v1.json",
+      "bytes": 753,
+      "sha256": "7fded8aefaf30ee3f2b1737482cd7fe6d73cce380d6058bea16e7030b108cbf8"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-touch-second-failure-own-20261015-v1.json",
+      "bytes": 569,
+      "sha256": "7f6e39890a92dc04e98d8e2dcb05bc69ce13706d4c6e5cfe91ea6d4ecb102862"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-touch-third-failure-own-20261015-v1.json",
+      "bytes": 569,
+      "sha256": "3bb9060b67d240fe4d49d0876d7f92b161f540e8f8402a9be4a08320bfd25083"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-touch-fourth-failure-closure-20261015-v1.json",
+      "bytes": 3330,
+      "sha256": "bcd145904cb1844fb541ceef55065712af964a22e46ae1fe19874c82b922d949"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-touch-fourth-failure-own-20261015-v1.json",
+      "bytes": 1279,
+      "sha256": "0137ded9948f929e154fd024f1501f5676dee6967b38d81aad9e5fbc24611ade"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-touch-fourth-failure-final-fresh-20261015-v1.json",
+      "bytes": 738,
+      "sha256": "a5e28907aad5f23bc0761bded74a62a309a76acd143d4e832ef27b5b4af5df22"
+    }
+  ],
+  "allOriginalLiteralFailuresPreserved": true,
+  "matchedClosuresQualified": true,
+  "wholeA14Accepted": false,
+  "productSourceChanged": false,
+  "performanceAccepted": false,
+  "productionAdopted": false,
+  "latestContinuationNotQualifiedByThisReceipt": true
+}

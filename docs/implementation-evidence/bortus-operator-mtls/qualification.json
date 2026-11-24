@@ -1,0 +1,139 @@
+{
+  "scope": "Disposable local embedded-mTLS adapter; no operator credential or live API reads",
+  "base_native_parent": "b0e37521f9f0c903e57db3921b217043c458e0ac",
+  "root_dependency_commit": "ba740a32e85246347bda66562f6374c06e984497",
+  "source": [
+    {
+      "path": "scripts/migration/bortus-operator-mtls.py",
+      "bytes": 10183,
+      "raw_sha256": "f632a2e5dac818acc1e486e76befb1512f78e6196105df26cfdf801717ae28ca",
+      "git_blob": "c85073255f9c88b0707762528a7a82276373aeff"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_operator_mtls.py",
+      "bytes": 17013,
+      "raw_sha256": "fdb87cde2fa334faac065b4bf56ff0e56f7f6baf70c5fab8c407368f44b7287c",
+      "git_blob": "67ef40335f3e0f489c92ff6b5e08e43801000228"
+    },
+    {
+      "path": "docs/BORTUS-OPERATOR-MTLS.md",
+      "bytes": 3799,
+      "raw_sha256": "a74a0edd1fe77c7123bc6de3cabf74342eef759d063f8e6eb1b90002af3c3d91",
+      "git_blob": "fef5367212144f4db64dab9c2f03d230da773775"
+    },
+    {
+      "path": "docs/BORTUS-RESTORE-WATCH.md",
+      "bytes": 7014,
+      "raw_sha256": "bb161d00a494b60191e3d9b0414b98c34cb34636ae0380c4e76122cba2b7206b",
+      "git_blob": "ef29bc76e22bfdf1eaf420071da375eadb096b22"
+    }
+  ],
+  "dependencies": [
+    {
+      "path": "scripts/migration/bortus-restore-watch.py",
+      "raw_sha256": "721d145a9d3a9bb715542e52674e54241231fb5e79c31d42f5355a37e92c26fb",
+      "unchanged_root_dependency": true
+    },
+    {
+      "path": "scripts/migration/bortus-restore-journal.py",
+      "raw_sha256": "e90b25b1a7226e072f3d3b1b3c872f38cbf2f05797270e9100a60dfa83a12f18",
+      "unchanged_root_dependency": true
+    },
+    {
+      "path": "scripts/migration/bortus-restore-completion.py",
+      "raw_sha256": "6e5c36ad8faaf4228e00ba608143317c4069a0e50a98a0fd760f5c5228e95ec4",
+      "unchanged_root_dependency": true
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restore_watch.py",
+      "raw_sha256": "627e85e56d224e2864f6514f5bc50f4e21b8eee03c14fa13f2e356db90e95edf",
+      "unchanged_root_dependency": true
+    }
+  ],
+  "runtime": {
+    "python": "3.14.4",
+    "openssl": "OpenSSL 3.5.5 27 Jan 2026",
+    "pyyaml": "6.0.3"
+  },
+  "tests": [
+    {
+      "run": "qualification-v5",
+      "tests": 30,
+      "seconds": 0.513,
+      "actual_exit_code": 0,
+      "terminal_sha256": "a661cc1040e3cf5b9fb77c23cbc07a92c65252b8784a3f98747f580353d75f1c",
+      "log_sha256": "547c9a4ec0cf6051f550752a8a2cbcc468394cd076bb115d5e79ab37ba2f120b"
+    },
+    {
+      "run": "qualification-combined-v1",
+      "tests": 179,
+      "seconds": 5.629,
+      "actual_exit_code": 0,
+      "terminal_sha256": "1996a549c7816e911779736d43a8bba858b1fd8ea8032b429e230d100b4da3ca",
+      "log_sha256": "2bf51feac7e1c4b6c5f35d672b0f7f688bc82523cd71c9986332efd59cb53228"
+    }
+  ],
+  "retained_attempts": [
+    {
+      "run": "qualification-v1",
+      "result": "actual0;23 tests",
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\operator-mtls-v1\\qualification-v1",
+      "artifacts": {
+        "terminal.json": "d293a01c63e0fcaaf4c0dea4d07e1abfc884de9a2ae667cb049a8f05cdffd9c2",
+        "stderr.log": "e9856a64a6580904aa31c85880bff22082f8c6158562e4f6aaaf44e5f2fcd982",
+        "source-manifest.json": "523aa0e07c3e92b0a4901ee72d798213cbce1c29f135c44f957c51132ad8c133"
+      }
+    },
+    {
+      "run": "qualification-v2",
+      "result": "actual0;28 tests",
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\operator-mtls-v1\\qualification-v2",
+      "artifacts": {
+        "terminal.json": "d38fa7c9f96f7bdd6bddfbeb2621cea0fac71d42b6655bcc44d30383f7206107",
+        "stderr.log": "ff2aab850273c2a884d9419e7689dafd6d1a7c986986dd63b92d8f69b7d99c8d",
+        "source-manifest.json": "3f42bdd821fad6a7243c9dd12de13b94808ea95771ba6642f6b5830e74ee9457"
+      }
+    },
+    {
+      "run": "qualification-v3",
+      "result": "actual1;29 tests/one privacy assertion failure: underlying parser context retained",
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\operator-mtls-v1\\qualification-v3",
+      "artifacts": {
+        "terminal.json": "1291d1eb5420bb504858cc9da8a1a4af20ecacd389627f85d417e65811392fe0",
+        "stderr.log": "d45fd3e8aa425e57ab0042530e34919a5843180239d5acbeac44bc9b82fd7af1",
+        "source-manifest.json": "eb2976e8050bf5d4b945d3ed0f09353d5ce886c42cf95dda4a4ac6ed41f615d7"
+      }
+    },
+    {
+      "run": "qualification-v4",
+      "result": "actual0;29 tests after public error-chain correction",
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\native-window-20261010-205407-602f2c0c\\operator-mtls-v1\\qualification-v4",
+      "artifacts": {
+        "terminal.json": "b80c5400c1361a2c58ac817e4bf5fe2edf1c1fcf7ffb1ced77c043a7444b5090",
+        "stderr.log": "ada3c05dcfc7d0a3736f5daa11fce43fc3debc8e1753cd15ac6a08034e9e5245",
+        "source-manifest.json": "cb02cfb72d217ac799e8bcb58582972f5ca749c4fb6a2a3ba692a3f196a0b95a"
+      }
+    }
+  ],
+  "live_operator_access_qualified": false,
+  "independent_restore_or_data_acceptance": false,
+  "performance_acceptance": false,
+  "owned_launcher_pids_absent": [
+    46928,
+    8532,
+    36716,
+    48256,
+    28920,
+    49512
+  ],
+  "fixture_cleanup": "Owned reader/server threads closed; disposable certificates/key/config directories removed; owned-FD sets equal before/after refusal",
+  "source_parent_contract": "Operator-owned0755 permitted; no group/world write. Source0600/single-link/no-follow/stable snapshot; between-call rotation allowed.",
+  "privacy_correction": "Fresh fixed public error outside handlers; no parser mark/error chain or credential locals in public callable failure",
+  "remaining": [
+    "root reviewed live operator access",
+    "complete restore executor/source/consumer/image/admission fences",
+    "independently authenticated archive and whole-row preservation",
+    "live release qualification"
+  ],
+  "preparation_failure": "Tool terminal ed7ec7: shell quoting failed before controller creation or any test launch; corrected by direct file copy/patch"
+}

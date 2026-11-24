@@ -1,0 +1,134 @@
+---
+# Reviewed, hash-guarded addition of kubeadm/kubelet serving certificate
+# expiry watching (F13). Each node's live TLS leaf is read over the wire by
+# the existing UID998 monitor service; no host file, root, or new credential
+# access is granted. Nothing else on the host is touched. Refuses to run
+# unless every file currently installed matches the exact pre-change content.
+- name: Add TLS-endpoint certificate expiry watching to the monitor
+  hosts: workernode1
+  gather_facts: false
+  become: true
+  any_errors_fatal: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    monitor_code: /usr/local/libexec/bortus-certificate-monitor
+    files:
+      # Corrected 2026-11-17: the original pins were computed from the local
+      # working tree *after* it had already been edited, not from the
+      # actually-deployed content. The hash guard correctly refused on the
+      # first run; these were re-verified against the live host (fetched
+      # and diffed byte-for-byte against git HEAD~1 / the old control_cycle
+      # signature) before being corrected.
+      # after_sha256 is the hash already installed by a first successful
+      # run of this play, so a re-run (e.g. for the IPAddressAllow fix
+      # below) is idempotent instead of refusing on its own prior work.
+      - name: certificate_monitor.py
+        before_sha256: 46dddccf4d0924900b8fba7d4c20c193b7d34dae20ba3f22648d9ead683a90b6
+        after_sha256: f55cba8615f5d072a5e93cd0b14708cceaf1fdd51c440ce58d98b93e2008d80a
+      - name: certificate_monitor_control.py
+        before_sha256: 546bbb8bc32d7bcf391d3ef8621fcd2c2e459de30fb36bb449872871a13d51e7
+        after_sha256: d5175c0b7cae7c65dfcf9d1c114af5afa57180a40ac005aaa368db5eab8b4817
+      - name: run-certificate-monitor.py
+        before_sha256: b021523208ba909fe0a1f85c442c971c7b163e26b138e63d376122face766ea7
+        after_sha256: d39f873ace27f7f293282a53b6563e9848f32340a6890b8997dc09b41f4ca82c
+      - name: certificate_monitor_tls_probe.py
+        before_sha256: null
+        after_sha256: bd601d43d8322e3d42fb86e451eab5bac8d914a44a059041e4bace6c3df947d5
+  tasks:
+    - name: Require the documented host
+      ansible.builtin.assert:
+        that:
+          - kubernetes_node_name == 'node02'
+
+    # Corrected 2026-11-17: the first run of this play installed the probe
+    # code successfully, but every probe failed because the service's own
+    # IPAddressAllow egress sandbox only permitted the floating API VIP, not
+    # the three node IPs the probe needs to reach. This widens exactly that,
+    # verified against the actually-deployed unit (fetched and diffed, not
+    # assumed) before being written.
+    - name: Record the currently installed unit hash
+      ansible.builtin.stat:
+        path: /etc/systemd/system/bortus-certificate-monitor.service
+        checksum_algorithm: sha256
+      register: monitor_unit_stat
+
+    - name: Refuse to replace an unexpected installed unit
+      ansible.builtin.assert:
+        that:
+          - monitor_unit_stat.stat.exists
+          - monitor_unit_stat.stat.checksum == '50c6e2525754441d60e96ca27efc2789a74fe282178e12986132434ba9402cd8'
+        fail_msg: "installed bortus-certificate-monitor.service does not match the reviewed checkpoint"
+
+    - name: Install the reviewed unit (adds node IPs to IPAddressAllow)
+      ansible.builtin.copy:
+        src: files/bortus-certificate-monitor.service
+        dest: /etc/systemd/system/bortus-certificate-monitor.service
+        owner: root
+        group: root
+        mode: "0644"
+      register: monitor_unit_install
+
+    - name: Reload systemd for the unit change
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+      when: monitor_unit_install.changed
+
+    - name: Record currently installed hashes (existing files only)
+      ansible.builtin.stat:
+        path: "{{ monitor_code }}/{{ item.name }}"
+        checksum_algorithm: sha256
+      register: monitor_stat
+      loop: "{{ files }}"
+      loop_control: { label: "{{ item.name }}" }
+
+    - name: Refuse to replace unexpected installed content
+      ansible.builtin.assert:
+        that:
+          - >-
+            (item.item.before_sha256 is none and not item.stat.exists) or
+            (item.stat.exists and item.stat.checksum in [item.item.before_sha256, item.item.after_sha256])
+        fail_msg: "{{ item.item.name }} does not match the reviewed checkpoint (or is unexpectedly already present)"
+      loop: "{{ monitor_stat.results }}"
+      loop_control: { label: "{{ item.item.name }}" }
+
+    - name: Install the reviewed modules
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../../../scripts/migration/{{ item.name }}"
+        dest: "{{ monitor_code }}/{{ item.name }}"
+        owner: root
+        group: root
+        mode: "0644"
+      loop: "{{ files }}"
+      loop_control: { label: "{{ item.name }}" }
+
+    - name: Require the installed runner to carry the TLS endpoint wiring
+      ansible.builtin.command:
+        argv: [grep, -c, "NODE_TLS_ENDPOINTS", "{{ monitor_code }}/run-certificate-monitor.py"]
+      changed_when: false
+      register: monitor_marker
+
+    - name: Refuse an install without the wiring
+      ansible.builtin.assert:
+        that:
+          - monitor_marker.stdout | trim | int >= 1
+
+    - name: Compile every installed module as the service account would load it
+      ansible.builtin.command:
+        argv: [/usr/bin/python3, -B, -c, "import ast,sys;ast.parse(open(sys.argv[1]).read())", "{{ monitor_code }}/{{ item.name }}"]
+      changed_when: false
+      loop: "{{ files }}"
+      loop_control: { label: "{{ item.name }}" }
+
+    - name: Restart the monitor onto the reviewed modules
+      ansible.builtin.systemd_service:
+        name: bortus-certificate-monitor.service
+        state: restarted
+
+    - name: Confirm the service returned active
+      ansible.builtin.command:
+        argv: [systemctl, is-active, bortus-certificate-monitor.service]
+      changed_when: false
+      register: monitor_state
+      retries: 6
+      delay: 5
+      until: monitor_state.stdout | trim == 'active'

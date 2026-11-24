@@ -1,0 +1,240 @@
+{
+  "abi": 1,
+  "scope": "strict exact holder spec.image and literal status.imageID, bounded display-only status.image; no actual runtime qualification",
+  "actual_exit": 0,
+  "cases": 71,
+  "seconds": 6.814,
+  "skips": 0,
+  "tested_sources": [
+    {
+      "path": "scripts/migration/bortus-restore-reader.py",
+      "working_sha256": "a0bda80a01ba6fab6c79fab988da7536cc9413a52eb098a4a9b65b19b3262351"
+    },
+    {
+      "path": "scripts/migration/bortus-restored-consumer-fence.py",
+      "working_sha256": "eb1e754069d68a895b4ac3a66f024035ef1b067bcf497e6e2881d962784fe8a4"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_holder_imageid.py",
+      "working_sha256": "5520cbde634d6dc5e033cfc6b348bd608671d2c346e1161e7e0e13f7f108db46"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restore_reader.py",
+      "working_sha256": "a3e3fd33427fa68a99520e80859b5c43798b2de3d2cd0cac7bd5c92fa5ba2921"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restored_consumer_fence.py",
+      "working_sha256": "2295f4515b4f677cde2211479ae4b0a0c3c3e5a4f69384dcea320d947f1bdd40"
+    }
+  ],
+  "unchanged_dependencies": [
+    {
+      "path": "scripts/migration/bortus-operator-mtls.py",
+      "raw_git_sha256": "ef0d8f23eefd38d1685c3d031354d9833baa6365d4377666f8d2275634e8dc47",
+      "working_sha256": "ff4b44fd76362890ef86cd80cef28d3f1f36ffd6d999da40f30add883ed2ac9d",
+      "bytes": 10307
+    },
+    {
+      "path": "scripts/migration/bortus-restore-completion.py",
+      "raw_git_sha256": "95a950bd7c2858a3a8b6420458c5cd99190d5c8320e063db26863b9a32d3557a",
+      "working_sha256": "4c5274f42dd55850ecdf42fa9b80a44a20fc96139a006a54218e893c752d3763",
+      "bytes": 10273
+    },
+    {
+      "path": "scripts/migration/bortus-restore-data.py",
+      "raw_git_sha256": "3e69f9fa7a4d358aa9fe2ff11817c0ce825955af6f3ba7144ecc4a2eaad43cb7",
+      "working_sha256": "3e69f9fa7a4d358aa9fe2ff11817c0ce825955af6f3ba7144ecc4a2eaad43cb7",
+      "bytes": 19998
+    },
+    {
+      "path": "scripts/migration/bortus-restore-journal.py",
+      "raw_git_sha256": "e90b25b1a7226e072f3d3b1b3c872f38cbf2f05797270e9100a60dfa83a12f18",
+      "working_sha256": "e90b25b1a7226e072f3d3b1b3c872f38cbf2f05797270e9100a60dfa83a12f18",
+      "bytes": 12724
+    },
+    {
+      "path": "scripts/migration/bortus-restore-metadata.py",
+      "raw_git_sha256": "c228c1cf62bb77333aae6134202104e1773c414746ba7be599163d6f26fb2e0a",
+      "working_sha256": "9090eede207691482e7cadcdf67a2d6bb9cf28ff68f8233582306ca9cfd6b415",
+      "bytes": 9980
+    },
+    {
+      "path": "scripts/migration/bortus-restore-mutations.py",
+      "raw_git_sha256": "12195e009f90af1cfeed42f274e5293b0b36d35d809c0abbe1763d5c30b903ff",
+      "working_sha256": "12195e009f90af1cfeed42f274e5293b0b36d35d809c0abbe1763d5c30b903ff",
+      "bytes": 15921
+    },
+    {
+      "path": "scripts/migration/bortus-restore-watch.py",
+      "raw_git_sha256": "47139ec56b35a931d5e992193d611894738dc1736e9ed7ea757f197b91fe1313",
+      "working_sha256": "e33315fd0b0802cf1ff4e14c8ef3c822f944ea214afb6e6eb07b7047268a0e95",
+      "bytes": 33832
+    },
+    {
+      "path": "scripts/migration/bortus-sqlite-archive.py",
+      "raw_git_sha256": "cffc1f76dbe3d4230394d310affdb0acf692559a79546b4ad345ecc39c0712e4",
+      "working_sha256": "7323efd7f8785171a001615b34b62eecd7b78c8012ff05dd691cd6b457b9a980",
+      "bytes": 13097
+    },
+    {
+      "path": "scripts/migration/checkpoint-bortus-volume.py",
+      "raw_git_sha256": "cb7aef9bbf733fd762df062bec33266d28a27a669b7c5747d7550b32fe2e3a0a",
+      "working_sha256": "cb7aef9bbf733fd762df062bec33266d28a27a669b7c5747d7550b32fe2e3a0a",
+      "bytes": 33137
+    },
+    {
+      "path": "scripts/migration/compare-bortus-databases.py",
+      "raw_git_sha256": "e08787dafc064a5f256b0cdfb870d581c4631fdfc726919e3012f638cf132400",
+      "working_sha256": "7bd68c3da31fd41065dc8add101ef6003e74ba3b2475c3e4aaeaf850cfb536d3",
+      "bytes": 11552
+    },
+    {
+      "path": "scripts/migration/inspect-bortus-checkpoint.py",
+      "raw_git_sha256": "51cd7d9f8aedf79270be68d95416bb107cc90bf1aa9748893175bcf79a8b297e",
+      "working_sha256": "0f268cc649e9a96ac2d9dbfa6919e272bcd5508970640fbc36da925b90c7bf31",
+      "bytes": 15602
+    },
+    {
+      "path": "scripts/migration/inspect-bortus-independent-restore.py",
+      "raw_git_sha256": "01c5102e789d1eca00dac8543d4d4be4e47de03584092518d987ce1429cfdbe0",
+      "working_sha256": "01c5102e789d1eca00dac8543d4d4be4e47de03584092518d987ce1429cfdbe0",
+      "bytes": 11205
+    },
+    {
+      "path": "scripts/migration/normalize-bortus-sqlite-archive.py",
+      "raw_git_sha256": "42e91d7fef35c57f55a32ece241c25f4a22ca86db659b0191a9befd4f12b10dd",
+      "working_sha256": "770f430da8fe8373a7931ade6e37040b0af25d007ba88b9d3a4ab3d54fa750dc",
+      "bytes": 11254
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restore_admitted.py",
+      "raw_git_sha256": "8815ee770e2620c998cfda0d0c70db5f29fbb8914ea14f1440b843dba5fc4a63",
+      "working_sha256": "29360a8e27b043d3ce68934cfe6c7798fd876e9fe568b0d659a32e5cd1d1e803",
+      "bytes": 13372
+    }
+  ],
+  "original_root_source": [
+    {
+      "path": "scripts/migration/bortus-restore-reader.py",
+      "root_raw_sha256": "4c91bd5ded784acf8e28fae16408c1d79bda549166385aeb7ac841dfb1471a05",
+      "retained_working_sha256": "27493ac6450d05867abf0862dc64737a7003e7873915c6b14feba6e03400750b"
+    },
+    {
+      "path": "scripts/migration/bortus-restored-consumer-fence.py",
+      "root_raw_sha256": "ec82f0fde5c766719fcfffe5033dd81db7cd9ea1988746cd218d792117e09161",
+      "retained_working_sha256": "f68a7c7db9798fb38bd1bc10f44122c77d5dae455137f22474302bcd4f7fef18"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restore_reader.py",
+      "root_raw_sha256": "2a8a36bb4248be4b720672e3941706acdf270372d6fa293e3b68c07a80d5bf87",
+      "retained_working_sha256": "b6c4e0ed1699be6353ea0fdc7a9e5768a5da75ca8fe3845be0d3eb415fe839d1"
+    },
+    {
+      "path": "scripts/migration/tests/test_bortus_restored_consumer_fence.py",
+      "root_raw_sha256": "74c1d635162602a6fe91937a19e31c186c674f7aa8e22dba195a817d51968e0f",
+      "retained_working_sha256": "74c1d635162602a6fe91937a19e31c186c674f7aa8e22dba195a817d51968e0f"
+    }
+  ],
+  "original_root_commit": "8c210d589d37600665d3309b8b9b14a73920c2eb",
+  "first_regression": {
+    "actual_exit": 1,
+    "cases": 5,
+    "seconds": 0.03,
+    "failures": 7,
+    "errors": 1
+  },
+  "original_artifacts": [
+    {
+      "path": "holder-imageid-v1/bortus-restore-reader.py",
+      "bytes": 14325,
+      "sha256": "27493ac6450d05867abf0862dc64737a7003e7873915c6b14feba6e03400750b"
+    },
+    {
+      "path": "holder-imageid-v1/bortus-restored-consumer-fence.py",
+      "bytes": 19850,
+      "sha256": "f68a7c7db9798fb38bd1bc10f44122c77d5dae455137f22474302bcd4f7fef18"
+    },
+    {
+      "path": "holder-imageid-v1/stderr.log",
+      "bytes": 10055,
+      "sha256": "a5e76228269201a9194d989868973e1cc3b9d5642d5768da3e65ab06827b3254"
+    },
+    {
+      "path": "holder-imageid-v1/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "holder-imageid-v1/terminal.json",
+      "bytes": 89,
+      "sha256": "bd2afa452836c57c529f15e76833ea07eb085fee3f8c64e0be4379f895082246"
+    },
+    {
+      "path": "holder-imageid-v1/test_bortus_holder_imageid.py",
+      "bytes": 2317,
+      "sha256": "5520cbde634d6dc5e033cfc6b348bd608671d2c346e1161e7e0e13f7f108db46"
+    },
+    {
+      "path": "holder-imageid-v1/test_bortus_restore_reader.py",
+      "bytes": 14820,
+      "sha256": "b6c4e0ed1699be6353ea0fdc7a9e5768a5da75ca8fe3845be0d3eb415fe839d1"
+    },
+    {
+      "path": "holder-imageid-v1/test_bortus_restored_consumer_fence.py",
+      "bytes": 14531,
+      "sha256": "74c1d635162602a6fe91937a19e31c186c674f7aa8e22dba195a817d51968e0f"
+    },
+    {
+      "path": "holder-imageid-v2/bortus-restore-reader.py",
+      "bytes": 14564,
+      "sha256": "a0bda80a01ba6fab6c79fab988da7536cc9413a52eb098a4a9b65b19b3262351"
+    },
+    {
+      "path": "holder-imageid-v2/bortus-restored-consumer-fence.py",
+      "bytes": 19995,
+      "sha256": "eb1e754069d68a895b4ac3a66f024035ef1b067bcf497e6e2881d962784fe8a4"
+    },
+    {
+      "path": "holder-imageid-v2/stderr.log",
+      "bytes": 175,
+      "sha256": "800a9573faef9b1f91914cbabf93c227311e6b9581ceb4061c51b4977eeb15e6"
+    },
+    {
+      "path": "holder-imageid-v2/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "holder-imageid-v2/terminal.json",
+      "bytes": 89,
+      "sha256": "e698796226a9b41b45bf6623e6204109bce4695775457e4ae16e3abc7d37aa6a"
+    },
+    {
+      "path": "holder-imageid-v2/test_bortus_holder_imageid.py",
+      "bytes": 2317,
+      "sha256": "5520cbde634d6dc5e033cfc6b348bd608671d2c346e1161e7e0e13f7f108db46"
+    },
+    {
+      "path": "holder-imageid-v2/test_bortus_restore_reader.py",
+      "bytes": 14905,
+      "sha256": "a3e3fd33427fa68a99520e80859b5c43798b2de3d2cd0cac7bd5c92fa5ba2921"
+    },
+    {
+      "path": "holder-imageid-v2/test_bortus_restored_consumer_fence.py",
+      "bytes": 14600,
+      "sha256": "2295f4515b4f677cde2211479ae4b0a0c3c3e5a4f69384dcea320d947f1bdd40"
+    }
+  ],
+  "docs_checked": 54,
+  "owned_fixture_children_threads_sockets_closed": true,
+  "limitations": [
+    "root observed the actual CRI release-tag display independently; this local public regression models that shape",
+    "exact repo@digest ID required; configID/digest-only/registry aliases/docker-pullable prefixes never substitute",
+    "root callback separately binds actual runtime image name/config/source/three-node preload proof",
+    "controlled Python child replaces kubectl/Node; no operator files or private API/SSH/Node/Docker/live reads",
+    "no application or database runtime/recovery/admission/release acceptance"
+  ],
+  "runtime_acceptance": false,
+  "data_acceptance": false,
+  "overall_live_restore_acceptance": false
+}

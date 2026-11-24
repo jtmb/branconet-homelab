@@ -1,0 +1,79 @@
+{
+  "scope": "One independent fixed read-only master images-list discriminator; current metadata only",
+  "run_id": "dcd3a9ab92cd",
+  "qualified_source_package_sha256": "a4743ae560d3bbf5cb2e11a3a743ae8b3ccecfe1ee4c925a44ddb72ba674c130",
+  "root_verified_sources": 6,
+  "root_verified_originals": 7,
+  "pure_controls": 5,
+  "default_source_scan_findings": 0,
+  "controller_sha256": "69d563e5b7dbdb4145a8455a5ef2f274a479fc8f0b745eeb775cf6ce121d171f",
+  "terminal": {
+    "actual_exit": 0,
+    "failure": null,
+    "child_exit": 0,
+    "child_reaped": true,
+    "out_sha256": "18159c26435ae34d0565bd509e1830c44e9fadf08f3f5a81b45aaa71d2ea94fd",
+    "cache_mutations": false
+  },
+  "result": {
+    "abi": 1,
+    "run_id": "dcd3a9ab92cd",
+    "read_only": true,
+    "classification": {
+      "stdout_bytes": 45570,
+      "stdout_sha256": "49ae98d7364d3b68b828fd5a360a939352284647096deb946abecbbd67182183",
+      "header_expected": true,
+      "parse_status": "parsed",
+      "parsed_image_count": 104,
+      "fixed_sources": [
+        {
+          "reference": "bortus:release-c29fc8c44847172e040e83df11c51ad42f1da51e",
+          "present": false,
+          "digest_matches_expected": null
+        },
+        {
+          "reference": "docker.io/library/bortus:release-c29fc8c44847172e040e83df11c51ad42f1da51e",
+          "present": false,
+          "digest_matches_expected": null
+        }
+      ],
+      "fixed_target": {
+        "reference": "docker.io/library/bortus@sha256:068254f38c47f99fd35604185a806a92147d934010329638b32adb5c19802c90",
+        "present": false,
+        "digest_matches_expected": null
+      },
+      "overall_acceptance": false
+    },
+    "job": {
+      "pid": 2227924,
+      "start_ticks": "1813645216",
+      "role": "containerd_readonly",
+      "actual_exit_code": 0,
+      "reaped": true,
+      "fresh_pid_absent": true
+    },
+    "overall_acceptance": false
+  },
+  "independent_local_identity_closure": [
+    {
+      "pid": 2432552,
+      "start_ticks": "32791231",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    },
+    {
+      "pid": 2432617,
+      "start_ticks": "32793099",
+      "current_start_ticks": null,
+      "same_identity_absent": true
+    }
+  ],
+  "remote_job_closure": "Actual owned CTR exit0/reaped plus fresh PID-absence observation by verified discriminator; not a separate remote observer",
+  "original_actor_replayed": false,
+  "cache_mutation": false,
+  "image_started": false,
+  "retrospective_original_failure_cause_established": false,
+  "current_source_prerequisite_present": false,
+  "original_image_compatibility_accepted": false,
+  "overall_acceptance": false
+}

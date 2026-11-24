@@ -1,0 +1,32 @@
+{
+  "completed_at": "2026-10-09T18:11:54.646889+00:00",
+  "source": "bot_ruckus-db",
+  "chart": "apps/ruckus-db",
+  "namespace": "ruckus",
+  "release": "ruckus-db",
+  "source_writers_stopped": true,
+  "originals_retained": true,
+  "target_started": false,
+  "application_accepted": false,
+  "copies": [
+    {
+      "manifest_equal": true,
+      "source_stable": true,
+      "entries": 295,
+      "manifest_sha256": "fe150982515d6448030356e9462e0e42c9b2064ab9abbc136df1ef2626189bb3",
+      "file_bytes": 216491568,
+      "content_ownership_permissions_time_acl_xattrs_verified": true,
+      "sourceHost": "192.168.0.4",
+      "sourcePath": "/mnt/nfs-container-volumes/bot_ruckus/mysql_data",
+      "destinationPVC": "ruckus-db-data-0",
+      "mountPath": "/var/lib/mysql",
+      "measuredBytes": 216491895,
+      "allocatedGiB": 1,
+      "uid": 999,
+      "gid": 65534,
+      "utility_image_id": "docker.io/library/python@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1"
+    }
+  ],
+  "source_desired_before": 1,
+  "source_restart_on_success": false
+}

@@ -1,0 +1,69 @@
+{
+  "observedUTC": "2026-10-19T02:38:10Z",
+  "scope": "Successor checkpoint acceptance, metadata refresh and stopped final-image UI preparation",
+  "checkpointAccepted": true,
+  "checkpointBranch": "codex/kubernetes-migration",
+  "checkpointCommit": "19a7558f46a0c3099f6cf2ad8f40a0bfbd95a48b",
+  "originCommitMatched": true,
+  "allThreeProtectedFileHashesMatched": true,
+  "predecessorRemainsOpenForCleanup": true,
+  "freshMetadata": {
+    "readyNodes": 3,
+    "bortusReadyReplicas": 1,
+    "productionImage": "docker.io/library/bortus@sha256:3b076fb9b7fb64fd760691c0120f29d4e363d4ccb9910a596ff211bfc3ea0879",
+    "bortusHelmReleaseNamespace": "flux-system",
+    "bortusHelmReleaseSuspended": true,
+    "chartsSourceRevision": "validated@sha1:37dd61a242b488dabbdcec9277cb1ee84580f0e2",
+    "chartsAppliedRevision": "validated@sha1:37dd61a242b488dabbdcec9277cb1ee84580f0e2",
+    "applicationPR": {"number": 28, "state": "OPEN", "draft": true, "head": "5aba82c28d5cad1d571416ea9c06f5d2d61260b3"},
+    "chartsPR": {"number": 5, "state": "OPEN", "draft": true, "head": "1d78f7b37cb6bf648ad281e237e073433eee2f0b"},
+    "dataIntegrityOrRecoveryProven": false
+  },
+  "applicationReview": {
+    "workspaceCleanAtExpectedSource": true,
+    "concretePerformanceDefectIdentified": false,
+    "sourceEdits": false,
+    "benchmarkReplayed": false,
+    "resourceLimitsOrAcceptanceChanged": false,
+    "originalTwoWarmRegressionsRemainFailed": true
+  },
+  "computerUse": {
+    "supportedRuntime": "node_repl with @oai/sky",
+    "importSucceeded": true,
+    "applicationInventorySucceeded": true,
+    "installedChromeLaunched": true,
+    "targetStateRequestStopped": true,
+    "stopReason": "Could not determine the current browser URL on Windows with enough confidence to enforce policy",
+    "browserInputOccurred": false,
+    "policyStopRetriedOrBypassed": false,
+    "finalDashboardUIQualified": false,
+    "actualAssistiveTechnologyQualified": false
+  },
+  "previewPreparation": {
+    "exactFinalLocalImageFoundByWorker": true,
+    "launcherFailedBeforePythonExecuted": true,
+    "failure": "Ubuntu could not access the Windows launcher through its /mnt/c path",
+    "launchProcessAbsent": true,
+    "ownedContainerQueryExit": 0,
+    "ownedPreviewContainers": [],
+    "ownedPreviewRuntimeDirectories": [],
+    "windowsLoopbackPort4401Listeners": [],
+    "workerConfirmedLinuxPort4401Absent": true,
+    "syntheticCredentialsOrAccountsCreated": false,
+    "privatePreparationFilesRetained": true,
+    "rootIndependentlyCheckedContainerAndDirectoryAbsence": true
+  },
+  "rejectedEvidenceWriteRetried": false,
+  "rejectedPrivateRecoveryWorkRetriedOrReassigned": false,
+  "productionChanged": false,
+  "retainedInputsChangedBySuccessor": false,
+  "overallAcceptance": false,
+  "remainingGates": [
+    "Original A07 warm performance acceptance",
+    "Final-image dashboard and actual assistive-technology validation",
+    "Independent compatible recovery and full-row preservation proof",
+    "Security acceptance",
+    "Guarded backup, quiescence, admission, schema and RBAC adoption",
+    "Final live KV, persistence, delivery and rollback acceptance"
+  ]
+}

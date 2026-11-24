@@ -1,0 +1,41 @@
+{
+  "scope": "Actual retained configuration publication refusal after CIFS mode correction; public-fixture close-boundary diagnosis",
+  "second_actual_run": {
+    "run_id": "b899eb067193",
+    "source_commit": "ef40b8859fb8689a1544f4d70ccaf14facc69736",
+    "actual_launcher_exit_code": 1,
+    "captured_files": 32,
+    "operator_archive_authenticated": true,
+    "encrypted_bytes": 83615,
+    "ciphertext_sha256": "c1d068fbd83b99a15607c6e2073a9d2c7b853447babfb1b2ac3855fb24c87173",
+    "nas_hash_equal_readonly": true,
+    "nas_mode": "0755",
+    "phase": "refused",
+    "publication_state": "pending",
+    "transport_closed": true,
+    "accepted": false,
+    "replayed_or_adopted": false
+  },
+  "public_fixture_diagnosis": {
+    "name": "config-a650ba7c103e.age",
+    "production_data_used": false,
+    "encrypted_bytes": 243,
+    "before_mtime_ns": 1791792166152508300,
+    "before_ctime_ns": 1791792166152508300,
+    "after_mtime_ns": 1791792166156226100,
+    "after_ctime_ns": 1791792166156226100,
+    "timestamp_delta_ns": 3717800,
+    "same_dev_inode_uid_mode_nlink_size": true,
+    "fd_path_equal_before_and_after": true,
+    "mount_identity_unchanged": true,
+    "mount": "/mnt/container-backups",
+    "filesystem": "cifs",
+    "failed_boundary": "creator close/reopen timestamp fingerprint",
+    "remote_actual_exit_code": 1,
+    "observer_actual_exit_code": 0,
+    "owned_ssh_reaped_absent": true,
+    "assessment_sha256": "2aa40f0c382bceaa615345c9fa3739e75de5010244d13eb7dbc8bbb7635210c9",
+    "terminal_sha256": "ec03bd575a7d17760c1f6b49f5f123b7ff1a6e324c55a850f80213f6735c11b8"
+  },
+  "pending_correction": "Allow timestamp rebasing only at the exact CIFS creator close/reopen boundary while retaining stable dev/inode/owner/mode/nlink/size/mount, immediately pin full reopened fingerprint, then require stable full fingerprint through complete SHA readback. POSIX checks unchanged. No success or live snapshot claimed."
+}

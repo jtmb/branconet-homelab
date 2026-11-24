@@ -1,0 +1,19 @@
+[Unit]
+Description=Branconet independent Pi-hole loopback resolver
+Requires=containerd-k8s.service
+After=containerd-k8s.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+RuntimeDirectory=branconet-independent-dns-loopback
+RuntimeDirectoryMode=0700
+UMask=0077
+ExecStart=/usr/local/libexec/branconet-independent-dns-loopback start
+ExecStop=/usr/local/libexec/branconet-independent-dns-loopback stop
+TimeoutStopSec=20s
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target

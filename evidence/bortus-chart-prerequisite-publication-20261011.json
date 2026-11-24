@@ -1,0 +1,264 @@
+{
+  "scope": "Root verified prerequisite CI promotion and actual Flux maintenance; no final app rollout/adoption",
+  "recorded_at_utc": "2026-10-11T11:45:18.814612+00:00",
+  "candidate_commit": "47bfca2a5c98bf2834cb5e3f2cd18cfffbe7b015",
+  "pr_url": "https://github.com/jtmb/branconet-charts/pull/1",
+  "independent_verification": {
+    "scope": "Root independent exact chart prerequisite handoff verification; no API or publication",
+    "at_utc": "2026-10-11T11:43:01.784112+00:00",
+    "commit": "47bfca2a5c98bf2834cb5e3f2cd18cfffbe7b015",
+    "sources": 10,
+    "frozen_inputs": 302,
+    "originals": 35,
+    "all_33_application_renders_unchanged": true,
+    "verified": true,
+    "terminal": {
+      "completed_utc": "2026-10-11T11:37:36.498665+00:00",
+      "exit_code": 0,
+      "frozen_source_unchanged": true,
+      "no_live_cluster_requests": true,
+      "owner": "chart-maintenance-prerequisite-20261011-v3",
+      "pid": 1969907,
+      "stages": [
+        {
+          "elapsed_seconds": 0.468904,
+          "exit_code": 0,
+          "stage": "gitleaks-version"
+        },
+        {
+          "elapsed_seconds": 0.819368,
+          "exit_code": 0,
+          "stage": "helm-version"
+        },
+        {
+          "elapsed_seconds": 0.518847,
+          "exit_code": 0,
+          "stage": "kubectl-client"
+        },
+        {
+          "elapsed_seconds": 4.025439,
+          "exit_code": 0,
+          "stage": "units"
+        },
+        {
+          "elapsed_seconds": 143.090719,
+          "exit_code": 0,
+          "stage": "validation"
+        },
+        {
+          "elapsed_seconds": 1.22007,
+          "exit_code": 0,
+          "stage": "default-scan"
+        }
+      ],
+      "start_ticks": "21762754",
+      "started_utc": "2026-10-11T11:35:05.511352+00:00",
+      "terminal": true
+    }
+  },
+  "fresh_read_only_preservation": {
+    "actual_exit": 0,
+    "passed": true,
+    "mutations": 0,
+    "sha256": "25afe2c3e13da50d4e88603c708bb5e4ae73c2d746c6adc16fb7f7c24351d50d",
+    "captured_at_utc": "2026-10-11T11:41:10.216239+00:00",
+    "helmrelease_uid": "bed3008a-474f-411e-9956-1248e3718220",
+    "writer_uid": "4c674c03-985c-4ca8-b7e9-59a13ea7e3a3",
+    "serviceaccount_target_absent": true
+  },
+  "originals": [
+    {
+      "name": "verify-chart-prerequisite-v1.py",
+      "sha256": "6af7dede10384111dab9020ad812054378f5c60a5091b93f1d1269a9414d89e1"
+    },
+    {
+      "name": "verify-chart-prerequisite-v2.py",
+      "sha256": "f22a162ea5b4c88d5fe9ab6da16ca83647f08943ed1043c3862b69fce85aec31"
+    },
+    {
+      "name": "chart-prerequisite-verification-v2.json",
+      "sha256": "9b5f15a5796bfa3d7e9ef97c504752ce1dbf607cfa8e790c8c180b5c347a5965"
+    },
+    {
+      "name": "prepare-chart-preservation-v1.py",
+      "sha256": "2fbda45d21d8007e5b491dbbabd54da0eae8b163b87e333131f884c02cc1afbf"
+    },
+    {
+      "name": "chart-preservation-v1.stdout",
+      "sha256": "6ad6affe0b55486a32b066926b2a7c879f078538cbe9e1b6634c86002429648b"
+    },
+    {
+      "name": "chart-preservation-v1.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "chart-pr-create-v1.stdout",
+      "sha256": "29184ca74eccf2f405ec38461a9d447865ab710594ab78bd174243e79d4cc946"
+    },
+    {
+      "name": "chart-pr-create-v1.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "retained_root_verification_failure": {
+    "attempt": 1,
+    "exit": 1,
+    "phase": "Receipt reader used a nonexistent top-level rendered_sha256; fixed to exact charts list equality",
+    "original_tool_chunk": "fa56f3",
+    "application_or_chart_checks_rerun": false
+  },
+  "scope_limits": {
+    "active_admission": false,
+    "schema_or_adoption": false,
+    "new_image": false,
+    "new_grants": false,
+    "merged": true,
+    "promoted": true,
+    "reconciled": true,
+    "final_application_acceptance": false
+  },
+  "prior_pr_pending_receipt_sha256": "8c9193f913847aa9a05336c8be5b48b3d226cb7ec8d8f8391016a15f6cca8e5c",
+  "main_ci": {
+    "run": 38136779991,
+    "head": "ba7c8e5bbbabe174cbbaec5b0ba7367336f62752",
+    "event": "push",
+    "actual_exit": 0,
+    "assertions": {
+      "unit22": true,
+      "validator_passed": true,
+      "charts33": true,
+      "releases34": true,
+      "objects65": true
+    },
+    "log_sha256": "d64d9f71408940c299453fb91ce6f2c0855799cb0831ae2806ee181154fe4ef1",
+    "main_and_validated_exact": true,
+    "validate_and_promote_success": true
+  },
+  "pr_ci": {
+    "run": 38136647929,
+    "head": "47bfca2a5c98bf2834cb5e3f2cd18cfffbe7b015",
+    "event": "pull_request",
+    "actual_exit": 0,
+    "assertions": {
+      "unit22": true,
+      "validator_passed": true,
+      "charts33": true,
+      "releases34": true,
+      "objects65": true
+    },
+    "log_sha256": "62d67b3a2da00dbced71f9fef1d609f49e9296cd3b49ebb6dcde38657e98c964",
+    "promoted": false
+  },
+  "merge": {
+    "commit": "ba7c8e5bbbabe174cbbaec5b0ba7367336f62752",
+    "merged_at_utc": "2026-10-11T11:46:14Z",
+    "candidate_tree_identical_to_merge": true
+  },
+  "actual_maintenance": {
+    "observed_at_utc": "2026-10-11T11:49:23.434800+00:00",
+    "revision": "validated@sha1:ba7c8e5bbbabe174cbbaec5b0ba7367336f62752",
+    "checks": {
+      "source_ready": true,
+      "source_revision": true,
+      "kustomization_ready": true,
+      "applied_revision": true,
+      "owner_identity": true,
+      "owner_active": true,
+      "prune_disabled": true,
+      "force_disabled": true,
+      "same_hr_identity": true,
+      "hr_suspended": true,
+      "serviceaccount_no_grants_or_secrets": true,
+      "serviceaccount_flux_owner": true,
+      "sa_inventory": true,
+      "inventory_only_sa_added": true,
+      "same_ready_writer": true,
+      "bortus_storage_healthy": true,
+      "hr_only_reviewed_suspension_failure_settings_changed": true
+    },
+    "preservation_errors": [],
+    "passed": true,
+    "source_uid": "eddfd69a-9fdf-407d-abb4-d89fdae4359a",
+    "owner_uid": "f3757d64-04bd-46db-8b40-ae666999449c",
+    "serviceaccount_uid": "5601533e-1d91-4e8c-989c-000cb95d5484",
+    "hr_uid": "bed3008a-474f-411e-9956-1248e3718220",
+    "writer_uid": "4c674c03-985c-4ca8-b7e9-59a13ea7e3a3",
+    "mutations": 0,
+    "database_or_native_value_reads": 0
+  },
+  "retained_observation_failure": {
+    "attempt": 1,
+    "exit": 1,
+    "checks": {
+      "source_ready": true,
+      "source_revision": true,
+      "kustomization_ready": true,
+      "applied_revision": true,
+      "owner_identity": true,
+      "owner_active": true,
+      "prune_disabled": true,
+      "force_disabled": true,
+      "same_hr_identity": true,
+      "hr_suspended": true,
+      "serviceaccount_no_grants_or_secrets": true,
+      "serviceaccount_flux_owner": true,
+      "sa_inventory": true,
+      "inventory_only_sa_added": true,
+      "same_ready_writer": true,
+      "bortus_storage_healthy": true,
+      "hr_spec_only_suspend_changed": false
+    },
+    "cause": "The earlier qualified branch also adds eleven reviewed Helm failure settings. After exactly removing those fields and suspension, the whole original HR spec hash matches. All workload/data/RBAC checks passed in both reads.",
+    "mutations": 0
+  },
+  "follow_through_originals": [
+    {
+      "name": "chart-main-ci-38136779991.json",
+      "sha256": "93ea17e4ed2b780efc5867d538e1ae68b6bb2d73b17feedcd4891d9f14c77dc4"
+    },
+    {
+      "name": "chart-main-ci-38136779991.log",
+      "sha256": "d64d9f71408940c299453fb91ce6f2c0855799cb0831ae2806ee181154fe4ef1"
+    },
+    {
+      "name": "chart-pr-ci-38136647929.json",
+      "sha256": "4d252ccf2bb0a93125f9dcc70ba1150f2b2c8fa7565f9037b426fa766dcd7a68"
+    },
+    {
+      "name": "chart-pr-ci-38136647929.log",
+      "sha256": "62d67b3a2da00dbced71f9fef1d609f49e9296cd3b49ebb6dcde38657e98c964"
+    },
+    {
+      "name": "observe-chart-maintenance-v1.py",
+      "sha256": "ccf924f1c36947ec25e01ca168ee1655988ac28dd66c18e4033a9e355f3ee4e4"
+    },
+    {
+      "name": "observe-chart-maintenance-v2.py",
+      "sha256": "204399c190f7e199df60b1228789c37485bc18d2cd1b40cc434134e0798d161e"
+    },
+    {
+      "name": "chart-maintenance-observe-v1.json",
+      "sha256": "5356fbffdf169e6b64cab009c32990a55a4d6ac0330bdd2718169db923db1192"
+    },
+    {
+      "name": "chart-maintenance-observe-v2.json",
+      "sha256": "2fd06780ebcc770a93061161f54551933803840fcd1c439007bba5d6dc24ff28"
+    },
+    {
+      "name": "chart-maintenance-observe-v1.stdout",
+      "sha256": "117b849285412ffb150f0bb8a2fe9b4481af486b9c38a78a220dbdb06907c730"
+    },
+    {
+      "name": "chart-maintenance-observe-v1.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "chart-maintenance-observe-v2.stdout",
+      "sha256": "09e1dff20ffcdae638064b3d7ce351f0db68fcf5ce3c362bc5d64bfa48c2ad67"
+    },
+    {
+      "name": "chart-maintenance-observe-v2.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

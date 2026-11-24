@@ -1,0 +1,57 @@
+[Unit]
+Description=BORTUS certificate outbox delivery (fixed original-destination egress)
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=bortus-certificate-monitor
+Group=bortus-certificate-monitor
+WorkingDirectory=/var/lib/bortus-certificate-monitor
+Environment=PYTHONDONTWRITEBYTECODE=1
+UnsetEnvironment=KUBECONFIG HTTP_PROXY HTTPS_PROXY ALL_PROXY http_proxy https_proxy all_proxy
+# Root-managed fixed policy helper only; the Python sender remains UID998,
+# capability-free and NoNewPrivileges. No generic root execution API is exposed.
+ExecStartPre=+/usr/bin/python3 -B /usr/local/libexec/bortus-certificate-monitor/certificate_notification_firewall.py start
+ExecStart=/usr/bin/python3 -B /usr/local/libexec/bortus-certificate-monitor/deliver-certificate-notifications.py --managed-host --state-dir /var/lib/bortus-certificate-monitor --config /etc/bortus-certificate-monitor/notifications.json --loop
+ExecStopPost=+/usr/bin/python3 -B /usr/local/libexec/bortus-certificate-monitor/certificate_notification_firewall.py stop
+Restart=on-failure
+RestartSec=30
+TimeoutStopSec=35
+KillMode=control-group
+UMask=0077
+MemoryMax=128M
+MemorySwapMax=0
+CPUQuota=5%
+TasksMax=32
+LimitFSIZE=20M
+LimitCORE=0
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+AmbientCapabilities=
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictRealtime=yes
+RestrictAddressFamilies=AF_UNIX AF_INET AF_NETLINK
+ReadWritePaths=/var/lib/bortus-certificate-monitor
+InaccessiblePaths=-/etc/kubernetes -/run/bortus-certificate-monitor
+# Kernel cgroup-SKB address filtering runs after Kubernetes DNAT and cannot
+# enforce a stable Service VIP. The root pre-start helper instead installs
+# sender-cgroup-only nft output rules matching original VIP252/TCP443, denying
+# all other IP egress. Failure prevents startup; no current-pod/subnet allow.
+LogRateLimitIntervalSec=60s
+LogRateLimitBurst=10
+
+[Install]
+WantedBy=multi-user.target

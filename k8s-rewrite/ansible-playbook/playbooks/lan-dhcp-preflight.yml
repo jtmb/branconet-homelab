@@ -1,0 +1,58 @@
+---
+- name: Verify the existing LAN DHCP handoff host without starting DHCP
+  hosts: workernode2
+  gather_facts: false
+  vars:
+    dhcp_interface: enp3s0
+    dhcp_resolvers: ['192.168.0.253', '192.168.0.5']
+  tasks:
+    - name: Read the resolver host's IPv4 address
+      ansible.builtin.command:
+        argv: [ip, -j, -4, addr, show, dev, "{{ dhcp_interface }}"]
+      register: dhcp_address
+      check_mode: false
+      changed_when: false
+
+    - name: Require the expected static resolver address
+      vars:
+        lan_addresses: "{{ (dhcp_address.stdout | from_json | first).addr_info }}"
+        static_addresses: >-
+          {{ lan_addresses | selectattr('prefixlen', 'equalto', 24) |
+             selectattr('valid_life_time', 'equalto', 4294967295) |
+             map(attribute='local') | list }}
+      ansible.builtin.assert:
+        that:
+          - ansible_host == dhcp_resolvers[1]
+          - ansible_host in static_addresses
+
+    - name: Check that the host has no IPv4 DHCP listener
+      ansible.builtin.command:
+        argv: [ss, -4, -Hlun, 'sport = :67']
+      register: dhcp_listener
+      check_mode: false
+      changed_when: false
+      failed_when: dhcp_listener.rc != 0 or dhcp_listener.stdout | trim != ''
+
+    - name: Check DHCP option syntax with a documentation-only test range
+      ansible.builtin.command:
+        argv: [/usr/sbin/dnsmasq, --test, --conf-file=/dev/stdin]
+        stdin: |
+          port=0
+          interface={{ dhcp_interface }}
+          bind-interfaces
+          dhcp-range=192.0.2.20,192.0.2.30,255.255.255.0,24h
+          dhcp-option=option:router,192.0.2.1
+          dhcp-option=option:dns-server,{{ dhcp_resolvers | join(',') }}
+      check_mode: false
+      changed_when: false
+
+    - name: Verify both resolvers over UDP and TCP from another node
+      ansible.builtin.command:
+        argv: [dig, "@{{ item.0 }}", k8s-api.branconet.lan, A,
+               '+short', '+time=2', '+tries=1', "{{ item.1 }}"]
+      delegate_to: "{{ groups['master'] | first }}"
+      loop: "{{ dhcp_resolvers | product(['+notcp', '+tcp']) | list }}"
+      register: dhcp_dns_probe
+      check_mode: false
+      changed_when: false
+      failed_when: dhcp_dns_probe.rc != 0 or dhcp_dns_probe.stdout | trim != '192.168.0.251'

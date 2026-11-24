@@ -1,0 +1,56 @@
+{
+  "abi": 1,
+  "observed_utc": "2026-10-12T20:49:42.334897+00:00",
+  "source": "9fd434e08ec2f8702dc564f0e7ca872aecf58c66",
+  "original_once_run": "jwt-alias-full-functional-20261012-v3",
+  "started_utc": "2026-10-12T20:36:28.647823+00:00",
+  "completed_utc": "2026-10-12T20:39:01.893081+00:00",
+  "actual_outer_tool_exit": 1,
+  "actual_supervisor_exit": 1,
+  "original_budget_seconds": 900,
+  "reserved_closure_seconds": 60,
+  "stages": [
+    {
+      "phase": "environment",
+      "actual_container_exit": 0,
+      "closure_verified": true
+    },
+    {
+      "phase": "build",
+      "actual_container_exit": 0,
+      "closure_verified": true
+    },
+    {
+      "phase": "native-load",
+      "actual_container_exit": 0,
+      "closure_verified": true
+    },
+    {
+      "phase": "checks",
+      "actual_container_exit": 1,
+      "closure_verified": true
+    }
+  ],
+  "units": {
+    "tests": 280,
+    "pass": 279,
+    "fail": 1,
+    "skipped": 0,
+    "sole_failure": "private Flux credentials use verified native bodies, never SQLite/argv/errors; imported auth is retained",
+    "failure_location": "tests/flux-credentials.test.ts:67",
+    "public_error": "Kubernetes command failed",
+    "cause": "unresolved; test duration alone does not establish timeout"
+  },
+  "original_compiled_http_integration_dispatched": false,
+  "source_unchanged": true,
+  "inputs_unchanged": true,
+  "owned_cli_count": 128,
+  "fresh_owned_identities_absent": 134,
+  "exact_containers_absent": true,
+  "terminal_sha256": "9cb12c2ca766102c6cfc5abbf05134ecef383899c8ab1ed72489babbd78295d7",
+  "root_closure_sha256": "923c50f1a023920a83974f23d863f59a397ca56d51e21465788c1e359cfe94c2",
+  "benchmark_dispatched": false,
+  "full_functional_acceptance": false,
+  "deployment": false,
+  "overall_acceptance": false
+}

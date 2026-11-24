@@ -3,9 +3,10 @@
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Server, Loader2, Cpu, MemoryStick, HardDrive, Monitor, Network, Container, Hash, ChevronRight } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useQuery } from "@/lib/use-query";
+import { QueryStatus } from "@/components/ui/query-status";
 import ViewportWrapper from "../../viewport-wrapper";
-import ResourceActionsMenu from "../../resource-actions-menu";
+import ResourceActionsMenu from "../../resource-actions-trigger";
 
 function formatAge(ms: number): string {
   const s = Math.floor(ms / 1000);
@@ -22,27 +23,12 @@ function formatAge(ms: number): string {
 export default function NodeDetailPage() {
   const router = useRouter();
   const { hostname } = useParams<{ hostname: string }>();
-  const [node, setNode] = useState<any>(null);
-  const [pods, setPods] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
-
-  const fetchNode = useCallback(async () => {
-    try {
-      const res = await fetch(`/api/cluster/nodes/${encodeURIComponent(hostname)}`);
-      if (res.status === 404) { setNotFound(true); setLoading(false); return; }
-      if (!res.ok) throw new Error("Failed to fetch node");
-      const data = await res.json();
-      setNode(data.node);
-      setPods(data.pods || []);
-    } catch {
-      setNotFound(true);
-    } finally {
-      setLoading(false);
-    }
-  }, [hostname]);
-
-  useEffect(() => { fetchNode(); }, [fetchNode]);
+  const query = useQuery<any>(`/api/cluster/nodes/${encodeURIComponent(hostname)}`);
+  const node = query.data?.node;
+  const pods = query.data?.pods ?? [];
+  const loading = query.loading;
+  const notFound = query.status === 404;
+  const fetchNode = query.refetch;
 
   if (loading) {
     return (
@@ -56,8 +42,8 @@ export default function NodeDetailPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <Server className="w-12 h-12 text-zinc-600" />
-        <h2 className="text-lg font-semibold text-zinc-300">Node Not Found</h2>
-        <p className="text-sm text-zinc-500">{hostname}</p>
+        <h2 className="text-lg font-semibold text-zinc-300">{notFound ? "Node Not Found" : "Node Unavailable"}</h2>
+        <QueryStatus query={query} /><p className="text-sm text-zinc-500">{hostname}</p>
         <Link href="/nodes" className="text-indigo-400 hover:underline text-sm">← Back to Nodes</Link>
       </div>
     );
@@ -103,7 +89,7 @@ export default function NodeDetailPage() {
     <div className="flex flex-col min-h-0">
 
       <ViewportWrapper>
-      <main className="px-3 sm:px-4 lg:px-6 py-6">
+      <main className="px-3 sm:px-4 lg:px-6 py-6"><QueryStatus query={query} />
         {/* Breadcrumb */}
         <div className="flex items-center gap-1.5 mb-4 text-xs text-zinc-500">
           <Link href="/nodes" className="hover:text-zinc-300 transition-colors">Nodes</Link>

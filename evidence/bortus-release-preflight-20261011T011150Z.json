@@ -1,0 +1,33 @@
+{
+  "checked_at_utc": "2026-10-11T01:11:50Z",
+  "scope": "read-only runtime metadata; no production mutations or credential reads",
+  "nodes": [
+    {"name": "masternode", "ip": "192.168.0.4", "ready": true, "kubernetes": "v1.37.1", "runtime": "containerd://2.4.1"},
+    {"name": "workernode1", "ip": "192.168.0.6", "ready": true, "kubernetes": "v1.37.1", "runtime": "containerd://2.4.1"},
+    {"name": "workernode2", "ip": "192.168.0.5", "ready": true, "kubernetes": "v1.37.1", "runtime": "containerd://2.4.1"}
+  ],
+  "helm_releases": {"count": 34, "ready_count": 34},
+  "flux": {
+    "git_repository": "flux-system/branconet-charts",
+    "url": "ssh://git@github.com/jtmb/branconet-charts.git",
+    "kustomization": "flux-system/migration-releases",
+    "ready": true,
+    "stored_and_applied_revision": "validated@sha1:53d224197fc6253ecac04ffd51e4b16b566c55e2"
+  },
+  "bortus": {
+    "image": "bortus:migration-1438b27",
+    "service_account": "bortus",
+    "replicas": 1,
+    "ready_replicas": 1,
+    "strategy": "Recreate",
+    "pvc": "bortus-data"
+  },
+  "validating_admission_policies": 0,
+  "validating_admission_policy_bindings": 0,
+  "new_kv_release_live": false,
+  "limitations": [
+    "Readiness does not prove full application or data acceptance.",
+    "This check does not revalidate PVC identities, imported values, old-principal revocation, backups or Gluster health.",
+    "Final coherent source/image, guarded migration and compatible recovery acceptance remain pending."
+  ]
+}

@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "status": "One finite synthetic enabled-Run browser case qualified; original A12 deleted-account browser flow remains pending",
+  "originalValidation": "Browser flows for readonly/write/deleted/demoted users and provisioning enabled/disabled. Direct unauthorized calls must still fail. Role changes should update visible controls without granting cached authority. [Screenshot](audit-evidence/readonly-actions.jpg).",
+  "source": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+  "frontendTree": "4658deeff3bc5d952307c11503832b96b44dfe27",
+  "sourceContinuity": [
+    {
+      "path": "k8s-rewrite/front-end/src/lib/use-query.ts",
+      "bytes": 3950,
+      "sha256": "92bd1bdf32e8b64f7622da449a0bafafd696f7d84493d3e28aadd4585eed4938",
+      "historicalSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+      "currentSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/permissions.ts",
+      "bytes": 2648,
+      "sha256": "c894d04fa4cbcfaa09e97f1248100b671b29927b13950a4e964b0135a994b704",
+      "historicalSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+      "currentSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/auth.ts",
+      "bytes": 4039,
+      "sha256": "932034e70f9d0447eb23c38ce91cb799413d289eb0a3bd25f3808c25865f2aff",
+      "historicalSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+      "currentSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/runtime-capabilities.ts",
+      "bytes": 403,
+      "sha256": "a53ca135150bfff5bf9da32818814f1c7c8b13f1db9edd5c56db69185d0540d2",
+      "historicalSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+      "currentSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/auth/session/route.ts",
+      "bytes": 1344,
+      "sha256": "0fa65aaa70406f438168c8560f921dc524b13d1fc33b767c354babaff29db945",
+      "historicalSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+      "currentSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/(dashboard)/deploy/deploy-client.tsx",
+      "bytes": 12504,
+      "sha256": "56af33ba631a5f3f38359ad2490a80be4a981ac9f01c014ff7af5b0727ccd3b6",
+      "historicalSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+      "currentSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/deploy/stop/route.ts",
+      "bytes": 1315,
+      "sha256": "d809b978c2575c2036ba80b81ac3e80a5f50776ff8640a0e297cfc13edbbcde1",
+      "historicalSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+      "currentSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/deploy/history/route.ts",
+      "bytes": 2224,
+      "sha256": "f0e082a86d2fa535ca8a7913899592f6f0227bbbaacc9facc6c9c77184996c09",
+      "historicalSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+      "currentSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/app/api/deploy/stream/route.ts",
+      "bytes": 1631,
+      "sha256": "3158c5613d75e2f95ab4b15651a7effe7c8eb8cdd2f6aaa9a28fbc5faecfc099",
+      "historicalSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+      "currentSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+      "rawGitEqual": true
+    },
+    {
+      "path": "k8s-rewrite/front-end/src/lib/job-stream.ts",
+      "bytes": 3662,
+      "sha256": "c57778b4c9cae363e351cefe1c3bbeeffc4714968470a3ec2aaea2b8d8a4b639",
+      "historicalSource": "6e2efbda939758ae0096d1bb70cf2ad8f28b6be6",
+      "currentSource": "fccc7c06e9063aa16967631b2fda2b397147d2b0",
+      "rawGitEqual": true
+    }
+  ],
+  "evidence": [
+    {
+      "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-provisioning-output-full-functional-root-20261015.json",
+      "bytes": 3550,
+      "sha256": "f50d163db961746e31882eb436170379aeecdc02b2f5e5a3fae320047649910f"
+    },
+    {
+      "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-a02-composite-boundary-root-20261015.json",
+      "bytes": 11806,
+      "sha256": "9e862bca6cbd75de15cdbb32d5a680ac3ad80a6c8dd1acb4605f531ea45f5a6a"
+    },
+    {
+      "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-legacy-node-permissions-browser-qualified-root-20261014.json",
+      "bytes": 6466,
+      "sha256": "fb7a8c5d98e1db5efefa83c7e5cd98187f0759bfaf42ceff397e6a79a8cbc226"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-sync-hs256-recovered\\kubernetes migration\\docs\\implementation-evidence\\administration-ui.json",
+      "bytes": 3020,
+      "sha256": "ab1bb82f3d8f8a188c6a7bb5fba77bc0c3a841155f4021173bab6ad7d68796bf"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-sync-hs256-recovered\\kubernetes migration\\docs\\implementation-evidence\\job-stream-ui.json",
+      "bytes": 1054,
+      "sha256": "5069adf86abf4006ea15eee5cd823e577f5c7d5f9a554451d48358656d6bfffa"
+    },
+    {
+      "path": "C:\\Users\\james\\.codex\\worktrees\\bortus-sync-hs256-recovered\\kubernetes migration\\docs\\implementation-evidence\\provisioning-output-cursor-focused-20261015.json",
+      "bytes": 11016,
+      "sha256": "7de694caf11e4698ec0bad2593e28ea9181e2a271f4e825e66423b082b2f36f8"
+    },
+    {
+      "path": "C:\\Users\\james\\OneDrive\\Documents\\ChatGPT\\kubernetes migration\\evidence\\bortus-a12-enabled-run-fixture-failure-root-20261015.json",
+      "bytes": 4409,
+      "sha256": "4d54c3c71fbf3e8116b32c25a5d28b7c1a1a8150fa0e5133eae60841cde09cba"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a12-failure-own-20261015-v2.json",
+      "bytes": 1493,
+      "sha256": "fc1456aeedbd1037cedda408377573af58ff81e0126cb7834346969e686ba399"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-a12-enabled-run-browser-success-postcheck-20261015-v3\\legacy-review-result.json",
+      "bytes": 13466,
+      "sha256": "581c3cc179fe61a3cea50b73769398fbc6355bdc7688ceea2d1a0df7c893a6cd"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\app-a12-enabled-run-browser-success-postcheck-20261015-v3\\fresh-result.json",
+      "bytes": 9997,
+      "sha256": "d4be213dc513b695e50d6036c0deecf8adecf414033f41dc80e0ff536322d312"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a12-enabled-run-browser-success-postcheck-20261015-v3\\windows-fresh-result.json",
+      "bytes": 5297,
+      "sha256": "f5f4069ce13a4f97695e9c2644f24c96850ef8df1ccaee299cd62bd7e43b934d"
+    },
+    {
+      "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a12-success-final-own-20261015-v3.json",
+      "bytes": 1074,
+      "sha256": "7eb6be7e773cb1c004cedc7e11e220aed9d4421128056d370074dd8cbe671ece"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.local\\share\\branconet-migration\\root-a12-success-final-own-20261015-v3.json",
+      "bytes": 72377,
+      "sha256": "83c685263259381d1536ce03a3e7f7bf19e8f4445f8a77aa018b91065be893b5"
+    },
+    {
+      "path": "\\\\wsl.localhost\\Ubuntu\\home\\brajam\\.cache\\bortus-controlled-perf\\a12-enabled-run-browser-20261015-v3\\output\\browser-report.json",
+      "bytes": 3281,
+      "sha256": "2e0c7ec0edc13c20123dce026391bf5a20486b31669f2a035fd694bafa2517b3"
+    }
+  ],
+  "mapping": [
+    {
+      "clause": "Browser readonly/write/deleted/demoted flows and changing visible controls",
+      "actual": "Retained readonly/write/demotion/browser authority-withdrawal cases are recorded. A02 issued-deleted proof is HTTP/unit, not an actual deleted-user browser flow. The latter remains unqualified.",
+      "limits": "No substitution of sessionVersion revocation or HTTP/unit deletion for the original deleted-account browser requirement."
+    },
+    {
+      "clause": "Provisioning disabled",
+      "actual": "Retained browser unsupported runtime has no Run; readonly output view has zero Stop/Delete. Current347/8 verifies runtime capability flags and disabled capability/direct unauthorized boundaries."
+    },
+    {
+      "clause": "Provisioning enabled",
+      "actual": "New actual synthetic enabled Run confirms exactPOST200/body/jobid, one child/callback, selected role, fixed completed+withheld text in visible UI, terminal success/busy reset; no real host.",
+      "proof": "Actualserver83db40/0 browser40f6ba/0 exact40f329/0 Linuxfresh629da1/0 Windowsc9650d/0 final54d4ab/0"
+    },
+    {
+      "clause": "Direct unauthorized requests and no cached authority",
+      "actual": "Current347/8 plus A02 issued-deleted124API401/32page307, native/demotion fresh403 and sharedUI withdrawal proofs; no JWT-only fallback or global logout-revocation claim."
+    }
+  ],
+  "newEnabledRun": {
+    "cases": 1,
+    "startHTTPStatus": 200,
+    "requests": 1,
+    "childCalls": 1,
+    "callbackFixed": true,
+    "terminalSuccess": true,
+    "busyReset": true,
+    "noHostProvisioning": true,
+    "noRealAnsibleClaim": true
+  },
+  "newEnabledDiagnostic": {
+    "visibleCompleteAndWithheld": true,
+    "rawMarkerVisible": false,
+    "oneCaseOnly": true
+  },
+  "closure": {
+    "currentPins": 247,
+    "previousLinuxBirthsAbsent": 55,
+    "windowsOriginalFreshReaderNoLive": true,
+    "exactCIDAndNameQueries": 2,
+    "separateOwnBirthAbsenceClaimed": false
+  },
+  "history": {
+    "firstAndSecondBrowserExits": [
+      1,
+      1
+    ],
+    "preserved": true,
+    "priorTimingCauseReproduced": false,
+    "oldAbsoluteReadyCheck": "30c1c9/1",
+    "correctSeparateLiveEndpointCheck": "2f87d8/0",
+    "nativeReadyPassClaimed": false
+  },
+  "originalSourceClauseQualified": false,
+  "wholeDeliveredAcceptance": false,
+  "realHostProvisioningQualified": false,
+  "physicalATQualified": false,
+  "performanceAccepted": false,
+  "productionAdopted": false,
+  "historicalFalseFieldsPreserved": true,
+  "deletedAccountBrowserFlowQualified": false,
+  "remainingOriginalSourceClause": "One actual deleted-account browser flow: live writer draft then exact synthetic account deletion, existing fresh session withdrawal and old-cookie denial; no every-page cross-product required",
+  "sourceComposition": {
+    "path": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a12-enabled-run-finite-held-20261015-v3-1.json",
+    "sha256": "bf64248de5fa29e4157c8d3c53cf04b2e42f7d527b0d083eb699e4cf5df1c9e4"
+  }
+}

@@ -1,0 +1,3638 @@
+{
+  "schemaVersion": 1,
+  "scope": "Original A22 source validation qualified for reviewed3d: current fixed-mobile actual gzip/Brotli transfer, initial/deferred JS, compile/evaluation traces, LCP, first modal/terminal interaction and loading/error/focus behavior; separate A07/image/live/AT gates unchanged",
+  "originalValidation": "Compare gzip/Brotli transfer, initial JS, parse/execute time, LCP and first modal/terminal interaction under a fixed mobile profile. Check loading/error/focus behavior and keep browser cold/warm measurements separate.",
+  "source": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+  "frontendTree": "4d3fd544e8a70e31b2c6fb5c52213bba0e59cb60",
+  "actualBrowserExit": 0,
+  "actualServerExit": 0,
+  "finiteObservationsQualified": true,
+  "observationCount": 36,
+  "fixedProfile": {
+    "width": 390,
+    "height": 844,
+    "cpuRate": 4,
+    "latencyMs": 150,
+    "downloadBytesPerSecond": 200000,
+    "uploadBytesPerSecond": 93750
+  },
+  "design": {
+    "codecs": [
+      "gzip",
+      "br"
+    ],
+    "features": {
+      "deploy": "Provisioning Delete job history modal open/close only; no DELETE request",
+      "yaml": "Pods View YAML modal",
+      "terminal": "Pods terminal panel"
+    },
+    "pairsPerFeatureCodec": 3,
+    "coldAndWarmEachPair": true,
+    "total": 36,
+    "allSamplesRetained": true,
+    "trimming": false,
+    "absoluteServerSeconds": 480,
+    "closureReserveSeconds": 60,
+    "serverAttachSeconds": 420,
+    "browserInternalSeconds": 300,
+    "browserOuterSeconds": 330
+  },
+  "staticEncoding": {
+    "files": 170,
+    "rawBytes": 1812512,
+    "gzipPayloadBytes": 572103,
+    "brotliPayloadBytes": 495470,
+    "roundTripsVerified": 340,
+    "compiledManifestSHA256": "a5767208a7ebf16cafdcd9f503d39914dd67f8e72f88bb386f0c9328edeffdca",
+    "policy": {
+      "gzip": "pinned Node22 gzipSync defaults",
+      "br": "pinned Node22 brotliCompressSync defaults"
+    },
+    "fixtureOnly": true,
+    "precompressionBeforeReady": true,
+    "decodedBytesBoundToActualCompiledSHA": true,
+    "productionBrotliAdopted": false
+  },
+  "observationLayers": {
+    "actualEncodedDataLength": "CDP network encodedDataLength, distinct from payload/header Content-Length; warm cache observations are0",
+    "payloadContentLength": "Reported encoded Content-Length per loaded asset; warm cached asset length is not bytes transferred again",
+    "initialJS": "Unique loaded JS raw bytes/file count, not gzip transfer or parse CPU",
+    "rendererMetrics": "Separate renderer observations; Nodes, LayoutDuration/RecalcStyleDuration/ScriptDuration/TaskDuration in recorded units, JSHeapUsedSize bytes; no CPU-share attribution",
+    "trace": "Compile/evaluate/function intervals overlap; each category reported separately and never summed into exclusive CPU",
+    "lcp": "Recorded current-page LCP startTime; locator-ready and first-frame timings remain separate",
+    "mixedResponses": "Only mapped exact static assets have fixture gzip/Brotli encoding. HTML/API upstream behavior unchanged and may still be gzip; do not call all traffic Brotli",
+    "comparison": "Same current source under two fixture compression policies. No source-before/after improvement, A07 warm-regression cure or distribution/significance claim"
+  },
+  "deferredTerminalFailure": {
+    "refusedRequests": 1,
+    "chunk": "/_next/static/chunks/30d07d85.7e77c4101699672b.js",
+    "fixedFallback": true,
+    "closeFocusReturn": true
+  },
+  "allInteractionFocusInside": true,
+  "allSamplesNoMutation": true,
+  "APIResponseInterception": false,
+  "diagnosticOverflow": false,
+  "diagnosticCaptureFailed": false,
+  "groups12": [
+    {
+      "algorithm": "gzip",
+      "feature": "deploy",
+      "cache": "cold",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 171499,
+          "median": 171499,
+          "maximum": 171499
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 167909,
+          "median": 167909,
+          "maximum": 167909
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 514573,
+          "median": 514573,
+          "maximum": 514573
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 5474996,
+            "median": 12478300,
+            "maximum": 13284100
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 3.535,
+            "median": 3.7520000000000002,
+            "maximum": 103.562
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 300,
+            "median": 612,
+            "maximum": 970
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 12.639,
+            "median": 13.577,
+            "maximum": 15.068999999999999
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 20.208000000000002,
+            "median": 21.886,
+            "maximum": 153.474
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 146.099,
+            "median": 148.727,
+            "maximum": 552.1469999999999
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 16,
+              "median": 16,
+              "maximum": 16
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 7686,
+              "median": 7705,
+              "maximum": 178004
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 30,
+              "median": 30,
+              "maximum": 44
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 16115,
+              "median": 18080,
+              "maximum": 65851
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 116,
+              "median": 116,
+              "maximum": 1199
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 34563,
+              "median": 37627,
+              "maximum": 152314
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 16,
+              "median": 16,
+              "maximum": 16
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 360,
+              "median": 550,
+              "maximum": 679
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 1588,
+          "median": 1590,
+          "maximum": 1994
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 1572,
+          "median": 1584,
+          "maximum": 1968
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 3162,
+          "median": 3162,
+          "maximum": 3162
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 2885,
+          "median": 2885,
+          "maximum": 2885
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 1,
+          "median": 1,
+          "maximum": 1
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 7271,
+          "median": 7271,
+          "maximum": 7271
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 5540412,
+            "median": 11952328,
+            "maximum": 13674176
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 0.8390000000000003,
+            "median": 1.0330000000000001,
+            "maximum": 3.4169999999999896
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 337,
+            "median": 649,
+            "maximum": 1007
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 17.972,
+            "median": 20.041999999999998,
+            "maximum": 20.312
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 23.095000000000002,
+            "median": 23.328000000000003,
+            "maximum": 45.89100000000001
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 101.938,
+            "median": 102.18199999999999,
+            "maximum": 115.55500000000008
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1,
+              "median": 1,
+              "maximum": 1
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 280,
+              "median": 286,
+              "maximum": 2502
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 70,
+              "median": 70,
+              "maximum": 70
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 42465,
+              "median": 42952,
+              "maximum": 70150
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 24,
+              "median": 24,
+              "maximum": 275
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 3297,
+              "median": 3635,
+              "maximum": 24096
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1,
+              "median": 1,
+              "maximum": 1
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 31,
+              "median": 31,
+              "maximum": 1179
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 694,
+          "median": 881,
+          "maximum": 1350
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 359.09999999403954,
+          "median": 360.5,
+          "maximum": 370.3999999910593
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    },
+    {
+      "algorithm": "gzip",
+      "feature": "deploy",
+      "cache": "warm",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 167909,
+          "median": 167909,
+          "maximum": 167909
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 514573,
+          "median": 514573,
+          "maximum": 514573
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 9414168,
+            "median": 16424096,
+            "maximum": 17143348
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 1.3370000000000002,
+            "median": 1.7409999999999999,
+            "maximum": 2.6969999999999996
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 635,
+            "median": 947,
+            "maximum": 1305
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 3.773,
+            "median": 3.905,
+            "maximum": 7.477
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 20.660999999999998,
+            "median": 28.816000000000003,
+            "maximum": 32.998
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 135.927,
+            "median": 137.98000000000002,
+            "maximum": 138.89000000000001
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 16,
+              "median": 16,
+              "maximum": 16
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 14690,
+              "median": 15508,
+              "maximum": 15518
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 32,
+              "median": 32,
+              "maximum": 33
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 17727,
+              "median": 25735,
+              "maximum": 29114
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 116,
+              "median": 116,
+              "maximum": 116
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 33704,
+              "median": 34063,
+              "maximum": 34790
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 16,
+              "median": 16,
+              "maximum": 16
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 213,
+              "median": 216,
+              "maximum": 304
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 552,
+          "median": 559,
+          "maximum": 562
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 456,
+          "median": 476,
+          "maximum": 532
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 2885,
+          "median": 2885,
+          "maximum": 2885
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 1,
+          "median": 1,
+          "maximum": 1
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 7271,
+          "median": 7271,
+          "maximum": 7271
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 7996752,
+            "median": 9638940,
+            "maximum": 18389800
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 0.8380000000000002,
+            "median": 1.4960000000000004,
+            "maximum": 1.8139999999999998
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 314,
+            "median": 672,
+            "maximum": 984
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 19.594,
+            "median": 20.929999999999996,
+            "maximum": 21.049000000000003
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 26.016,
+            "median": 26.500999999999998,
+            "maximum": 27.296999999999997
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 101.40599999999996,
+            "median": 114.66500000000002,
+            "maximum": 144.54799999999997
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1,
+              "median": 1,
+              "maximum": 1
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 387,
+              "median": 567,
+              "maximum": 833
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 66,
+              "median": 66,
+              "maximum": 66
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 46957,
+              "median": 47203,
+              "maximum": 47873
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 24,
+              "median": 24,
+              "maximum": 24
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 2618,
+              "median": 3610,
+              "maximum": 3640
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1,
+              "median": 1,
+              "maximum": 1
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 13,
+              "median": 19,
+              "maximum": 172
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 876,
+          "median": 1179,
+          "maximum": 1200
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 357.29999999701977,
+          "median": 361.09999999403954,
+          "maximum": 364.19999998807907
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    },
+    {
+      "algorithm": "gzip",
+      "feature": "yaml",
+      "cache": "cold",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 168131,
+          "median": 168131,
+          "maximum": 168131
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 164542,
+          "median": 164542,
+          "maximum": 164542
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 505310,
+          "median": 505310,
+          "maximum": 505310
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 6392364,
+            "median": 6392636,
+            "maximum": 13459464
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 39.675,
+            "median": 79.729,
+            "maximum": 99.19800000000001
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 2931,
+            "median": 2948,
+            "maximum": 2948
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 41.156000000000006,
+            "median": 42.765,
+            "maximum": 66.98400000000001
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 74.355,
+            "median": 201.847,
+            "maximum": 230.815
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 382.664,
+            "median": 628.9789999999999,
+            "maximum": 733.6859999999999
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 8533,
+              "median": 174665,
+              "maximum": 194524
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 35,
+              "median": 38,
+              "maximum": 40
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 70324,
+              "median": 106977,
+              "maximum": 118936
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 152,
+              "median": 1214,
+              "maximum": 1214
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 35242,
+              "median": 145314,
+              "maximum": 168978
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 629,
+              "median": 675,
+              "maximum": 1535
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 2438,
+          "median": 2512,
+          "maximum": 2774
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 536,
+          "median": 584,
+          "maximum": 600
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 8150,
+          "median": 8150,
+          "maximum": 8150
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 7596,
+          "median": 7596,
+          "maximum": 7596
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 2,
+          "median": 2,
+          "maximum": 2
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 19621,
+          "median": 19621,
+          "maximum": 19621
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 9703120,
+            "median": 9717184,
+            "maximum": 12554476
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 23.032000000000004,
+            "median": 53.94500000000001,
+            "maximum": 56.45499999999999
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 2996,
+            "median": 3013,
+            "maximum": 3013
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 186.516,
+            "median": 228.101,
+            "maximum": 268.47299999999996
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 79.07400000000001,
+            "median": 128.694,
+            "maximum": 132.697
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 731.64,
+            "median": 901.038,
+            "maximum": 951.712
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 2,
+              "median": 2,
+              "maximum": 2
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 1639,
+              "median": 1648,
+              "maximum": 1746
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 205,
+              "median": 205,
+              "maximum": 205
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 241115,
+              "median": 344800,
+              "maximum": 407333
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 259,
+              "median": 486,
+              "maximum": 486
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 22122,
+              "median": 44657,
+              "maximum": 47078
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 2,
+              "median": 2,
+              "maximum": 2
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 50,
+              "median": 53,
+              "maximum": 54
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 1786,
+          "median": 2257,
+          "maximum": 2259
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 563.0999999940395,
+          "median": 631.6000000089407,
+          "maximum": 642.1999999880791
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    },
+    {
+      "algorithm": "gzip",
+      "feature": "yaml",
+      "cache": "warm",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 164542,
+          "median": 164542,
+          "maximum": 164542
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 505310,
+          "median": 505310,
+          "maximum": 505310
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 6386792,
+            "median": 6396008,
+            "maximum": 6430164
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 76.821,
+            "median": 80.25200000000001,
+            "maximum": 82.235
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 2948,
+            "median": 2948,
+            "maximum": 2948
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 43.165,
+            "median": 44.629,
+            "maximum": 45.813
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 154.446,
+            "median": 177.445,
+            "maximum": 187.075
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 580.2590000000001,
+            "median": 600.851,
+            "maximum": 611.1419999999999
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 135793,
+              "median": 137404,
+              "maximum": 162535
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 34,
+              "median": 49,
+              "maximum": 61
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 91813,
+              "median": 100206,
+              "maximum": 133983
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1210,
+              "median": 1219,
+              "maximum": 1226
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 136352,
+              "median": 152726,
+              "maximum": 159177
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 474,
+              "median": 606,
+              "maximum": 684
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 1646,
+          "median": 1802,
+          "maximum": 1883
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 244,
+          "median": 292,
+          "maximum": 292
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 7596,
+          "median": 7596,
+          "maximum": 7596
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 2,
+          "median": 2,
+          "maximum": 2
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 19621,
+          "median": 19621,
+          "maximum": 19621
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 7849620,
+            "median": 9708840,
+            "maximum": 9719648
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 55.45700000000001,
+            "median": 56.31900000000001,
+            "maximum": 57.81400000000001
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 3013,
+            "median": 3013,
+            "maximum": 3013
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 211.25,
+            "median": 225.043,
+            "maximum": 225.27700000000002
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 120.189,
+            "median": 123.11400000000003,
+            "maximum": 124.474
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 846.105,
+            "median": 853.5619999999999,
+            "maximum": 863.593
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 2,
+              "median": 2,
+              "maximum": 2
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 1331,
+              "median": 1922,
+              "maximum": 2197
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 205,
+              "median": 205,
+              "maximum": 205
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 331615,
+              "median": 339778,
+              "maximum": 348685
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 481,
+              "median": 482,
+              "maximum": 490
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 42954,
+              "median": 44160,
+              "maximum": 47152
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 2,
+              "median": 2,
+              "maximum": 2
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 45,
+              "median": 50,
+              "maximum": 72
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 1377,
+          "median": 2049,
+          "maximum": 2108
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 593.7999999970198,
+          "median": 608.7000000029802,
+          "maximum": 637.6999999880791
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    },
+    {
+      "algorithm": "gzip",
+      "feature": "terminal",
+      "cache": "cold",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 168131,
+          "median": 168131,
+          "maximum": 168131
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 164542,
+          "median": 164542,
+          "maximum": 164542
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 505310,
+          "median": 505310,
+          "maximum": 505310
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 6411800,
+            "median": 6416984,
+            "maximum": 6417368
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 71.033,
+            "median": 99.706,
+            "maximum": 101.772
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 2948,
+            "median": 2948,
+            "maximum": 2948
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 44.737,
+            "median": 54.597,
+            "maximum": 64.46300000000001
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 159.45100000000002,
+            "median": 163.82399999999998,
+            "maximum": 221.566
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 560.12,
+            "median": 636.633,
+            "maximum": 725.997
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 137241,
+              "median": 140713,
+              "maximum": 184997
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 38,
+              "median": 40,
+              "maximum": 43
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 95473,
+              "median": 103063,
+              "maximum": 126779
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1214,
+              "median": 1214,
+              "maximum": 1222
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 124656,
+              "median": 131379,
+              "maximum": 153387
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 626,
+              "median": 728,
+              "maximum": 871
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 2649,
+          "median": 2740,
+          "maximum": 2787
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 580,
+          "median": 612,
+          "maximum": 616
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 78070,
+          "median": 78070,
+          "maximum": 78070
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 76976,
+          "median": 76976,
+          "maximum": 76976
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 3,
+          "median": 3,
+          "maximum": 3
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 308907,
+          "median": 308907,
+          "maximum": 308907
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 8557724,
+            "median": 8895664,
+            "maximum": 9565416
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 155.196,
+            "median": 160.78300000000002,
+            "maximum": 184.33099999999996
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 3193,
+            "median": 3193,
+            "maximum": 3193
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 188.72999999999996,
+            "median": 204.02399999999997,
+            "maximum": 206.70699999999997
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 156.33899999999997,
+            "median": 165.697,
+            "maximum": 178.896
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 1100.3500000000001,
+            "median": 1152.8890000000001,
+            "maximum": 1182.444
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 3,
+              "median": 3,
+              "maximum": 3
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 41032,
+              "median": 44538,
+              "maximum": 55008
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 256,
+              "median": 257,
+              "maximum": 261
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 456436,
+              "median": 481889,
+              "maximum": 492665
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1068,
+              "median": 1068,
+              "maximum": 1068
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 120831,
+              "median": 130276,
+              "maximum": 144496
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 3,
+              "median": 3,
+              "maximum": 3
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 93,
+              "median": 119,
+              "maximum": 237
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 1754,
+          "median": 1907,
+          "maximum": 2207
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 879.4000000059605,
+          "median": 1035.5999999940395,
+          "maximum": 1063.2999999970198
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    },
+    {
+      "algorithm": "gzip",
+      "feature": "terminal",
+      "cache": "warm",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 164542,
+          "median": 164542,
+          "maximum": 164542
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 505310,
+          "median": 505310,
+          "maximum": 505310
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 6386028,
+            "median": 6389060,
+            "maximum": 6401080
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 74.029,
+            "median": 77.905,
+            "maximum": 98.256
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 2948,
+            "median": 2948,
+            "maximum": 2948
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 37.951,
+            "median": 43.098,
+            "maximum": 53.738
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 132.509,
+            "median": 166.139,
+            "maximum": 223.64800000000002
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 503.24499999999995,
+            "median": 573.363,
+            "maximum": 677.993
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 122669,
+              "median": 144579,
+              "maximum": 162733
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 35,
+              "median": 36,
+              "maximum": 42
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 76184,
+              "median": 92280,
+              "maximum": 140460
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1212,
+              "median": 1213,
+              "maximum": 1219
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 106756,
+              "median": 139958,
+              "maximum": 164498
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 637,
+              "median": 696,
+              "maximum": 2174
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 1594,
+          "median": 1731,
+          "maximum": 1796
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 268,
+          "median": 272,
+          "maximum": 288
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 76976,
+          "median": 76976,
+          "maximum": 76976
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 3,
+          "median": 3,
+          "maximum": 3
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 308907,
+          "median": 308907,
+          "maximum": 308907
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 8265132,
+            "median": 8292620,
+            "maximum": 10937012
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 120.19399999999999,
+            "median": 156.187,
+            "maximum": 161.328
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 3193,
+            "median": 3193,
+            "maximum": 3198
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 175.775,
+            "median": 216.036,
+            "maximum": 220.063
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 170,
+            "median": 171.63500000000005,
+            "maximum": 190.61800000000002
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 956.3969999999999,
+            "median": 1109.184,
+            "maximum": 1133.97
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 3,
+              "median": 3,
+              "maximum": 3
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 43671,
+              "median": 62486,
+              "maximum": 70483
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 253,
+              "median": 253,
+              "maximum": 255
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 418120,
+              "median": 481954,
+              "maximum": 494912
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1063,
+              "median": 1069,
+              "maximum": 1070
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 122277,
+              "median": 159879,
+              "maximum": 164058
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 3,
+              "median": 3,
+              "maximum": 3
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 64,
+              "median": 80,
+              "maximum": 87
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 1577,
+          "median": 1691,
+          "maximum": 1731
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 588.1000000089407,
+          "median": 604.4000000059605,
+          "maximum": 616
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    },
+    {
+      "algorithm": "br",
+      "feature": "deploy",
+      "cache": "cold",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 147964,
+          "median": 147964,
+          "maximum": 147964
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 144400,
+          "median": 144400,
+          "maximum": 144400
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 514573,
+          "median": 514573,
+          "maximum": 514573
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 4918784,
+            "median": 11008264,
+            "maximum": 12031976
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 4.159000000000001,
+            "median": 5.07,
+            "maximum": 102.631
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 292,
+            "median": 613,
+            "maximum": 962
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 8.384,
+            "median": 12.105,
+            "maximum": 17.168
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 23.453000000000003,
+            "median": 24.759,
+            "maximum": 215.45700000000002
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 133.89499999999998,
+            "median": 143.189,
+            "maximum": 562.894
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 16,
+              "median": 16,
+              "maximum": 16
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 7396,
+              "median": 7892,
+              "maximum": 209662
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 34,
+              "median": 36,
+              "maximum": 40
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 19603,
+              "median": 21301,
+              "maximum": 96508
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 116,
+              "median": 116,
+              "maximum": 1195
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 19275,
+              "median": 34446,
+              "maximum": 179211
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 16,
+              "median": 16,
+              "maximum": 16
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 415,
+              "median": 684,
+              "maximum": 1281
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 1645,
+          "median": 1689,
+          "maximum": 1729
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 1384,
+          "median": 1388,
+          "maximum": 1644
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 2847,
+          "median": 2847,
+          "maximum": 2847
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 2572,
+          "median": 2572,
+          "maximum": 2572
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 1,
+          "median": 1,
+          "maximum": 1
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 7271,
+          "median": 7271,
+          "maximum": 7271
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 6486352,
+            "median": 9520900,
+            "maximum": 13167120
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 0.68,
+            "median": 1.0489999999999995,
+            "maximum": 3.915000000000002
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 315,
+            "median": 329,
+            "maximum": 999
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 19.041999999999998,
+            "median": 19.263999999999996,
+            "maximum": 20.492000000000004
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 23.564999999999998,
+            "median": 24.779999999999998,
+            "maximum": 45.660000000000004
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 89.47700000000003,
+            "median": 97.69,
+            "maximum": 122.34600000000006
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1,
+              "median": 1,
+              "maximum": 1
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 569,
+              "median": 800,
+              "maximum": 1005
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 70,
+              "median": 70,
+              "maximum": 70
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 43558,
+              "median": 43924,
+              "maximum": 69369
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 24,
+              "median": 24,
+              "maximum": 275
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 3292,
+              "median": 3682,
+              "maximum": 21852
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1,
+              "median": 1,
+              "maximum": 1
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 25,
+              "median": 49,
+              "maximum": 53
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 397,
+          "median": 428,
+          "maximum": 1291
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 344.80000001192093,
+          "median": 363.40000000596046,
+          "maximum": 373.40000000596046
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    },
+    {
+      "algorithm": "br",
+      "feature": "deploy",
+      "cache": "warm",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 144400,
+          "median": 144400,
+          "maximum": 144400
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 514573,
+          "median": 514573,
+          "maximum": 514573
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 8986556,
+            "median": 14788688,
+            "maximum": 15974332
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 3.046,
+            "median": 3.177,
+            "maximum": 3.179
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 613,
+            "median": 627,
+            "maximum": 1297
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 6.747,
+            "median": 7.841000000000001,
+            "maximum": 13.806
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 34.869,
+            "median": 36.681,
+            "maximum": 42.73
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 138.00199999999998,
+            "median": 141.96200000000002,
+            "maximum": 197.763
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 16,
+              "median": 16,
+              "maximum": 16
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 15645,
+              "median": 38767,
+              "maximum": 38923
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 36,
+              "median": 37,
+              "maximum": 39
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 22708,
+              "median": 32555,
+              "maximum": 33505
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 116,
+              "median": 116,
+              "maximum": 116
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 22331,
+              "median": 31348,
+              "maximum": 36253
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 16,
+              "median": 16,
+              "maximum": 16
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 160,
+              "median": 217,
+              "maximum": 647
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 644,
+          "median": 730,
+          "maximum": 769
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 472,
+          "median": 644,
+          "maximum": 768
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 2572,
+          "median": 2572,
+          "maximum": 2572
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 1,
+          "median": 1,
+          "maximum": 1
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 7271,
+          "median": 7271,
+          "maximum": 7271
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 8309556,
+            "median": 9154860,
+            "maximum": 15915408
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 0.21400000000000022,
+            "median": 0.8250000000000002,
+            "maximum": 0.9940000000000005
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 315,
+            "median": 650,
+            "maximum": 664
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 9.206,
+            "median": 18.020999999999997,
+            "maximum": 20.823
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 11.425999999999998,
+            "median": 24.800000000000004,
+            "maximum": 25.803000000000008
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 68.771,
+            "median": 106.388,
+            "maximum": 126.70299999999999
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1,
+              "median": 1,
+              "maximum": 1
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 537,
+              "median": 1386,
+              "maximum": 1572
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 66,
+              "median": 66,
+              "maximum": 66
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 18610,
+              "median": 44338,
+              "maximum": 45347
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 24,
+              "median": 24,
+              "maximum": 24
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 3176,
+              "median": 3405,
+              "maximum": 3532
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1,
+              "median": 1,
+              "maximum": 1
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 15,
+              "median": 17,
+              "maximum": 38
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 1087,
+          "median": 1089,
+          "maximum": 1287
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 334.19999998807907,
+          "median": 354.80000001192093,
+          "maximum": 356.30000001192093
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    },
+    {
+      "algorithm": "br",
+      "feature": "yaml",
+      "cache": "cold",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 145018,
+          "median": 145018,
+          "maximum": 145018
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 141455,
+          "median": 141455,
+          "maximum": 141455
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 505310,
+          "median": 505310,
+          "maximum": 505310
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 6392360,
+            "median": 6418220,
+            "maximum": 13444940
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 40.065000000000005,
+            "median": 84.06000000000002,
+            "maximum": 89.59
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 2931,
+            "median": 2948,
+            "maximum": 2948
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 37.891,
+            "median": 48.521,
+            "maximum": 52.400000000000006
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 60.427,
+            "median": 193.28,
+            "maximum": 233.957
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 359.21799999999996,
+            "median": 666.192,
+            "maximum": 677.0010000000001
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 8075,
+              "median": 172647,
+              "maximum": 175661
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 32,
+              "median": 36,
+              "maximum": 45
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 56702,
+              "median": 101891,
+              "maximum": 139070
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 152,
+              "median": 1214,
+              "maximum": 1214
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 28638,
+              "median": 142232,
+              "maximum": 159181
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 559,
+              "median": 667,
+              "maximum": 1086
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 2299,
+          "median": 2523,
+          "maximum": 2652
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 496,
+          "median": 548,
+          "maximum": 580
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 7325,
+          "median": 7325,
+          "maximum": 7325
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 6776,
+          "median": 6776,
+          "maximum": 6776
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 2,
+          "median": 2,
+          "maximum": 2
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 19621,
+          "median": 19621,
+          "maximum": 19621
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 9695144,
+            "median": 9700624,
+            "maximum": 13314064
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 38.815000000000005,
+            "median": 53.727999999999994,
+            "maximum": 63.60199999999999
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 2996,
+            "median": 3013,
+            "maximum": 3013
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 174.476,
+            "median": 215.584,
+            "maximum": 220.48800000000003
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 110.593,
+            "median": 120.617,
+            "maximum": 128.62699999999998
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 849.8349999999999,
+            "median": 853.806,
+            "maximum": 883.6560000000001
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 2,
+              "median": 2,
+              "maximum": 2
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 1705,
+              "median": 1709,
+              "maximum": 1978
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 205,
+              "median": 205,
+              "maximum": 205
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 291133,
+              "median": 310760,
+              "maximum": 343436
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 259,
+              "median": 486,
+              "maximum": 486
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 29235,
+              "median": 43550,
+              "maximum": 45306
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 2,
+              "median": 2,
+              "maximum": 2
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 49,
+              "median": 63,
+              "maximum": 69
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 2221,
+          "median": 2429,
+          "maximum": 2932
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 597.7000000029802,
+          "median": 608.4000000059605,
+          "maximum": 640.2999999970198
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    },
+    {
+      "algorithm": "br",
+      "feature": "yaml",
+      "cache": "warm",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 141455,
+          "median": 141455,
+          "maximum": 141455
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 505310,
+          "median": 505310,
+          "maximum": 505310
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 6383004,
+            "median": 6417100,
+            "maximum": 6432292
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 57.454,
+            "median": 73.757,
+            "maximum": 85.18599999999999
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 2948,
+            "median": 2948,
+            "maximum": 2948
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 36.853,
+            "median": 36.898,
+            "maximum": 37.911
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 182.792,
+            "median": 185.32999999999998,
+            "maximum": 204.507
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 601.542,
+            "median": 603.1750000000001,
+            "maximum": 610.194
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 145819,
+              "median": 155417,
+              "maximum": 197937
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 38,
+              "median": 50,
+              "maximum": 55
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 88432,
+              "median": 108626,
+              "maximum": 118123
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1220,
+              "median": 1226,
+              "maximum": 1227
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 147302,
+              "median": 154024,
+              "maximum": 159551
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 651,
+              "median": 729,
+              "maximum": 845
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 1449,
+          "median": 1656,
+          "maximum": 1836
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 252,
+          "median": 284,
+          "maximum": 304
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 6776,
+          "median": 6776,
+          "maximum": 6776
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 2,
+          "median": 2,
+          "maximum": 2
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 19621,
+          "median": 19621,
+          "maximum": 19621
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 6908008,
+            "median": 6920748,
+            "maximum": 8417736
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 39.019,
+            "median": 56.203,
+            "maximum": 57.84099999999999
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 3013,
+            "median": 3013,
+            "maximum": 3013
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 171.24499999999998,
+            "median": 210.095,
+            "maximum": 233.69400000000002
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 96.24199999999999,
+            "median": 120.85000000000001,
+            "maximum": 127.84899999999999
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 698.321,
+            "median": 853.646,
+            "maximum": 862.517
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 2,
+              "median": 2,
+              "maximum": 2
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 1343,
+              "median": 1508,
+              "maximum": 1736
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 205,
+              "median": 205,
+              "maximum": 205
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 269851,
+              "median": 326752,
+              "maximum": 356974
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 481,
+              "median": 482,
+              "maximum": 488
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 31857,
+              "median": 43934,
+              "maximum": 44583
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 2,
+              "median": 2,
+              "maximum": 2
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 46,
+              "median": 53,
+              "maximum": 58
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 2104,
+          "median": 2204,
+          "maximum": 2348
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 569.8999999910593,
+          "median": 589.5,
+          "maximum": 617.7000000029802
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    },
+    {
+      "algorithm": "br",
+      "feature": "terminal",
+      "cache": "cold",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 145018,
+          "median": 145018,
+          "maximum": 145018
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 141455,
+          "median": 141455,
+          "maximum": 141455
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 505310,
+          "median": 505310,
+          "maximum": 505310
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 6392352,
+            "median": 6411640,
+            "maximum": 6419844
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 68.021,
+            "median": 71.461,
+            "maximum": 76.24700000000001
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 2948,
+            "median": 2948,
+            "maximum": 2948
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 41.043000000000006,
+            "median": 52.99100000000001,
+            "maximum": 54.387
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 141.994,
+            "median": 207.707,
+            "maximum": 218.015
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 485.92600000000004,
+            "median": 612.5959999999999,
+            "maximum": 623.104
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 122544,
+              "median": 175838,
+              "maximum": 179369
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 37,
+              "median": 39,
+              "maximum": 40
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 86866,
+              "median": 112104,
+              "maximum": 119890
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1214,
+              "median": 1214,
+              "maximum": 1222
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 104615,
+              "median": 141002,
+              "maximum": 150233
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 735,
+              "median": 920,
+              "maximum": 1672
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 2314,
+          "median": 2433,
+          "maximum": 2682
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 524,
+          "median": 532,
+          "maximum": 536
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 65695,
+          "median": 65695,
+          "maximum": 65695
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 64609,
+          "median": 64609,
+          "maximum": 64609
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 3,
+          "median": 3,
+          "maximum": 3
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 308907,
+          "median": 308907,
+          "maximum": 308907
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 8525328,
+            "median": 8904056,
+            "maximum": 10701036
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 103.824,
+            "median": 112.441,
+            "maximum": 125.606
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 3193,
+            "median": 3193,
+            "maximum": 3193
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 134.654,
+            "median": 161.97400000000002,
+            "maximum": 165.11599999999999
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 118.76999999999998,
+            "median": 148.472,
+            "maximum": 167.25000000000003
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 868.9040000000001,
+            "median": 891.9890000000001,
+            "maximum": 958.983
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 3,
+              "median": 3,
+              "maximum": 3
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 41199,
+              "median": 49202,
+              "maximum": 54311
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 256,
+              "median": 258,
+              "maximum": 259
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 339321,
+              "median": 367197,
+              "maximum": 373714
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1068,
+              "median": 1068,
+              "maximum": 1068
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 103031,
+              "median": 107330,
+              "maximum": 116358
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 3,
+              "median": 3,
+              "maximum": 3
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 84,
+              "median": 92,
+              "maximum": 96
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 1654,
+          "median": 1854,
+          "maximum": 1907
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 746.9000000059605,
+          "median": 765.7999999970198,
+          "maximum": 953
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    },
+    {
+      "algorithm": "br",
+      "feature": "terminal",
+      "cache": "warm",
+      "pairs": [
+        0,
+        1,
+        2
+      ],
+      "sampleCount": 3,
+      "initial": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 141455,
+          "median": 141455,
+          "maximum": 141455
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 12,
+          "median": 12,
+          "maximum": 12
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 505310,
+          "median": 505310,
+          "maximum": 505310
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 6363808,
+            "median": 6391568,
+            "maximum": 6398812
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 71.36399999999999,
+            "median": 77.622,
+            "maximum": 78.03900000000002
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 2948,
+            "median": 2948,
+            "maximum": 2948
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 23.189999999999998,
+            "median": 25.022000000000002,
+            "maximum": 34.158
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 185.968,
+            "median": 194.009,
+            "maximum": 194.011
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 519.105,
+            "median": 559.828,
+            "maximum": 587.932
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 150873,
+              "median": 165959,
+              "maximum": 166025
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 44,
+              "median": 47,
+              "maximum": 51
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 87696,
+              "median": 112540,
+              "maximum": 114489
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1216,
+              "median": 1218,
+              "maximum": 1218
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 140912,
+              "median": 142111,
+              "maximum": 149367
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 18,
+              "median": 18,
+              "maximum": 18
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 503,
+              "median": 535,
+              "maximum": 631
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorReadyWallMs": {
+          "samples": 3,
+          "minimum": 1650,
+          "median": 1672,
+          "maximum": 1691
+        },
+        "lcpStartTimeMs": {
+          "samples": 3,
+          "minimum": 244,
+          "median": 244,
+          "maximum": 252
+        }
+      },
+      "interaction": {
+        "actualEncodedDataLength": {
+          "samples": 3,
+          "minimum": 0,
+          "median": 0,
+          "maximum": 0
+        },
+        "payloadContentLengthSum": {
+          "samples": 3,
+          "minimum": 64609,
+          "median": 64609,
+          "maximum": 64609
+        },
+        "uniqueJSFiles": {
+          "samples": 3,
+          "minimum": 3,
+          "median": 3,
+          "maximum": 3
+        },
+        "uniqueJSRawBytes": {
+          "samples": 3,
+          "minimum": 308907,
+          "median": 308907,
+          "maximum": 308907
+        },
+        "rendererMetricObservations": {
+          "JSHeapUsedSize": {
+            "samples": 3,
+            "minimum": 8232588,
+            "median": 9506724,
+            "maximum": 10973428
+          },
+          "LayoutDuration": {
+            "samples": 3,
+            "minimum": 131.108,
+            "median": 131.75400000000002,
+            "maximum": 146.331
+          },
+          "Nodes": {
+            "samples": 3,
+            "minimum": 3193,
+            "median": 3193,
+            "maximum": 3193
+          },
+          "RecalcStyleDuration": {
+            "samples": 3,
+            "minimum": 151.162,
+            "median": 156.586,
+            "maximum": 197.332
+          },
+          "ScriptDuration": {
+            "samples": 3,
+            "minimum": 134.73700000000002,
+            "median": 159.54800000000003,
+            "maximum": 164.997
+          },
+          "TaskDuration": {
+            "samples": 3,
+            "minimum": 965.923,
+            "median": 987.5870000000001,
+            "maximum": 992.916
+          }
+        },
+        "overlappingTraceCategories": {
+          "EvaluateScript": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 3,
+              "median": 3,
+              "maximum": 3
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 41220,
+              "median": 48437,
+              "maximum": 64100
+            }
+          },
+          "FunctionCall": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 253,
+              "median": 253,
+              "maximum": 253
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 362282,
+              "median": 407379,
+              "maximum": 445076
+            }
+          },
+          "V8.CompileCode": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 1064,
+              "median": 1064,
+              "maximum": 1066
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 121614,
+              "median": 130542,
+              "maximum": 131430
+            }
+          },
+          "v8.compile": {
+            "eventCount": {
+              "samples": 3,
+              "minimum": 3,
+              "median": 3,
+              "maximum": 3
+            },
+            "durationUs": {
+              "samples": 3,
+              "minimum": 70,
+              "median": 93,
+              "maximum": 288
+            }
+          }
+        },
+        "traceCountersNotAdditive": true,
+        "locatorVisibleWallMs": {
+          "samples": 3,
+          "minimum": 1470,
+          "median": 1786,
+          "maximum": 2432
+        },
+        "eventToFirstFrameMs": {
+          "samples": 3,
+          "minimum": 584.2000000029802,
+          "median": 756.0999999940395,
+          "maximum": 840
+        }
+      },
+      "allInteractionFocusInside": true,
+      "mutations": 0
+    }
+  ],
+  "tools": {
+    "ready": "f286e0/0 five live200",
+    "server": "f82983→2cf3ae/0",
+    "browser": "6792be→406b7b/0",
+    "reportRead": "811ca8/0",
+    "postSourceScan": "5c93e4/0 zero",
+    "postStage": "b8f9a3/0 four payloads; H not staged",
+    "exact": "740651→0ba137/0",
+    "linuxFresh": "3dacb3/0",
+    "windowsFresh": "5aa2cb/0",
+    "final": "15fcaa/0 default6zero"
+  },
+  "closure": {
+    "currentPins": 642,
+    "LinuxBirthsAbsent": 182,
+    "WindowsBirthsBound": 70,
+    "WindowsFreshReaderNoLive": true,
+    "retainedCIDNameQueries": 2,
+    "newQueries": 0,
+    "graphsRewalked": false,
+    "noRecursiveOwnReaderAbsenceChain": true
+  },
+  "history": {
+    "priorV5": {
+      "actualServerExit": 1,
+      "fixtureFailure": "Retained esbuild TransformError duplicate ready declaration at327:8 before READY",
+      "READYWritten": false,
+      "browserStarted": false,
+      "measurementObservations": 0,
+      "finalTool": "0a4ccf/0",
+      "finalSHA256": "c2f0dc976bd0de29298d6e90edfcf2c30909985cfbbae77fff82ffe0dda5b680",
+      "currentPins": 140,
+      "LinuxBirthsAbsent": 19,
+      "retainedCIDNameQueries": 2
+    },
+    "priorFinalDraft": "V1 graph-rewalk draft UNRUN, not invoked as a successful final",
+    "priorFinalReaderRefusal": {
+      "tool": "816128/1",
+      "reason": "Phantom Linux handoff.json pin: H existed only on Windows, not staged",
+      "preserved": true,
+      "correctedV1_2": "Only remove nonexistent pin and include failed-reader birth"
+    },
+    "V6FixtureCorrection": "Exactly two local ready→encodingReady identifier references; raw inverse reconstructs V5 fixture",
+    "syntaxQualification": "ROOT1cb9d2/0 retained Linux esbuild ELF transforms actual6275128 fixture; no fixture import/evaluation and not a C4 Node control. Earlier316fa1 zero-byte attempt unqualified.",
+    "optionalSeparateC4SyntaxProposal": "HELD/UNRUN",
+    "oldProposalsPreservedUnrun": true,
+    "inheritedLabels": "Raw nine-resource/ab7 scope and a12EnabledSyntheticRunOneVerified flag retained unchanged; executable V6 intent/report proves36 A22 observations only"
+  },
+  "proofs": [
+    {
+      "linuxPath": "/home/brajam/.cache/bortus-controlled-perf/a22-current-encoding-20261016-v6/terminal.json",
+      "bytes": 146878,
+      "sha256": "976d5bd77135c2a87bc06d3de4a95ff826028b2b3049ae7c00a36c8f52e97e31"
+    },
+    {
+      "linuxPath": "/home/brajam/.cache/bortus-controlled-perf/a22-current-encoding-20261016-v6/output/browser-report.json",
+      "bytes": 732197,
+      "sha256": "e86c4a19bde5760c4b12341c6a56707b0ef435c567942d0b8915c14ab7573580"
+    },
+    {
+      "linuxPath": "/home/brajam/.cache/bortus-controlled-perf/a22-current-encoding-20261016-v6/output/legacy-stage-review.json",
+      "bytes": 522,
+      "sha256": "8ce267796b37f517bd1545b3ab584c57396a76fef8957cd4f961d115a219589b"
+    },
+    {
+      "linuxPath": "/home/brajam/.cache/bortus-controlled-perf/a22-current-encoding-20261016-v6/output/a22-static-encoding-manifest.json",
+      "bytes": 73522,
+      "sha256": "340e495984631e89c0fd3769d5f284289122cff7ea6f18c489cf5c6502252a0c"
+    },
+    {
+      "linuxPath": "/home/brajam/.local/share/branconet-migration/app-a22-current-encoding-success-postcheck-20261016-v6/legacy-review-result.json",
+      "bytes": 809291,
+      "sha256": "1bc810483385ba3032d7dd675de47fb85f242a091d23ad270f82b77a576065f6"
+    },
+    {
+      "linuxPath": "/home/brajam/.local/share/branconet-migration/app-a22-current-encoding-success-postcheck-20261016-v6/fresh-result.json",
+      "bytes": 827524,
+      "sha256": "bf6027e72af18e74a66fdcea33ed26692cd5a5b8203475086c6748b9491e98b8"
+    },
+    {
+      "windowsPath": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a22-current-encoding-success-postcheck-20261016-v6\\windows-fresh-result.json",
+      "bytes": 23007,
+      "sha256": "e0a4a6ad29a0a12017c4822623e6fd5b576c27cb2516d538a6256b58cc1120c9"
+    },
+    {
+      "linuxPath": "/home/brajam/.local/share/branconet-migration/root-a22-v6-final-current-20261016-v1.json",
+      "bytes": 261313,
+      "sha256": "1c7b5d56693464df979ebff80bf59e516bf51f90ce39978c47487e64da97e7c1"
+    },
+    {
+      "windowsPath": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\root-a22-v6-final-current-20261016-v1-dispatch.json",
+      "bytes": 2348,
+      "sha256": "fe03a1634454a2b6155c0ce07a7509601f909b3267d7ddc29223e79b8986089e"
+    },
+    {
+      "linuxPath": "/home/brajam/.local/share/branconet-migration/root-a22-v5-failure-final-current-20261016-v1-2.json",
+      "bytes": 58033,
+      "sha256": "c2f0dc976bd0de29298d6e90edfcf2c30909985cfbbae77fff82ffe0dda5b680"
+    },
+    {
+      "windowsPath": "C:\\Users\\james\\AppData\\Local\\BORTUS\\handoffs\\app-a22-current-encoding-preparation-20261016-v6\\handoff.json",
+      "bytes": 15381,
+      "sha256": "ee54e01d95fe0f9e54b9bce889597572d73f174c5ae06117fa0e4844545c6887"
+    }
+  ],
+  "limitations": [
+    "Fixture static compression policy only; HTML/API upstream unchanged and may still use gzip",
+    "EncodedDataLength and Content-Length are separate observations, not equal byte concepts",
+    "Trace intervals overlap; renderer counters are separate and not causal CPU shares",
+    "No source before/after, A07/A21, physical AT, delivery or production Brotli claim"
+  ],
+  "unrenderedOwningSource": {
+    "commit": "30f866fdb0b1da47f8db542fa2523f8a2544a9ce",
+    "delta": "Four Edit Node label classes only",
+    "renderedQualification": false,
+    "actualMeasuredSource": "3d5598509f6e026d87544b5aa5452c6f1e6a3762"
+  },
+  "performanceAccepted": false,
+  "imageAccepted": false,
+  "actualAssistiveTechnologyQualified": false,
+  "productionAdopted": false,
+  "originalA07BenchmarkUntouched": true,
+  "originalFailuresAndHistoricalFalseFlagsPreserved": true,
+  "noActorOrReplayForPublication": true,
+  "originalSourceClauseQualified": true,
+  "originalSourceClauseQualificationSource": "3d5598509f6e026d87544b5aa5452c6f1e6a3762",
+  "originalRequirementEvidenceMapping": [
+    {
+      "requirement": "Compare gzip/Brotli transfer",
+      "actual": "36 actual gzip/Brotli observations; decoded bytes bind the170 compiled assets; encodedDataLength, encoded Content-Length, raw bytes and cold/warm cache are distinct recorded layers"
+    },
+    {
+      "requirement": "Initial JS and parse/execute time",
+      "actual": "Initial unique JS file/raw-byte inventories plus deferred chunks absent from initial requests; all72 initial/interaction trace windows across all3 features retain V8.CompileCode/v8.compile and EvaluateScript/FunctionCall categories with separate renderer metrics; intervals overlap and do not claim exclusive parse CPU or additive shares"
+    },
+    {
+      "requirement": "LCP and first modal/terminal interaction under fixed mobile profile",
+      "actual": "Every sample has LCP and event-to-first-frame/locator-ready observations at390x844,4x CPU slowdown,150ms latency,200000B/s down and93750B/s up; actual features are Provisioning Delete job history, Pods View YAML and terminal"
+    },
+    {
+      "requirement": "Loading/error/focus behavior",
+      "actual": "All36 on-demand deferred chunk sets are absent initially, load on interaction and reach visible usable targets; geometry/focusInside, modal keyboard containment and close-trigger return pass. Exact terminal-chunk refusal yields the fixed unavailable status, no xterm and close-focus return. No transient loading-text or AT-speech observation is claimed or added as an original gate"
+    },
+    {
+      "requirement": "Keep cold/warm measurements separate",
+      "actual": "Exactly3 cold and3 warm samples for every codec/feature,36 total;12 groups retain all3 pairs with no trimming"
+    },
+    {
+      "requirement": "Current source and retained evidence",
+      "actual": "Full current3d source/build authority and exact/fresh/final15fcaa checks bind392 source files,72 inputs,5388 compiled objects,40635 dependencies,642 finite records,182 Linux births,70 Windows births and2 retained queries"
+    }
+  ],
+  "frozenProducerAndProofMetadata": {
+    "wholeA22Qualified": false,
+    "scope": "Literal false flag retained from frozen producer/exact/fresh/final records; those files/hashes are unchanged. The original source-clause decision is now independently true in this root publication.",
+    "historicalFailuresAndFalseFlagsUnchanged": true
+  },
+  "separateOpenGates": [
+    "A07 original no-warm-regression requirement",
+    "image/package/security and live delivery/adoption",
+    "actual assistive technology and remaining manual A15 review",
+    "30f866 four-label current rendering qualification; measured source remains3d"
+  ]
+}

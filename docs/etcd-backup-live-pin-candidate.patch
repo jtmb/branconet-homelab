@@ -1,0 +1,37 @@
+diff --git a/k8s-rewrite/ansible-playbook/roles/control_plane_backup/defaults/main.yml b/k8s-rewrite/ansible-playbook/roles/control_plane_backup/defaults/main.yml
+--- a/k8s-rewrite/ansible-playbook/roles/control_plane_backup/defaults/main.yml
++++ b/k8s-rewrite/ansible-playbook/roles/control_plane_backup/defaults/main.yml
+@@ -4,5 +4,5 @@
+ control_plane_backup_recipient_file: ""
+ control_plane_backup_identity_file: ""
+ control_plane_backup_age_binary: /home/brajam/.local/share/branconet-migration/bin/age
+-control_plane_backup_etcd_image: registry.k8s.io/etcd:3.7.0-0
+-control_plane_backup_etcd_digest: registry.k8s.io/etcd@sha256:6ecefbe2510c4a30573a62a4d6dd175acf881ca67003fcd91849a16df7a724d5
++control_plane_backup_etcd_image: registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910
++control_plane_backup_etcd_digest: registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910
+diff --git a/k8s-rewrite/ansible-playbook/roles/control_plane_backup/tasks/main.yml b/k8s-rewrite/ansible-playbook/roles/control_plane_backup/tasks/main.yml
+--- a/k8s-rewrite/ansible-playbook/roles/control_plane_backup/tasks/main.yml
++++ b/k8s-rewrite/ansible-playbook/roles/control_plane_backup/tasks/main.yml
+@@ -7,8 +7,8 @@
+       - control_plane_backup_output_dir is match('^/home/brajam/[^\r\n]+$')
+       - control_plane_backup_recipient_file == '/home/brajam/.ssh/id_ed25519.pub'
+       - control_plane_backup_identity_file == '/home/brajam/.ssh/id_ed25519'
+-      - control_plane_backup_etcd_image == 'registry.k8s.io/etcd:3.7.0-0'
+-      - control_plane_backup_etcd_digest == 'registry.k8s.io/etcd@sha256:6ecefbe2510c4a30573a62a4d6dd175acf881ca67003fcd91849a16df7a724d5'
++      - control_plane_backup_etcd_image == 'registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910'
++      - control_plane_backup_etcd_digest == 'registry.k8s.io/etcd:3.7.3-0@sha256:0d27b9478551f431f82d1e0ddb6c87ad07ebae8b904c637f3a99213349523910'
+     fail_msg: Explicit reviewed maintenance backup settings for this existing control plane are required.
+ 
+ - name: Capture and authenticate a separate encrypted control-plane backup
+diff --git a/k8s-rewrite/ansible-playbook/roles/control_plane_backup/files/control_plane_backup.py b/k8s-rewrite/ansible-playbook/roles/control_plane_backup/files/control_plane_backup.py
+--- a/k8s-rewrite/ansible-playbook/roles/control_plane_backup/files/control_plane_backup.py
++++ b/k8s-rewrite/ansible-playbook/roles/control_plane_backup/files/control_plane_backup.py
+@@ -243,7 +243,7 @@
+         prefix = ['kubectl', '-n', 'kube-system', 'exec', 'etcd-masternode', '-c', 'etcd', '--']
+         for tool in ['etcdctl', 'etcdutl']:
+             version = ssh(prefix + [tool, 'version']).decode()
+-            need(tool + ' version: 3.7.0\n' in version)
++            need(tool + ' version: 3.7.3\n' in version)
+         receipt['source'] = original
+         receipt['phase'] = 'snapshot'; save()
+         prepared = json.loads(ssh(['prepare'], privileged=True))

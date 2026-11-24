@@ -1,0 +1,136 @@
+{
+  "scope": "Root independent app functional qualification and observed docs-only Flux follow-through; no performance/image/adoption/restore acceptance",
+  "recorded_at_utc": "2026-10-11T11:56:23.445461+00:00",
+  "app": {
+    "scope": "Root independent exact combined app functional source/artifact review; no new test run, performance or live rollout",
+    "source_commit": "c29fc8c44847172e040e83df11c51ad42f1da51e",
+    "raw_git_files_verified": 333,
+    "original_copies_verified": 20,
+    "units": 214,
+    "http": 4,
+    "skips": 0,
+    "actual_terminal_exit": 0,
+    "fresh_retained_bytes_and_closure": {
+      "linux_source_verified": 332,
+      "linux_compiled_verified": 4262,
+      "owner_absent": true,
+      "containers_absent": true
+    },
+    "performance_or_final_live_acceptance": false
+  },
+  "docs_only_publication": {
+    "verified": true,
+    "commit": "564fbc56894cca4d6b7934bff9c46311306cdc08",
+    "docs_only": true,
+    "raw_files": 5,
+    "original_artifacts": 13,
+    "root_live_receipt_exact": true,
+    "scope_scan_exit": 0,
+    "findings": 0
+  },
+  "actual_maintenance": {
+    "observed_at_utc": "2026-10-11T11:55:44.521152+00:00",
+    "revision": "validated@sha1:564fbc56894cca4d6b7934bff9c46311306cdc08",
+    "checks": {
+      "source_ready": true,
+      "source_revision": true,
+      "kustomization_ready": true,
+      "applied_revision": true,
+      "owner_identity": true,
+      "owner_active": true,
+      "prune_disabled": true,
+      "force_disabled": true,
+      "same_hr_identity": true,
+      "hr_suspended": true,
+      "serviceaccount_no_grants_or_secrets": true,
+      "serviceaccount_flux_owner": true,
+      "sa_inventory": true,
+      "inventory_only_sa_added": true,
+      "same_ready_writer": true,
+      "bortus_storage_healthy": true,
+      "hr_only_reviewed_suspension_failure_settings_changed": true
+    },
+    "preservation_errors": [],
+    "passed": true,
+    "source_uid": "eddfd69a-9fdf-407d-abb4-d89fdae4359a",
+    "owner_uid": "f3757d64-04bd-46db-8b40-ae666999449c",
+    "serviceaccount_uid": "5601533e-1d91-4e8c-989c-000cb95d5484",
+    "hr_uid": "bed3008a-474f-411e-9956-1248e3718220",
+    "writer_uid": "4c674c03-985c-4ca8-b7e9-59a13ea7e3a3",
+    "mutations": 0,
+    "database_or_native_value_reads": 0
+  },
+  "main_ci": {
+    "run": 38137251240,
+    "commit": "564fbc56894cca4d6b7934bff9c46311306cdc08",
+    "validate_and_promote_success": true,
+    "url": "https://github.com/jtmb/branconet-charts/actions/runs/38137251240"
+  },
+  "retained_transient_observation": {
+    "attempt": 3,
+    "exit": 1,
+    "at_utc": "2026-10-11T11:55:11.683793Z",
+    "cause": "Four unchanged application HelmReleases had not yet observed their new source revision; all data/workload/RBAC and BORTUS maintenance checks passed",
+    "errors": [
+      "flux-system/homepage:unreconciled",
+      "flux-system/radarr:unreconciled",
+      "flux-system/wordpress-redis:unreconciled",
+      "flux-system/ytdl:unreconciled"
+    ],
+    "later_same_revision_all_reconciled": true,
+    "mutations": 0
+  },
+  "original_bindings": [
+    {
+      "name": "verify-app-c29fc-v1.py",
+      "sha256": "01033d376086542a704af0db921b2685930cb02593256efd872d6b208069e35d"
+    },
+    {
+      "name": "app-c29fc-root-verification-v1.json",
+      "sha256": "83854fedd9fbf8504c06b1a026e484eb15467b970d1da506e251c4678219f56c"
+    },
+    {
+      "name": "app-c29fc-linux-fresh-verification.stdout",
+      "sha256": "adfc5300166718db0e2bfbec2c54f0abacd65a2071e63c46a8c36488b8e29d68"
+    },
+    {
+      "name": "app-c29fc-linux-fresh-verification.stderr",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "chart-maintenance-docs-root-verification-v1.json",
+      "sha256": "160e909d243fa07cafef9780fbf6617d9998bfdbb258880f3325460ed845fef1"
+    },
+    {
+      "name": "observe-chart-maintenance-v3.py",
+      "sha256": "727535737c126e68abe0567650382791da93be4fe382ea90da2336eb0cb1384d"
+    },
+    {
+      "name": "observe-chart-maintenance-v4.py",
+      "sha256": "e2af3415e36ecc87996154980505c92d54acd3b854083601e6757650234871cb"
+    },
+    {
+      "name": "chart-maintenance-observe-v3.json",
+      "sha256": "c5365c06945100a7d7a65b3d064a2d35703dab236839b8289daf2af0cb294d51"
+    },
+    {
+      "name": "chart-maintenance-observe-v4.json",
+      "sha256": "eeeade21b25c10ac4cf7f246b41c89c5cb76bfe48d9a1bb0b0b81e372961c41e"
+    }
+  ],
+  "acceptance": {
+    "application_functional": true,
+    "maintenance_publication_and_preservation": true,
+    "performance": false,
+    "final_live": false,
+    "independent_complete_row_restore": false
+  },
+  "retained_doc_writer_failure": {
+    "attempt": 1,
+    "exit": 1,
+    "cause": "Performance document exists in the app worktree rather than this migration checkout. Evidence and first affected doc were already written; continuation checked them exactly once and updated the existing migration operations doc instead.",
+    "original_tool_chunk": "c11972",
+    "duplicate_receipt_or_paragraph_written": false,
+    "runtime_operations": 0
+  }
+}

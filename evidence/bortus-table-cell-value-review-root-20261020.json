@@ -1,0 +1,74 @@
+{
+  "scope": "Literal standalone public MetadataTable cell-value projection: declared row type, exact column-key property lookup and direct JSX child; absence of declared nullish display fallback or scalar-to-text conversion; saved public metadata-test source only",
+  "applicationCommit": "b4c71f446a7cecfceefbe50b4291f0e9bb5265fc",
+  "chartsCommit": "835dabebd97a7691311b2c6748fd3cfa4db17f44",
+  "productionRetained": true,
+  "sourceReviewSHA256": "52c8afe96c568d756c01a06dad0a77a309a5988a5cb497fd40d80f48744396d1",
+  "literalSourceObservations": 5,
+  "testSourcesReadNotExecuted": [
+    {
+      "path": "tests/kv-metadata-announcements.test.ts",
+      "sha256": "69ba3ea1bfcbe4f81be378c8e32659cfdf0eed66060c18a62ae593a2a5c90c4d",
+      "lines": 108,
+      "readInFullNotExecuted": true,
+      "executed": false,
+      "coverage": "Public declaration selection omits MetadataTable and supplies props-only metadata-table stub. Saved one-row ID assertions inspect row props, not td children. No direct-cell fallback/conversion/rendered-output coverage established."
+    },
+    {
+      "path": "tests/kv-metadata-success.test.ts",
+      "sha256": "6a8a0b5e106112cb2287b6658da0237f94ca6c9ad1dbb047a05ac62bd69c5288",
+      "lines": 102,
+      "readInFullNotExecuted": true,
+      "executed": false,
+      "coverage": "Full saved source read, only table selection/stub boundary evaluated: MetadataTable is a string placeholder and omitted from selected public declarations. Adjacent form/callback cases incidentally visible without form/mutation evaluation. No real cell rendering qualification."
+    }
+  ],
+  "all333CurrentInputsAnd22OwnerDocsFreshlyHashMatched": true,
+  "newCandidateSuiteWorkloadBuildLintTypesGraphAppCommitPushCI": false,
+  "sourceSpecificPriorBuildId": "p1bLLgS38NiOt1_HfYyPM",
+  "priorFocused662passRetainedNotRerun": true,
+  "retainedCurrentAutomaticCI": {
+    "head": "b4c71f446a7cecfceefbe50b4291f0e9bb5265fc",
+    "runs": [
+      {
+        "id": 39397653304,
+        "event": "pull_request",
+        "conclusion": "success",
+        "steps": 12,
+        "units": 1242
+      },
+      {
+        "id": 39397643969,
+        "event": "push",
+        "conclusion": "success",
+        "steps": 12,
+        "units": 1242
+      }
+    ],
+    "verifiedSHA256": "40c165e3194396a8d3401b0593cec34944d773efed639400f6bd173c42227566",
+    "retainedNotRerun": true
+  },
+  "overallCIQualified": false,
+  "currentAllSuccessful": true,
+  "currentAllSuccessfulScope": "Only RETAINED exact-head PR39397653304/push39397643969",
+  "priorFinite146BirthClosureNotRefreshed": true,
+  "noNewProcessOrContainerClosureQualification": true,
+  "priorRejectedRetentionCandidateAndFiveOriginalFailuresRetained": true,
+  "prior331BuildNeverExecuted": true,
+  "prior424PreparationHistoricalUnexecuted": true,
+  "noMountedReactBrowserBackendNativeActualATSecurityPerformanceRecoveryImageLiveAcceptance": true,
+  "rootDocsLocal": true,
+  "fourFindingsUnresolved": true,
+  "prior32AndEarlierOneUnresolved": true,
+  "newPRCIFailureRetained": true,
+  "currentPR39376493085FailureRetained": true,
+  "currentPR39376493085Unresolved": true,
+  "priorPR39335907142Unresolved": true,
+  "currentPush39345339490FailureRetained": true,
+  "priorPush39345339490Unresolved": true,
+  "all44ClausesAndFailedA07Preserved": true,
+  "fullGoalActive": true,
+  "PRDDeploymentAndActualVerificationFinalRequired": true,
+  "observedUTC": "2026-10-20T11:13:42.7868236Z",
+  "sourceDecision": "Retain production. Row is declared Record<string, string | number> & { id: string }. Each ordered column produces a td keyed by the original item.key and its child is directly row[item.key]. This expression uses the exact column key and declares no dotted-path parsing, nullish fallback, String/toString conversion, formatting or row/object mutation. The static type is not runtime validation and does not establish behavior for absent/invalid runtime values. Contrary to the incoming premise, nullish fallback and scalar-to-text conversion are not present in this cell declaration. The saved metadata tests replace the real table and do not qualify rendered cells or conversions. No concrete supported correction compatible with frozen expectations was established."
+}

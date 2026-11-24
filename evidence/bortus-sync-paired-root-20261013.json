@@ -1,0 +1,233 @@
+{
+  "abi": 1,
+  "date": "2026-10-13",
+  "baseline": "51e8cd66379c1f40a95ea02f4da7c8aed848f2a4",
+  "candidate": "a720e4cd021de4d58467047777ec13087bccfbc6",
+  "actualRunnerSupervisorOuterExit": 0,
+  "originalFrozenSummary": true,
+  "metadataVerification": {
+    "actualPostcheckExit": 0,
+    "originalRunnerExit": 0,
+    "originalSupervisorExit": 0,
+    "observations": 6,
+    "profilesPerObservation": 6,
+    "alternatingPairs": 3,
+    "frozenPureSummaryRecomputed": true,
+    "frozenInputs": 66,
+    "exportedSourceFiles": 431,
+    "rawSHA256": "06ed42e3cf8c612978dba4136e845805b96d50348677603b1b8488284cb6e506",
+    "summarySHA256": "40d63f3a105ff2a12e0daf25741e0e96fa14647e42bc8aee9467bfa9fe715bf7",
+    "gateAssessment": "Not decided by metadata reader; unchanged summary retained for original acceptance review",
+    "performanceAcceptance": false,
+    "noWorkloadReplay": true,
+    "readOnly": true
+  },
+  "freshBirthBoundIdentitiesAbsent": 10,
+  "dispatcherPIDOnlyAbsent": true,
+  "dispatcherBirthNotRecorded": true,
+  "exactContainerNamesAbsent": 8,
+  "retainedContainerIDsQueried": 0,
+  "profiles": [
+    {
+      "fixture": "audit-small",
+      "phases": [
+        {
+          "name": "warm-pods-12",
+          "baselineP95Ms": 14.764324999999644,
+          "candidateP95Ms": 15.281716000000415,
+          "baselineP50Ms": 4.68583099999978,
+          "candidateP50Ms": 4.419439999999668
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "baselineP95Ms": 46.47941700000001,
+          "candidateP95Ms": 46.00841599999967,
+          "baselineP50Ms": 25.99122099999977,
+          "candidateP50Ms": 33.2608680000003
+        },
+        {
+          "name": "native-secret-metadata",
+          "baselineP95Ms": 94.12909600000012,
+          "candidateP95Ms": 71.00283800000034,
+          "baselineP50Ms": 94.12909600000012,
+          "candidateP50Ms": 71.00283800000034
+        }
+      ]
+    },
+    {
+      "fixture": "metadata-200",
+      "phases": [
+        {
+          "name": "warm-pods-12",
+          "baselineP95Ms": 7.442025999998805,
+          "candidateP95Ms": 5.725644000000102,
+          "baselineP50Ms": 3.7215780000005907,
+          "candidateP50Ms": 3.774848999999449
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "baselineP95Ms": 54.45466399999896,
+          "candidateP95Ms": 49.267211000000316,
+          "baselineP50Ms": 34.25337099999888,
+          "candidateP50Ms": 36.58494299999984
+        },
+        {
+          "name": "native-secret-metadata",
+          "baselineP95Ms": 62.475954000001366,
+          "candidateP95Ms": 80.85709399999905,
+          "baselineP50Ms": 62.475954000001366,
+          "candidateP50Ms": 80.85709399999905
+        }
+      ]
+    },
+    {
+      "fixture": "metadata-1000",
+      "phases": [
+        {
+          "name": "warm-pods-12",
+          "baselineP95Ms": 11.054873999999472,
+          "candidateP95Ms": 11.894737999999052,
+          "baselineP50Ms": 5.571894000000611,
+          "candidateP50Ms": 4.729080999999496
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "baselineP95Ms": 63.23969399999987,
+          "candidateP95Ms": 74.66438300000118,
+          "baselineP50Ms": 40.43052399999942,
+          "candidateP50Ms": 41.71877499999937
+        },
+        {
+          "name": "native-secret-metadata",
+          "baselineP95Ms": 66.60996200000045,
+          "candidateP95Ms": 68.64423100000022,
+          "baselineP50Ms": 66.60996200000045,
+          "candidateP50Ms": 68.64423100000022
+        }
+      ]
+    },
+    {
+      "fixture": "metadata-10000",
+      "phases": [
+        {
+          "name": "native-secret-metadata",
+          "baselineP95Ms": 240.32659299999796,
+          "candidateP95Ms": 163.62442399999782,
+          "baselineP50Ms": 240.32659299999796,
+          "candidateP50Ms": 163.62442399999782
+        }
+      ]
+    },
+    {
+      "fixture": "kv-sized-native-25",
+      "phases": [
+        {
+          "name": "warm-pods-12",
+          "baselineP95Ms": 5.787282000001142,
+          "candidateP95Ms": 5.681543999999121,
+          "baselineP50Ms": 3.402287000000797,
+          "candidateP50Ms": 3.5042069999981322
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "baselineP95Ms": 47.15730700000131,
+          "candidateP95Ms": 45.96763500000088,
+          "baselineP50Ms": 28.48550400000022,
+          "candidateP50Ms": 32.83178499999849
+        },
+        {
+          "name": "native-secret-metadata",
+          "baselineP95Ms": 177.48994999999923,
+          "candidateP95Ms": 140.89308399999936,
+          "baselineP50Ms": 177.48994999999923,
+          "candidateP50Ms": 140.89308399999936
+        }
+      ]
+    },
+    {
+      "fixture": "maximum-flat-native-3",
+      "phases": [
+        {
+          "name": "warm-pods-12",
+          "baselineP95Ms": 6.206483999998454,
+          "candidateP95Ms": 6.463434999997844,
+          "baselineP50Ms": 3.1698770000002696,
+          "candidateP50Ms": 3.4281190000001516
+        },
+        {
+          "name": "warm-pods-concurrent-20",
+          "baselineP95Ms": 43.74303900000086,
+          "candidateP95Ms": 45.603103999997984,
+          "baselineP50Ms": 24.76857700000255,
+          "candidateP50Ms": 32.63407500000176
+        },
+        {
+          "name": "native-secret-metadata",
+          "baselineP95Ms": 117.04457700000057,
+          "candidateP95Ms": 96.86768199999642,
+          "baselineP50Ms": 117.04457700000057,
+          "candidateP50Ms": 96.86768199999642
+        }
+      ]
+    }
+  ],
+  "wholeFixture": {
+    "baseline": {
+      "cgroup_peak_mib": {
+        "median": 364.0625,
+        "min": 357.42578125,
+        "max": 369.2109375
+      },
+      "cgroup_cpu_seconds": {
+        "median": 33.104381,
+        "min": 32.613687,
+        "max": 33.330306
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 1.642
+      },
+      "oom_observed": false
+    },
+    "candidate": {
+      "cgroup_peak_mib": {
+        "median": 418.76953125,
+        "min": 417.9921875,
+        "max": 419.72265625
+      },
+      "cgroup_cpu_seconds": {
+        "median": 28.17997,
+        "min": 27.890877,
+        "max": 28.559759
+      },
+      "cgroup_throttled_ms": {
+        "median": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "oom_observed": false
+    }
+  },
+  "concurrentWarmP95Regressions": [
+    "metadata-1000",
+    "maximum-flat-native-3"
+  ],
+  "noWarmRegressionGatePassed": false,
+  "A07": "failed/open",
+  "A21": "open",
+  "performanceAccepted": false,
+  "sourceAdopted": false,
+  "liveDeployment": false,
+  "overallAcceptance": false,
+  "originalDataRetired": false,
+  "immutableOriginalsVerification": {
+    "package": "app-direct-account-sync-paired-qualified-20261013-v1",
+    "originals": 149,
+    "currentOriginals": 149,
+    "archiveCRC": true,
+    "handoffSHA256": "6538997fa543e4d105169a5d1be510910fb9b626ab3b70340a99a6ceb57caccc",
+    "rawGitBindingsReported": 431,
+    "performanceAccepted": false
+  }
+}

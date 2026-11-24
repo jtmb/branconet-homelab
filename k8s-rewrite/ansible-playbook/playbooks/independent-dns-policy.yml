@@ -1,0 +1,188 @@
+---
+- name: Refresh the standalone DNS policy without changing listeners
+  hosts: workernode2
+  gather_facts: false
+  any_errors_fatal: true
+  become: true
+  vars:
+    ansible_become_password: "{{ lookup('ansible.builtin.env', 'BRANCONET_MIGRATION_SUDO_PASSWORD') }}"
+    policy_directory: /var/lib/branconet-independent-dns
+    dns_records_only: false
+    dns_upstreams:
+      - 8.8.4.4
+      - 8.8.8.8
+  tasks:
+    - name: Read the current standby claim's exact Longhorn volume ID
+      ansible.builtin.command:
+        argv:
+          - kubectl
+          - -n
+          - pihole
+          - get
+          - pvc
+          - pihole-secondary-data-1
+          - -o
+          - "jsonpath={.spec.volumeName}"
+      become: false
+      delegate_to: "{{ groups['master'] | first }}"
+      changed_when: false
+      register: independent_dns_volume
+
+    - name: Require the current standby volume ID before staging policy
+      ansible.builtin.assert:
+        that: independent_dns_volume.stdout is match('^pvc-[a-f0-9-]{36}$')
+
+    - name: Wait for both DNS deployments to finish their rollout
+      ansible.builtin.command:
+        argv: [kubectl, -n, pihole, rollout, status, "deployment/{{ item }}", --timeout=15s]
+      loop: [pihole, pihole-secondary]
+      become: false
+      delegate_to: "{{ groups['master'] | first }}"
+      changed_when: false
+
+    - name: Read the record references from the two deployed Pi-hole templates
+      ansible.builtin.command:
+        argv: [kubectl, -n, pihole, get, deployment, pihole, pihole-secondary, -o, json]
+      become: false
+      delegate_to: "{{ groups['master'] | first }}"
+      changed_when: false
+      register: independent_dns_deployments
+
+    - name: Require one versioned record reference per ready deployment
+      no_log: true
+      vars:
+        record_maps: >-
+          {{ item.spec.template.spec.containers | selectattr('name', 'equalto', 'pihole')
+             | map(attribute='envFrom') | flatten | selectattr('configMapRef', 'defined')
+             | map(attribute='configMapRef.name') | select('match', '^lan-dns-records-v[1-9][0-9]*$')
+             | list }}
+      ansible.builtin.assert:
+        that:
+          - record_maps | length == 1
+          - item.status.observedGeneration == item.metadata.generation
+          - item.status.updatedReplicas == item.spec.replicas
+          - item.status.availableReplicas == item.spec.replicas
+      loop: "{{ (independent_dns_deployments.stdout | from_json)['items'] }}"
+      loop_control:
+        label: "{{ item.metadata.name }}"
+
+    - name: Resolve the immutable record version shared by both deployments
+      ansible.builtin.set_fact:
+        independent_dns_record_names: >-
+          {{ (independent_dns_deployments.stdout | from_json)['items']
+             | map(attribute='spec.template.spec.containers') | flatten
+             | selectattr('name', 'equalto', 'pihole') | map(attribute='envFrom') | flatten
+             | selectattr('configMapRef', 'defined') | map(attribute='configMapRef.name')
+             | select('match', '^lan-dns-records-v[1-9][0-9]*$') | list }}
+
+    - name: Keep the staged policy during mixed record rollouts
+      ansible.builtin.assert:
+        that:
+          - independent_dns_record_names | length == 2
+          - independent_dns_record_names | unique | length == 1
+          - dns_records_map is not defined or dns_records_map == independent_dns_record_names[0]
+        fail_msg: Both Pi-hole deployments must be ready on the same record version before refresh.
+
+    - name: Read the immutable chart-managed DNS records
+      ansible.builtin.command:
+        argv: [kubectl, -n, pihole, get, configmap, "{{ independent_dns_record_names[0] }}", -o, json]
+      become: false
+      delegate_to: "{{ groups['master'] | first }}"
+      changed_when: false
+      register: independent_dns_records
+
+    - name: Read the standby's exact upstream DNS settings
+      ansible.builtin.command:
+        argv: [kubectl, -n, pihole, exec, deployment/pihole-secondary, -c, pihole, --,
+               pihole-FTL, --config, dns.upstreams]
+      become: false
+      delegate_to: "{{ groups['master'] | first }}"
+      changed_when: false
+      register: independent_dns_upstreams
+
+    - name: Require the qualified record and upstream configuration
+      ansible.builtin.assert:
+        that:
+          - (independent_dns_records.stdout | from_json).immutable
+          - (independent_dns_upstreams.stdout | regex_findall('[0-9]+(?:[.][0-9]+){3}') | sort) == dns_upstreams
+
+    - name: Render the standalone Pi-hole loopback configuration
+      ansible.builtin.command:
+        argv:
+          - /usr/bin/python3
+          - -B
+          - -c
+          - "{{ lookup('ansible.builtin.file', 'files/independent-lan-dns.py') }}"
+          - --engine
+          - ftl
+          - --upstream
+          - "{{ dns_upstreams[0] }}"
+          - --upstream
+          - "{{ dns_upstreams[1] }}"
+        stdin: "{{ independent_dns_records.stdout }}"
+      changed_when: false
+      register: independent_dns_ftl_config
+
+    - name: Create the private policy directory
+      ansible.builtin.file:
+        path: "{{ policy_directory }}"
+        state: directory
+        owner: root
+        group: root
+        mode: "0700"
+
+    - name: Install the bounded policy refresh command
+      ansible.builtin.copy:
+        src: independent-dns-policy.py
+        dest: /usr/local/libexec/branconet-independent-dns-policy
+        owner: root
+        group: root
+        mode: "0755"
+        validate: /usr/bin/python3 -B %s --help
+
+    - name: Verify an existing private filtering database for a records-only update
+      when: dns_records_only | bool
+      block:
+        - name: Inspect the standalone filtering database
+          ansible.builtin.stat:
+            path: "{{ policy_directory }}/gravity.db"
+            follow: false
+          register: independent_dns_existing_gravity
+          changed_when: false
+
+        - name: Require the current last-good filtering database
+          vars:
+            gravity: "{{ independent_dns_existing_gravity.stat }}"
+          ansible.builtin.assert:
+            that:
+              - gravity.exists
+              - gravity.isreg
+              - gravity.uid == 0
+              - gravity.mode == '0600'
+              - gravity.size > 0
+              - gravity.size <= 134217728
+
+    - name: Verify and atomically stage the standby policy
+      when: not (dns_records_only | bool)
+      ansible.builtin.command:
+        argv:
+          - /usr/local/libexec/branconet-independent-dns-policy
+          - --volume
+          - "{{ independent_dns_volume.stdout }}"
+          - --state
+          - "{{ policy_directory }}"
+      register: independent_dns_policy
+      changed_when: (independent_dns_policy.stdout | from_json).updated
+
+    - name: Record the staged policy fingerprint and domain count
+      when: not (dns_records_only | bool)
+      ansible.builtin.debug:
+        msg: "{{ independent_dns_policy.stdout | from_json }}"
+
+    - name: Stage the matching loopback configuration without admin settings
+      ansible.builtin.copy:
+        content: "{{ independent_dns_ftl_config.stdout }}\n"
+        dest: "{{ policy_directory }}/pihole.toml"
+        owner: root
+        group: root
+        mode: "0600"

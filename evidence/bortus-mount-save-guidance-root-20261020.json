@@ -1,0 +1,485 @@
+{
+  "scope": "Public standalone MountForm field-specific guidance; synthetic source/model/build only",
+  "applicationCommit": "e149bb0cccf8b3c0f61d165af572758c15d47308",
+  "chartsCommit": "835dabebd97a7691311b2c6748fd3cfa4db17f44",
+  "productionCorrection": "Three raw-invertible replacements; field-specific input associations, exact predicates preserved",
+  "tests": {
+    "new": 45,
+    "prior": 322,
+    "baselinePass": 330,
+    "baselineExpectedMissingGuidanceFail": 37,
+    "changedPass": 367,
+    "changedFail": 0,
+    "skip": 0,
+    "cancel": 0,
+    "fiveCopiesSHA256": "dd0a6ca2b260b447206efc03aa30fafe107aa98a574116715b339e9f61d76996"
+  },
+  "modelLimits": "Selected declarations/synthetic hooks/inert parent children/held public metadata MutationTask only; no mounted React/useMutation lifecycle/DOM/browser/HTTP/backend/native/actualAT",
+  "build": {
+    "buildId": "4HbFIwBr_FGPjFwOHBkzt",
+    "rawWindowsBuildCommittedFilteredInputs": 324,
+    "pinnedDependencies": 37428,
+    "graphRecords": 41723,
+    "fullGraphTraversals": 1,
+    "selectedArtifacts": 25,
+    "workerBindings": 3,
+    "standaloneCopies": 5,
+    "focusedLintZeroWarnings": true,
+    "fullNonincrementalTypes": true
+  },
+  "appDocumentation": {
+    "checked": 22,
+    "rawInverseAdditions": 4,
+    "unchanged": 18,
+    "noHistoricalCorpusSemanticClaim": true
+  },
+  "finiteClosure": {
+    "sampledPriorBirthsAbsent": 110,
+    "exactContainerPairsAbsent": 3,
+    "recordedWindowsWriterArtifactsAbsent": 5,
+    "distinctRecordedWindowsWriterBirthsAbsent": 5,
+    "latestGraphAndCIReadersSeparatelyChecked": true,
+    "noUniversalExhaustiveHelperOrObserverSelfAbsenceClaim": true
+  },
+  "currentAutomaticCI": {
+    "head": "e149bb0cccf8b3c0f61d165af572758c15d47308",
+    "allObservedAndBound": true,
+    "currentAllSuccessful": false,
+    "runs": [
+      {
+        "id": 39376493085,
+        "event": "pull_request",
+        "conclusion": "failure",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Locked install and native/standalone build in pinned compiler image",
+            "conclusion": "success"
+          },
+          {
+            "name": "Original lint, type and unit checks with isolated runtime network",
+            "conclusion": "failure"
+          },
+          {
+            "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Separate-process SQL writer-lock regression sensitivity",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Original strict integration and process controls",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Acquire locked browser CI tools (no app dependency change)",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Finite compiled Pods browser smoke",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "unitTAPCounts": {
+          "tests": [
+            947
+          ],
+          "pass": [
+            942
+          ],
+          "fail": [
+            5
+          ],
+          "cancelled": [
+            0
+          ],
+          "skipped": [
+            0
+          ]
+        },
+        "rawLogBytes": 431230,
+        "rawLogSHA256": "364ef9cc202412781a35029b7118862ed4292fbb27e4da3b1d56342b4fc045ec",
+        "archiveSHA256": "5b301778926ba9bd1627379f857f8e4f38265919aced84b7653b1230315c3427",
+        "jobAPIBoundByRunAndHead": true,
+        "phaseTAPBoundByJobAPITimestamps": true,
+        "directRawArchiveRead": true,
+        "exactPerStepArchiveMembers": [
+          {
+            "stepNumber": 1,
+            "name": "Set up job",
+            "member": "quality/1_Set up job.txt",
+            "sha256": "3f47ece5dfde9d61fa3dc76a5de4b6f530c278e3abbbb56ec9b1db2a82226ad5",
+            "bytes": 1934
+          },
+          {
+            "stepNumber": 2,
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "member": "quality/2_Run actions_checkout@11d5960a326750d5838078e36cf38b85af677262.txt",
+            "sha256": "ac3ab1f9c715f8fccf797dc88a0cae7511bb01e24f89c40a05cbe13b300c68c8",
+            "bytes": 7487
+          },
+          {
+            "stepNumber": 3,
+            "name": "Locked install and native/standalone build in pinned compiler image",
+            "member": "quality/3_Locked install and native_standalone build in pinned compiler image.txt",
+            "sha256": "a7b4e5d98c646080768dcd9a051701dcf484b943dea6090d77cc7ace726545f6",
+            "bytes": 25042
+          },
+          {
+            "stepNumber": 4,
+            "name": "Original lint, type and unit checks with isolated runtime network",
+            "member": "quality/4_Original lint, type and unit checks with isolated runtime network.txt",
+            "sha256": "719b689d783e4acb12794786f30e21f64d803e401d455c4aa8d46fb0ebad03b2",
+            "bytes": 394667
+          },
+          {
+            "stepNumber": 20,
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "member": "quality/20_Post Run actions_checkout@11d5960a326750d5838078e36cf38b85af677262.txt",
+            "sha256": "392b3a0620efbe231f04c8a47cba6a0fa88279a85b50fdbce9ca26a19c7fce00",
+            "bytes": 1729
+          },
+          {
+            "stepNumber": 21,
+            "name": "Complete job",
+            "member": "quality/21_Complete job.txt",
+            "sha256": "c7c32b157cc2bd837deb2a87849917a5b448732dc54e9d4def0776271a89a0be",
+            "bytes": 386
+          }
+        ],
+        "priorWholeJobOneSecondOverlapRefusalRetained": true,
+        "observedInstallECONNRESET": false,
+        "observedInstallErrnoMinus104": false,
+        "observedProcessExit152": false,
+        "failedSteps": [
+          "Original lint, type and unit checks with isolated runtime network"
+        ],
+        "laterStagesSkipped": 6,
+        "observedTAPNotOkCount": 5,
+        "observedDenyCleanupTriggerError": false,
+        "causeUnestablished": true,
+        "noNativeFixtureSourceInspectionDiagnosisOrReplay": true
+      },
+      {
+        "id": 39376484489,
+        "event": "push",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Locked install and native/standalone build in pinned compiler image",
+            "conclusion": "success"
+          },
+          {
+            "name": "Original lint, type and unit checks with isolated runtime network",
+            "conclusion": "success"
+          },
+          {
+            "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Separate-process SQL writer-lock regression sensitivity",
+            "conclusion": "success"
+          },
+          {
+            "name": "Original strict integration and process controls",
+            "conclusion": "success"
+          },
+          {
+            "name": "Acquire locked browser CI tools (no app dependency change)",
+            "conclusion": "success"
+          },
+          {
+            "name": "Finite compiled Pods browser smoke",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "unitTAPCounts": {
+          "tests": [
+            947
+          ],
+          "pass": [
+            947
+          ],
+          "fail": [
+            0
+          ],
+          "cancelled": [
+            0
+          ],
+          "skipped": [
+            0
+          ]
+        },
+        "rawLogBytes": 494948,
+        "rawLogSHA256": "fb61fe319fabff301872595986b4440b7340832634e78e3fcf00442411be978c",
+        "archiveSHA256": "7970af4f9e9c0837168a756dc9808446b762ed3ee6cbc36eab641dd8b6220f38",
+        "jobAPIBoundByRunAndHead": true,
+        "phaseTAPBoundByJobAPITimestamps": true,
+        "directRawArchiveRead": true,
+        "exactPerStepArchiveMembers": [
+          {
+            "stepNumber": 1,
+            "name": "Set up job",
+            "member": "quality/1_Set up job.txt",
+            "sha256": "a685371691f8d065b18740593e92ac48bdaf1a187eb0f13a6eed31f2c0128264",
+            "bytes": 1934
+          },
+          {
+            "stepNumber": 2,
+            "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "member": "quality/2_Run actions_checkout@11d5960a326750d5838078e36cf38b85af677262.txt",
+            "sha256": "62646dcf25ac4d57987608baecc2d319e4c481a42d72fec61239d4af8e730ed3",
+            "bytes": 6665
+          },
+          {
+            "stepNumber": 3,
+            "name": "Locked install and native/standalone build in pinned compiler image",
+            "member": "quality/3_Locked install and native_standalone build in pinned compiler image.txt",
+            "sha256": "56951640fa121309e64500706f7cf7b0965f21d7775d8df4f829d0eba399dcd4",
+            "bytes": 25087
+          },
+          {
+            "stepNumber": 4,
+            "name": "Original lint, type and unit checks with isolated runtime network",
+            "member": "quality/4_Original lint, type and unit checks with isolated runtime network.txt",
+            "sha256": "35afdd75c7e2f48052d0d219284ccaec90e2ef201a4d7fdf5d77efaaf655092c",
+            "bytes": 390685
+          },
+          {
+            "stepNumber": 5,
+            "name": "Five source regression sensitivity checks (A04/A05/A06/action/cache)",
+            "member": "quality/5_Five source regression sensitivity checks (A04_A05_A06_action_cache).txt",
+            "sha256": "2bd3e188a0fcfa0204fcee22df4db278512751543c28844521e10010cc8a5b0b",
+            "bytes": 19951
+          },
+          {
+            "stepNumber": 6,
+            "name": "Deleted-account and bootstrap DB regression sensitivity checks",
+            "member": "quality/6_Deleted-account and bootstrap DB regression sensitivity checks.txt",
+            "sha256": "20635e1112f8c50ced648b4bcd17e9bdf4e583b946788879d0f31180916df004",
+            "bytes": 29185
+          },
+          {
+            "stepNumber": 7,
+            "name": "Separate-process SQL writer-lock regression sensitivity",
+            "member": "quality/7_Separate-process SQL writer-lock regression sensitivity.txt",
+            "sha256": "209f7b53e5478f00aec49e344d9b7090f61e04b517e032c5a8f0157b09bb57a3",
+            "bytes": 7629
+          },
+          {
+            "stepNumber": 8,
+            "name": "Original strict integration and process controls",
+            "member": "quality/8_Original strict integration and process controls.txt",
+            "sha256": "bc43551dea44def6f5ee797e8d4db68d51959629b7886dcb493efee2d1806419",
+            "bytes": 8156
+          },
+          {
+            "stepNumber": 9,
+            "name": "Acquire locked browser CI tools (no app dependency change)",
+            "member": "quality/9_Acquire locked browser CI tools (no app dependency change).txt",
+            "sha256": "2eef31d0df6e33e4410a1071ac2c6d07c43061f81cf4475c0494f6f62da00e35",
+            "bytes": 1653
+          },
+          {
+            "stepNumber": 10,
+            "name": "Finite compiled Pods browser smoke",
+            "member": "quality/10_Finite compiled Pods browser smoke.txt",
+            "sha256": "cb534f76439ca2c6c2c55021a2a53997bc4dde7f72f5cb852a39335f871f110e",
+            "bytes": 1921
+          },
+          {
+            "stepNumber": 20,
+            "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+            "member": "quality/20_Post Run actions_checkout@11d5960a326750d5838078e36cf38b85af677262.txt",
+            "sha256": "171b6c90112652931d6a2c1eac088759afafc404b96e446c036843c7919357a5",
+            "bytes": 1729
+          },
+          {
+            "stepNumber": 21,
+            "name": "Complete job",
+            "member": "quality/21_Complete job.txt",
+            "sha256": "c0c82b1036897b14f243187785ef715f4e88e72985f94a396fab9fc50a2223e8",
+            "bytes": 386
+          }
+        ],
+        "priorWholeJobOneSecondOverlapRefusalRetained": true,
+        "all12StepsPassed": true,
+        "units": 947,
+        "originalSensitivityPairs": 8,
+        "pairObservedTAPResults": [
+          {
+            "name": "A04-name-admission",
+            "kind": "pristine",
+            "observedTAPFailures": 0
+          },
+          {
+            "name": "A04-name-admission",
+            "kind": "mutant",
+            "observedTAPFailures": 1
+          },
+          {
+            "name": "A05-failed-stdout",
+            "kind": "pristine",
+            "observedTAPFailures": 0
+          },
+          {
+            "name": "A05-failed-stdout",
+            "kind": "mutant",
+            "observedTAPFailures": 1
+          },
+          {
+            "name": "A06-outage-empty",
+            "kind": "pristine",
+            "observedTAPFailures": 0
+          },
+          {
+            "name": "A06-outage-empty",
+            "kind": "mutant",
+            "observedTAPFailures": 1
+          },
+          {
+            "name": "deployment-action-coercion",
+            "kind": "pristine",
+            "observedTAPFailures": 0
+          },
+          {
+            "name": "deployment-action-coercion",
+            "kind": "mutant",
+            "observedTAPFailures": 1
+          },
+          {
+            "name": "private-kv-cache-admission",
+            "kind": "pristine",
+            "observedTAPFailures": 0
+          },
+          {
+            "name": "private-kv-cache-admission",
+            "kind": "mutant",
+            "observedTAPFailures": 1
+          },
+          {
+            "name": "A02-deleted-account",
+            "kind": "pristine",
+            "observedTAPFailures": 0
+          },
+          {
+            "name": "A02-deleted-account",
+            "kind": "mutant",
+            "observedTAPFailures": 2
+          },
+          {
+            "name": "A03-bootstrap-writer",
+            "kind": "pristine",
+            "observedTAPFailures": 0
+          },
+          {
+            "name": "A03-bootstrap-writer",
+            "kind": "mutant",
+            "observedTAPFailures": 7
+          },
+          {
+            "name": "A01-SQL-writer-lock",
+            "kind": "pristine",
+            "observedTAPFailures": 0
+          },
+          {
+            "name": "A01-SQL-writer-lock",
+            "kind": "mutant",
+            "observedTAPFailures": 1
+          }
+        ],
+        "originalIntegrationAndProcessControls": 8,
+        "compiledPodsSmoke": {
+          "browserSmoke": "passed",
+          "realPodGETStatus": 200,
+          "wireRows": 208,
+          "initialPageRows": 100,
+          "filteredRows": 3,
+          "nonAgeColumnsVerified": 8,
+          "exactLinks": 3,
+          "noMutationsAttempted": true,
+          "ATQualified": false,
+          "performanceQualified": false
+        }
+      }
+    ],
+    "automaticOnly": true,
+    "manualDispatch": false,
+    "replay": false,
+    "workflowUnchangedBlob": "f8b7ec07d69dcd1806ca44f6c566685108639cb3",
+    "priorPR39335907142Unresolved": true,
+    "priorPush39345339490Unresolved": true,
+    "overallCIQualified": false,
+    "noNativeFixtureSourceInspectionDiagnosisOrReplay": true
+  },
+  "currentFailedPRTAPObservation": {
+    "head": "e149bb0cccf8b3c0f61d165af572758c15d47308",
+    "run": 39376493085,
+    "readOnlyRawLogObservation": true,
+    "failedTAPTitles": [
+      "not ok 15 - audit failure blocks native writes; post-commit failure retains a resolvable native marker",
+      "not ok 17 - tombstone retains object/unrelated values; retention is bounded without deleting last copies",
+      "not ok 18 - new creation establishes an owned source UID, keeps empty documents and refuses imported collisions",
+      "not ok 19 - binary encoding, typed/immutable constraints and forged metadata fail without value leakage",
+      "not ok 396 - native grouped KV CAS, history isolation, drift, ambiguity and metadata audit recovery"
+    ],
+    "causeUnestablished": true,
+    "noNativeFixtureSourceInspectionDiagnosisOrReplay": true
+  },
+  "currentAllSuccessful": false,
+  "newPR39376493085Unresolved": true,
+  "newPR39376493085FailureRetained": true,
+  "currentCIReceiptSHA256": "25260a6c2200eb10c0aafb6700b64e24f000c5236fb7484178142586d7d6be53",
+  "overallCIQualified": false,
+  "priorPR39335907142Unresolved": true,
+  "priorPush39345339490Unresolved": true,
+  "rootDocsLocal": true,
+  "fourFindingsUnresolved": true,
+  "prior32AndEarlierOneUnresolved": true,
+  "fullGoalActive": true,
+  "PRDDeploymentAndActualVerificationFinalRequired": true,
+  "noPersistentRuntimeOrWorker": true,
+  "independentReviewClaim": false,
+  "noSourceFixtureOracleResourceOrGateWeakening": true
+}

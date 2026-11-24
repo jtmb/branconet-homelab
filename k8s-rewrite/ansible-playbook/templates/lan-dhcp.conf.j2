@@ -1,0 +1,20 @@
+# DHCP only. The existing independent resolvers retain DNS port 53.
+port=0
+interface={{ dhcp_lan_interface }}
+bind-interfaces
+user=branconet-dhcp
+group=branconet-dhcp
+dhcp-authoritative
+dhcp-leasefile=/var/lib/branconet-lan-dhcp/leases
+pid-file=/var/lib/branconet-lan-dhcp/dnsmasq.pid
+# The two ranges deliberately leave 192.168.0.246 unallocated.
+{% for first, last in dhcp_lan_ranges %}
+dhcp-range={{ first }},{{ last }},255.255.255.0,24h
+{% endfor %}
+dhcp-option=option:router,{{ dhcp_lan_gateway }}
+dhcp-option=option:dns-server,{{ dhcp_lan_resolvers | join(',') }}
+{% for reservation in dhcp_lan_reservations %}
+dhcp-host={{ reservation.mac }},{{ reservation.address }},24h
+{% endfor %}
+log-dhcp
+log-facility=-
